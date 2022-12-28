@@ -1,0 +1,154 @@
+{
+    "worldgen" : [
+        {
+            "user" : 897998124478521356,
+            "title" : "Tectonic",
+            "link" : "https://www.planetminecraft.com/data-pack/tectonic/",
+            "desc" : "A beautiful datapack featuring 20+ custom biomes, magnificent mountain ranges, and long underground rivers."
+        },
+        {
+            "user" : 748362256588341299,
+            "title" : "William Wythers' Overhauled Overworld",
+            "link" : "https://www.planetminecraft.com/data-pack/william-wythers-overhauled-overworld/",
+            "desc" : "With over 200 new biomes, this pack focuses on making Minecraft both realistic and beautiful."
+        },
+        {
+            "user" : 619922683408154634,
+            "title" : "FokaStudio's Ender Expansion",
+            "link" : "https://www.planetminecraft.com/data-pack/fokastudio-s-ender-expansion/",
+            "desc" : "This end overhaul has not only 15+ biomes, but new terrain, structures, weapons, and mobs as well."
+        },
+        {
+            "user" : 509167090914164756,
+            "title" : "Luminous End",
+            "link" : "https://www.planetminecraft.com/data-pack/luminous-end-v0-9/",
+            "desc" : "If you have a wild imagination, this datapack's fantastical terrain, biomes, and mobs are for you!"
+        },
+        {
+            "user" : 651899079051444225,
+            "title" : "Cavernous",
+            "link" : "https://www.planetminecraft.com/data-pack/thxlotl-s-cave-biome-datapack/",
+            "desc" : "This pack is great for miners; adding new vanilla-like cave biomes, as well as a couple items, advancements, and structures."
+        },
+        {
+            "user" : 729903031197368354,
+            "title" : "Overgrown Overworld",
+            "link" : "https://www.planetminecraft.com/data-pack/overgrown-overworld/",
+            "desc" : "Noticing Vanilla's lack of proper foliage, this pack adds towering trees, giant foliage, and heaps of life."
+        },
+        {
+            "user" : 509167090914164756,
+            "title" : "The Swift Biomes",
+            "link" : "https://www.planetminecraft.com/data-pack/the-swift-biomes-for-1-18-2-by-ptrn23/",
+            "desc" : "Calling all Swifties: you can explore 9 well-crafted biomes, reimagining the beauty of each of Taylor's 9 studio albums."
+        }
+    ],
+    "resourcepack" : [
+        {
+            "user" : 234748321258799104,
+            "title" : "Biome Colored Lava",
+            "link" : "https://www.curseforge.com/minecraft/texture-packs/biome-colored-lava",
+            "desc" : "A simple pack designed to make lava change color based on the biome its in - compatible with several nether packs."
+        },
+        {
+            "user" : 234748321258799104,
+            "title" : "Terralith Addon Sakura",
+            "link" : "https://www.planetminecraft.com/texture-pack/terralith-addon-sakura/",
+            "desc" : "This is one of serveral add-on packs for Terralith to improve the look and atmosphere of certain biomes."
+        },
+        {
+            "user" : 291127887321366528,
+            "title" : "Better Botanicals: Vegetation",
+            "link" : "https://www.planetminecraft.com/texture-pack/better-botanicals-vegetation/",
+            "desc" : "One of Botany's most popular packs, textures and models of saplings, leaves, sticks, and other vegetation is reimagined."
+        }
+    ],
+    "datapack" : [
+        {
+            "user" : 276123524811456515,
+            "title" : "Florcraft",
+            "link" : "https://www.planetminecraft.com/data-pack/florcraft-magical-essence-wizardry/",
+            "desc" : "Inspired by Thaumcraft, this magic datapack uses essence you collect to create powerful staves and tools."
+        },
+        {
+            "user" : 391981599841058817,
+            "title" : "ULTRIS",
+            "link" : "https://www.planetminecraft.com/data-pack/ultris-minecraft-boss-expansion/",
+            "desc" : "For all the boss lovers out there, 8 unique bosses can be found with their own quests and rewards."
+        },
+        {
+            "user" : 205037619065782272,
+            "title" : "New in Town",
+            "link" : "https://www.planetminecraft.com/data-pack/new-in-town-a-settler-s-experience-data-pack/",
+            "desc" : "Thrown into a story, you are tasked with defending your own settlement from the forces from the Nether."
+        },
+        {
+            "user" : 752491714547154975,
+            "title" : "Dungeon Now Loading",
+            "link" : "https://www.planetminecraft.com/data-pack/dungeon-now-loading-5-new-dungeons-5-new-bosses/",
+            "desc" : "This datapack combines 10+ vanilla=like structures with custom bosses, advancements, items, and custom health system."
+        },
+        {
+            "user" : 391981599841058817,
+            "title" : "Terralith Biome Sapling Compatibility",
+            "link" : "https://www.planetminecraft.com/data-pack/terralith-biome-sapling-compatibility/",
+            "desc" : "A simple Terralith add-on made to have saplings grow into their respective custom tree, based on the biome planted in."
+        },
+        {
+            "user" : 647949020505047082,
+            "title" : "RPG Classes",
+            "link" : "https://www.planetminecraft.com/data-pack/classes-5558629/",
+            "desc" : "An artfully made RPG classes datapack that is fun and unique, while not being destructive and op like many other packs out there."
+        },
+        {
+            "user" : 391981599841058817,
+            "title" : "Vanilla Refresh",
+            "link" : "https://www.planetminecraft.com/data-pack/splatus-vanilla-refresh-quality-of-life/",
+            "desc" : "Focused on QOL, this pack has features such as sitting, void totems, xp from crops, Minecraft tips, and much more."
+        },
+        {
+            "user" : 360894618734428160,
+            "title" : "BlazeandCave's Advancements",
+            "link" : "https://www.planetminecraft.com/data-pack/blazeandcave-s-advancements-pack-1-12/",
+            "desc" : "One of the first advancement packs created, this pack adds 900+ advancements, and pairs nicely with Stardust Labs' packs."
+        }
+    ],
+    "structure" : [
+        {
+            "user" : 369282168624644106,
+            "title" : "Repurposed Structures",
+            "link" : "https://www.curseforge.com/minecraft/mc-mods/repurposed-structures-fabric",
+            "desc" : "This mod is dedicated to taking existing vanilla structures, improving them, and creating variants in a vanilla-friendly way."
+        },
+        {
+            "user" : 611191329791410216,
+            "title" : "Immersive Structures",
+            "link" : "https://www.planetminecraft.com/data-pack/immersive-structure-additional-structures-pack/",
+            "desc" : "Structures in this pack are uniquely designed to bring immersion and atmosphere with a variety of different builds."
+        },
+        {
+            "user" : 481134347131420703,
+            "title" : "Towns & Towers",
+            "link" : "https://www.planetminecraft.com/data-pack/towns-amp-towers-structure-overhaul/",
+            "desc" : "Expanding on the Village and Pillage update, this pack adds new villages, pillager outposts, and even ships to liven up the world."
+        },
+        {
+            "user" : 611191329791410216,
+            "title" : "ChoiceTheorem's Overhauled Villages",
+            "link" : "https://www.planetminecraft.com/data-pack/choicetheorem-s-overhauled-villages-for-1-19/",
+            "desc" : "True to its name, this pack adds 20+ brand new and breathtaking village and pillager outposts, built from the ground up."
+        },
+        {
+            "user" : 574604343165059072,
+            "title" : "Hopo Better Mineshafts",
+            "link" : "https://www.planetminecraft.com/data-pack/better-mineshafts/",
+            "desc" : "Minecraft's mineshafts are lackluster - this datapack adds 9+ new Mineshafts, complete with unique rooms and loot."
+        },
+        {
+            "user" : 155423503967846400,
+            "title" : "YUNG's Better Desert Temples",
+            "link" : "https://www.curseforge.com/minecraft/mc-mods/yungs-better-desert-temples",
+            "desc" : "One of several YUNG's mods, this one completely revamps vanilla desert temples with exciting puzzles, traps, parkour, and loot."
+        }
+    ]
+}

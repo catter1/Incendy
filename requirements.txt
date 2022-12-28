@@ -1,0 +1,17 @@
+asyncpg==0.27.0
+beautifulsoup4==4.10.0
+bs4==0.0.1
+discord.py==2.0.1
+discord.py-Console==0.1.2
+GitPython==3.1.29
+googletrans==3.1.0a0
+lark==1.1.5
+mwparserfromhell>=0.5.0
+pymediawiki==0.7.2
+regex==2021.11.10
+requests==2.28.1
+typing_extensions==4.3.0
+urllib3==1.26.5
+validators==0.20.0
+Wand==0.6.10
+wikitextparser>=0.47.5
