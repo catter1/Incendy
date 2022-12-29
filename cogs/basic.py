@@ -36,6 +36,7 @@ class Basic(commands.Cog):
     async def cog_load(self):
         self.change_presence.start()
         #self.loop_get_stats.start()
+        self.webchan = self.client.get_channel(917905247056306246)
         print(f' - {self.__cog_name__} cog loaded.')
 
     async def cog_unload(self):
@@ -289,6 +290,27 @@ class Basic(commands.Cog):
         feedback_chan = self.client.get_channel(747626471819968554)
         await interaction.response.send_modal(Feedback(feedback_chan))
 
+    @app_commands.command(name="reportad", description="Report an inappropriate ad on the Stardust Labs website")
+    @app_commands.checks.dynamic_cooldown(super_long_cd)
+    @app_commands.describe(
+        ad="Image of the advertisement"
+    )
+    async def reportad(self, interaction: discord.Interaction, ad: discord.Attachment):
+        if not ad.content_type.split("/")[0] == "image":
+            interaction.response.send_message("Ad must be an image!", ephemeral=True)
+            return
+        
+        embed = discord.Embed(
+            title="Reported Ad",
+            description="Here is a reported ad found on the [Stardust Labs website](https://www.stardustlabs.net/).",
+            color=discord.Colour.brand_red()
+        )
+        embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
+        embed.set_image(url=ad.url)
+
+        await self.webchan.send(embed=embed)
+        await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
+
     @app_commands.command(name="seed", description="Submits a seed to the Seedfix site")
     @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_permissions(administrator=True)
@@ -453,6 +475,8 @@ class Basic(commands.Cog):
         if isinstance(error, app_commands.CommandOnCooldown):
             if interaction.command.name == "Translate to English":
                 await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
+            elif interaction.command.name == "feedback" or interaction.command.name == "reportad":
+                await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
             else:
                 await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#871376111857193000>!", ephemeral=True)
         elif isinstance(error, app_commands.CheckFailure):
