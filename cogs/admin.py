@@ -122,7 +122,7 @@ class Admin(commands.Cog):
 
 	@github.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents"])
+		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory: Towers"])
 		
 		return [
             app_commands.Choice(name=project, value=project)
@@ -168,21 +168,6 @@ class Admin(commands.Cog):
 			f.writelines(json.dumps(data, indent=2))
         
 		await interaction.response.send_message("Terralith successfully updated!")
-
-	@app_commands.command(name="biome", description="Displays a biome vote")
-	@app_commands.default_permissions(administrator=True)
-	@app_commands.checks.has_permissions(administrator=True)
-	async def biome(self, interaction: discord.Interaction, roundnum: int, day: int, matchnum: int, biome1: str, biome2: str, foto: discord.Member):
-		""" /biome round_number day match_number biome1 biome2 photo_credit """
-
-		embed = discord.Embed(color=discord.Colour.dark_teal(), title=f"Round {roundnum}, Day {day}, Match {matchnum}")
-		embed.add_field(name=f"🔴 **{biome1}** (Top)   vs.   🟦 **{biome2}** (Bottom)", value="Vote for which one you think is the best biome!")
-		embed.set_footer(text=f"{foto} (Photo Credit)", icon_url=foto.avatar)
-		file = discord.File(f"images/{str(roundnum)}.{str(matchnum)}.png", filename="image.png")
-		embed.set_image(url="attachment://image.png")
-		msg = await interaction.channel.send(file=file, embed=embed)
-		await msg.add_reaction("🔴")
-		await msg.add_reaction("🟦")
 
 async def setup(client):
 	await client.add_cog(Admin(client))
