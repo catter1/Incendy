@@ -33,7 +33,7 @@ class Roles(commands.Cog):
 			future = datetime.timedelta(days=28)
 			await member.timeout(until=future, reason="Shutup loser")
 
-	@app_commands.command(name="role", description="Gives Members role to all users missing a role")
+	@app_commands.command(name="role", description="[ADMIN] Gives Members role to all users missing a role")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def role(self, interaction: discord.Interaction):
@@ -51,7 +51,7 @@ class Roles(commands.Cog):
 		
 		await interaction.followup.send(f'**{fixcount}** members have been given the `Member` role.')
 
-	@app_commands.command(name="lockdown", description="Toggles the prevention of all new members from obtaining the Member role")
+	@app_commands.command(name="lockdown", description="[ADMIN] Toggles the prevention of all new members from obtaining the Member role")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def lockdown(self, interaction: discord.Interaction):

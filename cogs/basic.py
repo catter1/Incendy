@@ -311,7 +311,7 @@ class Basic(commands.Cog):
         await self.webchan.send(embed=embed)
         await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
 
-    @app_commands.command(name="seed", description="Submits a seed to the Seedfix site")
+    @app_commands.command(name="seed", description="[ADMIN] Submits a seed to the Seedfix site")
     @app_commands.default_permissions(administrator=True)
     @app_commands.checks.has_permissions(administrator=True)
     @app_commands.describe(

@@ -169,7 +169,7 @@ class Moderation(commands.Cog):
 	async def shutup_button(self, interaction: discord.Interaction, member: discord.Member):
 		await self.shutup(interaction, member)
 
-	@app_commands.command(name="shutup", description="Time out a user forever (or custom amount of days)")
+	@app_commands.command(name="shutup", description="[ADMIN] Time out a user forever (or custom amount of days)")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(
@@ -179,7 +179,7 @@ class Moderation(commands.Cog):
 	async def shutup_cmd(self, interaction: discord.Interaction, member: discord.Member, days: int = 9999):
 		await self.shutup(interaction, member, days)
 
-	@app_commands.command(name="jschlatt", description="You know what this does...")
+	@app_commands.command(name="jschlatt", description="[ADMIN] You know what this does...")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(

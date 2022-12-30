@@ -63,7 +63,7 @@ class Helps(commands.Cog):
 		await interaction.response.send_message("Closing thread now. Thanks!")
 		await interaction.channel.edit(locked=True, archived=True)
 
-	@app_commands.command(name="dwa", description="Ask if the support question was resolved")
+	@app_commands.command(name="dwa", description="[ADMIN] Ask if the support question was resolved")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@has_permissions(administrator=True)
@@ -241,7 +241,7 @@ async def update_content(index: str) -> tuple:
 				('feedback', 'Send feedback about Incendy so she can improve herself'),
 				('ping', 'Shows you your connection latency'),
 				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
-				('reportad <image>', 'If you see a bad/inappropriate ad on [our website](https://www.stardustlabs.net/), report an **image** of it here')
+				('reportad <image>', 'If you see a bad/inappropriate ad on [our website](https://www.stardustlabs.net/), report an **image** of it here'),
 				('server <valid> [image]', 'Advertises a server in <#756923587339878420>. Set **valid** to true if you\'ve read the rules. You will then be prompted for the server\'s name, ip, description, and an optional discord link and promotional **image**'),
 				('stats', 'Displays the stats for Incendy, as well as the download numbers for all the projects')
 			)

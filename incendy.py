@@ -96,9 +96,9 @@ async def sync(ctx) -> None:
 	await ctx.send(f"Synced {len(synced)} commands")
 	return
 
-cog_group = app_commands.Group(name='cog', description='Uses the cog management menu')
+cog_group = app_commands.Group(name='cog', description='[ADMIN] Uses the cog management menu')
 
-@cog_group.command(name="load", description="Loads a cog")
+@cog_group.command(name="load", description="[ADMIN] Loads a cog")
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def load(interaction: discord.Interaction, cog: str):
@@ -110,7 +110,7 @@ async def load(interaction: discord.Interaction, cog: str):
 	else:
 		await interaction.response.send_message("Cog loaded successfully", ephemeral=True)
 
-@cog_group.command(name="unload", description="Unloads a cog")
+@cog_group.command(name="unload", description="[ADMIN] Unloads a cog")
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def unload(interaction: discord.Interaction, cog: str):
@@ -122,7 +122,7 @@ async def unload(interaction: discord.Interaction, cog: str):
 	else:
 		await interaction.response.send_message("Cog unloaded successfully", ephemeral=True)
 
-@cog_group.command(name="reload", description="Reloads a cog")
+@cog_group.command(name="reload", description="[ADMIN] Reloads a cog")
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def _reload(interaction: discord.Interaction, cog: str):

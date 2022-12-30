@@ -86,7 +86,7 @@ class Events(commands.Cog):
             if current.lower() in action.lower()
         ]
 
-	@app_commands.command(name="biome", description="Displays a biome vote")
+	@app_commands.command(name="biome", description="[ADMIN] Displays a biome vote")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def biome(self, interaction: discord.Interaction, roundnum: int, day: int, matchnum: int, biome1: str, biome2: str, foto: discord.Member):

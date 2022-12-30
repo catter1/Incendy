@@ -26,7 +26,7 @@ class Bulletin(commands.Cog):
 
 	### COMMANDS ###
 
-	@app_commands.command(name="featured", description="Sends the \"featured\" list")
+	@app_commands.command(name="featured", description="[ADMIN] Sends the \"featured\" list")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def featured(self, interaction: discord.Interaction):
@@ -59,7 +59,7 @@ class Bulletin(commands.Cog):
 		
 		colours = get_rgb_rainbow(n=count)
 		
-		for index, item in enumerate(data):
+		for item in data:
 			for pack in data[item]:
 				count -= 1
 				
@@ -80,14 +80,14 @@ class Bulletin(commands.Cog):
 				
 				await interaction.channel.send(embed=embed)
 	
-	@app_commands.command(name="announce", description="Pastes a message as Incendy. Message controlled by catter")
+	@app_commands.command(name="announce", description="[ADMIN] Pastes a message as Incendy. Message controlled by catter")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def serverrules(self, interaction: discord.Interaction):
 		#await interaction.channel.send("Hey y'all! It's getting close to a certain holiday that certain people may celebrate, and I wanted to give everyone the greatest gift of all: knowledge of cybersecurity :sunglasses:\n\nDuring the holidays especially, there are a lot of scam links. Discord especially... I already banned one person who's account got hacked and was sending phishing links (free nitro). Luckily, this person was able to get their account back. But you may not be so lucky.\n\nFirst of all, **one** click is all it takes. Just one. That can compromise your entire account, even if you don't explicitly say your private info. Outside of Discord, it can lead to more damage. It could instantly install malware, steal all accounts you are logged into (or passwords that your browser saves), and use all communication means (like email) that you have to phish more people. If your friend sends you a link from their actual email/Discord to this cool online Christmas card they made for you, wouldn't you click it? Always check the link first.\n\nAnd finally, scams aren't for stupid people. You don't have to be stupid to fall for scams. Although some scams are blatant, others are very well crafted. Here is a nice video (https://www.youtube.com/watch?v=ntrGrfvvkII) by Atomic Shrimp, who explains it quite nicely. Links are a lot more dangerous than you may think.\n\nAnyways, that's all. I wish that you will all be safe this holiday season, and for now on. It's a pleasure to be your friendly discord bot, and I love every minute of it here \<3")
 		pass
 
-	@app_commands.command(name="serverrules", description="Prints the #servers message")
+	@app_commands.command(name="serverrules", description="[ADMIN] Prints the #servers message")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def serverrules(self, interaction: discord.Interaction):
@@ -115,7 +115,7 @@ class Bulletin(commands.Cog):
 		modal = ServerDesc(self.servchan, image)
 		await interaction.response.send_modal(modal)
 	
-	@app_commands.command(name="stardustmc", description="Prints the StardustMC info channel")
+	@app_commands.command(name="stardustmc", description="[ADMIN] Prints the StardustMC info channel")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def stardustmc(self, interaction: discord.Interaction):
@@ -145,7 +145,7 @@ class Bulletin(commands.Cog):
 		x = await interaction.channel.send(embeds=[embed1, embed2, embed3, embed4])
 		await x.add_reaction('<:stardust:917599175259070474>')
 
-	@app_commands.command(name="library", description="Prints the Downloads Library")
+	@app_commands.command(name="library", description="[ADMIN] Prints the Downloads Library")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def library(self, interaction: discord.Interaction):
