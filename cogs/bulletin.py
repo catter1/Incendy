@@ -4,7 +4,7 @@ import typing
 from discord.ext import commands
 from discord import app_commands
 from colorsys import hls_to_rgb
-from ..resources import custom_checks as cc
+from resources import custom_checks as cc
 
 class Bulletin(commands.Cog):
 	def __init__(self, client):

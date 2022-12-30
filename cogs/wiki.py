@@ -4,7 +4,7 @@ import json
 from discord import app_commands
 from discord.ext import commands
 from mediawiki import MediaWiki
-from ..resources import custom_checks as cc
+from resources import custom_checks as cc
 
 class Wiki(commands.Cog):
 	def __init__(self, client):

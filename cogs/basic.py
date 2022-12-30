@@ -9,7 +9,7 @@ from resources.resize import resize
 from zipfile import ZipFile
 from discord import app_commands
 from discord.ext import commands, tasks
-from ..resources import custom_checks as cc
+from resources import custom_checks as cc
 
 class Basic(commands.Cog):
     def __init__(self, client):

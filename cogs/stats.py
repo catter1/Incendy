@@ -1,19 +1,17 @@
 import discord
 import requests
-import typing
 import json
 import os
 import socket
 import urllib3
 import time
-import datetime
 import cv2 as cv
 import numpy as np
 from discord import app_commands
 from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
 from collections import OrderedDict
-from ..resources import custom_checks as cc
+from resources import custom_checks as cc
 
 class Stats(commands.Cog):
 	def __init__(self, client):
@@ -38,10 +36,29 @@ class Stats(commands.Cog):
 		await self.client.wait_until_ready()
 
 	### COMMANDS ###
+
+	@app_commands.command(name="news", description="The latest unofficial news from Stardust Labs")
+	@cc.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
+	async def news(self, interaction: discord.Interaction):
+		""" /news """
+
+		with open("resources/news.json", 'r') as f:
+			news = json.load(f)
+
+		catter = interaction.guild.get_member(260929689126699008)
+		embed = discord.Embed(color=discord.Colour.brand_red())
+		embed.set_author(name="Unofficial Stardust News", icon_url=catter.avatar.url)
+		
+		for item in news:
+			embed.title = item["title"]
+			embed.description = f"{item['desc']}\n<t:{item['timestamp']}:D>"
+
+		await interaction.response.send_message(embed=embed)
 	
 	@app_commands.command(name="stats", description="Shows stats about Stardust Labs")
 	@cc.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(cc.long_cd)
+	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 
