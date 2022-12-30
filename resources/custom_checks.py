@@ -74,6 +74,13 @@ def long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Co
 		return None
 	return app_commands.Cooldown(1, 35.0)
 
+def very_long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+	"""1 command per 2 minutes"""
+
+	if interaction.user.guild_permissions.administrator:
+		return None
+	return app_commands.Cooldown(1, 120.0)
+
 def super_long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
 	"""1 command per 100 minutes"""
 	if interaction.user.guild_permissions.administrator:
