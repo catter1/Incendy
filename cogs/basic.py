@@ -122,12 +122,12 @@ class Basic(commands.Cog):
         catter = self.client.get_user(260929689126699008)
         stats = self.stats
         
-        embed = discord.Embed(title='Stardust Labs Stats', color=discord.Colour.brand_red())
-        embed.set_author(name='catter1', icon_url=catter.avatar)
-        embed.add_field(name='Incendy Version', value=self.version, inline=False)
-        embed.add_field(name='StardustTV Videos', value="{:,}".format(stats["videos"]))
-        embed.add_field(name='StardustTV Streams', value="{:,}".format(stats["streams"]))
-        embed.add_field(name='\u200b', value='\u200b')
+        embed = discord.Embed(color=discord.Colour.brand_red())
+        embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
+        embed.add_field(name='Incendy Version', value=self.version)
+        embed.add_field(name='Member Count', value=interaction.guild.member_count)
+        embed.add_field(name='StardustTV', value="Videos: {:,}".format(stats["videos"] + "\nStreams: {:,}".format(stats["streams"])))
+        #embed.add_field(name='\u200b', value='\u200b')
         embed.add_field(name='Terralith Downloads', value="{:,}".format(stats["terralith"]))
         embed.add_field(name='Incendium Downloads', value="{:,}".format(stats["incendium"]))
         embed.add_field(name='Nullscape Downloads', value="{:,}".format(stats["nullscape"]))
