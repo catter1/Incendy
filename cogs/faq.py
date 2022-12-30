@@ -46,14 +46,15 @@ class Faq(commands.Cog):
             "Dont Ask to Ask": "https://dontasktoask.com/",
             "Notch Code": "`bl2 = !bls[(ab * 16 + ac) * 8 + ad] && (ab < 15 && bls[((ab + 1) * 16 + ac) * 8 + ad] || ab > 0 && bls[((ab - 1) * 16 + ac) * 8 + ad] || ac < 15 && bls[(ab * 16 + ac + 1) * 8 + ad] || ac > 0 && bls[(ab * 16 + (ac - 1)) * 8 + ad] || ad < 7 && bls[(ab * 16 + ac) * 8 + ad + 1] || ad > 0 && bls[(ab * 16 + ac) * 8 + (ad - 1)]);`",
             "Optifine Alternatives": "https://lambdaurora.dev/optifine_alternatives/",
-            "Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you most have `op` permissions to do this."
+            "Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you most have `op` permissions to do this.",
+            "Send Logs": "In order to properly give assistance, you need to provide logs. When sharing them, do ***NOT*** send screenshots or copy/paste the lines directly into Discord. Instead, upload the actual log file itself, or upload them to a [Pastebin-like site](https://mclo.gs/) (Incendy will do this automatically for you if you upload the file to Discord). Not sure where to find your logs?\n\n**Singleplayer**: `.minecraft/logs` and/or `.minecraft/crash-logs`\n**Server**: `[main folder]/logs` and/or `[main folder]/crash-logs`"
         }
 
         await interaction.response.send_message(fp_dict[fp])
 
     @fp.autocomplete('fp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        fp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu"])
+        fp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs"])
 
         return [
             app_commands.Choice(name=fp, value=fp)
