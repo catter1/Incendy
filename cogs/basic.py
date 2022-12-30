@@ -8,8 +8,11 @@ import json
 import os
 import random
 import shutil
+import time
+import datetime
 import subprocess
 import googletrans
+import numpy as np
 from resize import resize
 from zipfile import ZipFile
 from itertools import cycle
@@ -18,7 +21,6 @@ from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions
 from collections import OrderedDict
 from bs4 import BeautifulSoup
-from datetime import *
 
 class Basic(commands.Cog):
     def __init__(self, client):
@@ -116,26 +118,47 @@ class Basic(commands.Cog):
 
     @app_commands.command(name="stats", description="Shows stats about Stardust Labs")
     @in_bot_channel()
-    async def stats(self, interaction: discord.Interaction):
-        """ /stats """
+    @app_commands.checks.dynamic_cooldown(long_cd)
+    async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
+        """ /stats [member]"""
 
-        catter = self.client.get_user(260929689126699008)
-        stats = self.stats
-        
-        embed = discord.Embed(color=discord.Colour.brand_red())
-        embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
-        embed.add_field(name='Incendy Version', value=self.version)
-        embed.add_field(name='Member Count', value=interaction.guild.member_count)
-        embed.add_field(name='StardustTV', value="Videos: {:,}".format(stats["videos"] + "\nStreams: {:,}".format(stats["streams"])))
-        #embed.add_field(name='\u200b', value='\u200b')
-        embed.add_field(name='Terralith Downloads', value="{:,}".format(stats["terralith"]))
-        embed.add_field(name='Incendium Downloads', value="{:,}".format(stats["incendium"]))
-        embed.add_field(name='Nullscape Downloads', value="{:,}".format(stats["nullscape"]))
-        embed.add_field(name='Structory Downloads', value="{:,}".format(stats["structory"]))
-        embed.add_field(name='Amplified Nether Downloads', value="{:,}".format(stats["amplified-nether"]))
-        embed.add_field(name='Continents Downloads', value="{:,}".format(stats["continents"]))
-        embed.set_footer(text='<:pmc:1045336243216584744> <:modrinth:1045336248950214706> <:curseforge:1045336245900939274> <:stardust:917599175259070474>')
-        await interaction.response.send_message(embed=embed)
+        # Individual member stats
+        if member:
+
+            joined = int(time.mktime(member.joined_at.timetuple()))
+            created = int(time.mktime(member.created_at.timetuple()))
+
+            embed = discord.Embed(
+                title=f"{member.display_name}'s Stats",
+                color=self.client.get_user(member.id).color,
+                description=f"<:stardust:1058423314672013382> joined <t:{joined}:R>\n<:discord:1048627498734342206> joined <t:{created}:R>"
+            )
+            
+            embed.add_field(name="Total Messages", value="Coming Soon", inline=False)
+            embed.add_field(name="Most Used Commands", value="Coming Soon")
+            embed.set_thumbnail(url=member.display_avatar.url)
+            embed.set_footer(text=f"{member.name}#{member.discriminator}")
+
+            await interaction.response.send_message(embed=embed)
+
+        # Stardust Labs stats
+        else:
+            stats = self.stats
+            
+            embed = discord.Embed(color=discord.Colour.brand_red())
+            embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
+            embed.add_field(name='Incendy Version', value=self.version)
+            embed.add_field(name='Member Count', value=interaction.guild.member_count)
+            embed.add_field(name='StardustTV', value="Videos: {:,}".format(stats["videos"] + "\nStreams: {:,}".format(stats["streams"])))
+            #embed.add_field(name='\u200b', value='\u200b')
+            embed.add_field(name='Terralith Downloads', value="{:,}".format(stats["terralith"]))
+            embed.add_field(name='Incendium Downloads', value="{:,}".format(stats["incendium"]))
+            embed.add_field(name='Nullscape Downloads', value="{:,}".format(stats["nullscape"]))
+            embed.add_field(name='Structory Downloads', value="{:,}".format(stats["structory"]))
+            embed.add_field(name='Amplified Nether Downloads', value="{:,}".format(stats["amplified-nether"]))
+            embed.add_field(name='Continents Downloads', value="{:,}".format(stats["continents"]))
+            embed.set_footer(text='<:pmc:1045336243216584744> <:modrinth:1045336248950214706> <:curseforge:1045336245900939274> <:seedfix:917599175259070474>')
+            await interaction.response.send_message(embed=embed)
 
     async def get_stats(self) -> dict:
         stats = {}
