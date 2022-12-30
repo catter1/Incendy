@@ -260,6 +260,7 @@ class Structory(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory/'))
+		self.add_item(discord.ui.Button(label='Towers Addon (1.19.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.19.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/releases'))
 
