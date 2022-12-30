@@ -637,7 +637,7 @@ class Pointer(discord.ui.View):
 class Seedfix(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='SeedFix Website', emoji='<:stardust:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
+		self.add_item(discord.ui.Button(label='SeedFix Website', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
 		self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:962397090732970004>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
 
 class Tlauncher(discord.ui.View):
@@ -648,7 +648,7 @@ class Tlauncher(discord.ui.View):
 class Compat(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Compatibility Table', emoji='<:stardust:917599175259070474>', url='https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities'))
+		self.add_item(discord.ui.Button(label='Compatibility Table', emoji='<:miraheze:890077957069111316>', url='https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities'))
 
 class Resource(discord.ui.View):
 	def __init__(self):

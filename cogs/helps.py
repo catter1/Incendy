@@ -243,7 +243,7 @@ async def update_content(index: str) -> tuple:
 				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
 				('reportad <image>', 'If you see a bad/inappropriate ad on [our website](https://www.stardustlabs.net/), report an **image** of it here'),
 				('server <valid> [image]', 'Advertises a server in <#756923587339878420>. Set **valid** to true if you\'ve read the rules. You will then be prompted for the server\'s name, ip, description, and an optional discord link and promotional **image**'),
-				('stats', 'Displays the stats for Incendy, as well as the download numbers for all the projects')
+				('stats [member]', 'Displays the stats for Stardust Labs and the Discord server, or optionally, a **member**')
 			)
 		case "4":
 			entries = (

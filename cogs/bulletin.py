@@ -139,11 +139,11 @@ class Bulletin(commands.Cog):
 		embed4 = discord.Embed(
 			colour=discord.Colour.teal(),
 			title="Ping Role",
-			description="Want to be pinged with important StardustMC-related announcements in <#1002721350143721603>? If so, react to this message with <:stardust:917599175259070474>!"
+			description="Want to be pinged with important StardustMC-related announcements in <#1002721350143721603>? If so, react to this message with <:stardust:1058423314672013382>!"
 		)
 
 		x = await interaction.channel.send(embeds=[embed1, embed2, embed3, embed4])
-		await x.add_reaction('<:stardust:917599175259070474>')
+		await x.add_reaction('<:stardust:1058423314672013382>')
 
 	@app_commands.command(name="library", description="[ADMIN] Prints the Downloads Library")
 	@app_commands.default_permissions(administrator=True)
@@ -234,7 +234,7 @@ class Terralith(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/'))
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2)', emoji='<:stardust:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2)', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.19.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/terralith/versions'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.19.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.17)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith/releases'))
