@@ -55,13 +55,6 @@ async def run():
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
-
-
-# class Client(commands.Bot):
-# 	def __init__(self, **kwargs):
-# 		super().__init__()
-		
-# 		self.db = kwargs.pop("db")
 		
 @client.event
 async def setup_hook():
