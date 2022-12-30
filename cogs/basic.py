@@ -299,6 +299,10 @@ class Basic(commands.Cog):
         if not ad.content_type.split("/")[0] == "image":
             interaction.response.send_message("Ad must be an image!", ephemeral=True)
             return
+
+        if ad.size > 10000000:
+            await interaction.response.send_message("Your image is too big! Try a smaller one.", ephemeral=True)
+            return
         
         embed = discord.Embed(
             title="Reported Ad",
