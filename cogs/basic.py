@@ -1,22 +1,14 @@
 import discord
-import asyncio
 import requests
 import typing
 import json
 import os
 import random
-import shutil
-import time
-import datetime
-import subprocess
 import googletrans
-import numpy as np
 from resize import resize
 from zipfile import ZipFile
-from itertools import cycle
 from discord import app_commands
 from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions
 
 class Basic(commands.Cog):
     def __init__(self, client):
