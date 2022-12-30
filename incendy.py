@@ -154,6 +154,19 @@ client.tree.add_command(cog_group)
 async def on_command_error(ctx, error):
 	raise error
 
+@client.event
+async def on_app_command_completion(interaction: discord.Interaction, command):
+	with open("resources/stats.json", "r") as f:
+		data = json.load(f)
+
+	if not command.name in data:
+		data[command.name] = 1
+	else:
+		data[command.name] += 1
+
+	with open("resources/stats.json", "w") as f:
+		json.dump(data, f, indent=4)
+
 try:
 	loop = asyncio.get_event_loop()
 	loop.run_until_complete(run())
