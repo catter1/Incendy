@@ -2,10 +2,13 @@ import discord
 import requests
 import typing
 import json
+import os
 import socket
 import urllib3
 import time
 import datetime
+import cv2 as cv
+import numpy as np
 from discord import app_commands
 from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions
@@ -58,13 +61,17 @@ class Stats(commands.Cog):
 
 		# Individual member stats
 		if member:
+			filename = f"seeds/{member.id}.webp"
+			await member.avatar.save(filename)
+			colour = await self.get_color(filename)
+			os.remove(f"{os.curdir}/{filename}")
 
 			joined = int(time.mktime(member.joined_at.timetuple()))
 			created = int(time.mktime(member.created_at.timetuple()))
 
 			embed = discord.Embed(
 				title=f"{member.display_name}'s Stats",
-				color=self.client.get_user(member.id).color,
+				color=colour,
 				description=f"<:stardust:1058423314672013382> joined <t:{joined}:R>\n<:discord:1048627498734342206> joined <t:{created}:R>"
 			)
 			
@@ -78,8 +85,13 @@ class Stats(commands.Cog):
 		# Stardust Labs stats
 		else:
 			stats = self.stats
+
+			filename = f"seeds/{interaction.guild.id}.webp"
+			await member.avatar.save(filename)
+			colour = await self.get_color(filename)
+			os.remove(f"{os.curdir}/{filename}")
 			
-			embed = discord.Embed(color=discord.Colour.brand_red())
+			embed = discord.Embed(color=colour)
 			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
 			embed.add_field(name='Incendy Version', value=self.version)
 			embed.add_field(name='Member Count', value=interaction.guild.member_count)
@@ -93,6 +105,18 @@ class Stats(commands.Cog):
 			embed.add_field(name='Continents Downloads', value="{:,}".format(stats["continents"]))
 			embed.set_footer(text='<:pmc:1045336243216584744> <:modrinth:1045336248950214706> <:curseforge:1045336245900939274> <:seedfix:917599175259070474>')
 			await interaction.response.send_message(embed=embed)
+
+	# thanks! https://towardsdatascience.com/finding-most-common-colors-in-python-47ea0767a06a
+	async def get_color(self, filename: str) -> discord.Color:
+		img = cv.imread(filename) #Image here
+		img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+		img = cv.resize(img, (80, 80), interpolation = cv.INTER_AREA)
+
+		unique, counts = np.unique(img.reshape(-1, 3), axis=0, return_counts=True)
+		final = unique[np.argmax(counts)]
+		colour = discord.Colour.from_rgb(int(final[0]), int(final[1]), int(final[2]))
+
+		return colour
 
 	async def get_stats(self) -> dict:
 		stats = {}
