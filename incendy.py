@@ -14,7 +14,7 @@ from discord.ext.tasks import loop
 import dpyConsole
 
 # Get keys
-with open('resources/keys.txt', 'r') as f:
+with open('resources/keys.json', 'r') as f:
 	keys = json.load(f)
 
 # DB Credentials and Connection object

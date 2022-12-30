@@ -16,7 +16,7 @@ class Media(commands.Cog):
 	def __init__(self, client):
 		self.client = client
 	
-	with open('resources/keys.txt', 'r') as f:
+	with open('resources/keys.json', 'r') as f:
 		keys = json.load(f)
 	
 	twitch = Twitch(keys["twitch-id"], keys["twitch-secret"])

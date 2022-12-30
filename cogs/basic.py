@@ -516,7 +516,7 @@ class BugInfo(discord.ui.Modal, title='Bug Information'):
     def __init__(self, project: str):
         super().__init__(timeout=300.0)
         self.project = project
-        with open('resources/keys.txt', 'r') as f:
+        with open('resources/keys.json', 'r') as f:
             self.pat = json.load(f)["git-pat"]
         
     bug_title = discord.ui.TextInput(

@@ -54,7 +54,7 @@ class Admin(commands.Cog):
 		await interaction.response.defer(thinking=True)
 
 		# Auth
-		with open('resources/keys.txt', 'r') as f:
+		with open('resources/keys.json', 'r') as f:
 			pat = json.load(f)["git-pat"]
 		auth = ('catter1', pat)
 
