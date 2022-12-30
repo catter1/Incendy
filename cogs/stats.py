@@ -11,9 +11,9 @@ import cv2 as cv
 import numpy as np
 from discord import app_commands
 from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions
 from bs4 import BeautifulSoup
 from collections import OrderedDict
+from ..resources import custom_checks as cc
 
 class Stats(commands.Cog):
 	def __init__(self, client):
@@ -27,6 +27,8 @@ class Stats(commands.Cog):
 		#self.loop_get_stats.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
+	### LOOPS ###
+
 	@tasks.loop(hours=6.0)
 	async def loop_get_stats(self):
 		self.stats = await self.get_stats()
@@ -35,27 +37,11 @@ class Stats(commands.Cog):
 	async def before_change_presence(self):
 		await self.client.wait_until_ready()
 
-	### COOLDOWNS & CHECKS ###
-	def in_bot_channel():
-		def bot_channel(interaction: discord.Interaction):
-			if interaction.channel_id == 871376111857193000 or interaction.channel_id == 923571915879231509:
-				return True
-			if interaction.user.guild_permissions.administrator:
-				return True
-			else:
-				return False
-		return app_commands.check(bot_channel)
-
-	def long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-		if interaction.user.guild_permissions.administrator:
-			return None
-		return app_commands.Cooldown(1, 35.0)
-
 	### COMMANDS ###
 	
 	@app_commands.command(name="stats", description="Shows stats about Stardust Labs")
-	@in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(long_cd)
+	@cc.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(cc.long_cd)
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 

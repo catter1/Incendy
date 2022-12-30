@@ -3,8 +3,8 @@ import json
 import typing
 from discord.ext import commands
 from discord import app_commands
-from discord.ext.commands import has_permissions
 from colorsys import hls_to_rgb
+from ..resources import custom_checks as cc
 
 class Bulletin(commands.Cog):
 	def __init__(self, client):
@@ -16,13 +16,6 @@ class Bulletin(commands.Cog):
 		
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')
-	
-	### COOLDOWNS ###
-
-	def long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-		if interaction.user.guild_permissions.administrator:
-			return None
-		return app_commands.Cooldown(1, 3600.0)
 
 	### COMMANDS ###
 
@@ -101,6 +94,7 @@ class Bulletin(commands.Cog):
 		await interaction.channel.send(embed=embed)
 
 	@app_commands.command(name="server", description="Advertise a server in the server channel")
+	@app_commands.checks.dynamic_cooldown(cc.super_long_cd)
 	@app_commands.describe(
 		valid="This server follows the server and channel's pinned rules.",
 		image="(Optional) A related image for your server (png, jpeg, jpg)"

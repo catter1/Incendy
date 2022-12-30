@@ -1,9 +1,8 @@
 import discord
-import asyncio
 from discord import app_commands
-from discord.app_commands import Group, command
 from discord.ext import commands
 from discord.ext.commands import has_permissions
+from ..resources import custom_checks as cc
 
 class Helps(commands.Cog):
 	def __init__(self, client):
@@ -14,20 +13,6 @@ class Helps(commands.Cog):
 
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')
-
-	### CHECKS ###
-
-	@staticmethod
-	def can_close():
-		def closer(interaction: discord.Interaction):
-			if not isinstance(interaction.channel, discord.Thread):
-				return False
-			if interaction.user.id == interaction.channel.owner_id:
-				return True
-			elif interaction.user.guild_permissions.administrator:
-				return True
-			return False
-		return app_commands.check(closer)
 
 	### COMMANDS ###
 
@@ -56,7 +41,7 @@ class Helps(commands.Cog):
 		await interaction.response.send_message(embed=embed, view=HelpView())
 
 	@app_commands.command(name="close", description="Closes the support thread")
-	@can_close()
+	@cc.can_close()
 	async def close(self, interaction: discord.Interaction):
 		""" /close """
 		
@@ -67,7 +52,7 @@ class Helps(commands.Cog):
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@has_permissions(administrator=True)
-	@can_close()
+	@cc.can_close()
 	async def dwa(self, interaction: discord.Interaction):
 		""" /dwa """
 

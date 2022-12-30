@@ -1,10 +1,8 @@
 import discord
-import typing
-import asyncio
 import requests
 from discord import app_commands
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions
+from discord.ext import commands
+from ..resources import custom_checks as cc
 
 class Faq(commands.Cog):
     def __init__(self, client):
@@ -16,26 +14,10 @@ class Faq(commands.Cog):
     async def cog_unload(self):
         print(f' - {self.__cog_name__} cog unloaded.')
 
-    ### COOLDOWNS & CHECKS ###
-
-    def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        if interaction.channel_id == 871376111857193000:
-            return None
-        return app_commands.Cooldown(2, 25.0)
-
-    def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        if interaction.channel_id == 871376111857193000:
-            return None
-        return app_commands.Cooldown(1, 15.0)
-
     ### COMMANDS ###
 
     @app_commands.command(name="fp", description="Sends a fast post!")
-    @app_commands.checks.dynamic_cooldown(short_cd)
+    @app_commands.checks.dynamic_cooldown(cc.short_cd)
     async def fp(self, interaction: discord.Interaction, fp: str):
         """ /fp [fastpost] """
 

@@ -2,9 +2,7 @@ import discord
 import json
 import datetime
 from discord import app_commands
-from discord.utils import get
 from discord.ext import commands
-from discord.ext.commands import has_permissions
 
 class Roles(commands.Cog):
 	def __init__(self, client):

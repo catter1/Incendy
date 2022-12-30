@@ -1,16 +1,13 @@
 import discord
-import asyncio
 import requests
 import json
 import os
-import git
 import shutil
 import subprocess
-from resize import resize
 from zipfile import ZipFile
-from discord import Interaction, app_commands, Permissions
+from discord import app_commands
 from discord.ext import commands
-from discord.ext.commands import has_permissions
+from ..resources import custom_checks as cc
 
 class Admin(commands.Cog):
 	def __init__(self, client):
@@ -21,15 +18,6 @@ class Admin(commands.Cog):
 
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')
-
-	### CHECKS ###
-	def is_catter():
-		def catter(interaction: discord.Interaction):
-			if interaction.user.id == 260929689126699008:
-				return True
-			else:
-				return False
-		return app_commands.check(catter)
 
 	### COMMANDS ###
 

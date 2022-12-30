@@ -9,6 +9,7 @@ from resize import resize
 from zipfile import ZipFile
 from discord import app_commands
 from discord.ext import commands, tasks
+from ..resources import custom_checks as cc
 
 class Basic(commands.Cog):
     def __init__(self, client):
@@ -46,56 +47,10 @@ class Basic(commands.Cog):
     async def before_change_presence(self):
         await self.client.wait_until_ready()
 
-    ### COOLDOWNS & CHECKS ###
-
-    def in_bot_channel():
-        def bot_channel(interaction: discord.Interaction):
-            if interaction.channel_id == 871376111857193000 or interaction.channel_id == 923571915879231509:
-                return True
-            if interaction.user.guild_permissions.administrator:
-                return True
-            else:
-                return False
-        return app_commands.check(bot_channel)
-
-    def can_report_bug():
-        def bug_reporter(interaction: discord.Interaction):
-            if any([role.id for role in interaction.user.roles if role.id == 749701703938605107 or role.id == 885719021176119298]):
-                return True
-            if interaction.user.guild_permissions.administrator:
-                return True
-            else:
-                return False
-        return app_commands.check(bug_reporter)
-
-    def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        if interaction.channel_id == 871376111857193000:
-            return None
-        return app_commands.Cooldown(2, 25.0)
-
-    def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        if interaction.channel_id == 871376111857193000:
-            return None
-        return app_commands.Cooldown(1, 15.0)
-    
-    def long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        return app_commands.Cooldown(1, 35.0)
-
-    def super_long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
-        if interaction.user.guild_permissions.administrator:
-            return None
-        return app_commands.Cooldown(1, 6000.0)
-
     ### COMMANDS ###
 
     @app_commands.command(name="discord", description="Gets links for other Discord servers")
-    @app_commands.checks.dynamic_cooldown(default_cd)
+    @app_commands.checks.dynamic_cooldown(cc.default_cd)
     @app_commands.describe(
     	server="Discord server"
 	)
@@ -138,7 +93,7 @@ class Basic(commands.Cog):
         ]
 
     @app_commands.command(name="ping", description="Shows you your latency")
-    @app_commands.checks.dynamic_cooldown(short_cd)
+    @app_commands.checks.dynamic_cooldown(cc.short_cd)
     async def ping(self, interaction: discord.Interaction):
         """ /ping """
 
@@ -154,7 +109,7 @@ class Basic(commands.Cog):
         ]
         await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
-    @app_commands.checks.dynamic_cooldown(long_cd)
+    @app_commands.checks.dynamic_cooldown(cc.long_cd)
     async def _translate(self, interaction: discord.Interaction, message: discord.Message):
         translation = self.translator.translate(message.content, dest='en')
 
@@ -164,7 +119,7 @@ class Basic(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="bug", description="Creates a bug report on a GitHub repo")
-    @can_report_bug()
+    @cc.can_report_bug()
     async def bug(self, interaction: discord.Interaction, project: str):
         modal = BugInfo(project=project)
         await interaction.response.send_modal(modal)
@@ -182,14 +137,14 @@ class Basic(commands.Cog):
         ]
 
     @app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
-    @app_commands.checks.dynamic_cooldown(super_long_cd)
-    @in_bot_channel()
+    @app_commands.checks.dynamic_cooldown(cc.super_long_cd)
+    @cc.in_bot_channel()
     async def feedback(self, interaction: discord.Interaction):
         feedback_chan = self.client.get_channel(747626471819968554)
         await interaction.response.send_modal(Feedback(feedback_chan))
 
     @app_commands.command(name="reportad", description="Report an inappropriate ad on the Stardust Labs website")
-    @app_commands.checks.dynamic_cooldown(super_long_cd)
+    @app_commands.checks.dynamic_cooldown(cc.super_long_cd)
     @app_commands.describe(
         ad="Image of the advertisement"
     )

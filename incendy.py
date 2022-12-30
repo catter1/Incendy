@@ -2,16 +2,14 @@ import discord
 import logging
 import logging.handlers
 import os
-import sys
 import json
 import asyncio
 import asyncpg
-from itertools import cycle
 from discord import app_commands
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions
+from discord.ext import commands
 from discord.ext.tasks import loop
 import dpyConsole
+from resources import custom_checks as cc
 
 # Get keys
 with open('resources/keys.json', 'r') as f:
@@ -81,16 +79,8 @@ async def stop():
 	await client.db.close()
 	await client.close()
 
-def is_catter():
-	def catter(ctx):
-		if ctx.author.id == 260929689126699008:
-			return True
-		else:
-			return False
-	return commands.check(catter)
-
 @client.command()
-@is_catter()
+@cc.is_catter()
 async def sync(ctx) -> None:
 	synced = await ctx.bot.tree.sync()
 	await ctx.send(f"Synced {len(synced)} commands")

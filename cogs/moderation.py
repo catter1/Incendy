@@ -1,8 +1,5 @@
 import discord
-import asyncio
-import typing
 import json
-import re
 import datetime
 import validators
 from discord import app_commands
