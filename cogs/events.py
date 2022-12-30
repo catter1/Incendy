@@ -46,7 +46,7 @@ class Events(commands.Cog):
 		if action == "submit":
 
 			# Check if they already made a submission
-			for item in os.listdir(f"{os.curdir()}/submissions/"):
+			for item in os.listdir(f"{os.curdir}/submissions/"):
 				if item.split(".")[0] == str(interaction.user.id):
 					await interaction.response.send_message("You have already uploaded a submission! If you would like to change your submission, do `/contest unsubmit`, then try again.", ephemeral=True)
 					return
@@ -59,6 +59,12 @@ class Events(commands.Cog):
 			# Is it *actually* an image?
 			if not submission.content_type.split("/")[0] == "image":
 				await interaction.response.send_message("Your submission must be an actual image!", ephemeral=True)
+				return
+
+			# Is it too big?
+			if submission.size > 10000000:
+				await interaction.response.send_message("Your image is too big! Try a smaller one.", ephemeral=True)
+				return
 
 			# Add their submission
 			await submission.save(f"submissions/{interaction.user.id}.{submission.filename.split('.')[-1]}")
@@ -67,9 +73,9 @@ class Events(commands.Cog):
 		else:
 			
 			# Find their submission and remove
-			for item in os.listdir(f"{os.curdir()}/submissions/"):
+			for item in os.listdir(f"{os.curdir}/submissions/"):
 				if item.split(".")[0] == str(interaction.user.id):
-					os.remove(f"{os.curdir()}/submissions/{item}")
+					os.remove(f"{os.curdir}/submissions/{item}")
 					await interaction.response.send_message("Your entry has been removed. If you would like to enter again, feel free by doing `/contest submit`!", ephemeral=True)
 					return
 
