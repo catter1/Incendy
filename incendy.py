@@ -8,7 +8,6 @@ import asyncpg
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
-import dpyConsole
 from resources import custom_checks as cc
 
 # Get keys
@@ -22,7 +21,6 @@ credentials = {"user": "incendy", "password": postgres_pswd, "database": "incend
 # Define Bot Client and Console
 client = commands.Bot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None)
 client.remove_command('help')
-my_console = dpyConsole.Console(client)
 
 # Logging settings
 logger = logging.getLogger('discord')
@@ -54,7 +52,6 @@ async def run():
 	try:
 		client.db = await asyncpg.connect(**credentials)
 		await client.start(keys["dummy-token"])
-		await my_console.start()
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
@@ -73,11 +70,6 @@ async def setup_hook():
 	for filename in os.listdir('./cogs'):
 		if filename.endswith('.py'):
 			await client.load_extension(f'cogs.{filename[:-3]}')
-
-@my_console.command()
-async def stop():
-	await client.db.close()
-	await client.close()
 
 @client.command()
 @cc.is_catter()
