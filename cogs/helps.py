@@ -232,7 +232,7 @@ async def update_content(index: str) -> tuple:
 			entries = (
 				('bug <project>', '**Contributors only.** Opens a bug report for a Stardust Labs **project**'),
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
-				('contest <submission>', 'Posts a **submission** to the ongoing contest, if there is one'),
+				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
 				('discord <server>', 'Sends the Discord invite link from a list of datapack-relevant Discord server'),
 				('fp <post>', 'Posts a Fast Post: similar to an FAQ, but not directly related to support')
 			)
