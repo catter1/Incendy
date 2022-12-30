@@ -159,10 +159,10 @@ async def on_app_command_completion(interaction: discord.Interaction, command):
 	with open("resources/stats.json", "r") as f:
 		data = json.load(f)
 
-	if not command.name in data:
-		data[command.name] = 1
+	if not command.name in data["cmds"]:
+		data["cmds"][command.name] = 1
 	else:
-		data[command.name] += 1
+		data["cmds"][command.name] += 1
 
 	with open("resources/stats.json", "w") as f:
 		json.dump(data, f, indent=4)
