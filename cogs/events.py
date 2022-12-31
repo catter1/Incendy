@@ -31,7 +31,7 @@ class Events(commands.Cog):
 			embed = discord.Embed(
 				title="Screenshot Contest",
 				color=discord.Colour.brand_red(),
-				description="Have a knack for taking screenshots? Submit a Minecraft screenshot of any Stardust Labs project for a chance to win cash prizes (winner becomes the Discord splash)! All shaders and texture packs are fair game. Submit the image through Incendy via `/contest submit` - one submission per person. Submissions will be judged by the Stardust Labs team after the submission time has closed.\n\n**Prizes**: 1st - $20, 2nd - $10, 3rd - $5\n**Starts**: <t:1672570800:D>\n**Ends**: <t:1673175600:D>"
+				description="Have a knack for taking screenshots? Submit a Minecraft screenshot of any Stardust Labs project for a chance to win cash prizes! All shaders and texture packs are fair game. Submit the image through Incendy via `/contest submit` - one submission per person. Submissions will be judged by the Stardust Labs team after the submission time has closed.\n\n**Prizes**: 1st - $20, 2nd - $10, 3rd - $5\n**Starts**: <t:1672570800:D>\n**Ends**: <t:1673175600:D>"
 			)
 
 			await interaction.response.send_message(embed=embed)
