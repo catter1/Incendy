@@ -27,7 +27,16 @@ class Events(commands.Cog):
 				await interaction.response.send_message("Sorry, but there isn't currently any contest! Check back later for when there is one.")
 				return
 
-		if action == "submit":
+		if action == "info":
+			embed = discord.Embed(
+				title="Screenshot Contest",
+				color=discord.Colour.brand_red(),
+				description="Have a knack for taking screenshots? Submit a Minecraft screenshot of any Stardust Labs project for a chance to win cash prizes (winner becomes the Discord splash)! All shaders and texture packs are fair game. Submit the image through Incendy via `/contest submit` - one submission per person. Submissions will be judged by the Stardust Labs team after the submission time has closed.\n\n**Prizes**: 1st - $20, 2nd - $10, 3rd - $5\n**Starts**: <t:1672570800:D>\n**Ends**: <t:1673175600:D>"
+			)
+
+			await interaction.response.send_message(embed=embed)
+
+		elif action == "submit":
 
 			# Check if they already made a submission
 			for item in os.listdir(f"{os.curdir}/submissions/"):
@@ -68,7 +77,7 @@ class Events(commands.Cog):
 
 	@contest.autocomplete('action')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		actions = sorted(["submit", "unsubmit"])
+		actions = sorted(["submit", "unsubmit", "info"])
 		
 		return [
             app_commands.Choice(name=action, value=action)
