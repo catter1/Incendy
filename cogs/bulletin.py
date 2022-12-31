@@ -169,6 +169,15 @@ class Bulletin(commands.Cog):
 		await interaction.channel.send(file=file, embed=embed, view=Continents())
 
 		embed = discord.Embed(
+			title="**Structory: Towers**", 
+			color=discord.Colour.teal(),
+			description="*Related to Structory, and adds plenty of unique towers scattered throughout the world.*"
+		)
+		file = discord.File(f"assets/Structory Towers.png", filename="image.png")
+		embed.set_image(url="attachment://image.png")
+		await interaction.channel.send(file=file, embed=embed, view=Towers())
+
+		embed = discord.Embed(
 			title="**Nullscape**", 
 			color=discord.Colour.purple(),
 			description="*Overhauling the End's generation to maintain its bleak and despressing design, this pack adds a couple of biomes and tons of wacky terrain.*"
@@ -254,9 +263,15 @@ class Structory(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory/'))
-		self.add_item(discord.ui.Button(label='Towers Addon (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.19.x)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/releases'))
+
+class Towers(discord.ui.View):
+	def __init__(self):
+		super().__init__()
+		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19.x)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files'))
+		self.add_item(discord.ui.Button(label='All Versions (1.19.x)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases'))
 
 class Continents(discord.ui.View):
 	def __init__(self):
