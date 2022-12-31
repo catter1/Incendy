@@ -27,7 +27,7 @@ logger = logging.getLogger('discord')
 logger.setLevel(logging.INFO)
 logging.getLogger('discord.http').setLevel(logging.INFO)
 handler = logging.handlers.RotatingFileHandler(
-	filename='logs/discord.log',
+	filename='logs/incendy.log',
 	encoding='utf-8',
 	maxBytes=32 * 1024 * 1024,  # 32 MiB
 	backupCount=5,
