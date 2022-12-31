@@ -257,6 +257,10 @@ class Moderation(commands.Cog):
 		await interaction.response.send_message(embed=embed)
 
 	### LISTENERS ###
+
+	@commands.Cog.listener()
+	async def on_thread_create(self, thread: discord.Thread):
+		await thread.join()
 	
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
