@@ -5,6 +5,7 @@ import os
 import socket
 import urllib3
 import time
+import datetime
 import cv2 as cv
 import numpy as np
 from discord import app_commands
@@ -30,6 +31,7 @@ class Stats(commands.Cog):
 	@tasks.loop(hours=6.0)
 	async def loop_get_stats(self):
 		self.stats = await self.get_stats()
+		await self.log_daily_downloads()
 
 	@loop_get_stats.before_loop
 	async def before_change_presence(self):
@@ -109,6 +111,8 @@ class Stats(commands.Cog):
 			embed.set_footer(text='<:pmc:1045336243216584744> <:modrinth:1045336248950214706> <:curseforge:1045336245900939274> <:seedfix:917599175259070474>')
 			await interaction.response.send_message(embed=embed)
 
+	### OTHER FUNCTIONS ###
+
 	# thanks! https://towardsdatascience.com/finding-most-common-colors-in-python-47ea0767a06a
 	async def get_color(self, filename: str) -> discord.Color:
 		img = cv.imread(filename) #Image here
@@ -128,7 +132,7 @@ class Stats(commands.Cog):
 			stats["streams"] = len(json.load(f)["streams"])
 			stats["videos"] = len(json.load(f)["videos"])
 
-		projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory"]
+		projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory", "structory-towers"]
 		for project in projects:
 			stats[project] = 0
 
@@ -152,6 +156,7 @@ class Stats(commands.Cog):
 		# Modrinth
 		headers = {'User-Agent': 'catter1/Incendy (catter@zenysis.net)'}
 		projects.remove('structory')
+		projects.remove('structory-towers')
 		for project in projects:
 			url = f"https://api.modrinth.com/v2/project/{project}"
 			x = requests.get(url=url, headers=headers)
@@ -163,6 +168,7 @@ class Stats(commands.Cog):
 			"incendium": "incendium-nether-expansion",
 			"nullscape": "nullscape",
 			"structory": "structory",
+			"structory-towers": "structory-towers",
 			"amplified-nether": "amplified-nether-1-18/",
 			"continents": "continents"
 		}
@@ -178,6 +184,31 @@ class Stats(commands.Cog):
 		stats["terralith"] += int(x.text)
 
 		return stats
+
+	async def log_daily_downloads(self):
+		# Make the table if it doesn't already exist!
+		await self.client.db.execute(
+			'CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);'
+		)
+
+		# Check if we've already logged downlaods today!
+		today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+		potential = await self.client.db.fetchval(
+			'SELECT day FROM downloads WHERE day IS $1 LIMIT 1', today
+		)
+
+		if potential == None:
+			return
+
+		stats = self.stats
+
+		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
+			$1, $2, $3, $4, $5, $6, $7, $8
+		) RETURNING id'''
+		
+		input_id = await self.client.db.fetchval(
+			query, today, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified"]
+		)
 
 	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
 		if isinstance(error, app_commands.CommandOnCooldown):
