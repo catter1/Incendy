@@ -278,7 +278,7 @@ class Continents(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (from 1.18.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/continents/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/continents/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/continents'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/continents'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents/releases'))
 
 class Amplified(discord.ui.View):
