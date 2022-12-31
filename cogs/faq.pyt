@@ -447,7 +447,7 @@ class Questions():
 			description='Terralith uses the normal Vanilla 1.19 ore distribution. However, there are some places that have extra ores than others: emeralds in Emerald Peaks, redstone in Scarlet Mountains, copper in Dripstone Caves, few exposed diamonds in Skylands, and a couple other *secret* places.',
 			color=discord.Colour.teal()
 		)
-		file = discord.File("assests/ore.jpeg", filename="image.jpeg")
+		file = discord.File("assets/ore.jpeg", filename="image.jpeg")
 		embed.set_image(url="attachment://image.jpeg")
 		x = await self.channel.send(file=file, embed=embed)
 		await self.point(ctx, x, blurb)

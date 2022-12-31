@@ -146,7 +146,7 @@ class Bulletin(commands.Cog):
 		""" /library """
 
 		#embed = discord.Embed(title="**Cave Tweaks**", color=discord.Colour.lighter_grey())
-		#file = discord.File(f"assests/Cave Tweaks.png", filename="image.png")
+		#file = discord.File(f"assets/Cave Tweaks.png", filename="image.png")
 		#embed.set_image(url="attachment://image.png")
 		#await interaction.channel.send(file=file, embed=embed, view=Cave())
 
@@ -155,7 +155,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.dark_red(),
 			description="*A pack that uses the new 1.18 features to increase the Nether height to 256 blocks tall, add new terrain types, and use 3D biomes... all without adding any biomes, structures, items, or mobs.*"
 		)
-		file = discord.File(f"assests/Amplified Nether.png", filename="image.png")
+		file = discord.File(f"assets/Amplified Nether.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Amplified())
 
@@ -164,7 +164,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.green(),
 			description="*A small add-on pack to reshape the world so that landmasses are further apart, varying in size and shape.*"
 		)
-		file = discord.File(f"assests/Continents.png", filename="image.png")
+		file = discord.File(f"assets/Continents.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Continents())
 
@@ -173,7 +173,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.purple(),
 			description="*Overhauling the End's generation to maintain its bleak and despressing design, this pack adds a couple of biomes and tons of wacky terrain.*"
 		)
-		file = discord.File(f"assests/Nullscape.png", filename="image.png")
+		file = discord.File(f"assets/Nullscape.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Nullscape())
 
@@ -182,7 +182,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.brand_red(),
 			description="*Giving an almost modded feel, this pack adds tons of insane biomes, mobs, items, structures, and more, all while using Vanilla's features.*"
 		)
-		file = discord.File(f"assests/Incendium.png", filename="image.png")
+		file = discord.File(f"assets/Incendium.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Incendium())
 
@@ -191,7 +191,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.fuchsia(),
 			description="*A seasonally updated, atmospheric structure pack with light lore, ruins, firetowers, cottages, stables, graveyards, settlements, boats, and more.*"
 		)
-		file = discord.File(f"assests/Structory.png", filename="image.png")
+		file = discord.File(f"assets/Structory.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Structory())
 
@@ -200,7 +200,7 @@ class Bulletin(commands.Cog):
 			color=discord.Colour.dark_blue(),
 			description="*Adding over 95 brand new biomes and updating almost every vanilla biome, this staple pack turns the overworld into a beautiful place with new terrain, biomes, structures, and more.*"
 		)
-		file = discord.File(f"assests/Terralith.png", filename="image.png")
+		file = discord.File(f"assets/Terralith.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		await interaction.channel.send(file=file, embed=embed, view=Terralith())
 

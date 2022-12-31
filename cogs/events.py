@@ -94,7 +94,7 @@ class Events(commands.Cog):
 		embed = discord.Embed(color=discord.Colour.dark_teal(), title=f"Round {roundnum}, Day {day}, Match {matchnum}")
 		embed.add_field(name=f"🔴 **{biome1}** (Top)   vs.   🟦 **{biome2}** (Bottom)", value="Vote for which one you think is the best biome!")
 		embed.set_footer(text=f"{foto} (Photo Credit)", icon_url=foto.avatar)
-		file = discord.File(f"assests/{str(roundnum)}.{str(matchnum)}.png", filename="image.png")
+		file = discord.File(f"assets/{str(roundnum)}.{str(matchnum)}.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed)
 		await msg.add_reaction("🔴")

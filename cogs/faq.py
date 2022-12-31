@@ -126,7 +126,7 @@ class Faq(commands.Cog):
                     description='Terralith uses the normal Vanilla ore distribution. However, there are some places that have extra ores than others: emeralds in Emerald Peaks, redstone in Scarlet Mountains, copper in Dripstone Caves, few exposed diamonds in Skylands, and a couple other *secret* places.',
                     color=faq_colour
                 )
-                file = discord.File("assests/ore.jpeg", filename="image.jpeg")
+                file = discord.File("assets/ore.jpeg", filename="image.jpeg")
                 embed.set_image(url="attachment://image.jpeg")
             case "Passive Animals":
                 embed = discord.Embed(
@@ -180,7 +180,7 @@ class Faq(commands.Cog):
                     description='In Terralith, granite, diorite, and andesite do not generate in blobs like in Vanilla. Instead, they only generate in the respective cave biomes: Andesite Caves, Granite Caves, and Diorite Caves. These cave biomes are relatively common, and are made entirely out of their respective stone, which makes it perfect for mods like Create!\n\nIf you have trouble finding the caves, you can look at the surface of your world for granite pillars, andesite boulders, and diorite patches. These features mean the respective stone\'s cave biome can be found underneath! Check the graphic attached to see examples of how they look like, or view the [wiki entry](https://stardustlabs.miraheze.org/wiki/Terralith#Andesite_boulders).',
                     color=faq_colour
                 )
-                file = discord.File("assests/cavefeatures.png", filename="image.png")
+                file = discord.File("assets/cavefeatures.png", filename="image.png")
                 embed.set_image(url="attachment://image.png")
             case "Structory Addons":
                 embed = discord.Embed(
@@ -216,7 +216,7 @@ class Faq(commands.Cog):
                     description='Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#900598465430716426>.',
                     color=faq_colour
                 )
-                file = discord.File("assests/Version_Table.png", filename="image.png")
+                file = discord.File("assets/Version_Table.png", filename="image.png")
                 embed.set_image(url="attachment://image.png")
             case _:
                 await interaction.response.send_message("An unexpected error ocurred! Try again, and let catter know what FAQ you were trying if the issue continues.", ephemeral=True)
