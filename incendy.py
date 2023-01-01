@@ -64,12 +64,13 @@ async def setup_hook():
 		if filename.endswith('.py'):
 			await client.load_extension(f'cogs.{filename[:-3]}')
 
-	await client.db.execute(
-		'CREATE TABLE IF NOT EXISTS commands(id SERIAL PRIMARY KEY, user_id BIGINT, command_name TEXT, sent_on TIMESTAMPTZ);'
-	)
-	await client.db.execute(
-		'CREATE INDEX IF NOT EXISTS cmd_index ON commands (command_name);'
-	)
+	# Command Table
+	await client.db.execute('CREATE TABLE IF NOT EXISTS commands(id SERIAL PRIMARY KEY, user_id BIGINT, command_name TEXT, sent_on TIMESTAMPTZ);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS cmd_index ON commands (command_name);')
+	
+	# FAQ DB
+	await client.db.execute('CREATE TABLE IF NOT EXISTS faqs(id SERIAL PRIMARY KEY, user_id BIGINT, faq_name TEXT, sent_on TIMESTAMPTZ);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS faq_index ON faqs (faq_name);')
 
 @client.command()
 @cc.is_catter()
