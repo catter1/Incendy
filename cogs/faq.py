@@ -185,7 +185,7 @@ class Faq(commands.Cog):
             case "Structory Addons":
                 embed = discord.Embed(
                     title='Structory Addons',
-                    description='Structory has two types of updates: seasons and addons. **Seasons** are updates to the regular Structory datapack, similar to any other datapack. **Addons**, such as __Structory: Towers__, are separate datapacks. They can be used by themselves, are alongside Structory. The point of these addons is to allow easy customizability of Structory!',
+                    description='Structory has two types of updates: seasons and addons. **Seasons** are updates to the regular Structory datapack, similar to any other datapack. **Addons**, such as __Structory: Towers__, are separate datapacks. They can be used by themselves, or alongside Structory. The point of these addons is to allow easy customizability of Structory!',
                     color=faq_colour
                 )
             case "Support Us":
