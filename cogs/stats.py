@@ -64,24 +64,45 @@ class Stats(commands.Cog):
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 
+		emotes = [":one:", ":two:", ":three:", ":four:", ":five:"]
+
 		# Individual member stats
 		if member:
+			# Get color
 			filename = f"seeds/{member.id}.webp"
 			await member.avatar.save(filename)
 			colour = await self.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
+			# Total messages
+			msg_query = 'SELECT COUNT(message_id) FROM test_messages WHERE user_id = $1;'
+			totalmsgs = await self.client.db.fetchval(
+				msg_query, member.id
+			)
+
+			# Top Commands
+			cmd_query = 'SELECT command_name, COUNT(command_name) FROM commands WHERE user_id = $1 GROUP BY command_name ORDER BY COUNT(command_name) DESC LIMIT 5'
+			topcmds = await self.client.db.fetch(
+				cmd_query, member.id
+			)
+			topcmdstr = "\n".join([f"{emotes[i]} **{record['command_name']}**: `{'{:,}'.format(record['count'])}`" for i, record in enumerate(topcmds)])
+
+			# Other stats
 			joined = int(time.mktime(member.joined_at.timetuple()))
 			created = int(time.mktime(member.created_at.timetuple()))
 
+			# Create embed
 			embed = discord.Embed(
 				title=f"{member.display_name}'s Stats",
 				color=colour,
 				description=f"<:stardust:1058423314672013382> joined <t:{joined}:R>\n<:discord:1048627498734342206> joined <t:{created}:R>"
 			)
 			
-			embed.add_field(name="Total Messages", value="Coming Soon", inline=False)
-			embed.add_field(name="Most Used Commands", value="Coming Soon")
+			embed.add_field(name="Total Messages", value="{:,}".format(totalmsgs), inline=False)
+			if len(topcmds) > 2:
+				embed.add_field(name="Most Used Commands", value=topcmdstr)
+			else:
+				embed.add_field(name="Most Used Commands", value="*Use more commands to get your ranking!*")
 			embed.set_thumbnail(url=member.display_avatar.url)
 			embed.set_footer(text=f"{member.name}#{member.discriminator}")
 
@@ -90,11 +111,20 @@ class Stats(commands.Cog):
 		# Stardust Labs stats
 		else:
 			stats = self.stats
-
+			
+			# Get Color
 			filename = f"seeds/{interaction.guild.id}.webp"
 			await member.avatar.save(filename)
 			colour = await self.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
+
+			# Total messages
+			msg_query = 'SELECT COUNT(message_id) FROM test_messages;'
+			totalmsgs = await self.client.db.fetchval(msg_query)
+
+			# Top Commands
+			cmd_query = 'SELECT command_name, COUNT(command_name) FROM commands GROUP BY command_name ORDER BY COUNT(command_name) DESC LIMIT 5'
+			topcmds = await self.client.db.fetch(cmd_query)
 			
 			embed = discord.Embed(color=colour)
 			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
@@ -102,13 +132,6 @@ class Stats(commands.Cog):
 			embed.add_field(name='Member Count', value=interaction.guild.member_count)
 			embed.add_field(name='StardustTV', value="Videos: {:,}".format(stats["videos"] + "\nStreams: {:,}".format(stats["streams"])))
 			#embed.add_field(name='\u200b', value='\u200b')
-			embed.add_field(name='Terralith Downloads', value="{:,}".format(stats["terralith"]))
-			embed.add_field(name='Incendium Downloads', value="{:,}".format(stats["incendium"]))
-			embed.add_field(name='Nullscape Downloads', value="{:,}".format(stats["nullscape"]))
-			embed.add_field(name='Structory Downloads', value="{:,}".format(stats["structory"]))
-			embed.add_field(name='Amplified Nether Downloads', value="{:,}".format(stats["amplified-nether"]))
-			embed.add_field(name='Continents Downloads', value="{:,}".format(stats["continents"]))
-			embed.set_footer(text='<:pmc:1045336243216584744> <:modrinth:1045336248950214706> <:curseforge:1045336245900939274> <:seedfix:917599175259070474>')
 			await interaction.response.send_message(embed=embed)
 
 	### OTHER FUNCTIONS ###
