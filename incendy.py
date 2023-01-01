@@ -64,6 +64,13 @@ async def setup_hook():
 		if filename.endswith('.py'):
 			await client.load_extension(f'cogs.{filename[:-3]}')
 
+	await client.db.execute(
+		'CREATE TABLE IF NOT EXISTS commands(id SERIAL PRIMARY KEY, user_id BIGINT, command_name TEXT, sent_on TIMESTAMPTZ);'
+	)
+	await client.db.execute(
+		'CREATE INDEX IF NOT EXISTS cmd_index ON commands (command_name);'
+	)
+
 @client.command()
 @cc.is_catter()
 async def sync(ctx) -> None:
@@ -130,17 +137,24 @@ async def on_command_error(ctx, error):
 	raise error
 
 @client.event
-async def on_app_command_completion(interaction: discord.Interaction, command):
-	with open("resources/stats.json", "r") as f:
-		data = json.load(f)
+async def on_app_command_completion(interaction: discord.Interaction, command: app_commands.Command):
+	query = '''INSERT INTO commands(user_id, command_name, sent_on) VALUES(
+		$1, $2, $3
+	);'''
+	
+	await client.db.execute(
+		query, interaction.user.id, command.name, interaction.created_at
+	)
 
-	if not command.name in data["cmds"]:
-		data["cmds"][command.name] = 1
-	else:
-		data["cmds"][command.name] += 1
+@client.event
+async def on_message(message: discord.Message):
+	query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
+		$1, $2, $3, $4
+	);'''
 
-	with open("resources/stats.json", "w") as f:
-		json.dump(data, f, indent=4)
+	await client.db.execute(
+		query, message.author.id, message.id, message.created_at, message.content
+	)
 
 try:
 	loop = asyncio.get_event_loop()
