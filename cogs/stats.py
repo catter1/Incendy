@@ -69,7 +69,7 @@ class Stats(commands.Cog):
 		# Individual member stats
 		if member:
 			# Get color
-			filename = f"seeds/{member.id}.webp"
+			filename = f"tmp/{member.id}.webp"
 			await member.avatar.save(filename)
 			colour = await self.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
@@ -113,7 +113,7 @@ class Stats(commands.Cog):
 			stats = self.stats
 			
 			# Get Color
-			filename = f"seeds/{interaction.guild.id}.webp"
+			filename = f"tmp/{interaction.guild.id}.webp"
 			await member.avatar.save(filename)
 			colour = await self.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
