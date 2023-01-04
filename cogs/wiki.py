@@ -23,7 +23,7 @@ class Wiki(commands.Cog):
 
 	@app_commands.command(name="wiki", description="Explore the Stardust Labs Wiki!")
 	@cc.in_bot_channel()
-	@cc.very_long_cd()
+	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
 	async def wiki(self, interaction: discord.Interaction):
 		""" /wiki """
 
