@@ -16,12 +16,12 @@ class Faq(commands.Cog):
 
     ### COMMANDS ###
 
-    @app_commands.command(name="fp", description="Sends a fast post!")
+    @app_commands.command(name="qp", description="Sends a \"Quick Post\"!")
     @app_commands.checks.dynamic_cooldown(cc.short_cd)
-    async def fp(self, interaction: discord.Interaction, fp: str):
-        """ /fp [fastpost] """
+    async def qp(self, interaction: discord.Interaction, qp: str):
+        """ /qp [quickpost] """
 
-        fp_dict = {
+        qp_dict = {
             "Standards": "https://xkcd.com/927/",
             "Discord Links": "Hey, need to get a link for a relevant Discord server? Do `/discord` to see an autocompletable list of invites.",
             "Try it and See": "https://tryitands.ee/",
@@ -37,32 +37,32 @@ class Faq(commands.Cog):
             "Find the Culprit": "Sometimes, when you are trying to figure out what mod is causing your crash, you need to result to the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!"
         }
 
-        await interaction.response.send_message(fp_dict[fp])
+        await interaction.response.send_message(qp_dict[qp])
 
-    @fp.autocomplete('fp')
+    @qp.autocomplete('qp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        fp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit"])
+        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit"])
 
         return [
-            app_commands.Choice(name=fp, value=fp)
-            for fp in fp_list
-            if current.replace(" ", "").lower() in fp.replace(" ", "").lower()
+            app_commands.Choice(name=qp, value=qp)
+            for qp in qp_list
+            if current.replace(" ", "").lower() in qp.replace(" ", "").lower()
         ]
 
-    @app_commands.command(name="q", description="FAQs!")
+    @app_commands.command(name="faq", description="Frequently Asked Questions (for support)")
     @app_commands.describe(
         faq="The FAQ to view",
         public="Whether to make the FAQ visible to everyone. Keep it False unless you're trying to share!"
     )
-    async def q(self, interaction: discord.Interaction, faq: str, public: bool = False):
-        """ /q [faq] """
+    async def faq(self, interaction: discord.Interaction, q: str, public: bool = False):
+        """ /faq [q] """
         faq_colour = discord.Colour.brand_red()
         faq_icon = "https://discord.com/assets/3e531d8e171629e9433db0bb431b2e12.svg"
         public = not public
         view = None
         file = None
 
-        match faq:
+        match q:
             case "Biome IDs":
                 await interaction.response.defer(ephemeral=public, thinking=True)
                 versions = await self.get_versions()
@@ -75,7 +75,7 @@ class Faq(commands.Cog):
             case "Compatability":
                 embed = discord.Embed(
                     title='Stardust Labs Compatibility',
-                    description='Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:\n\n**•** Incendium and Amplified Nether do **not** work together. Do `/q Incendium vs Amplified Nether` for more information.\n**•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, we do not recommend it. There will be several micro biomes, Terralith will only make up around 5% of total biomes, and some surface biomes can be screwed up.\n**•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.\n**•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.',
+                    description='Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:\n\n**•** Incendium and Amplified Nether do **not** work together. Do `/faq Incendium vs Amplified Nether` for more information.\n**•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, we do not recommend it. There will be several micro biomes, Terralith will only make up around 5% of total biomes, and some surface biomes can be screwed up.\n**•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.\n**•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.',
                     color=faq_colour
                 )
                 view = Compat()
@@ -104,7 +104,7 @@ class Faq(commands.Cog):
             case "How Do I Tell":
                 embed = discord.Embed(
                     title='How Do I Tell If It\'s Working?',
-                    description="**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/q Server Installation` in the Discord.\n**•** If the first step was successful, start typing `/locate biome terralith:` (`/locatebiome terralth:` for 1.18.2 and lower) in game and see if an autocomplete list appears. Replace `terralith` with whatever relevant datapack you're installing. If an autocomplete list appears, try locating the biomes - anything except Alpha Islands, since it is very rare! If several biomes cannot be found, follow the Server Installation mentioned before.\n**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.\n**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server Instalation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.",
+                    description="**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.\n**•** If the first step was successful, start typing `/locate biome terralith:` (`/locatebiome terralth:` for 1.18.2 and lower) in game and see if an autocomplete list appears. Replace `terralith` with whatever relevant datapack you're installing. If an autocomplete list appears, try locating the biomes - anything except Alpha Islands, since it is very rare! If several biomes cannot be found, follow the Server Installation mentioned before.\n**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.\n**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server Instalation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.",
                     color=faq_colour
                 )
             case "Incendium vs Amplified Nether":
@@ -233,7 +233,7 @@ class Faq(commands.Cog):
             if view:
                 await interaction.response.send_message(embed=embed, file=file, view=view, ephemeral=public)
             else:
-                if faq == "Biome IDs":
+                if q == "Biome IDs":
                     await interaction.followup.send(embed=embed, file=file, ephemeral=public)
                 else:
                     await interaction.response.send_message(embed=embed, file=file, ephemeral=public)
@@ -245,9 +245,9 @@ class Faq(commands.Cog):
 
         # Enter into DB
         query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
-        await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
+        await self.client.db.execute(query, interaction.user.id, q, interaction.created_at)
 
-    @q.autocomplete('faq')
+    @faq.autocomplete('q')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
         faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatability", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons"])
 
@@ -302,7 +302,7 @@ class Faq(commands.Cog):
 
     ### ERRORS ###
 
-    @fp.error
+    @qp.error
     async def on_cd_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, app_commands.CommandOnCooldown):
             await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#871376111857193000>!", ephemeral=True)
