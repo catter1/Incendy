@@ -30,14 +30,18 @@ class Faq(commands.Cog):
             "Optifine Alternatives": "https://lambdaurora.dev/optifine_alternatives/",
             "Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you most have `op` permissions to do this.",
             "Send Logs": "In order to properly give assistance, you need to provide logs. When sharing them, do ***NOT*** send screenshots or copy/paste the lines directly into Discord. Instead, upload the actual log file itself, or upload them to a [Pastebin-like site](<https://mclo.gs/>) (Incendy will do this automatically for you if you upload the file to Discord). Not sure where to find your logs?\n\n**Singleplayer**: `.minecraft/logs` and/or `.minecraft/crash-reports`\n**Server**: `[main folder]/logs` and/or `[main folder]/crash-reports`",
-            "Wiki Link": "Stardust Labs has an official wiki on Miraheze! Check it out here: <https://stardustlabs.miraheze.org/>"
+            "Wiki Link": "Stardust Labs has an official wiki on Miraheze! Check it out here: <https://stardustlabs.miraheze.org/>. Or, do `/wiki` to view the Wiki Surfer!",
+            "Dimension Folders": "`DIM1` = `minecraft:the_end`\n`DIM-1` = `minecraft:the_nether`\n\nHow to remember: Think of the Overworld as \"Ground Zero\", or 0. -1 is less than 0, and the Nether is below (or \"less than\") the overworld. Therefore, the Nether is -1, or DIM**-1**. The same logic applies to the End: it's above the overworld, and 1 is greater than 0. Therefore, the End is 1, or DIM**1**.",
+            "Mod vs Datapack": "For all Stardust Labs projects, the mod version is the same as the datapack in regards to performance and content. The only difference is the mods go in the `mods` folder, and datapacks in the `datapacks` folder.\n\nIn 1.18.2 and lower, the mod versions of the projects had Seedfix built in, which technically made them slightly different. Otherwise, you can enjoy the same experience with both! \:)",
+            "Keep Exploring": "In Terralith, it is completely normal to spawn in an area that isn't as \"stunning\" or \"breathtaking\" as all the screenshots you see posted around are. To find them, you've got to go explore your world! Keep walking, and you *will* find beautiful landscapes.",
+            "Find the Culprit": "Sometimes, when you are trying to figure out what mod is causing your crash, you need to result to the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!"
         }
 
         await interaction.response.send_message(fp_dict[fp])
 
     @fp.autocomplete('fp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        fp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link"])
+        fp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit"])
 
         return [
             app_commands.Choice(name=fp, value=fp)
