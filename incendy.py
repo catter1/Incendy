@@ -51,7 +51,7 @@ cog_list = sorted([
 # Start everything up!
 async def run():
 	try:
-		client.db = await asyncpg.connect(**credentials)
+		client.db = await asyncpg.create_pool(**credentials)
 		client.miraheze = MediaWiki(
 			url="https://stardustlabs.miraheze.org/w/api.php",
 			user_agent="catter1/Incendy (catter@zenysis.net)"
