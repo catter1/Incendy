@@ -35,10 +35,12 @@ def create_stats_image(stats: dict) -> str:
     font5 = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 40)
     draw = ImageDraw.Draw(img)
 
+    cmdstr = ", ".join([f"{cmd.keys()[0]} ({cmd.values()[0]})" for cmd in stats["commands"]])
+
     #Version
     draw.text((75,260), stats["version"], font=font, fill=(214,246,255))
     #Top Commands
-    draw.text((572,271), 'FAQ (1,200), QP (934), STATS (623), DISCORD (439), REMINDME (231)', font=font5, fill=(214,246,255))
+    draw.text((572,271), cmdstr, font=font5, fill=(214,246,255))
 
     #Members
     draw.text((75,475), stats["members"], font=fontdis, fill=(214,246,255))
@@ -69,7 +71,7 @@ def create_stats_image(stats: dict) -> str:
     return filepath
 
 # thanks! https://towardsdatascience.com/finding-most-common-colors-in-python-47ea0767a06a
-def get_color(self, filename: str) -> discord.Color:
+def get_color(filename: str) -> discord.Color:
     img = cv.imread(filename) #Image here
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
     img = cv.resize(img, (80, 80), interpolation = cv.INTER_AREA)
