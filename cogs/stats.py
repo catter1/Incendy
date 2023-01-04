@@ -6,13 +6,12 @@ import socket
 import urllib3
 import time
 import datetime
-import cv2 as cv
-import numpy as np
 from discord import app_commands
 from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 from resources import custom_checks as cc
+from resources import draw as dw
 
 class Stats(commands.Cog):
 	def __init__(self, client):
@@ -30,7 +29,6 @@ class Stats(commands.Cog):
 
 	@tasks.loop(hours=6.0)
 	async def loop_get_stats(self):
-		self.stats = await self.get_stats()
 		await self.log_daily_downloads()
 
 	@loop_get_stats.before_loop
@@ -64,28 +62,22 @@ class Stats(commands.Cog):
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 
-		emotes = [":one:", ":two:", ":three:", ":four:", ":five:"]
-
 		# Individual member stats
 		if member:
 			# Get color
 			filename = f"tmp/{member.id}.webp"
 			await member.avatar.save(filename)
-			colour = await self.get_color(filename)
+			colour = dw.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
 			# Total messages
 			msg_query = 'SELECT COUNT(message_id) FROM test_messages WHERE user_id = $1;'
-			totalmsgs = await self.client.db.fetchval(
-				msg_query, member.id
-			)
+			totalmsgs = await self.client.db.fetchval(msg_query, member.id)
 
 			# Top Commands
 			cmd_query = 'SELECT command_name, COUNT(command_name) FROM commands WHERE user_id = $1 GROUP BY command_name ORDER BY COUNT(command_name) DESC LIMIT 5'
-			topcmds = await self.client.db.fetch(
-				cmd_query, member.id
-			)
-			topcmdstr = "\n".join([f"{emotes[i]} **{record['command_name']}**: `{'{:,}'.format(record['count'])}`" for i, record in enumerate(topcmds)])
+			topcmds = await self.client.db.fetch(cmd_query, member.id)
+			topcmdstr = "\n".join([f"**{record['command_name']}**   ({'{:,}'.format(record['count'])})" for record in topcmds])
 
 			# Other stats
 			joined = int(time.mktime(member.joined_at.timetuple()))
@@ -110,43 +102,60 @@ class Stats(commands.Cog):
 
 		# Stardust Labs stats
 		else:
-			stats = self.stats
+			# Init data
+			data = {}
+
+			# Get most recent Download Stats object
+			# today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+			# downloads = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
+
+			# if downloads == None:
+			# 	today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+			# 	stats = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
+
+			# if downloads == None:
+			# 	await interaction.response.send_message("Sorry, there was an error getting the stats! Let catter know if it continues.", ephemeral=True)
+			# 	return
 			
-			# Get Color
+			# # Set that Download Stats object
+			# data["downloads"] = {}
+			# for record in downloads:
+			# 	data["downloads"][record[""]] = record[""]
+			
+			# Get color
 			filename = f"tmp/{interaction.guild.id}.webp"
-			await member.avatar.save(filename)
-			colour = await self.get_color(filename)
+			await interaction.guild.icon.save(filename)
+			colour = dw.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
-			# Total messages
-			msg_query = 'SELECT COUNT(message_id) FROM test_messages;'
-			totalmsgs = await self.client.db.fetchval(msg_query)
-
-			# Top Commands
+			# Top commands
 			cmd_query = 'SELECT command_name, COUNT(command_name) FROM commands GROUP BY command_name ORDER BY COUNT(command_name) DESC LIMIT 5'
 			topcmds = await self.client.db.fetch(cmd_query)
-			
-			embed = discord.Embed(color=colour)
-			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
-			embed.add_field(name='Incendy Version', value=self.version)
-			embed.add_field(name='Member Count', value=interaction.guild.member_count)
-			embed.add_field(name='StardustTV', value="Videos: {:,}".format(stats["videos"] + "\nStreams: {:,}".format(stats["streams"])))
-			#embed.add_field(name='\u200b', value='\u200b')
-			await interaction.response.send_message(embed=embed)
+
+			data["commands"] = []
+			for record in topcmds:
+				data["commands"].append({record["command_name"]: record["count"]})
+
+			# Streams/Videos/Tweets
+			with open("resources/stats.json", 'r') as f:
+				media = json.load(f)
+			data["tweets"] = 0
+			data["streams"] = len(media["streams"])
+			data["videos"] = len(media["videos"])
+
+			# Discord info
+			with open("resources/settings.json", 'r') as f:
+				settings = json.load(f)
+			data["members"] = interaction.guild.member_count
+			data["version"] = settings["version"]
+
+			print(data)
+					
+			# embed = discord.Embed(color=colour)
+			# embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
+			# await interaction.response.send_message(embed=embed)
 
 	### OTHER FUNCTIONS ###
-
-	# thanks! https://towardsdatascience.com/finding-most-common-colors-in-python-47ea0767a06a
-	async def get_color(self, filename: str) -> discord.Color:
-		img = cv.imread(filename) #Image here
-		img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-		img = cv.resize(img, (80, 80), interpolation = cv.INTER_AREA)
-
-		unique, counts = np.unique(img.reshape(-1, 3), axis=0, return_counts=True)
-		final = unique[np.argmax(counts)]
-		colour = discord.Colour.from_rgb(int(final[0]), int(final[1]), int(final[2]))
-
-		return colour
 
 	async def get_stats(self) -> dict:
 		stats = {}
@@ -223,13 +232,13 @@ class Stats(commands.Cog):
 		if potential == None:
 			return
 
-		stats = self.stats
+		stats = await self.get_stats()
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			$1, $2, $3, $4, $5, $6, $7, $8
 		) RETURNING id'''
 		
-		input_id = await self.client.db.fetchval(
+		await self.client.db.execute(
 			query, today, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified"]
 		)
 
