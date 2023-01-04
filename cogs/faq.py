@@ -176,9 +176,10 @@ class Faq(commands.Cog):
             case "Server Installation":
                 embed = discord.Embed(
                     title='Server Installation',
-                    description='Pick your favorite server software (Fabric, Paper, etc) since this method will work on all of them, whether you\'re using a hosting service or not!\n\n**1a.** If using datapacks (ends in `.zip`), put them all in the `world/datapacks` folder. If using mods (ends in `.jar`), put them all in the `mods` folder.\n\n**2.** Start your server, wait for it to load, then stop it.\n\n**3a.** [Terralith/Structory/Continents] Inside the `world` folder, delete the entire `region` folder, and *nothing* else.\n**3b.** [Incendium/Amplified Nether] Inside the nether folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the nether folder is `world_nether`, and it\'s `world/DIM-1` on Fabric/Vanilla.\n**3c.** [Nullscape] Inside the end folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the end folder is `world_the_end`, and it\'s `world/DIM1` on Fabric/Vanilla.\n\n**4.** Start your server again, and enjoy!\n\nNote: *If only using Structory, these steps are not necessary - you just might not find Structory structures within a couple chunks of spawn if you don\'t. Therefore, you can add Structory to an already generated world with no issues!',
+                    description='Select an installation method from the Select Menu below!\n\nYou should **__ONLY__** select the "Install Method 1.19.3 ONLY" selection if you are using 1.19.3 - it will *not* work if you are using 1.19.2 or lower!"',
                     color=faq_colour
                 )
+                view=Server()
             case "Stone Generation":
                 embed = discord.Embed(
                     title='Stone Generation',
@@ -364,22 +365,22 @@ class ConfigMenu(discord.ui.Select):
 
         match self.values[0]:
             case 'Bigger Biomes':
-                embed.title = 'FAQ - Configuration (Bigger Biomes)'
+                embed.title = 'Configuration (Bigger Biomes)'
                 embed.description = 'Currently, the Terralith biome sizes are on average slightly larger than Vanilla, but *can* be huge. If you still want larger biomes:\n**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.\n**•** Subtract **1** from all instances of `firstOctave` in the `erosion`, `continentalness`, `temperature`, and `vegetation` files.\n**•** Do *not* edit the `ridge` file.'
             case 'Smaller Biomes':
-                embed.title = 'FAQ - Configuration (Smaller Biomes)'
+                embed.title = 'Configuration (Smaller Biomes)'
                 embed.description = 'Keep in mind that doing this will make the biomes quite tiny. There is a reason the biomes are the size that they are. If you still want smaller biomes:\n**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.\n**•** Open the `erosion` file.\n**•** Change `firstOctave` from **-10** to **-9**.'
             case 'Amplified Terrain':
-                embed.title = 'FAQ - Configuration (Amplified Terrain)'
+                embed.title = 'Configuration (Amplified Terrain)'
                 embed.description = 'There isn\'t an easy way to do this. Thankfully, if you like *really* tall mountains, and enjoy your computer blowing up, there is a datapack just for that. Because it is so unstable, it is not released publically, and only available to [Patrons](https://www.patreon.com/stardustlabs), [Supporters](https://bisecthosting.com/stardust), [Donators](https://ko-fi.com/stardustlabs), and Server Boosters.'
             case 'Remove Biomes':
-                embed.title = 'FAQ - Configuration (Remove Biomes)'
+                embed.title = 'Configuration (Remove Biomes)'
                 embed.description = 'This is a little difficult and finicky.\n**•** Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.\n**•** Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.\n**•** To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.\n**•** When removing Skylands, replace their instances with an ocean type.\n**•** Be careful, as this doesn\'t always work well and can break.'
             case 'Biome Layout':
-                embed.title = 'FAQ - Configuration (Biome Layout)'
+                embed.title = 'Configuration (Biome Layout)'
                 embed.description = '*No.*'
             case 'Taller Nether':
-                embed.title = 'FAQ - Configuration (Taller Nether)'
+                embed.title = 'Configuration (Taller Nether)'
                 embed.description = 'This tutorial (graciously provided by <@212447019296489473>) will show you how to add extra space above the bedrock roof in Amplified Nether.\n**•** Download slicedlime\'s datapack [here](https://github.com/slicedlime/examples).\n**•** Unzip Amplified Nether and navigate to the `/data/minecraft/` directory. Copy the `dimension_type` folder from slicedlime\'s datapack and stick it here.\n**•** Delete every file in the `dimension_type` directory EXCEPT `the_nether.json`.\n**•** Edit that file and look for `”height”:` and change the value to 320. This will add 64 blocks of air above the bedrock roof.\n**•** __If on 1.18/1.18.1 only__, find the line that says `"infiniburn": "minecraft:infiniburn_nether"` and remove the `#`.\n**•** Save/exit, rezip Amplified Nether, and load it to your world. Enjoy!\n**•** This will *not* work with Better Nether.'
             
         await interaction.response.edit_message(embed=embed)
@@ -388,6 +389,32 @@ class Config(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
         self.add_item(ConfigMenu())
+
+class ServerMenu(discord.ui.Select):
+    def __init__(self):
+        options = [
+        	discord.SelectOption(label='Normal Install Method'),
+			discord.SelectOption(label='Install Method 1.19.3 ONLY')
+		]
+        super().__init__(placeholder='Select a method...', min_values=1, max_values=1, options=options)
+    
+    async def callback(self, interaction: discord.Interaction):
+        embed = interaction.message.embeds[0]
+        
+        match self.values[0]:
+            case 'Normal Install Method':
+                embed.title = 'Normal Install Method'
+                embed.description = 'Pick your favorite server software (Fabric, Paper, etc) since this method will work on all of them, whether you\'re using a hosting service or not!\n\n**1.** If using datapacks (ends in `.zip`), put them all in the `world/datapacks` folder. If using mods (ends in `.jar`), put them all in the `mods` folder.\n\n**2.** Start your server, wait for it to load, then stop it.\n\n**3a.** [Terralith/Structory/Continents] Inside the `world` folder, delete the entire `region` folder, and *nothing* else.\n**3b.** [Incendium/Amplified Nether] Inside the nether folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the nether folder is `world_nether`, and it\'s `world/DIM-1` on Fabric/Vanilla.\n**3c.** [Nullscape] Inside the end folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the end folder is `world_the_end`, and it\'s `world/DIM1` on Fabric/Vanilla.\n\n**4.** Start your server again, and enjoy!\n\nNote: *If only using Structory, these steps are not necessary - you just might not find Structory structures within a couple chunks of spawn if you don\'t. Therefore, you can add Structory to an already generated world with no issues!'
+            case 'Install Method 1.19.3 ONLY':
+                embed.title = 'Install Method 1.19.3 ONLY'
+                embed.description = '**__Warning__**: this method works on **1.19.3 ONLY!** It will __not__ work on 1.19.2 or lower. If you are on 1.19.2 or lower, select the "Normal Install Method" in the select menu below instead.\n\nPick your favorite server software (Fabric, Paper, etc), since this method will work on all of them.\n\n**1.** __Do not__ start your server at all. If you are using a server host and they have already generated your `world` folder, this method will **not** work. Same goes for self hosting, and if you already started the server. Swap to "Normal Install Method" immediately!\n\n**2a.** [Datapacks only] Manually create a `world` folder. Inside that folder, manually create a `datapacks` folder. Insert all your datapacks in that folder.\n**2b.** [Mods only] Manually create a `mods` folder. Insert all your mods in that folder.\n\n**3.** Start your server and enjoy!'
+
+        await interaction.response.edit_message(embed=embed)
+
+class Server(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.add_item(ServerMenu())
 
 class UpdateMenu(discord.ui.Select):
     def __init__(self):
@@ -405,19 +432,19 @@ class UpdateMenu(discord.ui.Select):
         
         match self.values[0]:
             case 'Terralith':
-                embed.title = 'FAQ - Updating (Terralith)'
+                embed.title = 'Updating (Terralith)'
                 embed.description = '**•** Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.\n**•** If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.\n**•** If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.\n**•** Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.'
             case 'Terralith (1.19)':
-                embed.title = 'FAQ - Updating (Terralith 1.19)'
+                embed.title = 'Updating (Terralith 1.19)'
                 embed.description = '**1.** If you used Seedfix, continue. If you downloaded the datapack directly from Planet Minecraft without entering a seed into the Seedfix website, skip to Step **4**.\n**2.** Open your `world/level.dat` using <@149241652391706625>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).\n**3.** In the `level.dat`, change the overworld seed in `Data>WorldGenSettings>dimensions` to the seed displayed in `Data>WorldGenSettings>dimensions>minecraft:overworld>generator>biome_source`. If it is the same, you\'re all good! Do not forget the  "-" if there is any.\n**4.** Once that is done, you can replace Terralith 2.x.x with Terralith 2.3.x and start up your world!'
             case 'Incendium':
-                embed.title = 'FAQ - Updating (Incendium)'
+                embed.title = 'Updating (Incendium)'
                 embed.description = '**•** You cannot update Incendium worlds used in 1.17.1 (Incendium 4.0.0) or lower to 1.18.2 (Incendium 5.0.x).\n**•** Updating from 1.18.2 to 1.19 (5.0.x to 5.1.x) is mostly fine!\n**•** Updating to minor versions (5.1.x) works fine - for example, 5.1.2 to 5.1.4.'
             case 'Nullscape':
-                embed.title = 'FAQ - Updating (Nullscape)'
+                embed.title = 'Updating (Nullscape)'
                 embed.description = '**•** Updating to minor versions (v1.2.x) works fine.\n**•** We do not recommend using any 1.18.x version of Nullscape. Period. We offer very little support for these versions.\n**•** Nullscape 1.19 (v1.2) is different from all other versions, since it is combined into one dimension, like it should! Because of that, you cannot update a 1.18.x Nullscape world (v1.1.x) to 1.19 (v1.2) without completely resetting your end and heavily editing your `level.dat`.'
             case 'Other Stardust Packs':
-                embed.title = 'FAQ - Updating (Other Stardust Packs)'
+                embed.title = 'Updating (Other Stardust Packs)'
                 embed.description = '**•** Updating between minor and major versions is mostly okay!\n**•** You cannot update Amplified Nether from older versions to 1.18.x or higher.'
         
         await interaction.response.edit_message(embed=embed)
