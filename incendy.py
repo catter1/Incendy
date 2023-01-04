@@ -8,6 +8,7 @@ import asyncpg
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
+from mediawiki import MediaWiki
 from resources import custom_checks as cc
 
 # Get keys
@@ -19,7 +20,7 @@ postgres_pswd = keys["postgres-pswd"]
 credentials = {"user": "incendy", "password": postgres_pswd, "database": "incendy", "host": "127.0.0.1"}
 
 # Define Bot Client and Console
-client = commands.Bot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None)
+client = commands.Bot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None, miraheze=None)
 client.remove_command('help')
 
 # Logging settings
@@ -51,6 +52,10 @@ cog_list = sorted([
 async def run():
 	try:
 		client.db = await asyncpg.connect(**credentials)
+		client.miraheze = MediaWiki(
+			url="https://stardustlabs.miraheze.org/w/api.php",
+			user_agent="catter1/Incendy (catter@zenysis.net)"
+		)
 		await client.start(keys["dummy-token"])
 	except KeyboardInterrupt:
 		await client.db.close()
