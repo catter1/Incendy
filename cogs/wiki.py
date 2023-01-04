@@ -22,16 +22,26 @@ class Wiki(commands.Cog):
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	@app_commands.command(name="wiki", description="Explore the Stardust Labs Wiki!")
+	@cc.in_bot_channel()
+	@cc.very_long_cd()
 	async def wiki(self, interaction: discord.Interaction):
 		""" /wiki """
 
 		embed = discord.Embed(
-			title="Wiki Explorer",
-			description="Thanks to <@234748321258799104>, Stardust Labs has an amazing Wiki for all its projects! This command allows you to search the entire Wiki for whatever article you're looking for. (Warning: the \"Search Wiki!\" button will take a couple of seconds!)\n\nPress one of the button below to get started!",
+			title="Wiki Surfer (Beta)",
+			description="Thanks to <@234748321258799104> and our <@1035916805794955295>s, Stardust Labs has an amazing Wiki for all its projects! This command allows you to search the entire Wiki for whatever information your looking for, and then returning some of the information, as well as links!\n\nPress one of the button below to get started! (Warning: the \"Search Wiki!\" button can sometimes take a **long** time to load - be patient!)",
 			color=discord.Colour.brand_red()
 		)
 
 		await interaction.response.send_message(embed=embed, view=SearchView(self.client.miraheze))
+
+	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+		if isinstance(error, app_commands.CommandOnCooldown):
+			await interaction.response.send_message("Yikes! " + str(error) + ".", ephemeral=True)
+		elif isinstance(error, app_commands.CheckFailure):
+			await interaction.response.send_message("This command can only be used in a bot command channel like <#871376111857193000>.", ephemeral=True)
+		else:
+			raise error
 
 class SearchView(discord.ui.View):
 	def __init__(self, miraheze, external: str = "View Wiki Webpage", url: str = "https://stardustlabs.miraheze.org/wiki/Main_page"):
