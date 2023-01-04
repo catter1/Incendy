@@ -51,13 +51,12 @@ class Faq(commands.Cog):
 
     @app_commands.command(name="faq", description="Frequently Asked Questions (for support)")
     @app_commands.describe(
-        faq="The FAQ to view",
+        q="The FAQ to view",
         public="Whether to make the FAQ visible to everyone. Keep it False unless you're trying to share!"
     )
     async def faq(self, interaction: discord.Interaction, q: str, public: bool = False):
         """ /faq [q] """
         faq_colour = discord.Colour.brand_red()
-        faq_icon = "https://discord.com/assets/3e531d8e171629e9433db0bb431b2e12.svg"
         public = not public
         view = None
         file = None
