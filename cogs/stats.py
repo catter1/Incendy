@@ -1,28 +1,24 @@
 import discord
-import requests
 import json
 import os
-import socket
-import urllib3
 import time
 import datetime
 from discord import app_commands
 from discord.ext import commands, tasks
-from bs4 import BeautifulSoup
-from collections import OrderedDict
 from resources import custom_checks as cc
-from resources import draw as dw
+from resources import incendy_image as ii
+from resources import stardust_downloads as sd
 
 class Stats(commands.Cog):
 	def __init__(self, client):
 		self.client = client
 
 	async def cog_load(self):
-		#self.loop_get_stats.start()
+		self.loop_get_stats.start()
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
-		#self.loop_get_stats.stop()
+		self.loop_get_stats.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	### LOOPS ###
@@ -67,7 +63,7 @@ class Stats(commands.Cog):
 			# Get color
 			filename = f"tmp/{member.id}.webp"
 			await member.avatar.save(filename)
-			colour = dw.get_color(filename)
+			colour = ii.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
 			# Total messages
@@ -106,26 +102,26 @@ class Stats(commands.Cog):
 			data = {}
 
 			# Get most recent Download Stats object
-			# today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
-			# downloads = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
+			today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+			downloads = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
 
-			# if downloads == None:
-			# 	today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
-			# 	stats = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
+			if downloads == None:
+				today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
+				stats = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
 
-			# if downloads == None:
-			# 	await interaction.response.send_message("Sorry, there was an error getting the stats! Let catter know if it continues.", ephemeral=True)
-			# 	return
+			if downloads == None:
+				await interaction.response.send_message("Sorry, there was an error getting the stats! Let catter know if it continues.", ephemeral=True)
+				return
 			
-			# # Set that Download Stats object
-			# data["downloads"] = {}
-			# for record in downloads:
-			# 	data["downloads"][record[""]] = record[""]
+			# Set that Download Stats object
+			data["downloads"] = {}
+			for record in downloads:
+				data["downloads"][record[""]] = record[""]
 			
 			# Get color
 			filename = f"tmp/{interaction.guild.id}.webp"
 			await interaction.guild.icon.save(filename)
-			colour = dw.get_color(filename)
+			colour = ii.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
 			# Top commands
@@ -157,62 +153,6 @@ class Stats(commands.Cog):
 
 	### OTHER FUNCTIONS ###
 
-	async def get_stats(self) -> dict:
-		stats = {}
-
-		projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory", "structory-towers"]
-		for project in projects:
-			stats[project] = 0
-
-		# Curseforge
-		for project in projects:
-			## Thanks! https://python.tutorialink.com/pythons-requests-triggers-cloudflares-security-while-urllib-does-not/
-			answers = socket.getaddrinfo('www.curseforge.com', 443)
-			(family, type, proto, canonname, (address, port)) = answers[0]
-			headers = OrderedDict({
-				'Host': "www.curseforge.com",
-				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-			})
-			s = requests.Session()
-			s.headers = headers
-			urllib3.disable_warnings()
-			response = s.get(f"https://{address}/minecraft/mc-mods/{project}", verify=False)
-
-			soup = BeautifulSoup(response.content, "html.parser")
-			stats[project] += int(soup.find_all(text="Total Downloads")[0].parent.parent.contents[3].text.replace(",", ""))
-		
-		# Modrinth
-		headers = {'User-Agent': 'catter1/Incendy (catter@zenysis.net)'}
-		projects.remove('structory')
-		projects.remove('structory-towers')
-		for project in projects:
-			url = f"https://api.modrinth.com/v2/project/{project}"
-			x = requests.get(url=url, headers=headers)
-			stats[project] += json.loads(x.text)["downloads"]
-
-		# PMC
-		pmc_projects = {
-			"terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
-			"incendium": "incendium-nether-expansion",
-			"nullscape": "nullscape",
-			"structory": "structory",
-			"structory-towers": "structory-towers",
-			"amplified-nether": "amplified-nether-1-18/",
-			"continents": "continents"
-		}
-		for project in pmc_projects.keys():
-			url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}"
-			x = requests.get(url=url, headers=headers)
-			soup = BeautifulSoup(x.text, "html.parser")
-			stats[project] += int(soup.find_all(text=" downloads, ")[0].parent.contents[1].text.replace(",", ""))
-
-		# Seedfix
-		url = "https://seedfix.stardustlabs.net/api/get_downloads/"
-		x = requests.get(url=url, headers=headers)
-		stats["terralith"] += int(x.text)
-
-		return stats
-
 	async def log_daily_downloads(self):
 		# Make the table if it doesn't already exist!
 		await self.client.db.execute(
@@ -228,7 +168,7 @@ class Stats(commands.Cog):
 		if potential == None:
 			return
 
-		stats = await self.get_stats()
+		stats = sd.get_downloads()
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			$1, $2, $3, $4, $5, $6, $7, $8
