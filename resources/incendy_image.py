@@ -3,6 +3,11 @@ import discord
 import cv2 as cv
 import numpy as np
 from PIL import Image, ImageFont, ImageDraw
+from wand.image import Image
+
+HEIGHT = 1008
+WIDTH = 1792
+RATIO = 0.5625
 
 stats = {
     "version":"v3.0.0",
@@ -81,3 +86,22 @@ def get_color(filename: str) -> discord.Color:
     colour = discord.Colour.from_rgb(int(final[0]), int(final[1]), int(final[2]))
 
     return colour
+
+def resize(path) -> None:
+    image = Image(filename=path)
+
+    if RATIO >= image.height/image.width :
+        rswidth = (int)((HEIGHT * image.width) / image.height)
+        image.sample(rswidth, HEIGHT)
+
+        if image.width != WIDTH:
+            image.crop(width=WIDTH, height=HEIGHT, gravity="center")
+
+    else:
+        rsheight = (int)((WIDTH * image.height) / image.width)
+        image.sample(WIDTH, rsheight)
+
+        if image.height != HEIGHT:
+            image.crop(width=WIDTH, height=HEIGHT, gravity="center")
+
+    image.save(filename=path)

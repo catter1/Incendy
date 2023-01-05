@@ -5,7 +5,7 @@ import json
 import os
 import random
 import googletrans
-from resources.resize import resize
+from resources.incendy_image import resize
 from zipfile import ZipFile
 from discord import app_commands
 from discord.ext import commands, tasks
