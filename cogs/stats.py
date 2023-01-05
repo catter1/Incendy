@@ -160,10 +160,6 @@ class Stats(commands.Cog):
 	async def get_stats(self) -> dict:
 		stats = {}
 
-		with open('resources/stats.json', 'r') as f:
-			stats["streams"] = len(json.load(f)["streams"])
-			stats["videos"] = len(json.load(f)["videos"])
-
 		projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory", "structory-towers"]
 		for project in projects:
 			stats[project] = 0
