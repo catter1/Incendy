@@ -3,7 +3,7 @@ import discord
 import cv2 as cv
 import numpy as np
 from PIL import Image, ImageFont, ImageDraw
-from wand.image import Image
+from wand import image as wandimage
 
 HEIGHT = 1008
 WIDTH = 1792
@@ -37,15 +37,15 @@ def create_stats_image(stats: dict) -> str:
     img = Image.open(f"{os.curdir}/assets/Server Stats.jpg")
     font = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 60)
     fontdis = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 90)
-    font5 = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 40)
+    font5 = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 45)
     draw = ImageDraw.Draw(img)
 
-    cmdstr = ", ".join([f"{cmd.keys()[0]} ({cmd.values()[0]})" for cmd in stats["commands"]])
+    cmdstr = ", ".join([f"{key} ({cmd[key]})" for cmd in stats['commands'] for key in cmd])
 
     #Version
     draw.text((75,260), stats["version"], font=font, fill=(214,246,255))
     #Top Commands
-    draw.text((572,271), cmdstr, font=font5, fill=(214,246,255))
+    draw.text((572,269), cmdstr, font=font5, fill=(214,246,255))
 
     #Members
     draw.text((75,475), stats["members"], font=fontdis, fill=(214,246,255))
@@ -88,7 +88,7 @@ def get_color(filename: str) -> discord.Color:
     return colour
 
 def resize(path) -> None:
-    image = Image(filename=path)
+    image = wandimage.Image(filename=path)
 
     if RATIO >= image.height/image.width :
         rswidth = (int)((HEIGHT * image.width) / image.height)
