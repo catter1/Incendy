@@ -1,7 +1,6 @@
 import json
 import requests
 from bs4 import BeautifulSoup
-import cloudscraper
 
 def get_downloads() -> dict:
     stats = {}
@@ -11,20 +10,26 @@ def get_downloads() -> dict:
         stats[project] = 0
 
     # Curseforge
-    for project in projects:
+    # for project in projects:
         ## Thanks to these two SO links for bypassing Cloudflare! First link was my original attempt, 2nd link is current working attempt.
         # https://python.tutorialink.com/pythons-requests-triggers-cloudflares-security-while-urllib-does-not/
         # https://stackoverflow.com/questions/71764301/how-to-bypass-cloudflare-with-python-on-get-requests
 
-        scraper = cloudscraper.create_scraper(browser={
-            'browser': 'chrome',
-            'platform': 'linux',
-            'desktop': True
-        })
-        response = scraper.get(f"https://www.curseforge.com/minecraft/mc-mods/{project}")
+        #scraper = cloudscraper.create_scraper()
+        # scraper = cloudscraper.create_scraper(
+        #     browser={
+        #         'browser': 'chrome',
+        #         'platform': 'linux',
+        #         'desktop': True
+        #     },
+        #     debug=True,
+        #     disableCloudflareV1=True
+        # )
+        # scraper = uc.Chrome()
+        # response = scraper.get(f"https://www.curseforge.com/minecraft/mc-mods/{project}")
 
-        soup = BeautifulSoup(response.content, "html.parser")
-        stats[project] += int(soup.find_all(text="Total Downloads")[0].parent.parent.contents[3].text.replace(",", ""))
+        # soup = BeautifulSoup(response.content, "html.parser")
+        # stats[project] += int(soup.find_all(text="Total Downloads")[0].parent.parent.contents[3].text.replace(",", ""))
     
     # Modrinth
     headers = {'User-Agent': 'catter1/Incendy (catter@zenysis.net)'}
