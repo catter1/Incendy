@@ -3,10 +3,10 @@ import requests
 import typing
 import json
 import os
+import re
 import random
 import googletrans
 from resources.incendy_image import resize
-from zipfile import ZipFile
 from discord import app_commands
 from discord.ext import commands, tasks
 from resources import custom_checks as cc
@@ -27,6 +27,8 @@ class Basic(commands.Cog):
     async def cog_load(self):
         self.change_presence.start()
         self.webchan = self.client.get_channel(917905247056306246)
+        with open("resources/settings.json", 'r') as f:
+            self.textlinks = json.load(f)["textlinks"]
         print(f' - {self.__cog_name__} cog loaded.')
 
     async def cog_unload(self):
@@ -280,12 +282,13 @@ class Basic(commands.Cog):
     ### EVENTS ###
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         if not message.author.bot:
             #SOON TM
             if message.content == '\U0001F1FB\U0001F1E8':
                 await message.delete()
                 await message.channel.send("<:soontm:780592610666348585>")
+                return
 
             #TERRALITH 1.16?!?!?
             if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
@@ -307,6 +310,14 @@ class Basic(commands.Cog):
                     await message.add_reaction('<:cringe:828845270732374021>')
                 else:
                     await message.add_reaction('👋')
+
+            #Linking feature
+            matches = re.findall(r"[\[]{2}(\w[\w ]+\w)?[\]]{2}", message.content)
+            if len(matches) > 0:
+                for match in matches:
+                    if match.lower() in [textlink for textlink in self.textlinks]:
+                        await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
+
 
             #Pastebin feature
             if len(message.attachments) > 0:
