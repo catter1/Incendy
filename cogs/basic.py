@@ -324,9 +324,8 @@ class Basic(commands.Cog):
                 for file in message.attachments:
                     if ".log" in file.filename or ".txt" in file.filename:
 
-                        await file.save('resources/pastebin.txt')
-                        with open('resources/pastebin.txt', 'r') as f:
-                            content = f.read()
+                        bts = await file.read()
+                        content = bts.decode('utf-8')
                         
                         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
                         url = "https://api.mclo.gs/1/log"
@@ -335,7 +334,7 @@ class Basic(commands.Cog):
 
                         logurl = json.loads(x.text)["url"]
 
-                        await message.reply(f"{file.filename}: {logurl}")
+                        await message.reply(f"{file.filename}: {logurl}", mention_author=False)
     
     ### ERRORS ###
 
