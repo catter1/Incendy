@@ -102,21 +102,14 @@ class Stats(commands.Cog):
 			data = {}
 
 			# Get most recent Download Stats object
-			today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
-			downloads = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
+			downloads_query = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads ORDER BY day DESC LIMIT 1')
+			downloads = downloads_query[0]
 
-			if downloads == None:
-				today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
-				stats = await self.client.db.fetch('SELECT terralith, incendium, nullscape, structory, towers, continents, amplified FROM downloads WHERE day IS $1 LIMIT 1', today)
-
-			if downloads == None:
-				await interaction.response.send_message("Sorry, there was an error getting the stats! Let catter know if it continues.", ephemeral=True)
-				return
-			
 			# Set that Download Stats object
 			data["downloads"] = {}
-			for record in downloads:
-				data["downloads"][record[""]] = record[""]
+			for project in downloads.keys():
+				data["downloads"][project] = '{:,}'.format(downloads[project])
+			data["downloads"]["total"] = '{:,}'.format(sum(count for count in list(downloads)))
 			
 			# Get color
 			filename = f"tmp/{interaction.guild.id}.webp"
@@ -130,26 +123,33 @@ class Stats(commands.Cog):
 
 			data["commands"] = []
 			for record in topcmds:
-				data["commands"].append({record["command_name"]: record["count"]})
+				data["commands"].append({record["command_name"]: '{:,}'.format(record["count"])})
 
 			# Streams/Videos/Tweets
 			with open("resources/stats.json", 'r') as f:
 				media = json.load(f)
-			data["tweets"] = 0
-			data["streams"] = len(media["streams"])
-			data["videos"] = len(media["videos"])
+			data["tweets"] = '{:,}'.format(0)
+			data["streams"] = '{:,}'.format(len(media["streams"]))
+			data["videos"] = '{:,}'.format(len(media["videos"]))
 
 			# Discord info
 			with open("resources/settings.json", 'r') as f:
 				settings = json.load(f)
-			data["members"] = interaction.guild.member_count
+			data["members"] = '{:,}'.format(interaction.guild.member_count)
 			data["version"] = settings["version"]
+			
+			# Create image
+			filepath = ii.create_stats_image(data)
+			file = discord.File(filepath, filename="stats.jpg")
 
-			print(data)
-					
-			# embed = discord.Embed(color=colour)
-			# embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
-			# await interaction.response.send_message(embed=embed)
+			embed = discord.Embed(color=colour)
+			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
+			embed.set_footer(text="Does not include Curseforge downloads yet. Soon!")
+			embed.set_image(url="attachment://stats.jpg")
+			await interaction.response.send_message(embed=embed, file=file)
+
+			# rm the tmp/ image
+			os.remove(filepath)
 
 	### OTHER FUNCTIONS ###
 
@@ -159,23 +159,20 @@ class Stats(commands.Cog):
 			'CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);'
 		)
 
-		# Check if we've already logged downlaods today!
-		today = datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day)
-		potential = await self.client.db.fetchval(
-			'SELECT day FROM downloads WHERE day IS $1 LIMIT 1', today
-		)
+		# Check if we've already logged downloads today!
+		potential = await self.client.db.fetchval('SELECT day FROM downloads WHERE day = current_date LIMIT 1')
 
-		if potential == None:
+		if potential != None:
 			return
 
 		stats = sd.get_downloads()
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
-			$1, $2, $3, $4, $5, $6, $7, $8
+			current_date, $1, $2, $3, $4, $5, $6, $7
 		) RETURNING id'''
 		
 		await self.client.db.execute(
-			query, today, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified"]
+			query, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified-nether"]
 		)
 
 	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
