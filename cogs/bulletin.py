@@ -145,10 +145,8 @@ class Bulletin(commands.Cog):
 	async def library(self, interaction: discord.Interaction):
 		""" /library """
 
-		#embed = discord.Embed(title="**Cave Tweaks**", color=discord.Colour.lighter_grey())
-		#file = discord.File(f"assets/Cave Tweaks.png", filename="image.png")
-		#embed.set_image(url="attachment://image.png")
-		#await interaction.channel.send(file=file, embed=embed, view=Cave())
+		with open("resources/settings.json", 'r') as f:
+			data = json.load(f)
 
 		embed = discord.Embed(
 			title="**Amplified Nether**",
@@ -157,7 +155,8 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Amplified Nether.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Amplified())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Amplified())
+		data["amplified nether"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Continents**",
@@ -166,7 +165,8 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Continents.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Continents())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Continents())
+		data["continents"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Structory: Towers**", 
@@ -175,7 +175,10 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Structory Towers.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Towers())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Towers())
+		data["structory: towers"] = msg.jump_url
+		data["structory towers"] = msg.jump_url
+		data["towers"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Nullscape**", 
@@ -184,7 +187,8 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Nullscape.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Nullscape())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Nullscape())
+		data["nullscape"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Incendium**", 
@@ -193,7 +197,8 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Incendium.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Incendium())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Incendium())
+		data["incendium"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Structory**", 
@@ -202,7 +207,8 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Structory.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Structory())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Structory())
+		data["structory"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Terralith**", 
@@ -211,7 +217,11 @@ class Bulletin(commands.Cog):
 		)
 		file = discord.File(f"assets/Terralith.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
-		await interaction.channel.send(file=file, embed=embed, view=Terralith())
+		msg = await interaction.channel.send(file=file, embed=embed, view=Terralith())
+		data["terralith"] = msg.jump_url
+
+		with open("resources/settings.json", 'w') as f:
+			json.dump(data, f, indent=4)
 
 	### LISTENERS ###
 
