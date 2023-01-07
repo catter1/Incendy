@@ -3,6 +3,7 @@ import json
 import datetime
 from discord import app_commands
 from discord.ext import commands
+from resources import incendy
 
 class Roles(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
