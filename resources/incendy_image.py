@@ -75,6 +75,14 @@ def create_stats_image(stats: dict) -> str:
     img.save(filepath)
     return filepath
 
+async def get_user_color(user: discord.ClientUser | discord.Member | discord.User) -> discord.Color:
+    filename = f"tmp/{user.id}.webp"
+    await user.display_avatar.save(filename)
+    colour = get_color(filename)
+    os.remove(f"{os.curdir}/{filename}")
+
+    return colour
+
 # thanks! https://towardsdatascience.com/finding-most-common-colors-in-python-47ea0767a06a
 def get_color(filename: str) -> discord.Color:
     img = cv.imread(filename) #Image here
