@@ -40,7 +40,7 @@ discord.utils.setup_logging(handler=handler, formatter=formatter, level=logging.
 async def run():
 	try:
 		client.db = await asyncpg.connect(**credentials)
-		await client.start(keys["dummy-token"])
+		await client.start(keys["dbbot-token"])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
