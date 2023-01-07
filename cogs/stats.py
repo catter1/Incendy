@@ -161,7 +161,7 @@ class Stats(commands.Cog):
 
 			embed = discord.Embed(color=colour)
 			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
-			embed.set_footer(text="Does not include Curseforge downloads yet. Soon!")
+			embed.set_footer(text="Template by Tera", icon_url=self.client.get_user(234748321258799104).avatar.url)
 			embed.set_image(url="attachment://stats.jpg")
 			await interaction.response.send_message(embed=embed, file=file)
 
