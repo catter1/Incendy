@@ -8,7 +8,7 @@ from discord import app_commands
 from discord.ext import commands
 from mediawiki import MediaWiki, MediaWikiPage
 from nltk.tokenize import sent_tokenize
-from resources import custom_checks as cc
+from resources import incendy
 
 class Wiki(commands.Cog):
 	def __init__(self, client):
@@ -22,8 +22,8 @@ class Wiki(commands.Cog):
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	@app_commands.command(name="wiki", description="Explore the Stardust Labs Wiki!")
-	@cc.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
+	@incendy.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
 	async def wiki(self, interaction: discord.Interaction):
 		""" /wiki """
 

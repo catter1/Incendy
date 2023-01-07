@@ -3,7 +3,7 @@ import os
 import json
 from discord import app_commands
 from discord.ext import commands
-from resources import custom_checks as cc
+from resources import incendy
 
 class Events(commands.Cog):
 	def __init__(self, client):
@@ -18,7 +18,7 @@ class Events(commands.Cog):
 	### COMMANDS ###
 
 	@app_commands.command(name="contest", description="Information about the ongoing contest")
-	@app_commands.checks.dynamic_cooldown(cc.long_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
 	async def contest(self, interaction: discord.Interaction, action: str, submission: discord.Attachment = None):
 
 		with open("resources/settings.json") as f:

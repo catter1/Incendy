@@ -9,7 +9,7 @@ import googletrans
 from resources.incendy_image import resize
 from discord import app_commands
 from discord.ext import commands, tasks
-from resources import custom_checks as cc
+from resources import incendy
 
 class Basic(commands.Cog):
     def __init__(self, client):
@@ -52,7 +52,7 @@ class Basic(commands.Cog):
     ### COMMANDS ###
 
     @app_commands.command(name="discord", description="Gets links for other Discord servers")
-    @app_commands.checks.dynamic_cooldown(cc.default_cd)
+    @app_commands.checks.dynamic_cooldown(incendy.default_cd)
     @app_commands.describe(
     	server="Discord server"
 	)
@@ -95,7 +95,7 @@ class Basic(commands.Cog):
         ]
 
     @app_commands.command(name="ping", description="Shows you your latency")
-    @app_commands.checks.dynamic_cooldown(cc.short_cd)
+    @app_commands.checks.dynamic_cooldown(incendy.short_cd)
     async def ping(self, interaction: discord.Interaction):
         """ /ping """
 
@@ -111,7 +111,7 @@ class Basic(commands.Cog):
         ]
         await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
-    @app_commands.checks.dynamic_cooldown(cc.long_cd)
+    @app_commands.checks.dynamic_cooldown(incendy.long_cd)
     async def _translate(self, interaction: discord.Interaction, message: discord.Message):
         translation = self.translator.translate(message.content, dest='en')
 
@@ -121,7 +121,7 @@ class Basic(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="bug", description="Creates a bug report on a GitHub repo")
-    @cc.can_report_bug()
+    @incendy.can_report_bug()
     async def bug(self, interaction: discord.Interaction, project: str):
         modal = BugInfo(project=project)
         await interaction.response.send_modal(modal)
@@ -139,14 +139,14 @@ class Basic(commands.Cog):
         ]
 
     @app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
-    @app_commands.checks.dynamic_cooldown(cc.super_long_cd)
-    @cc.in_bot_channel()
+    @app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
+    @incendy.in_bot_channel()
     async def feedback(self, interaction: discord.Interaction):
         feedback_chan = self.client.get_channel(747626471819968554)
         await interaction.response.send_modal(Feedback(feedback_chan))
 
     @app_commands.command(name="reportad", description="Report an inappropriate ad on the Stardust Labs website")
-    @app_commands.checks.dynamic_cooldown(cc.super_long_cd)
+    @app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
     @app_commands.describe(
         ad="Image of the advertisement"
     )

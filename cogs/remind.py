@@ -5,7 +5,7 @@ import asyncio
 import typing
 from discord import app_commands
 from discord.ext import commands
-from resources import custom_checks as cc
+from resources import incendy
 
 # Tons of thanks to pikaninja! https://gist.github.com/pikaninja/d9ab2a91cb3344c62b3d13a435255154
 
@@ -99,7 +99,7 @@ class Remind(commands.Cog):
 
 	### COMMANDS ###
 	@app_commands.command(name="remindme", description="Set a reminder up for later")
-	@app_commands.checks.dynamic_cooldown(cc.long_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
 	@app_commands.describe(
     	time="Time ending in s, m, h, or d - for seconds, minutes, hours, or days, respectively. Example: 10h",
     	reminder="What do you need reminded?"

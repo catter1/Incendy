@@ -5,7 +5,7 @@ import logging
 import logging.handlers
 import json
 from discord.ext import commands
-from resources import custom_checks as cc
+from resources import incendy
 
 # Get keys
 with open('resources/keys.json', 'r') as f:
@@ -51,7 +51,7 @@ async def setup_hook():
 	client.status = discord.Status.offline
 	
 @client.command(name="database")
-@cc.is_catter()
+@incendy.is_catter()
 async def database(ctx: commands.context.Context) -> None:
 	# await client.db.execute(
 	# 	'DROP TABLE IF EXISTS test_messages'

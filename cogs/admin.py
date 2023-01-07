@@ -7,7 +7,7 @@ import subprocess
 from zipfile import ZipFile
 from discord import app_commands
 from discord.ext import commands
-from resources import custom_checks as cc
+from resources import incendy
 
 class Admin(commands.Cog):
 	def __init__(self, client):

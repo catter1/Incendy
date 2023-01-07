@@ -4,7 +4,7 @@ import typing
 from discord.ext import commands
 from discord import app_commands
 from colorsys import hls_to_rgb
-from resources import custom_checks as cc
+from resources import incendy
 
 class Bulletin(commands.Cog):
 	def __init__(self, client):
@@ -94,7 +94,7 @@ class Bulletin(commands.Cog):
 		await interaction.channel.send(embed=embed)
 
 	@app_commands.command(name="server", description="Advertise a server in the server channel")
-	@app_commands.checks.dynamic_cooldown(cc.super_long_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
 	@app_commands.describe(
 		valid="This server follows the server and channel's pinned rules.",
 		image="(Optional) A related image for your server (png, jpeg, jpg)"

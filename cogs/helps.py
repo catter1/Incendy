@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-from resources import custom_checks as cc
+from resources import incendy
 
 class Helps(commands.Cog):
 	def __init__(self, client):
@@ -41,7 +41,7 @@ class Helps(commands.Cog):
 		await interaction.response.send_message(embed=embed, view=HelpView())
 
 	@app_commands.command(name="close", description="Closes the support thread")
-	@cc.can_close()
+	@incendy.can_close()
 	async def close(self, interaction: discord.Interaction):
 		""" /close """
 		
@@ -52,7 +52,7 @@ class Helps(commands.Cog):
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@has_permissions(administrator=True)
-	@cc.can_close()
+	@incendy.can_close()
 	async def dwa(self, interaction: discord.Interaction):
 		""" /dwa """
 
@@ -210,7 +210,8 @@ async def update_content(index: str) -> tuple:
 		case "1":
 			entries = (
 				('help', 'Display this help menu'),
-				('q <faq> [public=None]', 'Choose from a large list of FAQs to display'),
+				('faq <q> [public=None]', 'Choose from a large list of FAQs to display'),
+				('qp <post>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
 				('wiki', 'Search Stardust Labs\' wiki through Incendy')
 			)
 		case "2":
@@ -219,13 +220,13 @@ async def update_content(index: str) -> tuple:
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
 				('discord <server>', 'Sends the Discord invite link from a list of datapack-relevant Discord server'),
-				('fp <post>', 'Posts a Fast Post: similar to an FAQ, but not directly related to support')
+				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days')
 			)
 		case "3":
 			entries = (
 				('feedback', 'Send feedback about Incendy so she can improve herself'),
+				('incendy', 'Shows information about Incendy'),
 				('ping', 'Shows you your connection latency'),
-				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
 				('reportad <image>', 'If you see a bad/inappropriate ad on [our website](https://www.stardustlabs.net/), report an **image** of it here'),
 				('server <valid> [image]', 'Advertises a server in <#756923587339878420>. Set **valid** to true if you\'ve read the rules. You will then be prompted for the server\'s name, ip, description, and an optional discord link and promotional **image**'),
 				('stats [member]', 'Displays the stats for Stardust Labs and the Discord server, or optionally, a **member**')

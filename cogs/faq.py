@@ -2,7 +2,7 @@ import discord
 import requests
 from discord import app_commands
 from discord.ext import commands
-from resources import custom_checks as cc
+from resources import incendy
 
 class Faq(commands.Cog):
     def __init__(self, client):
@@ -17,7 +17,7 @@ class Faq(commands.Cog):
     ### COMMANDS ###
 
     @app_commands.command(name="qp", description="Sends a \"Quick Post\"!")
-    @app_commands.checks.dynamic_cooldown(cc.short_cd)
+    @app_commands.checks.dynamic_cooldown(incendy.short_cd)
     async def qp(self, interaction: discord.Interaction, qp: str):
         """ /qp [quickpost] """
 
