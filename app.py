@@ -15,6 +15,9 @@ from resources import incendy
 with open('resources/keys.json', 'r') as f:
 	keys = json.load(f)
 
+with open('resources/settings.json', 'r') as f:
+	settings = json.load(f)
+
 # DB Credentials and Connection object
 postgres_pswd = keys["postgres-pswd"]
 credentials = {"user": "incendy", "password": postgres_pswd, "database": "incendy", "host": "127.0.0.1"}
@@ -147,25 +150,24 @@ async def on_command_error(ctx, error):
 
 @client.event
 async def on_app_command_completion(interaction: discord.Interaction, command: app_commands.Command):
-	query = '''INSERT INTO commands(user_id, command_name, sent_on) VALUES(
-		$1, $2, $3
-	);'''
-	
-	await client.db.execute(
-		query, interaction.user.id, command.name, interaction.created_at
-	)
+	if interaction.guild.id == settings["stardust-guild-id"]:
+		query = '''INSERT INTO commands(user_id, command_name, sent_on) VALUES(
+			$1, $2, $3
+		);'''
+		
+		await client.db.execute(query, interaction.user.id, command.name, interaction.created_at)
 
 @client.event
 async def on_message(message: discord.Message):
-	query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
-		$1, $2, $3, $4
-	);'''
+	if message.guild.id == settings["stardust-guild-id"]:
+		query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
+			$1, $2, $3, $4
+		);'''
 
-	await client.db.execute(
-		query, message.author.id, message.id, message.created_at, message.content
-	)
-
-	await client.process_commands(message)
+		await client.db.execute(query, message.author.id, message.id, message.created_at, message.content)
+		
+		# >:(
+		await client.process_commands(message)
 
 try:
 	loop = asyncio.get_event_loop()
