@@ -128,12 +128,10 @@ class Basic(commands.Cog):
 
     @bug.autocomplete('project')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents"])
-        # if not interaction.user.guild_permissions.administrator:
-        #     projects.remove("Incendium-Dev")
+        projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack"])
 
         return [
-            app_commands.Choice(name=project, value=project)
+            app_commands.Choice(name=project.replace("-", " "), value=project)
             for project in projects
             if current.replace(" ", "").lower() in project.replace(" ", "").lower()
         ]
