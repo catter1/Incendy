@@ -169,11 +169,6 @@ class Stats(commands.Cog):
 	### OTHER FUNCTIONS ###
 
 	async def log_daily_downloads(self):
-		# Make the table if it doesn't already exist!
-		await self.client.db.execute(
-			'CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);'
-		)
-
 		# Check if we've already logged downloads today!
 		potential = await self.client.db.fetchval('SELECT day FROM downloads WHERE day = current_date LIMIT 1')
 

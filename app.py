@@ -77,6 +77,10 @@ async def setup_hook():
 	await client.db.execute('CREATE TABLE IF NOT EXISTS faqs(id SERIAL PRIMARY KEY, user_id BIGINT, faq_name TEXT, sent_on TIMESTAMPTZ);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS faq_index ON faqs (faq_name);')
 
+	# Make the table if it doesn't already exist!
+	await client.db.execute('CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS day_index ON downloads (day);')
+
 @client.command()
 @incendy.is_catter()
 async def sync(ctx) -> None:
