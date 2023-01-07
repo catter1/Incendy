@@ -15,7 +15,7 @@ class Wiki(commands.Cog):
 		self.client = client
 
 	async def cog_load(self):
-		nltk.download('punkt', quiet=True)
+		#nltk.download('punkt', quiet=True)
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
