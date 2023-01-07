@@ -16,7 +16,7 @@ postgres_pswd = keys["postgres-pswd"]
 credentials = {"user": "incendy", "password": postgres_pswd, "database": "incendy", "host": "127.0.0.1"}
 
 # Define Bot Client and Console
-client = commands.Bot(command_prefix="?", case_insensitive=True, intents=discord.Intents.all(), db=None)
+client = incendy.IncendyBot(command_prefix="?")
 client.remove_command('help')
 
 # Logging settings
@@ -53,6 +53,7 @@ async def setup_hook():
 @client.command(name="database")
 @incendy.is_catter()
 async def database(ctx: commands.context.Context) -> None:
+	await ctx.send("Starting...")
 	await client.db.execute('CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);')
 
 	# Get all channels
@@ -81,6 +82,7 @@ async def database(ctx: commands.context.Context) -> None:
 		print(f'Finished {channel.name}!')
 
 	# Create Index
+	print("Finished all channels! Creating index...")
 	await client.db.execute('CREATE INDEX IF NOT EXISTS user_index ON messages (user_id);')
 
 	print("Finished operation! Somehow...")
