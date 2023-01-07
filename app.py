@@ -20,7 +20,7 @@ postgres_pswd = keys["postgres-pswd"]
 credentials = {"user": "incendy", "password": postgres_pswd, "database": "incendy", "host": "127.0.0.1"}
 
 # Define Bot Client and Console
-client = incendy.IncendyBot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None, miraheze=None)
+client = incendy.IncendyBot()
 client.remove_command('help')
 
 # Logging settings
@@ -81,12 +81,11 @@ async def setup_hook():
 	await client.db.execute('CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS day_index ON downloads (day);')
 
-@client.command()
+@client.command(name="sync")
 @incendy.is_catter()
-async def sync(ctx) -> None:
-	synced = await ctx.bot.tree.sync()
+async def sync(ctx: commands.context.Context):
+	synced = await client.tree.sync()
 	await ctx.send(f"Synced {len(synced)} commands")
-	return
 
 cog_group = app_commands.Group(name='cog', description='[ADMIN] Uses the cog management menu')
 
@@ -165,6 +164,8 @@ async def on_message(message: discord.Message):
 	await client.db.execute(
 		query, message.author.id, message.id, message.created_at, message.content
 	)
+
+	await client.process_commands(message)
 
 try:
 	loop = asyncio.get_event_loop()

@@ -6,8 +6,8 @@ from discord import app_commands
 from discord.ext import commands
 
 class IncendyBot(commands.Bot):
-	def __init__(self, *args, db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, **kwargs):
-		super().__init__(*args, **kwargs)
+	def __init__(self, db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None):
+		super().__init__(command_prefix="!", case_insensitive=True, intents=discord.Intents.all())
 		self.db = db
 		self.miraheze = miraheze
 
