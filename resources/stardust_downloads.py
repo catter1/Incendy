@@ -2,7 +2,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-def get_downloads() -> dict:
+def get_downloads(cf_key: str) -> dict:
     stats = {}
 
     projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory", "structory-towers"]
@@ -10,26 +10,22 @@ def get_downloads() -> dict:
         stats[project] = 0
 
     # Curseforge
-    # for project in projects:
-        ## Thanks to these two SO links for bypassing Cloudflare! First link was my original attempt, 2nd link is current working attempt.
-        # https://python.tutorialink.com/pythons-requests-triggers-cloudflares-security-while-urllib-does-not/
-        # https://stackoverflow.com/questions/71764301/how-to-bypass-cloudflare-with-python-on-get-requests
-
-        #scraper = cloudscraper.create_scraper()
-        # scraper = cloudscraper.create_scraper(
-        #     browser={
-        #         'browser': 'chrome',
-        #         'platform': 'linux',
-        #         'desktop': True
-        #     },
-        #     debug=True,
-        #     disableCloudflareV1=True
-        # )
-        # scraper = uc.Chrome()
-        # response = scraper.get(f"https://www.curseforge.com/minecraft/mc-mods/{project}")
-
-        # soup = BeautifulSoup(response.content, "html.parser")
-        # stats[project] += int(soup.find_all(text="Total Downloads")[0].parent.parent.contents[3].text.replace(",", ""))
+    headers = {
+        'Accept': 'application/json',
+        'x-api-key': cf_key
+    }
+    cf_dict = {
+        "terralith": 513688,
+        "incendium": 591388,
+        "nullscape": 570354,
+        "amplified-nether": 552176,
+        "continents": 682515,
+        "structory": 636540,
+        "structory-towers": 783522
+    }
+    for project in projects:
+        r = requests.get(f'https://api.curseforge.com/v1/mods/{cf_dict[project]}', headers=headers)
+        stats[project] += r.json()["data"]["downloadCount"]
     
     # Modrinth
     headers = {'User-Agent': 'catter1/Incendy (catter@zenysis.net)'}

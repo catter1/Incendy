@@ -11,6 +11,8 @@ from resources import stardust_downloads as sd
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
+		with open("resources/keys.json", 'r') as f:
+			self.keys = json.load(f)
 
 	async def cog_load(self):
 		self.loop_get_stats.start()
@@ -175,7 +177,7 @@ class Stats(commands.Cog):
 		if potential != None:
 			return
 
-		stats = sd.get_downloads()
+		stats = sd.get_downloads(self.keys["cf-key"])
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			current_date, $1, $2, $3, $4, $5, $6, $7
