@@ -1,6 +1,15 @@
 import discord
-from discord import app_commands
 import typing
+import asyncpg
+from mediawiki import MediaWiki
+from discord import app_commands
+from discord.ext import commands
+
+class IncendyBot(commands.Bot):
+	def __init__(self, *args, db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.db = db
+		self.miraheze = miraheze
 
 def in_bot_channel():
 	"""Interaction is in bot channel"""

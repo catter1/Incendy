@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
 from mediawiki import MediaWiki
-from resources import custom_checks as cc
+from resources import incendy
 
 # Get keys
 with open('resources/keys.json', 'r') as f:
@@ -20,7 +20,7 @@ postgres_pswd = keys["postgres-pswd"]
 credentials = {"user": "incendy", "password": postgres_pswd, "database": "incendy", "host": "127.0.0.1"}
 
 # Define Bot Client and Console
-client = commands.Bot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None, miraheze=None)
+client = incendy.IncendyBot(command_prefix="!", case_insensitive=True, intents=discord.Intents.all(), db=None, miraheze=None)
 client.remove_command('help')
 
 # Logging settings
@@ -78,7 +78,7 @@ async def setup_hook():
 	await client.db.execute('CREATE INDEX IF NOT EXISTS faq_index ON faqs (faq_name);')
 
 @client.command()
-@cc.is_catter()
+@incendy.is_catter()
 async def sync(ctx) -> None:
 	synced = await ctx.bot.tree.sync()
 	await ctx.send(f"Synced {len(synced)} commands")
