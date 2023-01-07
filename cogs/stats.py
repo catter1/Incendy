@@ -62,13 +62,13 @@ class Stats(commands.Cog):
 		embed = discord.Embed(
 			color=colour,
 			title="About Me",
-			description="Hi! I'm Incendy, the loyal Discord bot of Stardust Labs!\n\n<@260929689126699008> brought me into this world on November 24, 2020. I evolved from a joke bot that added funny reactions to messages into the all-powerful bot I am today.\n\nIf you aren't familiar with my commands, do `/help`! As for my non-command functions:\n- Automatically detect and upload logs to [mclo.gs](https://mclo.gs/)\n- Check for and resolve \"textlinks\" such as `[[wiki]]`\n- Discover videos and streams made about Terralith and Incendium for <#879976073813700648>\n- Additional specialized moderation\n- An \"App Command\" that translates messages to English upon right-click\n- ...and more!\n\nIf Incendy has helped you in any way, you could submit feedback via `/feedback`, or even donate to catter1 via the link below. Thank you!"
+			description="Hi! I'm Incendy, the loyal Discord bot of Stardust Labs!\n\n<@260929689126699008> brought me into this world on November 24, 2020. I evolved from a joke bot that added funny reactions to messages, into the all-powerful bot I am today.\n\nIf you aren't familiar with my commands, do `/help`! As for my non-command functions:\n- Automatically detect and upload logs to [mclo.gs](https://mclo.gs/)\n- Check for and resolve \"textlinks\" such as `[[wiki]]`\n- Discover videos and streams made about Terralith and Incendium for <#879976073813700648>\n- Additional specialized moderation\n- An \"App Command\" that translates messages to English upon right-click\n- ...and more!\n\nIf Incendy has helped you in any way, you can submit feedback via `/feedback`, or even donate to catter via the link below. Thank you!"
 		)
-		embed.set_author(name=self.client.user, icon_url=self.client.user.avatar.url)
+		embed.set_author(name=self.client.user.display_name, icon_url=self.client.user.display_avatar.url)
 
 		view = discord.ui.View()
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji="<:kofi:962411326666334259>"))
-		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon!)", disabled=True))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon™️!)", disabled=True))
 
 		await interaction.response.send_message(embed=embed, view=view)
 	
