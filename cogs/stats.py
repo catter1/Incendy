@@ -80,6 +80,7 @@ class Stats(commands.Cog):
 
 		# Individual member stats
 		if member:
+			await interaction.response.defer(thinking=True)
 			# Get color
 			colour = await ii.get_user_color(member)
 
@@ -90,12 +91,12 @@ class Stats(commands.Cog):
 			# Top Commands
 			cmd_query = 'SELECT command_name, COUNT(command_name) FROM commands WHERE user_id = $1 GROUP BY command_name ORDER BY COUNT(command_name) DESC LIMIT 5'
 			topcmds = await self.client.db.fetch(cmd_query, member.id)
-			topcmdstr = "\n".join([f"**{record['command_name']}**   ({'{:,}'.format(record['count'])})" for record in topcmds])
+			topcmdstr = "\n".join([f"`{record['command_name']}`   ({'{:,}'.format(record['count'])})" for record in topcmds])
 
 			# Top FAQs
 			faq_query = 'SELECT faq_name, COUNT(faq_name) FROM faqs WHERE user_id = $1 GROUP BY faq_name ORDER BY COUNT(faq_name) DESC LIMIT 5'
 			topfaqs = await self.client.db.fetch(faq_query, member.id)
-			topfaqstr = "\n".join([f"**{record['faq_name']}**   ({'{:,}'.format(record['count'])})" for record in topfaqs])
+			topfaqstr = "\n".join([f"`{record['faq_name']}`   ({'{:,}'.format(record['count'])})" for record in topfaqs])
 
 			# Other stats
 			joined = int(time.mktime(member.joined_at.timetuple()))
@@ -120,7 +121,7 @@ class Stats(commands.Cog):
 			embed.set_thumbnail(url=member.display_avatar.url)
 			embed.set_footer(text=f"{member.name}#{member.discriminator}")
 
-			await interaction.response.send_message(embed=embed)
+			await interaction.followup.send(embed=embed)
 
 		# Stardust Labs stats
 		else:
