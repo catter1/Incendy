@@ -40,7 +40,7 @@ def create_stats_image(stats: dict) -> str:
     font5 = ImageFont.truetype(f"{os.curdir}/assets/Kanit-Regular.ttf", 45)
     draw = ImageDraw.Draw(img)
 
-    cmdstr = ", ".join([f"{key} ({cmd[key]})" for cmd in stats['commands'] for key in cmd])
+    cmdstr = ", ".join([f"{key.upper()} ({cmd[key]})" for cmd in stats['commands'] for key in cmd])
 
     #Version
     draw.text((75,260), stats["version"], font=font, fill=(214,246,255))
