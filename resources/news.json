@@ -1,0 +1,7 @@
+[
+    {
+        "title": "Incendy Update 3.0",
+        "desc": "After months of development, Incendy finally receives her huge update! There are tons of new features and functionality, including the migration to slash commands and better Discord moderation/QoL.\n\nFirst off, check out the amazing new FAQ system! You can view the available FAQs by doing `/faq`. This update also brings a new system called \"Quick Posts\". With `/qp`, you can get quick links and info that isn't exactly FAQ material.\n\nAdditionally, there is now `/stats`, which shows you stats about both Stardust Labs and yourself! `/discord` gives you Discord links to revelant Minecraft or datapack servers. In the middle of a conversation and need to remember something? Try to cool new `/remindme` command!\n\nCommands aren't the only thing. Look around in the various channels, and you will see new systems and pretty embeds all around. For example, look at <#900598465430716426>, <#987857911252402206>, and <#756923587339878420>!\n\nFinally, if you ever forget what the commands do, check out the *beautiful* new `/help` command. I hope you enjoy - it's taken a lot of work. Incendy is now quite powerful, and should improve the Discord experience by a lot. See you around!",
+        "timestamp": 1673125200
+    }
+]
