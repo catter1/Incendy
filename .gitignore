@@ -1,0 +1,25 @@
+# Code Folders
+__pycache__
+apicache-py3
+.vscode
+# Incendy Folders
+logs
+seeds
+playground
+submissions
+
+# Files
+
+# Files in resources/
+funny_biomes.txt
+keys.json
+naughty.txt
+news.json
+pastebin.txt
+pinglog.txt
+seed.json
+seeds.json
+settings.json
+stats.json
+timeout.json
+*.ttf
