@@ -72,15 +72,19 @@ async def setup_hook():
 		if filename.endswith('.py'):
 			await client.load_extension(f'cogs.{filename[:-3]}')
 
+	# Messages Table
+	await client.db.execute('CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS user_index ON messages (user_id);')
+
 	# Command Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS commands(id SERIAL PRIMARY KEY, user_id BIGINT, command_name TEXT, sent_on TIMESTAMPTZ);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS cmd_index ON commands (command_name);')
 	
-	# FAQ DB
+	# FAQ Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS faqs(id SERIAL PRIMARY KEY, user_id BIGINT, faq_name TEXT, sent_on TIMESTAMPTZ);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS faq_index ON faqs (faq_name);')
 
-	# Make the table if it doesn't already exist!
+	# Downloads Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS day_index ON downloads (day);')
 
@@ -160,7 +164,7 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 @client.event
 async def on_message(message: discord.Message):
 	if message.guild.id == settings["stardust-guild-id"]:
-		query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
+		query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
 			$1, $2, $3, $4
 		);'''
 

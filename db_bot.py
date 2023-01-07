@@ -53,13 +53,7 @@ async def setup_hook():
 @client.command(name="database")
 @incendy.is_catter()
 async def database(ctx: commands.context.Context) -> None:
-	# await client.db.execute(
-	# 	'DROP TABLE IF EXISTS test_messages'
-	# )
-
-	await client.db.execute(
-		'CREATE TABLE IF NOT EXISTS test_messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);'
-	)
+	await client.db.execute('CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);')
 
 	# Get all channels
 	channels = []
@@ -74,6 +68,7 @@ async def database(ctx: commands.context.Context) -> None:
 
 	# Sort through messages
 	for channel in channels:
+		print(f'Starting {channel.name}...')
 		async for message in channel.history(limit=None, oldest_first=True):
 			if message.type == discord.MessageType.default or message.type == discord.MessageType.reply:
 				query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
@@ -83,11 +78,10 @@ async def database(ctx: commands.context.Context) -> None:
 				await client.db.execute(
 					query, message.author.id, message.id, message.created_at, message.content
 				)
+		print(f'Finished {channel.name}!')
 
 	# Create Index
-	await client.db.execute(
-		'CREATE INDEX user_index ON test_messages (user_id);'
-	)
+	await client.db.execute('CREATE INDEX IF NOT EXISTS user_index ON messages (user_id);')
 
 	print("Finished operation! Somehow...")
 	
