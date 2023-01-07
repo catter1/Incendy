@@ -12,7 +12,7 @@ from discord.ext import commands, tasks
 from resources import incendy
 
 class Basic(commands.Cog):
-    def __init__(self, client):
+    def __init__(self, client: incendy.IncendyBot):
         self.client = client
         self.translator = googletrans.Translator()
         self.version = '3.0.0_BETA'

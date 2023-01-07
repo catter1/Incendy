@@ -5,7 +5,7 @@ from discord.ext.commands import has_permissions
 from resources import incendy
 
 class Helps(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):

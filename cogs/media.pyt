@@ -13,7 +13,7 @@ from discord.ext import commands, tasks
 from discord.ext.tasks import loop
 
 class Media(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 	
 	with open('resources/keys.json', 'r') as f:

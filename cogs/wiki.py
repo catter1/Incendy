@@ -11,7 +11,7 @@ from nltk.tokenize import sent_tokenize
 from resources import incendy
 
 class Wiki(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):

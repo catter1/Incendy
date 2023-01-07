@@ -10,7 +10,7 @@ from resources import incendy
 # Tons of thanks to pikaninja! https://gist.github.com/pikaninja/d9ab2a91cb3344c62b3d13a435255154
 
 class Clock:
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 		self.endtime: typing.Optional[datetime.datetime] = None # Our current closest endtime
 		self.id: typing.Optional[int] = None # The id of our reminder in the database
@@ -86,7 +86,7 @@ class Clock:
 		self._task.cancel()
 
 class Remind(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 		self.clock = Clock(client)
 

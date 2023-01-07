@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands, tasks
 
 class Moderation(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 		with open('resources/naughty.txt', 'r') as f:
 			self.naughty = f.readlines()

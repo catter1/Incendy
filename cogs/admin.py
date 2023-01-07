@@ -10,7 +10,7 @@ from discord.ext import commands
 from resources import incendy
 
 class Admin(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):
