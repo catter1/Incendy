@@ -2,15 +2,14 @@ import discord
 import json
 import os
 import time
-import datetime
 from discord import app_commands
 from discord.ext import commands, tasks
-from resources import custom_checks as cc
+from resources import incendy
 from resources import incendy_image as ii
 from resources import stardust_downloads as sd
 
 class Stats(commands.Cog):
-	def __init__(self, client):
+	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):
@@ -34,8 +33,8 @@ class Stats(commands.Cog):
 	### COMMANDS ###
 
 	@app_commands.command(name="news", description="The latest unofficial news from Stardust Labs")
-	@cc.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
+	@incendy.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
 	async def news(self, interaction: discord.Interaction):
 		""" /news """
 
@@ -51,20 +50,36 @@ class Stats(commands.Cog):
 			embed.description = f"{item['desc']}\n<t:{item['timestamp']}:D>"
 
 		await interaction.response.send_message(embed=embed)
+
+	@app_commands.command(name="incendy", description="Shows information about Incendy!")
+	@incendy.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
+	async def _incendy(self, interaction: discord.Interaction):
+		colour = await ii.get_user_color(self.client.user)
+
+		embed = discord.Embed(
+			color=colour,
+			title="About Me",
+			description="Hi! I'm Incendy, the loyal Discord bot of Stardust Labs!\n\n<@260929689126699008> brought me into this world on November 24, 2020. I evolved from a joke bot that added funny reactions to messages into the all-powerful bot I am today.\n\nIf you aren't familiar with my commands, do `/help`! As for my non-command functions:\n- Automatically detect and upload logs to [mclo.gs](https://mclo.gs/)\n- Check for and resolve \"textlinks\" such as `[[wiki]]`\n- Discover videos and streams made about Terralith and Incendium for <#879976073813700648>\n- Additional specialized moderation\n- An \"App Command\" that translates messages to English upon right-click\n- ...and more!\n\nIf Incendy has helped you in any way, you could submit feedback via `/feedback`, or even donate to catter1 via the link below. Thank you!"
+		)
+		embed.set_author(name=self.client.user, icon_url=self.client.user.avatar.url)
+
+		view = discord.ui.View()
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji="<:kofi:962411326666334259>"))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon!)", disabled=True))
+
+		await interaction.response.send_message(embed=embed, view=view)
 	
 	@app_commands.command(name="stats", description="Shows stats about Stardust Labs")
-	@cc.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(cc.very_long_cd)
+	@incendy.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 
 		# Individual member stats
 		if member:
 			# Get color
-			filename = f"tmp/{member.id}.webp"
-			await member.avatar.save(filename)
-			colour = ii.get_color(filename)
-			os.remove(f"{os.curdir}/{filename}")
+			await ii.get_user_color(member)
 
 			# Total messages
 			msg_query = 'SELECT COUNT(message_id) FROM test_messages WHERE user_id = $1;'
@@ -177,11 +192,9 @@ class Stats(commands.Cog):
 
 	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
 		if isinstance(error, app_commands.CommandOnCooldown):
-			if interaction.command.name == "stats":
-				await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
+			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
 		elif isinstance(error, app_commands.CheckFailure):
-			if interaction.command.name == "stats":
-				await interaction.response.send_message("This command can only be used in a bot command channel like <#871376111857193000>.", ephemeral=True)
+			await interaction.response.send_message("This command can only be used in a bot command channel like <#871376111857193000>.", ephemeral=True)
 
 async def setup(client):
 	await client.add_cog(Stats(client))
