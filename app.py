@@ -59,7 +59,7 @@ async def run():
 			url="https://stardustlabs.miraheze.org/w/api.php",
 			user_agent="catter1/Incendy (catter@zenysis.net)"
 		)
-		await client.start(keys["dummy-token"])
+		await client.start(keys["incendy-token"])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
