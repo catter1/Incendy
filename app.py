@@ -59,7 +59,7 @@ async def run():
 			url="https://stardustlabs.miraheze.org/w/api.php",
 			user_agent="catter1/Incendy (catter@zenysis.net)"
 		)
-		await client.start(keys["incendy-token"])
+		await client.start(keys["dummy-token"])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
@@ -94,7 +94,7 @@ async def sync(ctx: commands.context.Context):
 	synced = await client.tree.sync()
 	await ctx.send(f"Synced {len(synced)} commands")
 
-cog_group = app_commands.Group(name='cog', description='[ADMIN] Uses the cog management menu')
+cog_group = app_commands.Group(name='cog', description='[ADMIN] Uses the cog management menu', default_permissions=discord.permissions.Permissions.all())
 
 @cog_group.command(name="load", description="[ADMIN] Loads a cog")
 @app_commands.default_permissions(administrator=True)
@@ -170,8 +170,8 @@ async def on_message(message: discord.Message):
 
 		await client.db.execute(query, message.author.id, message.id, message.created_at, message.content)
 		
-		# >:(
-		await client.process_commands(message)
+	# >:(
+	await client.process_commands(message)
 
 try:
 	loop = asyncio.get_event_loop()
