@@ -100,14 +100,14 @@ class Basic(commands.Cog):
         """ /ping """
 
         responses = [
-            "I'm not your slave.",
-            "Ha!",
-            "Too slow.",
-            "Go away.",
-            "I'm not telling you.",
-            "I *suppose* I could tell you... later.",
-            "You'll never understand! No one ever does!",
-            "Mortal. Your kind never ceases to entertain me."
+            "Ping! Haha, I choose pong!",
+            "Oww! That hurt!",
+            "Aren't you late for something?",
+            "LMAO! Stop procrastinating and go do your work!",
+            "And then they said \"it's pinging time\", so I pinged all over the place",
+            "Gee, I can't wait for ||[REDACTED]|| to release!",
+            "*Shh, want to hear catter's biggest secret? So, did you kn- [DATA EXPUNGED] [DATA EXPUNGED]",
+            "Sometimes, it's tiring. But you are entertaining!"
         ]
         await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
