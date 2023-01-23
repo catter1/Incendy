@@ -1,7 +1,8 @@
 [
     {
         "title": "3.0.1",
-        "desc": "Bug Fixes.\n**•**Changed /news to /changelog\n**•**Fixed /feedback\n**•**Fixed the project textlinks, and added one for the License\n**•**Fixed automatic support welcome message\n**•**New WWOO FAQ\n**•**Fixed Seedfix FAQ"
+        "desc": "Bug Fixes.\n**•**Changed /news to /changelog\n**•**Fixed /feedback\n**•**Fixed the project textlinks, and added one for the License\n**•**Fixed automatic support welcome message\n**•**New WWOO FAQ\n**•**Fixed Seedfix FAQ",
+        "timestamp": 1674509460
     },
     {
         "title": "3.0",
