@@ -343,10 +343,10 @@ class Basic(commands.Cog):
             elif interaction.command.name == "feedback" or interaction.command.name == "reportad":
                 await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
             else:
-                await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#871376111857193000>!", ephemeral=True)
+                await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
         elif isinstance(error, app_commands.CheckFailure):
             if interaction.command.name == "feedback":
-                await interaction.response.send_message("This command can only be used in a bot command channel like <#871376111857193000>.", ephemeral=True)
+                await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
             elif interaction.command.name == "bug":
                 await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
             else:

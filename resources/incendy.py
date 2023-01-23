@@ -15,7 +15,7 @@ def in_bot_channel():
 	"""Interaction is in bot channel"""
 
 	def bot_channel(interaction: discord.Interaction):
-		if interaction.channel_id == 871376111857193000 or interaction.channel_id == 923571915879231509:
+		if interaction.channel_id == 923571915879231509:
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True
@@ -63,7 +63,7 @@ def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands
 
 	if interaction.user.guild_permissions.administrator:
 		return None
-	if interaction.channel_id == 871376111857193000:
+	if interaction.channel_id == 923571915879231509:
 		return None
 	return app_commands.Cooldown(2, 25.0)
 
@@ -72,7 +72,7 @@ def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.C
 
 	if interaction.user.guild_permissions.administrator:
 		return None
-	if interaction.channel_id == 871376111857193000:
+	if interaction.channel_id == 923571915879231509:
 		return None
 	return app_commands.Cooldown(1, 15.0)
 

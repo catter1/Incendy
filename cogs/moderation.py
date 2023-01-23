@@ -321,7 +321,7 @@ class Moderation(commands.Cog):
 			embed.add_field(name="", value=f"<#{message.channel.id}> **•** <t:{int(time.mktime(datetime.datetime.now().timetuple()))}:f>")
 
 			
-			await self.client.get_channel(1050021013431263264).send(embed=embed, files=message.attachments)
+			await self.client.get_channel(1050021013431263264).send(embed=embed)#, files=message.attachments)
 	
 	@commands.Cog.listener()
 	async def on_message(self, message):

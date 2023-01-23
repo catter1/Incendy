@@ -39,7 +39,7 @@ class Wiki(commands.Cog):
 		if isinstance(error, app_commands.CommandOnCooldown):
 			await interaction.response.send_message("Yikes! " + str(error) + ".", ephemeral=True)
 		elif isinstance(error, app_commands.CheckFailure):
-			await interaction.response.send_message("This command can only be used in a bot command channel like <#871376111857193000>.", ephemeral=True)
+			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
 		else:
 			raise error
 
