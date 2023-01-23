@@ -49,7 +49,7 @@ class Stats(commands.Cog):
 		embed.set_author(name="Incendy Changelog", icon_url=catter.avatar.url)
 		
 		for item in news:
-			embed.add_field(name=item["title"], value=f"{item['desc']}\n<t:{item['timestamp']}:d>")
+			embed.add_field(name=item["title"], value=f"{item['desc']}\n<t:{item['timestamp']}:d>", inline=False)
 
 		await interaction.response.send_message(embed=embed)
 
