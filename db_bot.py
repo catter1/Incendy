@@ -72,7 +72,7 @@ async def database(ctx: commands.context.Context) -> None:
 		print(f'Starting {channel.name}...')
 		async for message in channel.history(limit=None, oldest_first=True):
 			if message.type == discord.MessageType.default or message.type == discord.MessageType.reply:
-				query = '''INSERT INTO test_messages(user_id, message_id, sent_on, message_content) VALUES(
+				query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
 					$1, $2, $3, $4
 				)'''
 				
