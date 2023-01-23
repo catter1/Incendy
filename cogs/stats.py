@@ -85,7 +85,7 @@ class Stats(commands.Cog):
 			colour = await ii.get_user_color(member)
 
 			# Total messages
-			msg_query = 'SELECT COUNT(message_id) FROM test_messages WHERE user_id = $1;'
+			msg_query = 'SELECT COUNT(message_id) FROM messages WHERE user_id = $1;'
 			totalmsgs = await self.client.db.fetchval(msg_query, member.id)
 
 			# Top Commands
