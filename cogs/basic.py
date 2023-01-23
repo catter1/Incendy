@@ -259,23 +259,23 @@ class Basic(commands.Cog):
 
         os.replace(f'{os.path.expanduser("~")}/bots/Incendy/seeds/{seed}.png', f'{os.path.expanduser("~")}/stardustSite/static/images/seeds/{seed}.png')
     
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        msg = await self.client.get_channel(payload.channel_id).fetch_message(payload.message_id)
-        if payload.channel_id == 928749390531809332 and payload.event_type == "REACTION_ADD" and not payload.member.bot and msg.author.bot and len(msg.embeds) == 1:
-            if msg.embeds[0].title == "Seed Submission":
-                if payload.emoji.name == "✅":
-                    embed = msg.embeds[0]
-                    seed = embed.fields[0].name
-                    await self.submit_seed(seed)
-                    embed.title = "Seed Submision - Accepted"
-                    embed.set_footer(text="✅ Seed accepted.", icon_url=self.client.get_user(780588749825638410).avatar)
-                    await msg.edit(embed=embed)
-                elif payload.emoji.name == "❌":
-                    embed = msg.embeds[0]
-                    embed.title = "Seed Submision - Denied"
-                    embed.set_footer(text="❌ Seed denied.", icon_url=self.client.get_user(780588749825638410).avatar)
-                    await msg.edit(embed=embed)
+    # @commands.Cog.listener()
+    # async def on_raw_reaction_add(self, payload):
+    #     msg = await self.client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+    #     if payload.channel_id == 928749390531809332 and payload.event_type == "REACTION_ADD" and not payload.member.bot and msg.author.bot and len(msg.embeds) == 1:
+    #         if msg.embeds[0].title == "Seed Submission":
+    #             if payload.emoji.name == "✅":
+    #                 embed = msg.embeds[0]
+    #                 seed = embed.fields[0].name
+    #                 await self.submit_seed(seed)
+    #                 embed.title = "Seed Submision - Accepted"
+    #                 embed.set_footer(text="✅ Seed accepted.", icon_url=self.client.get_user(780588749825638410).avatar)
+    #                 await msg.edit(embed=embed)
+    #             elif payload.emoji.name == "❌":
+    #                 embed = msg.embeds[0]
+    #                 embed.title = "Seed Submision - Denied"
+    #                 embed.set_footer(text="❌ Seed denied.", icon_url=self.client.get_user(780588749825638410).avatar)
+    #                 await msg.edit(embed=embed)
 
     ### EVENTS ###
 
