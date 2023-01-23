@@ -1,5 +1,6 @@
 import discord
 import json
+import time
 import datetime
 import validators
 from discord import app_commands
@@ -11,6 +12,8 @@ class Moderation(commands.Cog):
 		self.client = client
 		with open('resources/naughty.txt', 'r') as f:
 			self.naughty = f.readlines()
+		with open('resources/settings.json', 'r') as f:
+			self.settings = json.load(f)
 
 		self.shutup_app = app_commands.ContextMenu(
 			name='Shutup',
@@ -308,14 +311,17 @@ class Moderation(commands.Cog):
 					await msg.remove_reaction(payload.emoji, payload.member)
 
 	@commands.Cog.listener()
-	async def on_message_delete(self, message):
-		embed = discord.Embed(
-			colour=discord.Colour.brand_red(),
-			description=message.content
-		)
-		embed.set_author(name=message.author.name, icon_url=message.author.avatar)
-		
-		await self.client.get_channel(1050021013431263264).send(embed=embed)
+	async def on_message_delete(self, message: discord.Message):
+		if message.channel.guild.id == self.settings["stardust-guild-id"]:
+			embed = discord.Embed(
+				colour=discord.Colour.brand_red(),
+				description=message.content
+			)
+			embed.set_author(name=message.author.name, icon_url=message.author.avatar)
+			embed.add_field(name="", value=f"<#{message.channel.id}> **•** <t:{int(time.mktime(datetime.datetime.now().timetuple()))}:f>")
+
+			
+			await self.client.get_channel(1050021013431263264).send(embed=embed, files=message.attachments)
 	
 	@commands.Cog.listener()
 	async def on_message(self, message):
