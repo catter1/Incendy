@@ -75,7 +75,7 @@ class Basic(commands.Cog):
             "Apollo": "https://discord.gg/vFz67Pvceu",
             "Smithed": "https://discord.gg/gkp6UqEUph",
             "MC Commands": "https://discord.gg/QAFXFtZ",
-            "Splatus": "https://discord.gg/5DqYxxZdeb",
+            "LimeSplatus": "https://discord.gg/5DqYxxZdeb",
             "WWOO": "https://discord.gg/jT34CWwzth",
             "BYG": "https://discord.gg/F28fGPCJH8",
             "Foka's Studios": "https://discord.gg/J6guYAySN8",
