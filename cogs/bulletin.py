@@ -220,8 +220,9 @@ class Bulletin(commands.Cog):
 		msg = await interaction.channel.send(file=file, embed=embed, view=Terralith())
 		data["textlinks"]["terralith"] = msg.jump_url
 
-		with open("resources/settings.json", 'w') as f:
-			json.dump(data, f, indent=4)
+		if interaction.guild_id == data["stardust-guild-id"]:
+			with open("resources/settings.json", 'w') as f:
+				json.dump(data, f, indent=4)
 
 	### LISTENERS ###
 
