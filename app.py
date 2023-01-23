@@ -163,7 +163,7 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.guild.id == settings["stardust-guild-id"]:
+	if message.channel.guild.id == settings["stardust-guild-id"]:
 		query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
 			$1, $2, $3, $4
 		);'''
