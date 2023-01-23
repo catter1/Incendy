@@ -1,0 +1,11 @@
+[
+    {
+        "title": "3.0.1",
+        "desc": "Bug Fixes.\n**•**Changed /news to /changelog\n**•**Fixed /feedback\n**•**Fixed the project textlinks, and added one for the License\n**•**Fixed automatic support welcome message\n**•**New WWOO FAQ\n**•**Fixed Seedfix FAQ"
+    },
+    {
+        "title": "3.0",
+        "desc": "After months of development, Incendy finally receives her huge update! There are tons of new features and functionality, including the migration to slash commands and better Discord moderation/QoL. Here are some additional changes:\n**•**Updated and added newFAQs\n**•**New QuickPost system allowing to paste common blurbs\n**•**Remindme command allowing the setting of reminders\n**•**Streamlined <#1019651246078038128> with automatic messages and thread closing\n**•**New stats command for users and Stardust Labs itself\n**•**Prettier embeds for various channels\n**•**Inline textlink system for certain phrases\n**•**Discord command provides different links to various servers\n**•**...and much more!",
+        "timestamp": 1673142480
+    }
+]

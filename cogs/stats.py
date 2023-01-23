@@ -34,22 +34,22 @@ class Stats(commands.Cog):
 
 	### COMMANDS ###
 
-	@app_commands.command(name="news", description="The latest unofficial news from Stardust Labs")
+	@app_commands.command(name="changelog", description="Incendy's Changelog")
 	@incendy.in_bot_channel()
 	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
-	async def news(self, interaction: discord.Interaction):
-		""" /news """
+	async def changelog(self, interaction: discord.Interaction):
+		""" /changelog """
 
-		with open("resources/news.json", 'r') as f:
+		with open("resources/changelog.json", 'r') as f:
 			news = json.load(f)
 
 		catter = interaction.guild.get_member(260929689126699008)
-		embed = discord.Embed(color=discord.Colour.brand_red())
-		embed.set_author(name="Unofficial Stardust News", icon_url=catter.avatar.url)
+		colour = await ii.get_user_color(catter)
+		embed = discord.Embed(color=colour)
+		embed.set_author(name="Incendy Changelog", icon_url=catter.avatar.url)
 		
 		for item in news:
-			embed.title = item["title"]
-			embed.description = f"{item['desc']}\n<t:{item['timestamp']}:D>"
+			embed.add_field(name=item["title"], value=f"{item['desc']}\n<t:{item['timestamp']}:d>")
 
 		await interaction.response.send_message(embed=embed)
 
