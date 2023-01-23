@@ -123,7 +123,7 @@ class Faq(commands.Cog):
             case "Multiverse":
                 embed = discord.Embed(
                     title='Multiverse',
-                    description='Multiverse is not the friendliest with worldgen datapacks. Below you can find a method to try - it\'s not 100% guarenteed to work, but it\'s the best we have, and nothing else we can do to help other than recommend a BungeeCord server rather than using Multiverse. MyWorlds is untested.\n\n**1.** Stop your server and take a backup.\n**2.** Make sure your main world is the one with the worldgen datapacks, and delete that `world` folder (or whatever it is equivalently named).\n**3.** Delete Multiverse\'s `world.yml`, along with a `worlds.txt` if you have it.\n**4.** The default world in your `server.properties` should be the one with the worldgen datapacks.\n**5.** Boot up your server, join, and see if it worked.\n**6.** If it works and you just have leftover broken chunks, you can either reset the world, edit with MCA Selector, or using WorldEdit\'s `//regen` command.',
+                    description='Multiverse is not the friendliest with worldgen datapacks. Below you can find a method to try - it\'s not 100% guarenteed to work, but it\'s the best we have, and nothing else we can do to help other than recommend a BungeeCord server rather than using Multiverse. MyWorlds is untested.\n\n**1.** Stop your server and take a backup.\n**2.** Make sure your main world is the one with the worldgen datapacks, and delete the `region` folder *inside* of that `world` folder (or whatever it is equivalently named).\n**3.** Delete Multiverse\'s `world.yml`, along with a `worlds.txt` if you have it.\n**4.** The default world in your `server.properties` should be the one with the worldgen datapacks.\n**5.** Boot up your server, join, and see if it worked.\n**6.** If it works and you just have leftover broken chunks, you can either reset the world, edit with MCA Selector, or using WorldEdit\'s `//regen` command.',
                     color=faq_colour
                 )
             case "Ore Distribution":
@@ -225,6 +225,12 @@ class Faq(commands.Cog):
                 )
                 file = discord.File("assets/Version_Table.png", filename="image.png")
                 embed.set_image(url="attachment://image.png")
+            case "WWOO":
+                embed = discord.Embed(
+                    title='WWOO Compatibility',
+                    description='Terralith is compatible with William Wyther\'s Overhauled Overworld __only__ when using the mod version 3.0 or higher of WWOO. Terrablender ([Fabric](https://www.curseforge.com/minecraft/mc-mods/terrablender-fabric) or [Forge](https://www.curseforge.com/minecraft/mc-mods/terrablender)) is required.\n\nYou will need to go inside WWOO\'s configs and enable Terralith compat, or in-game if using Fabric with [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files). More information can be found on WWOO\'s [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/william-wythers-overhauled-overworld).',
+                    color=faq_colour
+                )
             case _:
                 await interaction.response.send_message("An unexpected error ocurred! Try again, and let catter know what FAQ you were trying if the issue continues.", ephemeral=True)
                 return
@@ -251,7 +257,7 @@ class Faq(commands.Cog):
 
     @faq.autocomplete('q')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatability", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatability", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
 
         return [
             app_commands.Choice(name=faq, value=faq)
