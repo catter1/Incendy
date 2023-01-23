@@ -338,7 +338,7 @@ class Seedfix(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(label='SeedFix Website', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
-        self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:962397090732970004>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
+        self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
 
 class Support(discord.ui.View):
     def __init__(self):
