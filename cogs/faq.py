@@ -73,7 +73,7 @@ class Faq(commands.Cog):
                     color=faq_colour
                 )
                 file = discord.File("resources/funny_biomes.txt", filename="biome_id_list.txt")
-            case "Compatability":
+            case "Compatibility":
                 embed = discord.Embed(
                     title='Stardust Labs Compatibility',
                     description='Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:\n\n**•** Incendium and Amplified Nether do **not** work together. Do `/faq Incendium vs Amplified Nether` for more information.\n**•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, we do not recommend it. There will be several micro biomes, Terralith will only make up around 5% of total biomes, and some surface biomes can be screwed up.\n**•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.\n**•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.',
@@ -257,7 +257,7 @@ class Faq(commands.Cog):
 
     @faq.autocomplete('q')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatability", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
 
         return [
             app_commands.Choice(name=faq, value=faq)
