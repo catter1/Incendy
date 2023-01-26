@@ -163,12 +163,17 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 
 @client.event
 async def on_message(message: discord.Message):
-	if message.guild.id == settings["stardust-guild-id"]:
-		query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
-			$1, $2, $3, $4
-		);'''
+	try:
+		if message.guild.id == settings["stardust-guild-id"]:
+			query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
+				$1, $2, $3, $4
+			);'''
 
-		await client.db.execute(query, message.author.id, message.id, message.created_at, message.content)
+			await client.db.execute(query, message.author.id, message.id, message.created_at, message.content)
+	except AttributeError as e:
+		logger.log(3, e)
+		logger.log(3, f"Message content: {message.content}")
+		logger.log(3, f"Message author: {message.author}")
 		
 	# >:(
 	await client.process_commands(message)
