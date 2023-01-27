@@ -59,6 +59,10 @@ class Basic(commands.Cog):
     async def _discord(self, interaction: discord.Interaction, server: str):
         """ /discord [server] """
 
+        if not server.startswith("https://discord.gg/"):
+            await interaction.response.send_message("Unknown error! Please try again.", ephemeral=True)
+            return
+
         await interaction.response.send_message(server)
 
     @_discord.autocomplete('server')
