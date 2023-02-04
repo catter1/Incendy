@@ -42,8 +42,7 @@ class Admin(commands.Cog):
 		await interaction.response.defer(thinking=True)
 
 		# Auth
-		with open('resources/keys.json', 'r') as f:
-			pat = json.load(f)["git-pat"]
+		pat = self.client.keys["git-pat"]
 		auth = ('catter1', pat)
 
 		# Get repo info and absolute paths

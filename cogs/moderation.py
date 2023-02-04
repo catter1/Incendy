@@ -12,8 +12,6 @@ class Moderation(commands.Cog):
 		self.client = client
 		with open('resources/naughty.txt', 'r') as f:
 			self.naughty = f.readlines()
-		with open('resources/settings.json', 'r') as f:
-			self.settings = json.load(f)
 
 		self.shutup_app = app_commands.ContextMenu(
 			name='Shutup',
@@ -312,7 +310,7 @@ class Moderation(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message_delete(self, message: discord.Message):
-		if message.channel.guild.id == self.settings["stardust-guild-id"]:
+		if message.channel.guild.id == self.client.settings["stardust-guild-id"]:
 			embed = discord.Embed(
 				colour=discord.Colour.brand_red(),
 				description=message.content

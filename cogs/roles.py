@@ -16,11 +16,8 @@ class Roles(commands.Cog):
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	@commands.Cog.listener()
-	async def on_member_join(self, member):
-		with open("resources/settings.json", 'r') as f:
-			settings = json.load(f)
-		
-		if settings["locked"] == False:
+	async def on_member_join(self, member):		
+		if self.client.settings["locked"] == False:
 			guild = self.client.get_guild(738046951236567162)
 			role = guild.get_role(744790468428300330)
 			await member.add_roles(role)
@@ -55,23 +52,20 @@ class Roles(commands.Cog):
 	@app_commands.checks.has_permissions(administrator=True)
 	async def lockdown(self, interaction: discord.Interaction):
 		""" /lockdown """
-
-		with open("resources/settings.json", 'r') as f:
-			settings = json.load(f)
 		
 		embed = discord.Embed()
 		embed.set_author(name="Lockdown")
-		if settings["locked"] == False:
+		if self.client.settings["locked"] == False:
 			embed.color = discord.Colour.red()
 			embed.add_field(name="**ENABLED**", value="New people who join will no longer receive the member role!")
-			settings["locked"] = True
+			self.client.settings["locked"] = True
 		else:
 			embed.color = discord.Colour.green()
 			embed.add_field(name="**DISABLED**", value="New people who join will now receive the member role!")
-			settings["locked"] = False
+			self.client.settings["locked"] = False
 
 		with open("resources/settings.json", "w") as f:
-			json.dump(settings, f, indent=4)
+			json.dump(self.client.settings, f, indent=4)
 		await interaction.response.send_message(embed=embed)
 
 async def setup(client):

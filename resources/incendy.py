@@ -6,10 +6,12 @@ from discord import app_commands
 from discord.ext import commands
 
 class IncendyBot(commands.Bot):
-	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None):
+	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, keys: dict = None, settings: dict = None):
 		super().__init__(command_prefix=command_prefix, case_insensitive=True, intents=discord.Intents.all())
 		self.db = db
 		self.miraheze = miraheze
+		self.keys = keys
+		self.settings = settings
 
 def in_bot_channel():
 	"""Interaction is in bot channel"""

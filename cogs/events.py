@@ -20,12 +20,11 @@ class Events(commands.Cog):
 	@app_commands.command(name="contest", description="Information about the ongoing contest")
 	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
 	async def contest(self, interaction: discord.Interaction, action: str, submission: discord.Attachment = None):
+		""" /contest <action> """
 
-		with open("resources/settings.json") as f:
-			settings = json.load(f)
-			if not settings["contest-ongoing"]:
-				await interaction.response.send_message("Sorry, but there isn't currently any contest! Check back later for when there is one.")
-				return
+		if not self.client.settings["contest-ongoing"]:
+			await interaction.response.send_message("Sorry, but there isn't currently any contest! Check back later for when there is one.")
+			return
 
 		if action == "info":
 			embed = discord.Embed(

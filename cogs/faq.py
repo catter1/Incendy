@@ -10,8 +10,6 @@ class Faq(commands.Cog):
         self.client = client
         
     async def cog_load(self):
-        with open("resources/settings.json", 'r') as f:
-            self.settings = json.load(f)
         print(f' - {self.__cog_name__} cog loaded.')
     
     async def cog_unload(self):
@@ -251,7 +249,7 @@ class Faq(commands.Cog):
                 await interaction.response.send_message(embed=embed, ephemeral=public)
 
         # Enter into DB
-        if interaction.guild_id == self.settings["stardust-guild-id"]:
+        if interaction.guild_id == self.client.settings["stardust-guild-id"]:
             query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
             await self.client.db.execute(query, interaction.user.id, q, interaction.created_at)
 

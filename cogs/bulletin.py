@@ -144,8 +144,7 @@ class Bulletin(commands.Cog):
 	async def library(self, interaction: discord.Interaction):
 		""" /library """
 
-		with open("resources/settings.json", 'r') as f:
-			data = json.load(f)
+		data = self.client.settings
 
 		embed = discord.Embed(
 			title="**Amplified Nether**",

@@ -11,8 +11,6 @@ from resources import stardust_downloads as sd
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		with open("resources/keys.json", 'r') as f:
-			self.keys = json.load(f)
 
 	async def cog_load(self):
 		self.loop_get_stats.start()
@@ -160,10 +158,8 @@ class Stats(commands.Cog):
 			data["videos"] = '{:,}'.format(len(media["videos"]))
 
 			# Discord info
-			with open("resources/settings.json", 'r') as f:
-				settings = json.load(f)
 			data["members"] = '{:,}'.format(interaction.guild.member_count)
-			data["version"] = settings["version"]
+			data["version"] = self.client.settings["version"]
 			
 			# Create image
 			filepath = ii.create_stats_image(data)
@@ -187,7 +183,7 @@ class Stats(commands.Cog):
 		if potential != None:
 			return
 
-		stats = sd.get_downloads(self.keys["cf-key"])
+		stats = sd.get_downloads(self.client.keys["cf-key"])
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			current_date, $1, $2, $3, $4, $5, $6, $7

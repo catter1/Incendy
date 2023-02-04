@@ -27,8 +27,7 @@ class Basic(commands.Cog):
     async def cog_load(self):
         self.change_presence.start()
         self.webchan = self.client.get_channel(917905247056306246)
-        with open("resources/settings.json", 'r') as f:
-            self.textlinks = json.load(f)["textlinks"]
+        self.textlinks = self.client.settings["textlinks"]
         print(f' - {self.__cog_name__} cog loaded.')
 
     async def cog_unload(self):
