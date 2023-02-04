@@ -4,10 +4,18 @@ import json
 import nltk
 import requests
 import shutil
+import logging
+import asyncpg
+import asyncio
+import functools
+import itertools
+import typing
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
+from time import perf_counter
 from mediawiki import MediaWiki, MediaWikiPage
 from nltk.tokenize import sent_tokenize
+from thefuzz import process
 from resources import incendy
 
 class Wiki(commands.Cog):
@@ -16,66 +24,58 @@ class Wiki(commands.Cog):
 
 	async def cog_load(self):
 		#nltk.download('punkt', quiet=True)
+		#self.loop_get_wiki.start()
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
+		#self.loop_get_wiki.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
-	@app_commands.command(name="wiki", description="Explore the Stardust Labs Wiki!")
-	@incendy.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
-	async def wiki(self, interaction: discord.Interaction):
-		""" /wiki """
+	### LOOPS ###
 
-		embed = discord.Embed(
-			title="Wiki Surfer (Beta)",
-			description="Thanks to <@234748321258799104> and our <@1035916805794955295>s, Stardust Labs has an amazing Wiki for all its projects! This command allows you to search the entire Wiki for whatever information your looking for, and then returning some of the information, as well as links!\n\nPress one of the button below to get started! (Warning: the \"Search Wiki!\" button can sometimes take a **long** time to load - be patient!)",
-			color=discord.Colour.brand_red()
-		)
+	# Thank you SO: https://stackoverflow.com/questions/65881761/discord-gateway-warning-shard-id-none-heartbeat-blocked-for-more-than-10-second
+	@tasks.loop(hours=8.0)
+	async def loop_get_wiki(self):
+		start = perf_counter()
+		db_values = await self.get_wiki_content()
+		await self.client.db.execute('TRUNCATE wiki;')
+		await self.client.db.executemany('INSERT INTO wiki (pageid, title, description, pageurl, imgurl, pagedata) VALUES($1, $2, $3, $4, $5, $6);', db_values)
+		stop = perf_counter()
+		logging.info(f"Successfully updated the WIKI table. Took {stop - start} seconds ({(stop - start)/60.0} minutes)!")
 
-		await interaction.response.send_message(embed=embed, view=SearchView(self.client.miraheze))
+	@loop_get_wiki.before_loop
+	async def before_change_presence(self):
+		await self.client.wait_until_ready()
 
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CommandOnCooldown):
-			await interaction.response.send_message("Yikes! " + str(error) + ".", ephemeral=True)
-		elif isinstance(error, app_commands.CheckFailure):
-			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
-		else:
-			raise error
+	### OTHER FUNCTIONS ###
 
-class SearchView(discord.ui.View):
-	def __init__(self, miraheze, external: str = "View Wiki Webpage", url: str = "https://stardustlabs.miraheze.org/wiki/Main_page"):
-		super().__init__(timeout=None)
-		self.add_item(SearchButton(miraheze))
-		self.add_item(discord.ui.Button(style=discord.ButtonStyle.url, label=external, url=url))
+	def to_thread(func: typing.Callable) -> typing.Coroutine:
+		@functools.wraps(func)
+		async def wrapper(*args, **kwargs):
+			return await asyncio.to_thread(func, *args, **kwargs)
+		return wrapper
 
-class SearchButton(discord.ui.Button['Wiki']):
-	def __init__(self, miraheze):
-		super().__init__(style=discord.ButtonStyle.green, label='Search Wiki!', emoji='<:miraheze:890077957069111316>')
-		self.miraheze = miraheze
-	
-	async def callback(self, interaction: discord.Interaction):
-		await interaction.response.send_modal(SearchText(self.miraheze))
+	@to_thread
+	def get_wiki_content(self) -> list:
+		# ### STRUCTURE OF PAGE LIST FOR DB ENTRY ###
+		"""
+		{
+			title: {
+				"pageid": pageid,
+				"description": description,
+				"pageurl": page_url,
+				"imgurl": image_url,
+				"pagedata": {
+					...
+				}
+			}
+		}
+		"""
 
-class SearchText(discord.ui.Modal, title='Search Box'):
-	def __init__(self, miraheze: MediaWiki):
-		super().__init__()
-		self.miraheze = miraheze
-
-	search_term = discord.ui.TextInput(
-		label='Search the Wiki',
-		style=discord.TextStyle.short,
-		placeholder='Enter your search here...',
-		required=True,
-		max_length=50
-	)
-
-	async def on_submit(self, interaction: discord.Interaction):
-		def get_image(info: dict) -> str | None:
-			if info["pageprops"].get("image") == None:
+		# Never-nester functions
+		def get_image_url(imgname: str) -> str:
+			if imgname == None:
 				return None
-			imgname = info["pageprops"]["image"]
-
 			if imgname.startswith("File:"):
 				imgname = imgname.split(":")[1]
 
@@ -90,103 +90,21 @@ class SearchText(discord.ui.Modal, title='Search Box'):
 					"ailimit": "1"
 				}
 			).json()
+
+			if not resp.get("query"):
+				return None
 			
-			#if resp["query"]["allimages"][0]["title"] == info["pageprops"].get("image"):
-			return resp["query"]["allimages"][0]["url"]
-			#else
-			#return None
-		
-		# Get search result titles
-		results = self.miraheze.search(self.search_term.value, results=10)
-		titles = "|".join(results)
-		
-		# Do we have results?
-		if len(results) == 0:
-			embed = discord.Embed(
-				color=discord.Colour.brand_red(),
-				title=f"Page Results: {self.search_term.value}",
-				description="Oops! I found **no results** relating to your search. Click the button below to try again."
-			)
-			await interaction.response.send_message(embed=embed, view=SearchView(self.miraheze), ephemeral=True)
-			return
+			url = resp["query"]["allimages"][0]["url"] 
+			return url
 
-		# Continue, but wait...
-		await interaction.response.defer(thinking=True, ephemeral=True)
-
-		# Create Embed
-		embed = discord.Embed(
-			color=discord.Colour.brand_red(),
-			title=f"Page Results: {self.search_term.value}",
-			description="After searching the Stardust Labs Wiki, these are the pages I found matching your search! Select one of the buttons below to get an overview of that page."
-		)
-		file = discord.File("assets/Wiki_Banner.png", filename="image.png")
-		embed.set_image(url="attachment://image.png")
-		
-		# Get info based on each title
-		payload = self.miraheze.wiki_request({"action":"query", "prop":"pageprops", "titles":titles, "format":"json"})["query"]["pages"]
-		table = {}
-		for pageid, info in payload.items():
-			page = self.miraheze.page(pageid=pageid)
-
-			if page.pageid not in [key for key in table.keys()]:
-				table[page.pageid] = {
-					"page": page,
-					"title": page.title.title(),
-					"imagefile":get_image(info)
-				}
-
-		# Get all the content for each page
-		data = {}
-		payload = self.miraheze.wiki_request({"action":"parse", "pageid":page.pageid})
-		for section in payload["parse"]["sections"]:
-			title = section["line"]
-			data[title] = {
-				"content": page.section(title),
-				"toclevel": section["toclevel"]
-			}
-
-		# Create all the buttons
-		buttons = []
-		for key in table.keys():
-			buttons.append(
-				PageSelectButton(
-					miraheze=self.miraheze,
-					page=table[key]["page"],
-					data=data,
-					pagetitle=table[key]["title"],
-					imagelink=table[key]["imagefile"]
-				)
-			)
-
-		view = WikiView(buttons=buttons)
-		await interaction.followup.send(embed=embed, file=file, view=view, ephemeral=True)
-		
-	async def on_error(self, interaction: discord.Interaction, error: Exception):
-		await interaction.followup.send('Oops! Something went wrong. Let catter know if the error persists.', ephemeral=True)
-		raise error
-
-class WikiView(discord.ui.View):
-	def __init__(self, buttons: list[discord.ui.Button]):
-		super().__init__(timeout=None)
-
-		for button in buttons:
-			self.add_item(button)
-
-class PageSelectButton(discord.ui.Button):
-	def __init__(self, miraheze: MediaWiki, page: MediaWikiPage, data: dict, pagetitle: str, imagelink: str):
-		super().__init__(
-			style=discord.ButtonStyle.green,
-			label=pagetitle
-		)
-		self.miraheze = miraheze
-		self.page = page
-		self.data = data
-		self.pagetitle = pagetitle
-		self.imagelink = imagelink
-	
-	async def callback(self, interaction: discord.Interaction):
-		def get_content(content: str) -> str:
-			sentences = sent_tokenize(content)
+		def get_section_content(page: MediaWikiPage, title: str) -> str:
+			section = page.section(title)
+			if section == None:
+				return None
+			if section.strip() == "" or section.strip() == "WIP":
+				return None
+			
+			sentences = sent_tokenize(section)
 			count = min(len(sentences), 3)
 			diff = len(sentences) - count
 
@@ -198,20 +116,167 @@ class PageSelectButton(discord.ui.Button):
 			
 			final_content = " ".join(sentences)
 			return final_content
+			
 
-		# Create Embed
+		# Get all page titles in wiki
+		pages_raw = self.client.miraheze.wiki_request({"action":"query", "list":"allpages", "apfilterredir":"nonredirects", "aplimit":500, "format":"json"})
+		pages = {
+			page["title"]: {"pageid": page["pageid"]} #Sets title and pageid
+			for page in pages_raw["query"]["allpages"]
+			if not (page["title"].startswith("Widget:") or page["title"].endswith("/en"))
+		}
+
+		# First loop: get info!
+		for item in pages.keys():
+			# Get page properties per title
+			pageprops = self.client.miraheze.wiki_request({"action":"query", "prop":"pageprops", "titles":item, "format":"json"})["query"]["pages"][str(pages[item]["pageid"])]["pageprops"]
+			pages[item]["description"] = pageprops["description"] # Sets the description
+
+			# Do a bunch of pain to find the image url, and set it
+			imgname = pageprops.get("image")
+			pages[item]["imgurl"] = get_image_url(imgname)
+
+			# Get the page content
+			pagedata = {}
+			page = self.client.miraheze.page(pageid=pages[item]["pageid"])
+			sections = self.client.miraheze.wiki_request({"action":"parse", "pageid":pages[item]["pageid"], "format":"json"})["parse"]["sections"]
+			pages[item]["pageurl"] = page.url # Sets the pageurl
+
+			# Now, get the section content
+			for section in sections:
+				# Only if the section is important, continue
+				if section["toclevel"] < 4:
+					title = section["line"]
+					section = get_section_content(page, title)
+					if section != None:
+						pagedata[title.title()] = get_section_content(page, title)
+
+			# Set the page data
+			pages[item]["pagedata"] = json.dumps(pagedata)
+		
+		# Second loop: format info for the DB!
+		# pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON
+		db_values = []
+		for item in pages.keys():
+			value = (pages[item]["pageid"], item, pages[item]["description"], pages[item]["pageurl"], pages[item]["imgurl"], pages[item]["pagedata"])
+			db_values.append(value)
+
+		# ...and for the grand finale: return the values!
+		return db_values
+
+
+	### COMMANDS ###
+
+	wiki_group = app_commands.Group(name='wiki', description='Various commands regarding the wiki')
+
+	@wiki_group.command(name="search", description="Explore the Stardust Labs Wiki!")
+	@incendy.in_bot_channel()
+	async def search(self, interaction: discord.Interaction):
+		""" /wiki search """
+
 		embed = discord.Embed(
-			title=self.pagetitle,
-			description=get_content(self.page.summary),
+			title="Wiki Surfer",
+			description="Thanks to <@234748321258799104> and our other Wiki Contributors, Stardust Labs has an amazing Wiki for all its projects! Too lazy to click on the website link and search there? This command allows you to search the entire Wiki for whatever information your looking for and display it here in Discord instead.\n\nPress one of the button below to get started!",
 			color=discord.Colour.brand_red()
 		)
 
-		# Get/set image
-		file = None
-		if self.imagelink:
-			ext = self.imagelink.split('.')[-1]
-			filepath = f"tmp/{self.pagetitle}.{ext}"
-			resp = requests.get(self.imagelink, stream=True)
+		view = SearchView(self.client.db)
+		await interaction.response.send_message(embed=embed, view=view)
+
+class SearchView(discord.ui.View):
+	def __init__(self, db: asyncpg.Pool, label: str = "View Wiki Webpage", url: str = "https://stardustlabs.miraheze.org/wiki/Main_page"):
+		super().__init__(timeout=None)
+		self.add_item(SearchButton(db))
+		self.add_item(discord.ui.Button(style=discord.ButtonStyle.url, label=label, url=url))
+
+class SearchButton(discord.ui.Button):
+	def __init__(self, db: asyncpg.Pool):
+		super().__init__(style=discord.ButtonStyle.green, label='Search Wiki!', emoji='<:miraheze:890077957069111316>')
+		self.db = db
+	
+	async def callback(self, interaction: discord.Interaction):
+		await interaction.response.send_modal(SearchText(self.db))
+
+class SearchText(discord.ui.Modal, title='Search Box'):
+	def __init__(self, db: asyncpg.Pool):
+		super().__init__()
+		self.db = db
+
+	search_term = discord.ui.TextInput(
+		label='Search the Wiki',
+		style=discord.TextStyle.short,
+		placeholder='Enter your search here...',
+		required=True,
+		max_length=50
+	)
+
+	async def on_submit(self, interaction: discord.Interaction):
+		# Get all titles and perform a fuzzy search
+		all_titles = [record['title'] for record in await self.db.fetch('SELECT title FROM wiki;')]
+		titles = [
+					result[0]
+					for result in process.extract(
+						self.search_term.value,
+						all_titles,
+						limit=10
+					)
+					if result[1] > 80
+				]
+		
+		# If didn't find any, say so
+		if len(titles) == 0:
+			embed = discord.Embed(
+				color=discord.Colour.brand_red(),
+				title=f"Page Results: {self.search_term.value}",
+				description="Oops! I found **no results** relating to your search. Click the button below to try again."
+			)
+			await interaction.response.edit_message(embed=embed, view=SearchView(self.db), attachments=[])
+			return
+
+		# Create the list of buttons
+		buttons = []
+		for title in titles:
+			buttons.append(PageButton(self.db, label=title))
+
+		# Create embed to display buttons
+		embed = discord.Embed(
+			color=discord.Colour.brand_red(),
+			title=f"Page Results: {self.search_term.value}",
+			description="After searching the Stardust Labs Wiki, these are the pages that match closest to your search term! Select one of the buttons below to get an overview of that page."
+		)
+		file = discord.File("assets/Wiki_Banner.jpg", filename="image.jpg")
+		embed.set_image(url="attachment://image.jpg")
+
+		await interaction.response.edit_message(embed=embed, view=WikiView(buttons=buttons), attachments=[file])
+
+class PageButton(discord.ui.Button):
+	def __init__(self, db: asyncpg.Pool, label: str | None = None):
+		super().__init__(style=discord.ButtonStyle.green, label=label)
+		self.db = db
+		self.title = label
+
+	async def callback(self, interaction: discord.Interaction):
+		data = await self.db.fetchrow('SELECT * FROM wiki WHERE title = $1;', self.title)
+		pagedata = json.loads(data["pagedata"])
+		
+		# Main embed init
+		embed = discord.Embed(
+			title=self.title,
+			color=discord.Colour.brand_red(),
+			description=data["description"]
+		)
+
+		# Set information fields
+		for section in itertools.islice(pagedata, 6):
+			embed.add_field(name=section, value=pagedata[section], inline=False)
+		if len(pagedata.keys()) > 6:
+			embed.add_field(name="...", value="This wiki page has too much information to display in Discord! Click the button below to view the page in a web browser.")
+
+		# Magic to set the image
+		if data["imgurl"]:
+			ext = data["imgurl"].split('.')[-1]
+			filepath = f"tmp/{self.title}.{ext}"
+			resp = requests.get(data["imgurl"], stream=True)
 			if resp.status_code == 200:
 				with open(filepath, 'wb') as f:
 					resp.raw.decode_content = True
@@ -219,26 +284,21 @@ class PageSelectButton(discord.ui.Button):
 
 				file = discord.File(filepath, filename=f"image.{ext}")
 				embed.set_image(url=f"attachment://image.{ext}")
-
-		# Add Section info
-		for key in self.data.keys():
-			if self.data[key]["toclevel"] < 4:
-				content = self.data[key]["content"]
-				if content == None:
-					continue
-				if content.strip() != "" and content.strip() != "WIP":
-					embed.add_field(
-						name=key,
-						value=get_content(self.data[key]["content"]),
-						inline=False
-					)
-
-		# Edit message
-		if file:
-			await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.miraheze, f"View {self.pagetitle} Wikipage", self.page.url))
-			os.remove(filepath)
 		else:
-			await interaction.response.edit_message(embed=embed, attachments=[], view=SearchView(self.miraheze, f"View {self.pagetitle} Wikipage", self.page.url))
+			file = None
+			embed.set_image(file)
+
+		# Send the message!
+		await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
+		if file:
+			os.remove(filepath)
+
+class WikiView(discord.ui.View):
+	def __init__(self, buttons: list[discord.ui.Button]):
+		super().__init__(timeout=None)
+
+		for button in buttons:
+			self.add_item(button)
 
 async def setup(client):
 	await client.add_cog(Wiki(client))

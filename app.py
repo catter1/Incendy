@@ -57,9 +57,17 @@ async def run():
 		client.db = await asyncpg.create_pool(**credentials)
 		client.miraheze = MediaWiki(
 			url="https://stardustlabs.miraheze.org/w/api.php",
-			user_agent="catter1/Incendy (catter@zenysis.net)"
+			user_agent=keys["wiki-user-agent"]
 		)
-		await client.start(keys["incendy-token"])
+		client.miraheze.login(
+			username=keys["wiki-username"],
+			password=keys["wiki-password"]
+		)
+		
+		client.settings = settings
+		client.keys = keys
+
+		await client.start(keys["dummy-token"])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
@@ -87,6 +95,9 @@ async def setup_hook():
 	# Downloads Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS day_index ON downloads (day);')
+
+	# Wiki Table
+	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 
 @client.command(name="sync")
 @incendy.is_catter()
@@ -179,7 +190,7 @@ async def on_message(message: discord.Message):
 	await client.process_commands(message)
 
 try:
-	loop = asyncio.get_event_loop()
+	loop = asyncio.new_event_loop()
 	loop.run_until_complete(run())
 except KeyboardInterrupt:
 	print("Incendy shutting down...")
