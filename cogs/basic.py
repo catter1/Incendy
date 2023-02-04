@@ -27,7 +27,8 @@ class Basic(commands.Cog):
         self.change_presence.start()
 
         self.webchan = self.client.get_channel(917905247056306246)
-        self.textlinks = self.client.settings["textlinks"]
+        with open('resources/textlinks.json', 'r') as f:
+            self.textlinks = json.load(f)
 
         resp = requests.get("https://misode.github.io/sitemap.txt")
         self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
@@ -313,7 +314,7 @@ class Basic(commands.Cog):
                     await message.add_reaction('👋')
 
             #Textlinks
-            matches = re.findall(r"[\[]{2}(\w[\w ]+\w)?[\]]{2}", message.content)
+            matches = re.findall(r"[\[]{2}(\w[\w |]+\w)?[\]]{2}", message.content)
             if len(matches) > 0:
                 for match in matches:
                     if match.lower() in [textlink for textlink in self.textlinks]:
@@ -322,9 +323,7 @@ class Basic(commands.Cog):
                         if "misode" in match.split("|")[0].lower():
                             page = match.split("|")[-1].lower().replace(" ", "-")
                             if page in self.misode_urls.keys():
-                                await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>")
-
-
+                                await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>", mention_author=False)
 
             #Pastebin feature
             if len(message.attachments) > 0:
