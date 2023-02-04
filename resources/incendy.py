@@ -51,7 +51,7 @@ def can_edit_wiki():
 	"""Is Wiki Contributor, Photographer, or higher"""
 
 	def wiki_editor(interaction: discord.Interaction):
-		if any([role.id for role in interaction.user.roles if role.id in any[749701703938605107, 885719021176119298, 871230128708010044, 1035916805794955295, 749701703938605107, 862343886864384010]]):
+		if any([role.id for role in interaction.user.roles if role.id in any([749701703938605107, 885719021176119298, 871230128708010044, 1035916805794955295, 749701703938605107, 862343886864384010])]):
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True
