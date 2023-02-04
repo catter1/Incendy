@@ -12,7 +12,6 @@ class Bulletin(commands.Cog):
 	
 	async def cog_load(self):
 		print(f' - {self.__cog_name__} cog loaded.')
-		self.servchan = self.client.get_channel(756923587339878420)
 		
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')
@@ -106,7 +105,7 @@ class Bulletin(commands.Cog):
 			if image.content_type != "image/jpeg" and image.content_type != "image/png":
 				await interaction.response.send_message("Your attachment is not a valid image! It must be a png, jpg, or jpeg. Try again.", ephemeral=True)
 
-		modal = ServerDesc(self.servchan, image)
+		modal = ServerDesc(self.client, image)
 		await interaction.response.send_modal(modal)
 	
 	@app_commands.command(name="stardustmc", description="[ADMIN] Prints the StardustMC info channel")
@@ -306,10 +305,10 @@ class Cave(discord.ui.View):
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.1)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/cave-tweaks/files'))
 
 class ServerDesc(discord.ui.Modal, title='Server Info'):
-	def __init__(self, servchan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]], image: discord.Attachment):
+	def __init__(self, client: incendy.IncendyBot, image: discord.Attachment):
 		super().__init__(timeout=600.0)
 		self.image = image
-		self.servchan = servchan
+		self.servchan = client.get_channel(756923587339878420)
 	
 	server_name = discord.ui.TextInput(
         label='Your server\'s name',
@@ -337,7 +336,7 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
         style=discord.TextStyle.short,
         placeholder='Insert Discord link here...',
         required=False,
-        max_length=30
+        max_length=60
     )
 
 	async def on_submit(self, interaction: discord.Interaction):
