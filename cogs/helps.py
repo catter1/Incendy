@@ -212,7 +212,7 @@ async def update_content(index: str) -> tuple:
 				('help', 'Display this help menu'),
 				('faq <q> [public=None]', 'Choose from a large list of FAQs to display'),
 				('qp <post>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
-				('wiki', 'Search Stardust Labs\' wiki through Incendy')
+				('wiki <action>', 'Do various **action**s through the Stardust Labs\' wiki, such as searching or uploading images')
 			)
 		case "2":
 			entries = (
@@ -220,10 +220,12 @@ async def update_content(index: str) -> tuple:
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
 				('discord <server>', 'Sends the Discord invite link from a list of datapack-relevant Discord server'),
-				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days')
+				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
+				('textlinks', 'Displays all available textlinks')
 			)
 		case "3":
 			entries = (
+				('changelog', 'View Incendy\'s changelog'),
 				('feedback', 'Send feedback about Incendy so she can improve herself'),
 				('incendy', 'Shows information about Incendy'),
 				('ping', 'Shows you your connection latency'),
