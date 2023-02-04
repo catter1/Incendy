@@ -15,7 +15,6 @@ class Basic(commands.Cog):
     def __init__(self, client: incendy.IncendyBot):
         self.client = client
         self.translator = googletrans.Translator()
-        self.version = '3.0.0_BETA'
 
         self.translate_app = app_commands.ContextMenu(
             name='Translate to English',
@@ -26,8 +25,13 @@ class Basic(commands.Cog):
     
     async def cog_load(self):
         self.change_presence.start()
+
         self.webchan = self.client.get_channel(917905247056306246)
         self.textlinks = self.client.settings["textlinks"]
+
+        resp = requests.get("https://misode.github.io/sitemap.txt")
+        self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
+
         print(f' - {self.__cog_name__} cog loaded.')
 
     async def cog_unload(self):
@@ -308,12 +312,18 @@ class Basic(commands.Cog):
                 else:
                     await message.add_reaction('👋')
 
-            #Linking feature
+            #Textlinks
             matches = re.findall(r"[\[]{2}(\w[\w ]+\w)?[\]]{2}", message.content)
             if len(matches) > 0:
                 for match in matches:
                     if match.lower() in [textlink for textlink in self.textlinks]:
                         await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
+                    elif "|" in match:
+                        if "misode" in match.split("|")[0].lower():
+                            page = match.split("|")[-1].lower().replace(" ", "-")
+                            if page in self.misode_urls.keys():
+                                await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>")
+
 
 
             #Pastebin feature
