@@ -3,6 +3,7 @@ import os
 import json
 import nltk
 import requests
+import urllib.parse
 import shutil
 import logging
 import asyncpg
@@ -169,6 +170,30 @@ class Wiki(commands.Cog):
 
 	wiki_group = app_commands.Group(name='wiki', description='Various commands regarding the wiki')
 
+	@wiki_group.command(name="upload", description="Allows Photographers and Wiki Contributors to upload a photo to the wiki.")
+	@incendy.can_edit_wiki()
+	@app_commands.describe(
+		name="The name of the image",
+		image="The image itself. Must be png, jpg, or jpeg."
+	)
+	async def _upload(self, interaction: discord.Interaction, name: str, image: discord.Attachment):
+		""" /wiki upload """
+		
+		if image.content_type != "image/jpeg" and image.content_type != "image/png":
+			await interaction.response.send_message("Your attachment is not a valid image! It must be a png, jpg, or jpeg. Try again.", ephemeral=True)
+
+		headers = {"User-Agent": self.client.keys["wiki-user-agent"], "Content-Type":"application/x-www-form-urlencoded"}
+		url = "https://stardustlabs.miraheze.org/w/api.php"
+
+		csrf_params = {"action":"query", "meta":"tokens", "type":"csrf", "format":"json"}
+		csrf_token = self.client.wiki_session.post(url=url, data=csrf_params, headers=headers).json()["query"]["tokens"]["csrftoken"]
+
+		img_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{image.filename.split('.')[-1]}", "url":image.url, "format":"json", "token":csrf_token}
+		img_resp = self.client.wiki_session.post(url=url, data=img_params, headers=headers)
+
+		print(img_resp.text)
+		await interaction.response.send_message("done")
+
 	@wiki_group.command(name="search", description="Explore the Stardust Labs Wiki!")
 	@incendy.in_bot_channel()
 	async def search(self, interaction: discord.Interaction):
@@ -220,7 +245,7 @@ class SearchText(discord.ui.Modal, title='Search Box'):
 						all_titles,
 						limit=10
 					)
-					if result[1] > 80
+					if result[1] > 70
 				]
 		
 		# If didn't find any, say so
@@ -286,12 +311,13 @@ class PageButton(discord.ui.Button):
 				embed.set_image(url=f"attachment://image.{ext}")
 		else:
 			file = None
-			embed.set_image(file)
 
 		# Send the message!
-		await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
 		if file:
+			await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
 			os.remove(filepath)
+		else:
+			await interaction.response.edit_message(embed=embed, attachments=[], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
 
 class WikiView(discord.ui.View):
 	def __init__(self, buttons: list[discord.ui.Button]):

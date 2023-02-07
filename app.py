@@ -5,6 +5,7 @@ import os
 import json
 import asyncio
 import asyncpg
+import requests
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
@@ -54,18 +55,27 @@ cog_list = sorted([
 # Start everything up!
 async def run():
 	try:
+		client.settings = settings
+		client.keys = keys
+
+		wiki_session = requests.Session()
+		base_url = "https://stardustlabs.miraheze.org/w/api.php"
+		token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
+		login_token = wiki_session.get(url=base_url, params=token_params).json()['query']['tokens']['logintoken']
+		login_params = {'action': "clientlogin", 'username': keys['wiki-username'], 'password': keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
+		resp = wiki_session.post(url=base_url, data=login_params).json()
+
+		if resp['clientlogin']['status'] == 'PASS':
+			logging.info("Successfully logged into Miraheze Wiki")
+		else:
+			logging.error("Could not log into Miraheze Wiki")
+
 		client.db = await asyncpg.create_pool(**credentials)
+		client.wiki_session = wiki_session
 		client.miraheze = MediaWiki(
 			url="https://stardustlabs.miraheze.org/w/api.php",
 			user_agent=keys["wiki-user-agent"]
 		)
-		client.miraheze.login(
-			username=keys["wiki-username"],
-			password=keys["wiki-password"]
-		)
-		
-		client.settings = settings
-		client.keys = keys
 
 		await client.start(keys["dummy-token"])
 	except KeyboardInterrupt:
