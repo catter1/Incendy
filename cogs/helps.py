@@ -187,9 +187,9 @@ async def do_button(self, interaction: discord.Interaction):
 
 async def get_index(index: str, is_admin: bool) -> str:
 	# If the button presser ain't admin, reset them!
-	if int(index) > 4:
+	if int(index) > 3:
 		if not is_admin:
-			index = "4"
+			index = "3"
 
 	# This shouldn't happen, but just in case
 	if int(index) > 7:
