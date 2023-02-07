@@ -117,44 +117,44 @@ class Admin(commands.Cog):
             if current.replace(" ", "").lower() in project.replace(" ", "").lower()
         ]
 
-	@app_commands.command(name="update", description="Updates Terralith to the Seedfix website")
-	@app_commands.default_permissions(administrator=True)
-	@app_commands.checks.has_permissions(administrator=True)
-	async def update(self, interaction: discord.Interaction, version: str, datapack: discord.Attachment):
-		""" /update version """
-		await interaction.response.send_message("Do not use this command! Instead, use `/github`.", ephemeral=True)
-		return
+	# @app_commands.command(name="update", description="Updates Terralith to the Seedfix website")
+	# @app_commands.default_permissions(administrator=True)
+	# @app_commands.checks.has_permissions(administrator=True)
+	# async def update(self, interaction: discord.Interaction, version: str, datapack: discord.Attachment):
+	# 	""" /update version """
+	# 	await interaction.response.send_message("Do not use this command! Instead, use `/github`.", ephemeral=True)
+	# 	return
 
-		url = datapack.url
-		r = requests.get(url)
+	# 	url = datapack.url
+	# 	r = requests.get(url)
 
-		if 'v' not in version:
-			version = f'v{version}'
-		with open(f"Terralith_{version}.zip", "wb") as f:
-			f.write(r.content)
+	# 	if 'v' not in version:
+	# 		version = f'v{version}'
+	# 	with open(f"Terralith_{version}.zip", "wb") as f:
+	# 		f.write(r.content)
 
-		await interaction.channel.send("Updating Terralith now...")
+	# 	await interaction.channel.send("Updating Terralith now...")
 
-		os.mkdir("/home/catter/stardustSite/newterralith")
-		os.replace(f"{os.path.expanduser('~')}/bots/Incendy/Terralith_{version}.zip", f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip")
-		with ZipFile(f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip", "r") as zf:
-			zf.extractall(f"{os.path.expanduser('~')}/stardustSite/newterralith")
-		os.remove(f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip")
-		os.remove(f"{os.path.expanduser('~')}/stardustSite/overworld.json")
+	# 	os.mkdir("/home/catter/stardustSite/newterralith")
+	# 	os.replace(f"{os.path.expanduser('~')}/bots/Incendy/Terralith_{version}.zip", f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip")
+	# 	with ZipFile(f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip", "r") as zf:
+	# 		zf.extractall(f"{os.path.expanduser('~')}/stardustSite/newterralith")
+	# 	os.remove(f"{os.path.expanduser('~')}/stardustSite/newterralith/Terralith_{version}.zip")
+	# 	os.remove(f"{os.path.expanduser('~')}/stardustSite/overworld.json")
 
-		shutil.rmtree(f"{os.path.expanduser('~')}/stardustSite/terralith", ignore_errors=True)
-		shutil.rmtree(f"{os.path.expanduser('~')}/stardustSite/apiterralith", ignore_errors=True)
-		shutil.move(f"{os.path.expanduser('~')}/stardustSite/newterralith", f"{os.path.expanduser('~')}/stardustSite/terralith")
-		shutil.copytree(f"{os.path.expanduser('~')}/stardustSite/terralith", f"{os.path.expanduser('~')}/stardustSite/apiterralith")
-		shutil.copy(f"{os.path.expanduser('~')}/stardustSite/terralith/data/minecraft/dimension/overworld.json", f"{os.path.expanduser('~')}/stardustSite/overworld.json")
+	# 	shutil.rmtree(f"{os.path.expanduser('~')}/stardustSite/terralith", ignore_errors=True)
+	# 	shutil.rmtree(f"{os.path.expanduser('~')}/stardustSite/apiterralith", ignore_errors=True)
+	# 	shutil.move(f"{os.path.expanduser('~')}/stardustSite/newterralith", f"{os.path.expanduser('~')}/stardustSite/terralith")
+	# 	shutil.copytree(f"{os.path.expanduser('~')}/stardustSite/terralith", f"{os.path.expanduser('~')}/stardustSite/apiterralith")
+	# 	shutil.copy(f"{os.path.expanduser('~')}/stardustSite/terralith/data/minecraft/dimension/overworld.json", f"{os.path.expanduser('~')}/stardustSite/overworld.json")
 
-		with open(f"{os.path.expanduser('~')}/stardustSite/static/info.json", "r") as f:
-			data = json.load(f)
-		data["version"] = version
-		with open(f"{os.path.expanduser('~')}/stardustSite/static/info.json", "w") as f:
-			f.writelines(json.dumps(data, indent=2))
+	# 	with open(f"{os.path.expanduser('~')}/stardustSite/static/info.json", "r") as f:
+	# 		data = json.load(f)
+	# 	data["version"] = version
+	# 	with open(f"{os.path.expanduser('~')}/stardustSite/static/info.json", "w") as f:
+	# 		f.writelines(json.dumps(data, indent=2))
         
-		await interaction.response.send_message("Terralith successfully updated!")
+	# 	await interaction.response.send_message("Terralith successfully updated!")
 
 async def setup(client):
 	await client.add_cog(Admin(client))
