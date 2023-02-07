@@ -329,6 +329,12 @@ class Basic(commands.Cog):
 				else:
 					await message.add_reaction('👋')
 
+			#Pineapple Pin
+			if "pin" in message.content.lower():
+				if message.author.id == 234748321258799104:
+					await message.add_reaction('🍍')
+					await message.add_reaction('🧷')
+
 			#Textlinks
 			matches = re.findall(r"[\[]{2}(\w[\w |]+\w)?[\]]{2}", message.content)
 			if len(matches) > 0:
