@@ -7,13 +7,14 @@ from discord import app_commands
 from discord.ext import commands
 
 class IncendyBot(commands.Bot):
-	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, wiki_session: requests.Session = None, keys: dict = None, settings: dict = None):
+	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, wiki_session: requests.Session = None, keys: dict = None, settings: dict = None, environment: dict = None):
 		super().__init__(command_prefix=command_prefix, case_insensitive=True, intents=discord.Intents.all())
 		self.db = db
 		self.miraheze = miraheze
 		self.wiki_session = wiki_session
 		self.keys = keys
 		self.settings = settings
+		self.environment = environment
 
 def in_bot_channel():
 	"""Interaction is in bot channel"""

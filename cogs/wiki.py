@@ -25,11 +25,15 @@ class Wiki(commands.Cog):
 
 	async def cog_load(self):
 		#nltk.download('punkt', quiet=True)
-		#self.loop_get_wiki.start()
+		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
+			self.loop_get_wiki.start()
+		else:
+			logging.warn("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
-		#self.loop_get_wiki.stop()
+		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
+			self.loop_get_wiki.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	### LOOPS ###

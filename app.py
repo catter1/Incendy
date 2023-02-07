@@ -58,6 +58,12 @@ async def run():
 		client.settings = settings
 		client.keys = keys
 
+		client.environment = {}
+		env_token = os.environ.get("INCENDY_BOT_TOKEN")
+		client.environment["INCENDY_BOT_TOKEN"] = (env_token if env_token else "incendy-token")
+		client.environment["INCENDY_WIKI_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_WIKI_UPDATE_ENABLED"))) if os.environ.get("INCENDY_WIKI_UPDATE_ENABLED") else False)
+		client.environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
+
 		wiki_session = requests.Session()
 		base_url = "https://stardustlabs.miraheze.org/w/api.php"
 		token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
@@ -77,7 +83,8 @@ async def run():
 			user_agent=keys["wiki-user-agent"]
 		)
 
-		await client.start(keys["dummy-token"])
+		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
+		await client.start(keys[client.environment["INCENDY_BOT_TOKEN"]])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()

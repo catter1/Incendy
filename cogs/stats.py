@@ -2,6 +2,7 @@ import discord
 import json
 import os
 import time
+import logging
 from discord import app_commands
 from discord.ext import commands, tasks
 from resources import incendy
@@ -13,11 +14,15 @@ class Stats(commands.Cog):
 		self.client = client
 
 	async def cog_load(self):
-		self.loop_get_stats.start()
+		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
+			self.loop_get_wiki.start()
+		else:
+			logging.warn("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
-		self.loop_get_stats.stop()
+		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
+			self.loop_get_stats.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	### LOOPS ###
