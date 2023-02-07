@@ -186,6 +186,8 @@ class Wiki(commands.Cog):
 		if image.content_type != "image/jpeg" and image.content_type != "image/png":
 			await interaction.response.send_message("Your attachment is not a valid image! It must be a png, jpg, or jpeg. Try again.", ephemeral=True)
 
+		await interaction.response.defer(thinking=True)
+
 		headers = {"User-Agent": self.client.keys["wiki-user-agent"], "Content-Type":"application/x-www-form-urlencoded"}
 		url = "https://stardustlabs.miraheze.org/w/api.php"
 
@@ -193,10 +195,20 @@ class Wiki(commands.Cog):
 		csrf_token = self.client.wiki_session.post(url=url, data=csrf_params, headers=headers).json()["query"]["tokens"]["csrftoken"]
 
 		img_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{image.filename.split('.')[-1]}", "url":image.url, "format":"json", "token":csrf_token}
-		img_resp = self.client.wiki_session.post(url=url, data=img_params, headers=headers)
+		img_resp = self.client.wiki_session.post(url=url, data=img_params, headers=headers).json()
 
-		print(img_resp.text)
-		await interaction.response.send_message("done")
+		if not img_resp.get("upload"):
+			await interaction.followup.send("There was an error uploading your image!", ephemeral=True)
+			logging.error("Could not upload image to Wiki!")
+			logging.error(img_resp)
+			return
+		if img_resp["upload"]["result"] != "Success":
+			await interaction.followup.send("There was an error uploading your image!", ephemeral=True)
+			logging.error("Could not upload image to Wiki!")
+			logging.error(img_resp)
+			return
+		
+		await interaction.followup.send(f"Your image has successfully been uploaded to the wiki! You can view it here: {img_resp['upload']['imageinfo']['url']}", ephemeral=False)
 
 	@wiki_group.command(name="search", description="Explore the Stardust Labs Wiki!")
 	@incendy.in_bot_channel()
