@@ -71,7 +71,9 @@ async def run():
 		login_params = {'action': "clientlogin", 'username': keys['wiki-username'], 'password': keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
 		resp = wiki_session.post(url=base_url, data=login_params).json()
 
-		if resp['clientlogin']['status'] == 'PASS':
+		if not resp.get('clientlogin'):
+			logging.error(resp)
+		elif resp['clientlogin']['status'] == 'PASS':
 			logging.info("Successfully logged into Miraheze Wiki")
 		else:
 			logging.error("Could not log into Miraheze Wiki")
