@@ -98,7 +98,7 @@ class Basic(commands.Cog):
 		]
 
 	@app_commands.command(name="ping", description="Shows you your latency")
-	#@app_commands.checks.dynamic_cooldown(incendy.short_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
 	async def ping(self, interaction: discord.Interaction):
 		""" /ping """
 
