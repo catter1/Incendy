@@ -306,19 +306,6 @@ class Moderation(commands.Cog):
 				# If a non-Stardust peep tries to purge, ignore
 				else:
 					await msg.remove_reaction(payload.emoji, payload.member)
-
-	@commands.Cog.listener()
-	async def on_message_delete(self, message: discord.Message):
-		if message.channel.guild.id == self.client.settings["stardust-guild-id"]:
-			embed = discord.Embed(
-				colour=discord.Colour.brand_red(),
-				description=message.content
-			)
-			embed.set_author(name=message.author.name, icon_url=message.author.avatar)
-			embed.add_field(name="", value=f"<#{message.channel.id}> **•** <t:{int(time.mktime(datetime.datetime.now().timetuple()))}:f>")
-
-			
-			await self.client.get_channel(1050021013431263264).send(embed=embed)#, files=message.attachments)
 	
 	@commands.Cog.listener()
 	async def on_message(self, message):
