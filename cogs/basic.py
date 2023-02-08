@@ -21,7 +21,6 @@ class Basic(commands.Cog):
 			callback=self._translate,
 		)
 		self.client.tree.add_command(self.translate_app)
-		self.client.tree.on_error = self.on_app_command_error
 	
 	async def cog_load(self):
 		self.change_presence.start()
@@ -99,7 +98,7 @@ class Basic(commands.Cog):
 		]
 
 	@app_commands.command(name="ping", description="Shows you your latency")
-	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
+	#@app_commands.checks.dynamic_cooldown(incendy.short_cd)
 	async def ping(self, interaction: discord.Interaction):
 		""" /ping """
 
@@ -115,7 +114,7 @@ class Basic(commands.Cog):
 		]
 		await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
-	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
 	async def _translate(self, interaction: discord.Interaction, message: discord.Message):
 		translation = self.translator.translate(message.content, dest='en')
 
@@ -141,8 +140,7 @@ class Basic(commands.Cog):
 		]
 
 	@app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
-	@app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
-	@incendy.in_bot_channel()
+	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
 	async def feedback(self, interaction: discord.Interaction):
 		feedback_chan = self.client.get_channel(747626471819968554)
 		await interaction.response.send_modal(Feedback(feedback_chan))
@@ -363,26 +361,6 @@ class Basic(commands.Cog):
 						logurl = json.loads(x.text)["url"]
 
 						await message.reply(f"{file.filename}: {logurl}", mention_author=False)
-	
-	### ERRORS ###
-
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CommandOnCooldown):
-			if interaction.command.name == "Translate to English":
-				await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
-			elif interaction.command.name == "feedback" or interaction.command.name == "reportad":
-				await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
-			else:
-				await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
-		elif isinstance(error, app_commands.CheckFailure):
-			if interaction.command.name == "feedback":
-				await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
-			elif interaction.command.name == "bug":
-				await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
-			else:
-				raise error
-		else:
-			raise error
 
 class Feedback(discord.ui.Modal, title='Incendy Feedback'):
 	def __init__(self, feedback_chan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]):

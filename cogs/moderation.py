@@ -18,7 +18,6 @@ class Moderation(commands.Cog):
 			callback=self.shutup_button,
 		)
 		self.client.tree.add_command(self.shutup_app)
-		self.client.tree.on_error = self.on_app_command_error
 
 	async def cog_load(self):
 		self.servchan = self.client.get_channel(756923587339878420)
@@ -356,11 +355,6 @@ class Moderation(commands.Cog):
 					users = list(map(strip_line, log.readlines()))
 					if users.count(str(message.author.id)) >= 2:
 						await message.channel.send("Please disable the ping on replies! https://tenor.com/view/discord-reply-discord-reply-off-discord-reply-gif-22150762")
-
-	### ERRORS ###
-
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		raise error
 
 async def setup(client):
 	await client.add_cog(Moderation(client))

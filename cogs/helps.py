@@ -71,15 +71,6 @@ class Helps(commands.Cog):
 
 			await thread.send(embed=embed)
 
-	### ERRORS ###
-
-	@close.error
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CheckFailure):
-			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
-		else:
-			raise error
-
 
 class HelpView(discord.ui.View):
 	def __init__(self):

@@ -307,13 +307,6 @@ class Faq(commands.Cog):
 
         return biomeids
 
-    ### ERRORS ###
-
-    @qp.error
-    async def on_cd_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.CommandOnCooldown):
-            await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
-
 ### BUTTONS ###
 
 class Compat(discord.ui.View):

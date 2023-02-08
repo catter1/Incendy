@@ -189,7 +189,7 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 		
 		await client.db.execute(query, interaction.user.id, command.name, interaction.created_at)
 
-@client.event
+@client.listen('on_message')
 async def on_message(message: discord.Message):
 	try:
 		if message.guild.id == settings["stardust-guild-id"]:
@@ -202,9 +202,28 @@ async def on_message(message: discord.Message):
 		logger.log(3, e)
 		logger.log(3, f"Message content: {message.content}")
 		logger.log(3, f"Message author: {message.author}")
-		
-	# >:(
-	await client.process_commands(message)
+
+@client.tree.error
+async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+	if isinstance(error, app_commands.CommandOnCooldown):
+		command = interaction.command.name
+		if command == "Translate to English":
+			await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
+		elif command in ["feedback", "reportad", "remindme"]:
+			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
+		else:
+			await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
+	elif isinstance(error, app_commands.CheckFailure):
+		if command in ["stats", "incendy", "changelog"]:
+			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
+		elif command == "bug":
+			await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
+		elif command == "close":
+			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
+		else:
+			raise error
+	else:
+		raise error
 
 try:
 	loop = asyncio.new_event_loop()
