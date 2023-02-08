@@ -21,7 +21,6 @@ class Moderation(commands.Cog):
 
 	async def cog_load(self):
 		self.servchan = self.client.get_channel(756923587339878420)
-		self.general = self.client.get_channel(771617249910849556)
 		self.to_be_banned = []
 		self.ping_check.start()
 		self.detect.start()
@@ -130,10 +129,10 @@ class Moderation(commands.Cog):
 
 	async def ban_hammer(self, message):
 		stardust_channel = self.client.get_channel(825941927215890502)
-		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.utcnow())
+		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
 		embed.set_author(name="Lmao, I caught someone being silly!")
 		embed.add_field(name=f"Here was {message.author.name}'s' silly message, censored for your convenience. \:)", value="||`" + message.content + "`||")
-		embed2 = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.utcnow())
+		embed2 = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
 		embed2.set_author(name=message.author.name)
 		embed2.add_field(name="Hey y'all!", value="I *probably* banned them correctly, but if I didn't... give the Stardust peeps a holler!")
 
@@ -308,11 +307,15 @@ class Moderation(commands.Cog):
 					await msg.remove_reaction(payload.emoji, payload.member)
 	
 	@commands.Cog.listener()
-	async def on_message(self, message):
+	async def on_message(self, message: discord.Message):
 		if not message.author.bot and not message.author.guild_permissions.administrator:
 
+			#Naughty spammers :3
+			if any([word.strip("\n") in message.content.lower() for word in self.naughty]):
+				await self.ban_hammer(message)
+
 			#No videos in #general
-			if message.channel == self.general:
+			if message.channel.id == 771617249910849556:
 				ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
 				if not [role.id for role in message.author.roles if role.id in ids]:
 					#pattern = re.compile(r'(http|ftp|https|www):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')
@@ -320,16 +323,13 @@ class Moderation(commands.Cog):
 					for item in message.attachments:
 						if item.content_type.split("/")[0] == "video":
 							await message.delete()
-							await self.general.send("Sorry, no videos allowed \:)")
+							await message.channel.send("Sorry, no videos allowed \:)")
+							return
 
 					#matches = pattern.finditer(message.content)
 					if any([word for word in message.content.split() if validators.url(word) and any([word for ext in ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp'] if word.endswith(ext)])]):
 						await message.delete()
-						await self.general.send("Sorry, no videos allowed \:)")
-
-			#Naughty spammers :3
-			if any([word.strip("\n") in message.content.lower() for word in self.naughty]):
-				await self.ban_hammer(message)
+						await message.channel.send("Sorry, no videos allowed \:)")
 
 			#PING
 			if 332701537535262720 in message.raw_mentions:
@@ -340,8 +340,8 @@ class Moderation(commands.Cog):
 						return x.strip("\n")
 
 					users = list(map(strip_line, log.readlines()))
-					if users.count(str(message.author.id)) >= 2:
-						await message.channel.send("Please disable the ping on replies! https://tenor.com/view/discord-reply-discord-reply-off-discord-reply-gif-22150762")
+					if users.count(str(message.author.id)) > 2:
+						await message.reply("Please disable the ping on replies! https://tenor.com/view/discord-reply-discord-reply-off-discord-reply-gif-22150762")
 
 async def setup(client):
 	await client.add_cog(Moderation(client))
