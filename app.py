@@ -5,6 +5,7 @@ import os
 import json
 import asyncio
 import asyncpg
+import requests
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
@@ -54,12 +55,41 @@ cog_list = sorted([
 # Start everything up!
 async def run():
 	try:
-		client.db = await asyncpg.create_pool(**credentials)
-		client.miraheze = MediaWiki(
-			url="https://stardustlabs.miraheze.org/w/api.php",
-			user_agent="catter1/Incendy (catter@zenysis.net)"
-		)
-		await client.start(keys["incendy-token"])
+		client.settings = settings
+		client.keys = keys
+
+		client.environment = {}
+		env_token = os.environ.get("INCENDY_BOT_TOKEN")
+		client.environment["INCENDY_BOT_TOKEN"] = (env_token if env_token else "incendy-token")
+		client.environment["INCENDY_WIKI_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_WIKI_UPDATE_ENABLED"))) if os.environ.get("INCENDY_WIKI_UPDATE_ENABLED") else False)
+		client.environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
+
+		wiki_session = requests.Session()
+		base_url = "https://stardustlabs.miraheze.org/w/api.php"
+		token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
+		login_token = wiki_session.get(url=base_url, params=token_params).json()['query']['tokens']['logintoken']
+		login_params = {'action': "clientlogin", 'username': keys['wiki-username'], 'password': keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
+		resp = wiki_session.post(url=base_url, data=login_params).json()
+
+		if not resp.get('clientlogin'):
+			logging.error(resp)
+		elif resp['clientlogin']['status'] == 'PASS':
+			logging.info("Successfully logged into Miraheze Wiki")
+		else:
+			logging.error("Could not log into Miraheze Wiki")
+
+		try:
+			client.db = await asyncpg.create_pool(**credentials)
+			client.wiki_session = wiki_session
+			client.miraheze = MediaWiki(
+				url="https://stardustlabs.miraheze.org/w/api.php",
+				user_agent=keys["wiki-user-agent"]
+			)
+		except TimeoutError as e:
+			raise e
+
+		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
+		await client.start(keys[client.environment["INCENDY_BOT_TOKEN"]])
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
@@ -87,6 +117,9 @@ async def setup_hook():
 	# Downloads Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS downloads(id SERIAL PRIMARY KEY, day DATE, terralith INT, incendium INT, nullscape INT, structory INT, towers INT, continents INT, amplified INT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS day_index ON downloads (day);')
+
+	# Wiki Table
+	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 
 @client.command(name="sync")
 @incendy.is_catter()
@@ -161,7 +194,7 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 		
 		await client.db.execute(query, interaction.user.id, command.name, interaction.created_at)
 
-@client.event
+@client.listen('on_message')
 async def on_message(message: discord.Message):
 	try:
 		if message.guild.id == settings["stardust-guild-id"]:
@@ -174,12 +207,31 @@ async def on_message(message: discord.Message):
 		logger.log(3, e)
 		logger.log(3, f"Message content: {message.content}")
 		logger.log(3, f"Message author: {message.author}")
-		
-	# >:(
-	await client.process_commands(message)
+
+@client.tree.error
+async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+	if isinstance(error, app_commands.CommandOnCooldown):
+		command = interaction.command.name
+		if command == "Translate to English":
+			await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
+		elif command in ["feedback", "reportad", "remindme", "apply"]:
+			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
+		else:
+			await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
+	elif isinstance(error, app_commands.CheckFailure):
+		if command in ["stats", "incendy", "changelog"]:
+			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
+		elif command == "bug":
+			await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
+		elif command == "close":
+			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
+		else:
+			raise error
+	else:
+		raise error
 
 try:
-	loop = asyncio.get_event_loop()
+	loop = asyncio.new_event_loop()
 	loop.run_until_complete(run())
 except KeyboardInterrupt:
 	print("Incendy shutting down...")

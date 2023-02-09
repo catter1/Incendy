@@ -138,15 +138,5 @@ class Remind(commands.Cog):
 
 		await interaction.response.send_message(f"Reminder successfully created! I will ping you in {time} with your reminder.")
 
-	### ERRORS ###
-	@remindme.error
-	async def on_cd_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CommandOnCooldown):
-			await interaction.response.send_message("Yikes! " + str(error) + ". You don't need *that* many reminders, do you?", ephemeral=True)
-		else:
-			print(error)
-			await interaction.response.send_message("An issue has ocurred! Let catter know if you continue experiencing issues.", ephemeral=True)
-
-
 async def setup(client):
 	await client.add_cog(Remind(client))

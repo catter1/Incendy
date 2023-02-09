@@ -64,22 +64,26 @@ class Helps(commands.Cog):
 	async def on_thread_create(self, thread):
 		if thread.parent_id == 1019651246078038128:
 			embed = discord.Embed(
-				colour=discord.Colour.brand_red(),
-				description="Thanks for creating a thread! Be patient, and we will answer your question when we are able to. In the meantime...\n\n• Check the FAQ by doing `/faq` to see if your question is already answered.\n• Did you **describe** your issue thoroughly?\n• Are relevant **logs** attached?\n• Is your thread **tagged** appropriately?\n• Ensure you've answered the questions outlined in our **Post Guidelines**.\n\nWhen your question is answered, please close it with `/close`. Thank you!"
+				colour=discord.Colour.brand_green(),
+				description="Thanks for creating a thread! Be patient, and we will answer your question when we are able to. In the meantime...\n\n• Check the FAQ by doing `/faq` to see if your question is already answered.\n• Did you **describe** your issue thoroughly?\n• Are relevant **logs** attached?\n• Is your thread **tagged** appropriately?\n• Ensure you've answered the questions outlined in our **Post Guidelines**.\n\nWhen your question is answered, please close it with `/close`, or click the button. Thank you!"
 			)
-			embed.set_author(name="Your Support Question", icon_url="https://cdn.discordapp.com/emojis/917599175259070474.png")
+			embed.set_author(name="Your Support Question", icon_url="https://cdn.discordapp.com/emojis/1058423314672013382.png")
 
-			await thread.send(embed=embed)
+			view = discord.ui.View()
+			view.add_item(CloseButton())
 
-	### ERRORS ###
+			await thread.send(embed=embed, view=view)
 
-	@close.error
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CheckFailure):
-			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
+class CloseButton(discord.ui.Button):
+	def __init__(self):
+		super().__init__(style=discord.ButtonStyle.green, label="Close Thread", emoji="🚫")
+
+	async def callback(self, interaction: discord.Interaction):
+		if isinstance(interaction.channel, discord.Thread) and (interaction.user.id == interaction.channel.owner_id or interaction.user.guild_permissions.administrator):
+			await interaction.response.send_message("Closing thread now. Thanks!")
+			await interaction.channel.edit(locked=True, archived=True)
 		else:
-			raise error
-
+			await interaction.response.send_message("Sorry, you don't have permission to close this thread!", ephemeral=True)
 
 class HelpView(discord.ui.View):
 	def __init__(self):
@@ -187,9 +191,9 @@ async def do_button(self, interaction: discord.Interaction):
 
 async def get_index(index: str, is_admin: bool) -> str:
 	# If the button presser ain't admin, reset them!
-	if int(index) > 4:
+	if int(index) > 3:
 		if not is_admin:
-			index = "4"
+			index = "3"
 
 	# This shouldn't happen, but just in case
 	if int(index) > 7:
@@ -212,18 +216,21 @@ async def update_content(index: str) -> tuple:
 				('help', 'Display this help menu'),
 				('faq <q> [public=None]', 'Choose from a large list of FAQs to display'),
 				('qp <post>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
-				('wiki', 'Search Stardust Labs\' wiki through Incendy')
+				('wiki <search|upload>', 'Do various actions through the Stardust Labs\' wiki')
 			)
 		case "2":
 			entries = (
 				('bug <project>', '**Contributors only.** Opens a bug report for a Stardust Labs **project**'),
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
+				('datapack <analyze|mcmeta>', 'Various datapack development related commands'),
 				('discord <server>', 'Sends the Discord invite link from a list of datapack-relevant Discord server'),
-				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days')
+				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
+				('textlinks', 'Displays all available textlinks')
 			)
 		case "3":
 			entries = (
+				('changelog', 'View Incendy\'s changelog'),
 				('feedback', 'Send feedback about Incendy so she can improve herself'),
 				('incendy', 'Shows information about Incendy'),
 				('ping', 'Shows you your connection latency'),

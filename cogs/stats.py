@@ -2,6 +2,7 @@ import discord
 import json
 import os
 import time
+import logging
 from discord import app_commands
 from discord.ext import commands, tasks
 from resources import incendy
@@ -11,15 +12,17 @@ from resources import stardust_downloads as sd
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		with open("resources/keys.json", 'r') as f:
-			self.keys = json.load(f)
 
 	async def cog_load(self):
-		self.loop_get_stats.start()
+		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
+			self.loop_get_wiki.start()
+		else:
+			logging.warn("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
 		print(f' - {self.__cog_name__} cog loaded.')
 
 	async def cog_unload(self):
-		self.loop_get_stats.stop()
+		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
+			self.loop_get_stats.stop()
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	### LOOPS ###
@@ -160,10 +163,8 @@ class Stats(commands.Cog):
 			data["videos"] = '{:,}'.format(len(media["videos"]))
 
 			# Discord info
-			with open("resources/settings.json", 'r') as f:
-				settings = json.load(f)
 			data["members"] = '{:,}'.format(interaction.guild.member_count)
-			data["version"] = settings["version"]
+			data["version"] = self.client.settings["version"]
 			
 			# Create image
 			filepath = ii.create_stats_image(data)
@@ -187,7 +188,7 @@ class Stats(commands.Cog):
 		if potential != None:
 			return
 
-		stats = sd.get_downloads(self.keys["cf-key"])
+		stats = sd.get_downloads(self.client.keys["cf-key"])
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			current_date, $1, $2, $3, $4, $5, $6, $7
@@ -196,12 +197,6 @@ class Stats(commands.Cog):
 		await self.client.db.execute(
 			query, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified-nether"]
 		)
-
-	async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-		if isinstance(error, app_commands.CommandOnCooldown):
-			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
-		elif isinstance(error, app_commands.CheckFailure):
-			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
 
 async def setup(client):
 	await client.add_cog(Stats(client))

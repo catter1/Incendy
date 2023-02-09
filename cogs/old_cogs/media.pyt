@@ -11,16 +11,13 @@ from itertools import cycle
 from discord import FFmpegPCMAudio
 from discord.ext import commands, tasks
 from discord.ext.tasks import loop
+from resources import incendy
 
 class Media(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-	
-	with open('resources/keys.json', 'r') as f:
-		keys = json.load(f)
-	
-	twitch = Twitch(keys["twitch-id"], keys["twitch-secret"])
-	youtube = build('youtube', 'v3', developerKey=keys["youtube-key"])
+		twitch = Twitch(self.client.keys["twitch-id"], self.client.keys["twitch-secret"])
+		youtube = build('youtube', 'v3', developerKey=self.client.keys["youtube-key"])
 
 	async def cog_load(self):
 		print(f' - {self.__cog_name__} cog loaded.')

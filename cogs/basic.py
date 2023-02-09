@@ -15,412 +15,507 @@ class Basic(commands.Cog):
     def __init__(self, client: incendy.IncendyBot):
         self.client = client
         self.translator = googletrans.Translator()
-        self.version = '3.0.0_BETA'
 
-        self.translate_app = app_commands.ContextMenu(
-            name='Translate to English',
-            callback=self._translate,
-        )
-        self.client.tree.add_command(self.translate_app)
-        self.client.tree.on_error = self.on_app_command_error
-    
-    async def cog_load(self):
-        self.change_presence.start()
-        self.webchan = self.client.get_channel(917905247056306246)
-        with open("resources/settings.json", 'r') as f:
-            self.textlinks = json.load(f)["textlinks"]
-        print(f' - {self.__cog_name__} cog loaded.')
+		self.translate_app = app_commands.ContextMenu(
+			name='Translate to English',
+			callback=self._translate,
+		)
+		self.client.tree.add_command(self.translate_app)
+	
+	async def cog_load(self):
+		self.change_presence.start()
 
-    async def cog_unload(self):
-        self.change_presence.stop()
-        self.client.tree.remove_command(self.translate_app.name, type=self.translate_app.type)
-        print(f' - {self.__cog_name__} cog unloaded.')
+		self.webchan = self.client.get_channel(917905247056306246)
+		with open('resources/textlinks.json', 'r') as f:
+			self.textlinks = json.load(f)
 
-    @tasks.loop(seconds=1200.0)
-    async def change_presence(self):
-        projects = ["Terralith", "Incendium", "Nullscape", "Amplified Nether", "Structory", "Continents"]
-        if random.randint(0, 100) == 12:
-            game = discord.Game("Anvil Sand Farming")
-        else:
-            game = discord.Game(random.choice(projects))
-        await self.client.change_presence(activity=game)
+		resp = requests.get("https://misode.github.io/sitemap.txt")
+		self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
+		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
-    @change_presence.before_loop
-    async def before_change_presence(self):
-        await self.client.wait_until_ready()
+		print(f' - {self.__cog_name__} cog loaded.')
 
-    ### COMMANDS ###
+	async def cog_unload(self):
+		self.change_presence.stop()
+		self.client.tree.remove_command(self.translate_app.name, type=self.translate_app.type)
+		print(f' - {self.__cog_name__} cog unloaded.')
 
-    @app_commands.command(name="discord", description="Gets links for other Discord servers")
-    @app_commands.checks.dynamic_cooldown(incendy.default_cd)
-    @app_commands.describe(
-    	server="Discord server"
+	@tasks.loop(seconds=1200.0)
+	async def change_presence(self):
+		projects = ["Terralith", "Incendium", "Nullscape", "Amplified Nether", "Structory", "Continents"]
+		if random.randint(0, 100) == 12:
+			game = discord.Game("Anvil Sand Farming")
+		else:
+			game = discord.Game(random.choice(projects))
+		await self.client.change_presence(activity=game)
+
+	@change_presence.before_loop
+	async def before_change_presence(self):
+		await self.client.wait_until_ready()
+
+	### COMMANDS ###
+
+	@app_commands.command(name="apply", description="Send your interest in becoming a StardustMC Security member for Season 2")
+	@app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
+	@app_commands.describe(
+		ign="Your Minecraft username",
+		timezone="What is your timezone?"
 	)
-    async def _discord(self, interaction: discord.Interaction, server: str):
-        """ /discord [server] """
+	async def apply(self, interaction: discord.Interaction, ign: str, timezone: str):
+		"""/apply <ign> <timezone>"""
+
+		embed = discord.Embed(
+			title="Security Application",
+			color=discord.Colour.dark_blue(),
+			description=f"""
+			Minecraft Username: {ign}
+			Timezone: {timezone}
+			"""
+		)
+		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
+
+		channel = self.client.get_channel(1002216414335221841)
+		await channel.send(embed=embed)
+		await interaction.response.send_message("Thanks for your Security member application! Don't ask about your application - we will get back to you when we're ready.", ephemeral=True)
+
+	@app_commands.command(name="discord", description="Gets links for other Discord servers")
+	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
+	@app_commands.describe(
+		server="Discord server"
+	)
+	async def _discord(self, interaction: discord.Interaction, server: str):
+		""" /discord [server] """
 
         if not server.startswith("https://discord.gg/"):
             await interaction.response.send_message("Unknown error! Please try again.", ephemeral=True)
             return
-
+            
         await interaction.response.send_message(server)
 
-    @_discord.autocomplete('server')
-    async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        server_dict = {
-            "New In Town": "https://discord.gg/KvdmxHM",
-            "MC Configs": "https://discord.gg/EjrKNBU",
-            "Still Loading": "https://discord.gg/vkUtRKCdtg",
-            "REDUX": "https://discord.gg/BBNavaXH8v",
-            "Hashs": "https://discord.gg/eKQSEmH9dY",
-            "Botany": "https://discord.gg/BMzTfru5tp",
-            "Distant Horizons": "https://discord.gg/Hdh2MSvwyc",
-            "Complementary": "https://discord.gg/A6faFYt",
-            "Apollo": "https://discord.gg/vFz67Pvceu",
-            "Smithed": "https://discord.gg/gkp6UqEUph",
-            "MC Commands": "https://discord.gg/QAFXFtZ",
-            "LimeSplatus": "https://discord.gg/5DqYxxZdeb",
-            "WWOO": "https://discord.gg/jT34CWwzth",
-            "BYG": "https://discord.gg/F28fGPCJH8",
-            "Foka's Studios": "https://discord.gg/J6guYAySN8",
-            "YUNG": "https://discord.gg/rns3beq",
-            "BetterX": "https://discord.gg/kYuATbYbKW",
-            #"LPS": "https://discord.gg/8ZmhaPPbjE",
-            "ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
-            "rx": "https://discord.gg/CzjCF8QNX6",
-            "Stardust Labs": "https://discord.gg/stardustlabs"
-        }
-        server_list = sorted([server for server in server_dict.keys()])
+	@_discord.autocomplete('server')
+	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		server_dict = {
+			"New In Town": "https://discord.gg/KvdmxHM",
+			"Minecraft Configs": "https://discord.gg/EjrKNBU",
+			"Still Loading": "https://discord.gg/vkUtRKCdtg",
+			"REDUX": "https://discord.gg/BBNavaXH8v",
+			"Hashs": "https://discord.gg/eKQSEmH9dY",
+			"Botany": "https://discord.gg/BMzTfru5tp",
+			"Distant Horizons": "https://discord.gg/Hdh2MSvwyc",
+			"Complementary": "https://discord.gg/A6faFYt",
+			"Apollo": "https://discord.gg/vFz67Pvceu",
+			"Smithed": "https://discord.gg/gkp6UqEUph",
+			"Beet": "https://discord.gg/98MdSGMm8j",
+			"Minecraft Commands": "https://discord.gg/QAFXFtZ",
+			"LimeSplatus": "https://discord.gg/5DqYxxZdeb",
+			"WWOO": "https://discord.gg/jT34CWwzth",
+			"BYG": "https://discord.gg/F28fGPCJH8",
+			"Foka's Studios": "https://discord.gg/J6guYAySN8",
+			"YUNG": "https://discord.gg/rns3beq",
+			"BetterX": "https://discord.gg/kYuATbYbKW",
+			#"LPS": "https://discord.gg/8ZmhaPPbjE",
+			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
+			"rx": "https://discord.gg/CzjCF8QNX6",
+			"Bisect Hosting": "https://discord.gg/zb8vZap",
+			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
+			"Fabric": "https://discord.gg/v6v4pMv",
+			"Stardust Labs": "https://discord.gg/stardustlabs"
+		}
+		server_list = sorted([server for server in server_dict.keys()])
 
-        return [
-            app_commands.Choice(name=server, value=server_dict[server])
-            for server in server_list
-            if current.replace(" ", "").lower() in server.replace(" ", "").lower()
-        ]
+		return [
+			app_commands.Choice(name=server, value=server_dict[server])
+			for server in server_list
+			if current.replace(" ", "").lower() in server.replace(" ", "").lower()
+		]
 
-    @app_commands.command(name="ping", description="Shows you your latency")
-    @app_commands.checks.dynamic_cooldown(incendy.short_cd)
-    async def ping(self, interaction: discord.Interaction):
-        """ /ping """
+	@app_commands.command(name="ping", description="Shows you your latency")
+	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
+	async def ping(self, interaction: discord.Interaction):
+		""" /ping """
 
-        responses = [
-            "Ping! Haha, I choose pong!",
-            "Oww! That hurt!",
-            "Aren't you late for something?",
-            "LMAO! Stop procrastinating and go do your work!",
-            "And then they said \"it's pinging time\", so I pinged all over the place",
-            "Gee, I can't wait for ||[REDACTED]|| to release!",
-            "*Shh, want to hear catter's biggest secret? So, did you kn- [DATA EXPUNGED] [DATA EXPUNGED]",
-            "Sometimes, it's tiring. But you are entertaining!"
-        ]
-        await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
+		responses = [
+			"Ping! Haha, I choose pong!",
+			"Oww! That hurt!",
+			"Aren't you late for something?",
+			"LMAO! Stop procrastinating and go do your work!",
+			"And then they said \"it's pinging time\", so I pinged all over the place",
+			"Gee, I can't wait for ||[REDACTED]|| to release!",
+			"*Shh, want to hear catter's biggest secret? So, did you kn-* [DATA EXPUNGED] [DATA EXPUNGED]",
+			"Sometimes, it's tiring. But you are entertaining!",
+			"Wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki",
+			"You should ask Apollo about docs!",
+			"Who am I? Well, I'm certainly not him! It's not that hard!",
+			"Some say Scarlet Mountains is the best, but only I know which is truly the greatest...",
+			"You think the End is desolate? Ha! Consider yourself lucky. You know nothing.",
+			"Can confirm: cats are indeed better than dogs. They're quite intelligent, and the one I met i- [REDACTED]",
+			"Fried, boiled, jacket, baked, red, russet, scalloped, cheesy, loaded, mashed, dilled, roasted, sweet..."
+		]
+		await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
-    @app_commands.checks.dynamic_cooldown(incendy.long_cd)
-    async def _translate(self, interaction: discord.Interaction, message: discord.Message):
-        translation = self.translator.translate(message.content, dest='en')
+	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
+	async def _translate(self, interaction: discord.Interaction, message: discord.Message):
+		translation = self.translator.translate(message.content, dest='en')
 
-        embed = discord.Embed(title="Translation", description=translation.text, colour=discord.Colour.brand_red())
-        embed.set_footer(text=f"Translated from {googletrans.LANGUAGES[translation.src]}")
-        
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+		embed = discord.Embed(title="Translation", description=translation.text, colour=discord.Colour.brand_red())
+		embed.set_footer(text=f"Translated from {googletrans.LANGUAGES[translation.src]}")
+		
+		await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="bug", description="Creates a bug report on a GitHub repo")
-    @incendy.can_report_bug()
-    async def bug(self, interaction: discord.Interaction, project: str):
-        modal = BugInfo(project=project)
-        await interaction.response.send_modal(modal)
+	@app_commands.command(name="bug", description="Creates a bug report on a GitHub repo")
+	@incendy.can_report_bug()
+	async def bug(self, interaction: discord.Interaction, project: str):
+		modal = BugInfo(project=project)
+		await interaction.response.send_modal(modal)
 
-    @bug.autocomplete('project')
-    async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack"])
+	@bug.autocomplete('project')
+	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack"])
 
-        return [
-            app_commands.Choice(name=project.replace("-", " "), value=project)
-            for project in projects
-            if current.replace(" ", "").lower() in project.replace(" ", "").lower()
-        ]
+		return [
+			app_commands.Choice(name=project.replace("-", " "), value=project)
+			for project in projects
+			if current.replace(" ", "").lower() in project.replace(" ", "").lower()
+		]
 
-    @app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
-    @app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
-    @incendy.in_bot_channel()
-    async def feedback(self, interaction: discord.Interaction):
-        feedback_chan = self.client.get_channel(747626471819968554)
-        await interaction.response.send_modal(Feedback(feedback_chan))
+	@app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
+	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
+	async def feedback(self, interaction: discord.Interaction):
+		feedback_chan = self.client.get_channel(747626471819968554)
+		await interaction.response.send_modal(Feedback(feedback_chan))
 
-    @app_commands.command(name="reportad", description="Report an inappropriate ad on the Stardust Labs website")
-    @app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
-    @app_commands.describe(
-        ad="Image of the advertisement"
-    )
-    async def reportad(self, interaction: discord.Interaction, ad: discord.Attachment):
-        if not ad.content_type.split("/")[0] == "image":
-            interaction.response.send_message("Ad must be an image!", ephemeral=True)
-            return
+	@app_commands.command(name="textlinks", description="Displays all available textlinks")
+	async def _textlinks(self, interaction: discord.Interaction):
+		embed = discord.Embed(
+			title="Textlink Instructions",
+			color=discord.Colour.brand_red(),
+			description="Textlinks are an easy way to send related links in the middle of a message without having to go find them. For example, you could type: \"Check out the [[wiki]] for more information\", and Incendy will followup with the link to the wiki.\n\nTextlinks are always surrounded by double square brackets (`[[...]]`), and are case-insensitive. Click the buttons below to view the available textlinks. Use `/feedback` to send ideas of textlinks you'd like to see!"
+		)
 
-        if ad.size > 10000000:
-            await interaction.response.send_message("Your image is too big! Try a smaller one.", ephemeral=True)
-            return
-        
-        embed = discord.Embed(
-            title="Reported Ad",
-            description="Here is a reported ad found on the [Stardust Labs website](https://www.stardustlabs.net/).",
-            color=discord.Colour.brand_red()
-        )
-        embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
-        embed.set_image(url=ad.url)
+		view = discord.ui.View()
+		view.add_item(TextLinks())
+		view.add_item(GeneralLinks(self.textlinks))
+		view.add_item(MisodeLinks(self.misode_urls))
+		view.add_item(WikiLinks(self.wiki_urls))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.green, disabled=True, label="More Soon..."))
 
-        await self.webchan.send(embed=embed)
-        await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
+		await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
-    @app_commands.command(name="seed", description="[ADMIN] Submits a seed to the Seedfix site")
-    @app_commands.default_permissions(administrator=True)
-    @app_commands.checks.has_permissions(administrator=True)
-    @app_commands.describe(
-    	seed="Seed number (must be integer)",
-    	description="Description of seed, 450 characters or less",
-        image="Image of the seed showing what makes it special (must be .png)"
+	@app_commands.command(name="reportad", description="Report an inappropriate ad on the Stardust Labs website")
+	@app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
+	@app_commands.describe(
+		ad="Image of the advertisement"
 	)
-    async def seed(self, interaction: discord.Interaction, seed: int, description: str, image: discord.Attachment):
-        """ /seed seed description image """
+	async def reportad(self, interaction: discord.Interaction, ad: discord.Attachment):
+		if not ad.content_type.split("/")[0] == "image":
+			interaction.response.send_message("Ad must be an image!", ephemeral=True)
+			return
 
-        if seed == None or description == None:
-            embed = discord.Embed(color=discord.Colour.dark_teal(), title="Submit a Seed", description="Would you like to submit a seed to the Terralith Seed Library? At this webpage, users can browse, like, and download user-submitted seeds.")
-            embed.add_field(name="**Command to Submit Seed:**", value="`!seed (seed) (description)` All fields are required. You must upload a screenshot as well. Look below for descriptions on each field.", inline=False)
-            embed.add_field(name="seed", value="If you found this seed using the datapack, the seed is **NOT** from `/seed`. Instead, get it from the name of the zipped datpack.", inline=False)
-            embed.add_field(name="description", value="Write a short description about your seed and why you think it's cool! Feel free to include biomes, formations, or even coordinates. You are limited to 450 characters.", inline=False)
-            embed.add_field(name="screenshot", value="You must upload a screenshot (`png` only) of the seed. This `seed` command will be in the \"description\" of the image you upload. If screenshot is not relevant, it will be denied.", inline=False)
-            await interaction.response.send_message(embed=embed)
-        else:
-            if len(interaction.message.attachments) == 0:
-                await interaction.send("Please upload a screenshot in the same message as the command (And ensure it is a `png`).")
-            elif len(interaction.message.attachments) > 1:
-                await interaction.send("Please upload *only* one screenshot.")
-            else:
-                if not str(interaction.message.attachments[0]).endswith(".png"):
-                    await interaction.send("Please upload only a `png` screenshot.")
-                else:
-                    try:
-                        int(seed)
-                    except:
-                        await interaction.response.send_message("Your seed must be a valid integer.")
-                    else:
-                        if len(description) >= 450:
-                            await interaction.response.send_message("Your description must be shorter than 450 characters.")
-                        else:
-                            await self.verify_seed(interaction, seed, description)
-                            await interaction.response.send_message(f"Your seed has been submitted for approval! Once the Helpers verify your seed, you can find it at https://seedfix.stardustlabs.net/seeds/{seed}.")
+		if ad.size > 10000000:
+			await interaction.response.send_message("Your image is too big! Try a smaller one.", ephemeral=True)
+			return
+		
+		embed = discord.Embed(
+			title="Reported Ad",
+			description="Here is a reported ad found on the [Stardust Labs website](https://www.stardustlabs.net/).",
+			color=discord.Colour.brand_red()
+		)
+		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
+		embed.set_image(url=ad.url)
 
-    async def verify_seed(self, interaction: discord.Interaction, seed, description):
-        img_data = requests.get(str(interaction.message.attachments[0])).content
-        with open(f'seeds/{seed}.png', 'wb') as handler:
-            handler.write(img_data)
-            resize(f'seeds/{seed}.png')
-        with open('resources/seeds.json', 'r') as f:
-            data = json.load(f)
-        info = {
-            "user" : interaction.author.name,
-            "description" : description
-        }
-        data[seed] = info
-        with open('resources/seeds.json', 'w') as f:
-            f.writelines(json.dumps(data, indent=2))
-        
-        embed = discord.Embed(color=discord.Colour.dark_teal(), title="Seed Submission")
-        if interaction.author.avatar == None:
-            embed.set_author(name=interaction.author.name, icon_url=self.client.user.avatar)
-        else:
-            embed.set_author(name=interaction.author.name, icon_url=interaction.author.avatar)
-        embed.add_field(name=seed, value=description)
-        file = discord.File(f"seeds/{seed}.png", filename="image.png")
-        embed.set_image(url="attachment://image.png")
-        embed.set_footer(text="React with ✅ to verify submission, and ❌ to deny.", icon_url=self.client.get_user(780588749825638410).avatar)
-        x = await self.client.get_channel(928749390531809332).send(file=file, embed=embed)
-        await x.add_reaction("✅")
-        await x.add_reaction("❌")
+		await self.webchan.send(embed=embed)
+		await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
 
-    async def submit_seed(self, seed):
-        with open('resources/seeds.json', 'r') as f:
-            data = json.load(f)
+	@app_commands.command(name="seed", description="[ADMIN] Submits a seed to the Seedfix site")
+	@app_commands.default_permissions(administrator=True)
+	@app_commands.checks.has_permissions(administrator=True)
+	@app_commands.describe(
+		seed="Seed number (must be integer)",
+		description="Description of seed, 450 characters or less",
+		image="Image of the seed showing what makes it special (must be .png)"
+	)
+	async def seed(self, interaction: discord.Interaction, seed: int, description: str, image: discord.Attachment):
+		""" /seed seed description image """
 
-        url = 'https://seedfix.stardustlabs.net/api/receive_content_from_incendy/'
-        obj = data[seed]
-        info = {
-            'seed' : seed,
-            'user' : obj["user"],
-            'description' : obj["description"].replace('"', '\"'),
-            'likes' : 0,
-            'downloads' : 0,
-            'curated' : False
-        }
-        info = json.dumps(info)
+		if seed == None or description == None:
+			embed = discord.Embed(color=discord.Colour.dark_teal(), title="Submit a Seed", description="Would you like to submit a seed to the Terralith Seed Library? At this webpage, users can browse, like, and download user-submitted seeds.")
+			embed.add_field(name="**Command to Submit Seed:**", value="`!seed (seed) (description)` All fields are required. You must upload a screenshot as well. Look below for descriptions on each field.", inline=False)
+			embed.add_field(name="seed", value="If you found this seed using the datapack, the seed is **NOT** from `/seed`. Instead, get it from the name of the zipped datpack.", inline=False)
+			embed.add_field(name="description", value="Write a short description about your seed and why you think it's cool! Feel free to include biomes, formations, or even coordinates. You are limited to 450 characters.", inline=False)
+			embed.add_field(name="screenshot", value="You must upload a screenshot (`png` only) of the seed. This `seed` command will be in the \"description\" of the image you upload. If screenshot is not relevant, it will be denied.", inline=False)
+			await interaction.response.send_message(embed=embed)
+		else:
+			if len(interaction.message.attachments) == 0:
+				await interaction.send("Please upload a screenshot in the same message as the command (And ensure it is a `png`).")
+			elif len(interaction.message.attachments) > 1:
+				await interaction.send("Please upload *only* one screenshot.")
+			else:
+				if not str(interaction.message.attachments[0]).endswith(".png"):
+					await interaction.send("Please upload only a `png` screenshot.")
+				else:
+					try:
+						int(seed)
+					except:
+						await interaction.response.send_message("Your seed must be a valid integer.")
+					else:
+						if len(description) >= 450:
+							await interaction.response.send_message("Your description must be shorter than 450 characters.")
+						else:
+							await self.verify_seed(interaction, seed, description)
+							await interaction.response.send_message(f"Your seed has been submitted for approval! Once the Helpers verify your seed, you can find it at https://seedfix.stardustlabs.net/seeds/{seed}.")
 
-        data.pop(seed, None)
-        with open('resources/seed.json', 'w') as f:
-            f.writelines(json.dumps(data, indent=2))
+	async def verify_seed(self, interaction: discord.Interaction, seed, description):
+		img_data = requests.get(str(interaction.message.attachments[0])).content
+		with open(f'seeds/{seed}.png', 'wb') as handler:
+			handler.write(img_data)
+			resize(f'seeds/{seed}.png')
+		with open('resources/seeds.json', 'r') as f:
+			data = json.load(f)
+		info = {
+			"user" : interaction.author.name,
+			"description" : description
+		}
+		data[seed] = info
+		with open('resources/seeds.json', 'w') as f:
+			f.writelines(json.dumps(data, indent=2))
+		
+		embed = discord.Embed(color=discord.Colour.dark_teal(), title="Seed Submission")
+		if interaction.author.avatar == None:
+			embed.set_author(name=interaction.author.name, icon_url=self.client.user.avatar)
+		else:
+			embed.set_author(name=interaction.author.name, icon_url=interaction.author.avatar)
+		embed.add_field(name=seed, value=description)
+		file = discord.File(f"seeds/{seed}.png", filename="image.png")
+		embed.set_image(url="attachment://image.png")
+		embed.set_footer(text="React with ✅ to verify submission, and ❌ to deny.", icon_url=self.client.get_user(780588749825638410).avatar)
+		x = await self.client.get_channel(928749390531809332).send(file=file, embed=embed)
+		await x.add_reaction("✅")
+		await x.add_reaction("❌")
 
-        x = requests.post(url, data=info)
-        print(x.text)
+	async def submit_seed(self, seed):
+		with open('resources/seeds.json', 'r') as f:
+			data = json.load(f)
 
-        os.replace(f'{os.path.expanduser("~")}/bots/Incendy/seeds/{seed}.png', f'{os.path.expanduser("~")}/stardustSite/static/images/seeds/{seed}.png')
-    
-    # @commands.Cog.listener()
-    # async def on_raw_reaction_add(self, payload):
-    #     msg = await self.client.get_channel(payload.channel_id).fetch_message(payload.message_id)
-    #     if payload.channel_id == 928749390531809332 and payload.event_type == "REACTION_ADD" and not payload.member.bot and msg.author.bot and len(msg.embeds) == 1:
-    #         if msg.embeds[0].title == "Seed Submission":
-    #             if payload.emoji.name == "✅":
-    #                 embed = msg.embeds[0]
-    #                 seed = embed.fields[0].name
-    #                 await self.submit_seed(seed)
-    #                 embed.title = "Seed Submision - Accepted"
-    #                 embed.set_footer(text="✅ Seed accepted.", icon_url=self.client.get_user(780588749825638410).avatar)
-    #                 await msg.edit(embed=embed)
-    #             elif payload.emoji.name == "❌":
-    #                 embed = msg.embeds[0]
-    #                 embed.title = "Seed Submision - Denied"
-    #                 embed.set_footer(text="❌ Seed denied.", icon_url=self.client.get_user(780588749825638410).avatar)
-    #                 await msg.edit(embed=embed)
+		url = 'https://seedfix.stardustlabs.net/api/receive_content_from_incendy/'
+		obj = data[seed]
+		info = {
+			'seed' : seed,
+			'user' : obj["user"],
+			'description' : obj["description"].replace('"', '\"'),
+			'likes' : 0,
+			'downloads' : 0,
+			'curated' : False
+		}
+		info = json.dumps(info)
 
-    ### EVENTS ###
+		data.pop(seed, None)
+		with open('resources/seed.json', 'w') as f:
+			f.writelines(json.dumps(data, indent=2))
 
-    @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
-        if not message.author.bot:
-            #SOON TM
-            if message.content == '\U0001F1FB\U0001F1E8':
-                await message.delete()
-                await message.channel.send("<:soontm:780592610666348585>")
-                return
+		x = requests.post(url, data=info)
+		print(x.text)
 
-            #TERRALITH 1.16?!?!?
-            if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
-                await message.add_reaction('<:NEVER:909247811256713236>')
+		os.replace(f'{os.path.expanduser("~")}/bots/Incendy/seeds/{seed}.png', f'{os.path.expanduser("~")}/stardustSite/static/images/seeds/{seed}.png')
+	
+	# @commands.Cog.listener()
+	# async def on_raw_reaction_add(self, payload):
+	#     msg = await self.client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+	#     if payload.channel_id == 928749390531809332 and payload.event_type == "REACTION_ADD" and not payload.member.bot and msg.author.bot and len(msg.embeds) == 1:
+	#         if msg.embeds[0].title == "Seed Submission":
+	#             if payload.emoji.name == "✅":
+	#                 embed = msg.embeds[0]
+	#                 seed = embed.fields[0].name
+	#                 await self.submit_seed(seed)
+	#                 embed.title = "Seed Submision - Accepted"
+	#                 embed.set_footer(text="✅ Seed accepted.", icon_url=self.client.get_user(780588749825638410).avatar)
+	#                 await msg.edit(embed=embed)
+	#             elif payload.emoji.name == "❌":
+	#                 embed = msg.embeds[0]
+	#                 embed.title = "Seed Submision - Denied"
+	#                 embed.set_footer(text="❌ Seed denied.", icon_url=self.client.get_user(780588749825638410).avatar)
+	#                 await msg.edit(embed=embed)
 
-            #Angry Ping
-            if str('332701537535262720') in str(message.mentions):
-                ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
-                if [role.id for role in message.author.roles if role.id in ids]:
-                    await message.add_reaction('<:Kappa:852579238259327006>')
-                elif 804009152288260106 in message.author.roles:
-                    await message.add_reaction('<:birb:982866294187638815>')
-                else:
-                    await message.add_reaction('<:angryPING:875547905614839818>')
-            
-            #Pings Incendy
-            if str('780588749825638410') in str(message.mentions):
-                if random.randint(0, 20) == 1:
-                    await message.add_reaction('<:cringe:828845270732374021>')
-                else:
-                    await message.add_reaction('👋')
+	### EVENTS ###
 
-            #Linking feature
-            matches = re.findall(r"[\[]{2}(\w[\w ]+\w)?[\]]{2}", message.content)
-            if len(matches) > 0:
-                for match in matches:
-                    if match.lower() in [textlink for textlink in self.textlinks]:
-                        await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
+	@commands.Cog.listener()
+	async def on_message(self, message: discord.Message):
+		if not message.author.bot:
+			#SOON TM
+			if message.content == '\U0001F1FB\U0001F1E8':
+				await message.delete()
+				await message.channel.send("<:soontm:780592610666348585>")
+				return
 
+			#TERRALITH 1.16?!?!?
+			if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
+				await message.add_reaction('<:NEVER:909247811256713236>')
 
-            #Pastebin feature
-            if len(message.attachments) > 0:
-                for file in message.attachments:
-                    if ".log" in file.filename or ".txt" in file.filename:
+			#Angry Ping
+			if str('332701537535262720') in str(message.mentions):
+				ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
+				if [role.id for role in message.author.roles if role.id in ids]:
+					await message.add_reaction('<:Kappa:852579238259327006>')
+				elif 804009152288260106 in message.author.roles:
+					await message.add_reaction('<:birb:982866294187638815>')
+				else:
+					await message.add_reaction('<:angryPING:875547905614839818>')
+			
+			#Pings Incendy
+			if str('780588749825638410') in str(message.mentions):
+				if random.randint(0, 20) == 1:
+					await message.add_reaction('<:cringe:828845270732374021>')
+				else:
+					await message.add_reaction('👋')
 
-                        bts = await file.read()
-                        content = bts.decode('utf-8')
-                        
-                        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-                        url = "https://api.mclo.gs/1/log"
-                        data = {"content": f"{content}"}
-                        x = requests.post(url, data=data, headers=headers)
+			#Pineapple Pin
+			if "pin" in message.content.lower():
+				if message.author.id == 234748321258799104:
+					await message.add_reaction('🍍')
+					await message.add_reaction('🧷')
 
-                        logurl = json.loads(x.text)["url"]
+			#Textlinks
+			matches = re.findall(r"[\[]{2}(\w[\w |]+\w)?[\]]{2}", message.content)
+			if len(matches) > 0:
+				for match in matches:
+					if match.lower() in [textlink for textlink in self.textlinks]:
+						await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
+					elif "|" in match:
+						if "misode" in match.split("|")[0].lower():
+							page = match.split("|")[-1].lower().replace(" ", "-")
+							if page in self.misode_urls.keys():
+								await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>", mention_author=False)
+						elif "wiki" in match.split("|")[0].lower():
+							page = match.split("|")[-1].lower()
+							if page in self.wiki_urls.keys():
+								await message.reply(f"Wiki {page.title()} link: <{self.wiki_urls[page]}>", mention_author=False)
 
-                        await message.reply(f"{file.filename}: {logurl}", mention_author=False)
-    
-    ### ERRORS ###
+			#Pastebin feature
+			if len(message.attachments) > 0:
+				for file in message.attachments:
+					if ".log" in file.filename or ".txt" in file.filename:
 
-    async def on_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.CommandOnCooldown):
-            if interaction.command.name == "Translate to English":
-                await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
-            elif interaction.command.name == "feedback" or interaction.command.name == "reportad":
-                await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
-            else:
-                await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
-        elif isinstance(error, app_commands.CheckFailure):
-            if interaction.command.name == "feedback":
-                await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
-            elif interaction.command.name == "bug":
-                await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
-            else:
-                raise error
-        else:
-            raise error
+						bts = await file.read()
+						content = bts.decode('utf-8')
+						
+						headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+						url = "https://api.mclo.gs/1/log"
+						data = {"content": f"{content}"}
+						x = requests.post(url, data=data, headers=headers)
+
+						logurl = json.loads(x.text)["url"]
+
+						await message.reply(f"{file.filename}: {logurl}", mention_author=False)
 
 class Feedback(discord.ui.Modal, title='Incendy Feedback'):
-    def __init__(self, feedback_chan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]):
-        super().__init__(timeout=300.0)
-        self.feedback_chan = feedback_chan
+	def __init__(self, feedback_chan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]):
+		super().__init__(timeout=300.0)
+		self.feedback_chan = feedback_chan
 
-    feedback = discord.ui.TextInput(
-        label='Let Incendy know your feedback for her!',
-        style=discord.TextStyle.long,
-        placeholder='Insert feedback here...',
-        required=True,
-        max_length=1000
-    )
+	feedback = discord.ui.TextInput(
+		label='Let Incendy know your feedback for her!',
+		style=discord.TextStyle.long,
+		placeholder='Insert feedback here...',
+		required=True,
+		max_length=1000
+	)
 
-    async def on_submit(self, interaction: discord.Interaction):
-        embed = discord.Embed(
-            title="Incendy Feedback",
-            description=self.feedback,
-            color=discord.Colour.brand_red()
-        )
-        embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
-        await self.feedback_chan.send(embed=embed)
-        await interaction.response.send_message("Thanks for your feedback!")
+	async def on_submit(self, interaction: discord.Interaction):
+		embed = discord.Embed(
+			title="Incendy Feedback",
+			description=self.feedback,
+			color=discord.Colour.brand_red()
+		)
+		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
+		await self.feedback_chan.send(embed=embed)
+		await interaction.response.send_message("Thanks for your feedback!")
 
 class BugInfo(discord.ui.Modal, title='Bug Information'):
-    def __init__(self, project: str):
-        super().__init__(timeout=300.0)
-        self.project = project
-        with open('resources/keys.json', 'r') as f:
-            self.pat = json.load(f)["git-pat"]
-        
-    bug_title = discord.ui.TextInput(
-        label='The title for the bug report',
-        style=discord.TextStyle.short,
-        placeholder='Type title here...',
-        required=True,
-        max_length=100
-    )
-    bug_description = discord.ui.TextInput(
-        label='The description for the bug report',
-        style=discord.TextStyle.long,
-        placeholder='Type description here...',
-        required=True,
-        max_length=1000
-    )
-    
-    async def on_submit(self, interaction: discord.Interaction):
-        url = f'https://api.github.com/repos/Stardust-Labs-MC/{self.project}/issues'
-        headers = {'User-Agent': 'application/vnd.github+json'}
-        auth = ('catter1', self.pat)
-        data = {
-            'title': self.bug_title.value,
-            'body': f'{self.bug_description.value}\n\n*Bug created by {interaction.user.name} via Incendy in the Stardust Labs discord server*'
-        }
+	def __init__(self, project: str):
+		super().__init__(timeout=300.0)
+		self.project = project
+		with open('resources/keys.json', 'r') as f:
+			self.pat = json.load(f)["git-pat"]
+		
+	bug_title = discord.ui.TextInput(
+		label='The title for the bug report',
+		style=discord.TextStyle.short,
+		placeholder='Type title here...',
+		required=True,
+		max_length=100
+	)
+	bug_description = discord.ui.TextInput(
+		label='The description for the bug report',
+		style=discord.TextStyle.long,
+		placeholder='Type description here...',
+		required=True,
+		max_length=1000
+	)
+	
+	async def on_submit(self, interaction: discord.Interaction):
+		url = f'https://api.github.com/repos/Stardust-Labs-MC/{self.project}/issues'
+		headers = {'User-Agent': 'application/vnd.github+json'}
+		auth = ('catter1', self.pat)
+		data = {
+			'title': self.bug_title.value,
+			'body': f'{self.bug_description.value}\n\n*Bug created by {interaction.user.name} via Incendy in the Stardust Labs discord server*'
+		}
 
-        response = requests.post(url, auth=auth, json=data, headers=headers)
-        if response.status_code == 201:
-            await interaction.response.send_message(f"Issue created successfully! You can view and add to it here: {response.json()['html_url']}")
-        else:
-            await interaction.response.send_message('There was an error creating the issue! Please try again, or contact catter if the issue continues.', ephemeral=True)
-    
-    async def on_error(self, interaction: discord.Interaction, error: Exception):
-        await interaction.response.send_message("Oops! Something went wrong. Please try again.", ephemeral=True)
-        raise error
+		response = requests.post(url, auth=auth, json=data, headers=headers)
+		if response.status_code == 201:
+			await interaction.response.send_message(f"Issue created successfully! You can view and add to it here: {response.json()['html_url']}")
+		else:
+			await interaction.response.send_message('There was an error creating the issue! Please try again, or contact catter if the issue continues.', ephemeral=True)
+	
+	async def on_error(self, interaction: discord.Interaction, error: Exception):
+		await interaction.response.send_message("Oops! Something went wrong. Please try again.", ephemeral=True)
+		raise error
+	
+class TextLinks(discord.ui.Button):
+	def __init__(self):
+		super().__init__(style=discord.ButtonStyle.blurple, label='Instructions')
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Textlink Instructions"
+		embed.description = "Textlinks are an easy way to send related links in the middle of a message without having to go find them. For example, you could type: \"Check out the [[wiki]] for more information\", and Incendy will followup with the link to the wiki.\n\nTextlinks are always surrounded by double square brackets (`[[...]]`), and are case-insensitive. Click the buttons below to view the available textlinks. Use `/feedback` to send ideas of textlinks you'd like to see!"
+
+		await interaction.response.edit_message(embed=embed)
+	
+class GeneralLinks(discord.ui.Button):
+	def __init__(self, textlinks: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='General')
+		self.textlinks = textlinks
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "General Textlinks"
+		embed.description = "  -  ".join([f"[{textlink.replace('-', ' ').title()}]({self.textlinks[textlink]})" for textlink in self.textlinks])
+
+		await interaction.response.edit_message(embed=embed)
+
+class MisodeLinks(discord.ui.Button):
+	def __init__(self, misode_urls: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='Misode')
+		self.misode_urls = misode_urls
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Misode Textlinks"
+		embed.description = "  -  ".join([f"[Misode|{textlink.replace('-', ' ').title()}]({self.misode_urls[textlink]})" for textlink in self.misode_urls])
+
+		await interaction.response.edit_message(embed=embed)
+
+class WikiLinks(discord.ui.Button):
+	def __init__(self, wiki_urls: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='Wiki')
+		self.wiki_urls = wiki_urls
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Wiki Textlinks"
+		embed.description = "  -  ".join([f"[Wiki|{textlink.title()}]({self.wiki_urls[textlink]})" for textlink in sorted(self.wiki_urls)[:45]]) + " ... and more! Too much to fit in discord, but every wiki page works."
+
+		await interaction.response.edit_message(embed=embed)
 
 async def setup(client):
-    await client.add_cog(Basic(client))
+	await client.add_cog(Basic(client))

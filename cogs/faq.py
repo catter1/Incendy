@@ -10,8 +10,6 @@ class Faq(commands.Cog):
         self.client = client
         
     async def cog_load(self):
-        with open("resources/settings.json", 'r') as f:
-            self.settings = json.load(f)
         print(f' - {self.__cog_name__} cog loaded.')
     
     async def cog_unload(self):
@@ -26,7 +24,6 @@ class Faq(commands.Cog):
 
         qp_dict = {
             "Standards": "https://xkcd.com/927/",
-            "Discord Links": "Hey, need to get a link for a relevant Discord server? Do `/discord` to see an autocompletable list of invites.",
             "Try it and See": "https://tryitands.ee/",
             "Dont Ask to Ask": "https://dontasktoask.com/",
             "Notch Code": "`bl2 = !bls[(ab * 16 + ac) * 8 + ad] && (ab < 15 && bls[((ab + 1) * 16 + ac) * 8 + ad] || ab > 0 && bls[((ab - 1) * 16 + ac) * 8 + ad] || ac < 15 && bls[(ab * 16 + ac + 1) * 8 + ad] || ac > 0 && bls[(ab * 16 + (ac - 1)) * 8 + ad] || ad < 7 && bls[(ab * 16 + ac) * 8 + ad + 1] || ad > 0 && bls[(ab * 16 + ac) * 8 + (ad - 1)]);`",
@@ -36,14 +33,15 @@ class Faq(commands.Cog):
             "Dimension Folders": "`DIM1` = `minecraft:the_end`\n`DIM-1` = `minecraft:the_nether`\n\nHow to remember: Think of the Overworld as \"Ground Zero\", or 0. -1 is less than 0, and the Nether is below (or \"less than\") the overworld. Therefore, the Nether is -1, or DIM**-1**. The same logic applies to the End: it's above the overworld, and 1 is greater than 0. Therefore, the End is 1, or DIM**1**.",
             "Mod vs Datapack": "For all Stardust Labs projects, the mod version is the same as the datapack in regards to performance and content. The only difference is the mods go in the `mods` folder, and datapacks in the `datapacks` folder.\n\nIn 1.18.2 and lower, the mod versions of the projects had Seedfix built in, which technically made them slightly different. Otherwise, you can enjoy the same experience with both! \:)",
             "Keep Exploring": "In Terralith, it is completely normal to spawn in an area that isn't as \"stunning\" or \"breathtaking\" as all the screenshots you see posted around are. To find them, you've got to go explore your world! Keep walking, and you *will* find beautiful landscapes.",
-            "Find the Culprit": "Sometimes, when you are trying to figure out what mod is causing your crash, you need to result to the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!"
+            "Find the Culprit": "Sometimes, when you are trying to figure out what mod is causing your crash, you need to result to the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!",
+            "Give Details": "Please, please provide details and be descriptive with your issue. We literally cannot help you without context. It also helps if you check the faq (`/faq`) and attach logs."
         }
 
         await interaction.response.send_message(qp_dict[qp])
 
     @qp.autocomplete('qp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit"])
+        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit", "Give Details"])
 
         return [
             app_commands.Choice(name=qp, value=qp)
@@ -53,17 +51,17 @@ class Faq(commands.Cog):
 
     @app_commands.command(name="faq", description="Frequently Asked Questions (for support)")
     @app_commands.describe(
-        q="The FAQ to view",
+        faq="The FAQ to view",
         public="Whether to make the FAQ visible to everyone. Keep it False unless you're trying to share!"
     )
-    async def faq(self, interaction: discord.Interaction, q: str, public: bool = False):
+    async def faq(self, interaction: discord.Interaction, faq: str, public: bool = False):
         """ /faq [q] """
         faq_colour = discord.Colour.brand_red()
         public = not public
         view = None
         file = None
 
-        match q:
+        match faq:
             case "Biome IDs":
                 await interaction.response.defer(ephemeral=public, thinking=True)
                 versions = await self.get_versions()
@@ -93,25 +91,25 @@ class Faq(commands.Cog):
                     description='Interested in contributing to Stardust Labs in some way? Here are some ways you can help!',
                     color=faq_colour
                 )
-                embed.add_field(name="Wiki", value="The wiki could always use your help! You can do anything from adding mod/datapack compatabilities to the [compat table](https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities), or help out greatly by helping with [Tera's to-do list](https://discord.com/channels/738046951236567162/794630105463783484/923270468956483584). Either way, ask in <#794630105463783484> and check out the [Wiki contribution guide](https://stardustlabs.miraheze.org/wiki/Contributing)! By helping out with some of the tougher stuff, you can earn the <@1035916805794955295> role.", inline=False)
-                embed.add_field(name="Translations", value="In Incendium, there is a lot of stuff to be translated. If you know another language, go check out our [Localization Website](https://weblate.catter.dev) to start translating for Incendium, Kuma's [Omni Biome Name Fix resourcepack](https://modrinth.com/resourcepack/stardust-biome-name-fix), and future Stardust Labs projects! Is your language not there? Ask <@260929689126699008> to add it! By translating, you can earn the <@769059114281074690> role.", inline=False)
-                embed.add_field(name="Code, Structures, and Community", value="For the most part, we don\'t accept code contributions for our projects unless you are skilled, well-known in the community, and we're intersted in working with you. It's a similar story for structures: we already have great builders that help us out, but occasionally we might see stuff we like from others and ask if they want to contribute. Finally, the best way you can contribute to Stardust Labs is to hang around and be part of the community! For those who have helped in some way with either code, structures, creating helpful third-party tools, or just being an integral part of our community, you can earn the <@749701703938605107> role.", inline=False)
+                embed.add_field(name="Wiki", value="The wiki could always use your help! You can do anything from adding mod/datapack compatabilities to the [compat table](https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities), or help out greatly by helping with [Tera's to-do list](https://discord.com/channels/738046951236567162/794630105463783484/923270468956483584). Either way, ask in <#794630105463783484> and check out the [Wiki contribution guide](https://stardustlabs.miraheze.org/wiki/Contributing)! By helping out with some of the tougher stuff, you can earn the **Wiki Contributor** role.", inline=False)
+                embed.add_field(name="Translations", value="In Incendium, there is a lot of stuff to be translated. If you know another language, go check out our [Localization Website](https://weblate.catter.dev) to start translating for Incendium, Kuma's [Omni Biome Name Fix resourcepack](https://modrinth.com/resourcepack/stardust-biome-name-fix), and future Stardust Labs projects! Is your language not there? Ask <@260929689126699008> to add it! By translating, you can earn the **Translator** role.", inline=False)
+                embed.add_field(name="Code, Structures, and Community", value="For the most part, we don\'t accept code contributions for our projects unless you are skilled, well-known in the community, and we're intersted in working with you. It's a similar story for structures: we already have great builders that help us out, but occasionally we might see stuff we like from others and ask if they want to contribute. Finally, the best way you can contribute to Stardust Labs is to hang around and be part of the community! For those who have helped in some way with either code, structures, creating helpful third-party tools, or just being an integral part of our community, you can earn the **Contributor** role.", inline=False)
             case "Foliage Colors":
                 embed = discord.Embed(
                     title='Foliage Colors',
                     description='Terralith uses a variety of grass and leaf colors, but does not use a resource pack. Instead, this is actually a Vanilla mechanic: for example, in Vanilla swamps, the water is browner and the leaves/grass is a dull/dark green. In Jungles and Mooshroom Islands, grass is a vibrant green.\n\nThis mechanic is what Terralith uses, but instead of doing different shades of green, Terralith will use the mechanic for all colors. This is how you see red leaves in Forested Highlands, blue grass in Mirage Isles, pink leaves in Sakura Groves, and much more.',
                     color=faq_colour
                 )
-            case "How Do I Tell":
-                embed = discord.Embed(
-                    title='How Do I Tell If It\'s Working?',
-                    description="**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.\n**•** If the first step was successful, start typing `/locate biome terralith:` (`/locatebiome terralth:` for 1.18.2 and lower) in game and see if an autocomplete list appears. Replace `terralith` with whatever relevant datapack you're installing. If an autocomplete list appears, try locating the biomes - anything except Alpha Islands, since it is very rare! If several biomes cannot be found, follow the Server Installation mentioned before.\n**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.\n**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.",
-                    color=faq_colour
-                )
             case "Incendium vs Amplified Nether":
                 embed = discord.Embed(
                     title='FAQ - Incendium vs. Amplified Nether',
                     description='Incendium and Amplified Nether are very different packs, and are **not** compatible with each other.\n**-** __Amplified Nether__ is a Vanilla nether, with 3D biomes, cool terrain shapes, and an extended height.\n**-** __Incendium__ has what Amplified Nether has, but with custom mobs, items, biomes, structures, and a cool boss. (Although, the Incendium height extension is not quite as Amplified Nether\'s.)',
+                    color=faq_colour
+                )
+            case "Is It Working":
+                embed = discord.Embed(
+                    title='How Do I Tell If It\'s Working?',
+                    description="**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.\n**•** If the first step was successful, type `/locate biome #terralith:all_terralith_biomes` (`/locatebiome #terralith:all_terralith_biomes` for 1.18.2 and lower) in game and see if you get a result. Replace `terralith` with whatever relevant datapack you're installing. If you did not get any results, follow the Server Installation mentioned before.\n**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.\n**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.",
                     color=faq_colour
                 )
             case "License":
@@ -154,7 +152,7 @@ class Faq(commands.Cog):
                     color=faq_colour
                 )
                 view = Realms()
-            case "Removal":
+            case "Removing Worldgen Packs":
                 embed = discord.Embed(
                     title='Removing Worldgen Packs',
                     description='You cannot simply remove a worldgen pack from your world. The way to do so involves completely resetting your dimension, so we do not recommend it unless you have a good reason. In order to do so, you must follow these three steps:\n\n**1.** Ensure your world/server is stopped, and remove the worldgen datapack.\n**2.** You must completely reset the dimension that the worldgen pack was affecting. For the nether and end, this is done by deleting the `world/DIM-1` and `world/DIM1` folders in Vanilla/Fabric/Forge, and `world_nether` and `world_the_end` folders in Spigot/Paper, respectively. It\'s more tricky for the overworld - either just reset everything, or ask for further help.\n**3.** You must remove all biome entries from your `level.dat`. If you do not know how to do this, ask for assistance. There will be tools for this later.',
@@ -217,7 +215,7 @@ class Faq(commands.Cog):
                     color=faq_colour
                 )
                 view = Update()
-            case "Versions":
+            case "Version Table":
                 embed = discord.Embed(
                     title='All Versions',
                     description='Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#900598465430716426>.',
@@ -240,7 +238,7 @@ class Faq(commands.Cog):
             if view:
                 await interaction.response.send_message(embed=embed, file=file, view=view, ephemeral=public)
             else:
-                if q == "Biome IDs":
+                if faq == "Biome IDs":
                     await interaction.followup.send(embed=embed, file=file, ephemeral=public)
                 else:
                     await interaction.response.send_message(embed=embed, file=file, ephemeral=public)
@@ -251,11 +249,11 @@ class Faq(commands.Cog):
                 await interaction.response.send_message(embed=embed, ephemeral=public)
 
         # Enter into DB
-        if interaction.guild_id == self.settings["stardust-guild-id"]:
+        if interaction.guild_id == self.client.settings["stardust-guild-id"]:
             query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
-            await self.client.db.execute(query, interaction.user.id, q, interaction.created_at)
+            await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
 
-    @faq.autocomplete('q')
+    @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
         faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
 
@@ -307,13 +305,6 @@ class Faq(commands.Cog):
             return None
 
         return biomeids
-
-    ### ERRORS ###
-
-    @qp.error
-    async def on_cd_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.CommandOnCooldown):
-            await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
 
 ### BUTTONS ###
 
@@ -415,7 +406,7 @@ class ServerMenu(discord.ui.Select):
                 embed.description = 'Pick your favorite server software (Fabric, Paper, etc) since this method will work on all of them, whether you\'re using a hosting service or not!\n\n**1.** If using datapacks (ends in `.zip`), put them all in the `world/datapacks` folder. If using mods (ends in `.jar`), put them all in the `mods` folder.\n\n**2.** Start your server, wait for it to load, then stop it.\n\n**3a.** [Terralith/Structory/Continents] Inside the `world` folder, delete the entire `region` folder, and *nothing* else.\n**3b.** [Incendium/Amplified Nether] Inside the nether folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the nether folder is `world_nether`, and it\'s `world/DIM-1` on Fabric/Vanilla.\n**3c.** [Nullscape] Inside the end folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the end folder is `world_the_end`, and it\'s `world/DIM1` on Fabric/Vanilla.\n\n**4.** Start your server again, and enjoy!\n\nNote: *If only using Structory, these steps are not necessary - you just might not find Structory structures within a couple chunks of spawn if you don\'t. Therefore, you can add Structory to an already generated world with no issues!'
             case 'Install Method 1.19.3 ONLY':
                 embed.title = 'Install Method 1.19.3 ONLY'
-                embed.description = '**__Warning__**: this method works on **1.19.3 ONLY!** It will __not__ work on 1.19.2 or lower. If you are on 1.19.2 or lower, select the "Normal Install Method" in the select menu below instead.\n\nPick your favorite server software (Fabric, Paper, etc), since this method will work on all of them.\n\n**1.** __Do not__ start your server at all. If you are using a server host and they have already generated your `world` folder, this method will **not** work. Same goes for self hosting, and if you already started the server. Swap to "Normal Install Method" immediately!\n\n**2a.** [Datapacks only] Manually create a `world` folder. Inside that folder, manually create a `datapacks` folder. Insert all your datapacks in that folder.\n**2b.** [Mods only] Manually create a `mods` folder. Insert all your mods in that folder.\n\n**3.** Start your server and enjoy!'
+                embed.description = '**__Warning__**: this method works on **1.19.3 ONLY!** It will __not__ work on 1.19.2 or lower. If you are on 1.19.2 or lower, select the "Normal Install Method" in the select menu below instead. If you use this method, and it does not work, try the Normal method.\n\nPick your favorite server software (Fabric, Paper, etc), since this method will work on all of them.\n\n**1.** __Do not__ start your server at all. If you are using a server host and they have already generated your `world` folder, this method will **not** work. Same goes for self hosting, and if you already started the server. Swap to "Normal Install Method" immediately!\n\n**2a.** [Datapacks only] Manually create a `world` folder. Inside that folder, manually create a `datapacks` folder. Insert all your datapacks in that folder.\n**2b.** [Mods only] Manually create a `mods` folder. Insert all your mods in that folder.\n\n**3.** Start your server and enjoy!'
 
         await interaction.response.edit_message(embed=embed)
 
