@@ -78,12 +78,15 @@ async def run():
 		else:
 			logging.error("Could not log into Miraheze Wiki")
 
-		client.db = await asyncpg.create_pool(**credentials)
-		client.wiki_session = wiki_session
-		client.miraheze = MediaWiki(
-			url="https://stardustlabs.miraheze.org/w/api.php",
-			user_agent=keys["wiki-user-agent"]
-		)
+		try:
+			client.db = await asyncpg.create_pool(**credentials)
+			client.wiki_session = wiki_session
+			client.miraheze = MediaWiki(
+				url="https://stardustlabs.miraheze.org/w/api.php",
+				user_agent=keys["wiki-user-agent"]
+			)
+		except TimeoutError as e:
+			raise e
 
 		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
 		await client.start(keys[client.environment["INCENDY_BOT_TOKEN"]])
