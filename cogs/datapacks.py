@@ -25,7 +25,7 @@ class Datapacks(commands.Cog):
 
 	@datapack_group.command(name="analyze", description="Analyze and validate your datapackto see its stats and errors")
 	@app_commands.describe(datapack="Attach your datapack ZIP here")
-	async def analyze(self, interaction: discord.Interaction, datapack: discord.Attachment):
+	async def analyze(self, interaction: discord.Interaction, version: str, datapack: discord.Attachment):
 		if datapack.content_type != "application/zip":
 			await interaction.response.send_message("Your attachment is not a valid datapack! It **must** be a zip file (not rar)!", ephemeral=True)
 			return
@@ -39,13 +39,13 @@ class Datapacks(commands.Cog):
 
 		json_log_handler = JsonLogHandler()
 		with json_log_handler.activate():
-			mc = Mecha()
+			mc = Mecha(version=version)
 			analyzer = Analyzer(mc)
 			mc.compile(pack, report=mc.diagnostics)
 			mc.log_reported_diagnostics()
 
 		errors = json_log_handler.entries
-		error1 = errors[0].dict()
+		error1 = errors[0].dict() if len(errors) > 0 else None
 		colour = (discord.Colour.green() if len(errors) == 0 else discord.Colour.red())
 		stats = analyzer.stats.dict()
 		nl = '\n'
@@ -77,6 +77,14 @@ class Datapacks(commands.Cog):
 
 		await interaction.followup.send(embed=embed)
 		os.remove(f"tmp/filepath")
+
+	@analyze.autocomplete('version')
+	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		return [
+			app_commands.Choice(name=version, value=version)
+			for version in ["1.19", "1.18", "1.17"]
+			if current in version
+		]
 
 
 	@datapack_group.command(name="mcmeta", description="Download the latest default Vanilla datapack")
