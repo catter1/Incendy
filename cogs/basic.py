@@ -12,9 +12,9 @@ from discord.ext import commands, tasks
 from resources import incendy
 
 class Basic(commands.Cog):
-    def __init__(self, client: incendy.IncendyBot):
-        self.client = client
-        self.translator = googletrans.Translator()
+	def __init__(self, client: incendy.IncendyBot):
+		self.client = client
+		self.translator = googletrans.Translator()
 
 		self.translate_app = app_commands.ContextMenu(
 			name='Translate to English',
@@ -86,11 +86,11 @@ class Basic(commands.Cog):
 	async def _discord(self, interaction: discord.Interaction, server: str):
 		""" /discord [server] """
 
-        if not server.startswith("https://discord.gg/"):
-            await interaction.response.send_message("Unknown error! Please try again.", ephemeral=True)
-            return
-            
-        await interaction.response.send_message(server)
+		if not server.startswith("https://discord.gg/"):
+			await interaction.response.send_message("Unknown error! Please try again.", ephemeral=True)
+			return
+			
+		await interaction.response.send_message(server)
 
 	@_discord.autocomplete('server')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
