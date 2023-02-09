@@ -253,7 +253,7 @@ class Faq(commands.Cog):
             query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
             await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
 
-    @faq.autocomplete('q')
+    @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
         faq_list = sorted(["Ore Distribution", "Biome IDs", "Removal", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Versions", "How Do I Tell", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
 
