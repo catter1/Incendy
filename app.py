@@ -120,6 +120,7 @@ async def setup_hook():
 
 	# Wiki Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS title_index ON wiki (title);')
 
 @client.command(name="sync")
 @incendy.is_catter()
