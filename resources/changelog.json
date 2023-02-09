@@ -1,5 +1,10 @@
 [
     {
+        "title": "3.0.2",
+        "desc": "New commands and bug fixes!\n **•**Added two datapack development commands, `/datapack analyze` and `/datapack mcmeta`\n **•**Completely reworked `/wiki`, which is changed to `/wiki search` and `/wiki upload`\n **•**Added *tons* of new textlinks, which are viewed with `/textlinks`\n **•**Various minor renames, additions, shuffles, etc\n **•**Added close button for support threads\n **•**Fixed cooldowns for various commands\n **•**A lot of backend refactoring and performance improving",
+        "timestamp": 1675972800
+    },
+    {
         "title": "3.0.1",
         "desc": "Bug Fixes.\n **•**Changed /news to /changelog\n **•**Fixed /feedback\n **•**Fixed the project textlinks, and added one for the License\n **•**Fixed automatic support welcome message\n **•**New WWOO FAQ\n **•**Fixed Seedfix FAQ",
         "timestamp": 1674509460
