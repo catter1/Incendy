@@ -31,6 +31,7 @@ class Basic(commands.Cog):
 
 		resp = requests.get("https://misode.github.io/sitemap.txt")
 		self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
+		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title LIMIT 45;')}
 
 		print(f' - {self.__cog_name__} cog loaded.')
 
@@ -157,6 +158,7 @@ class Basic(commands.Cog):
 		view.add_item(TextLinks())
 		view.add_item(GeneralLinks(self.textlinks))
 		view.add_item(MisodeLinks(self.misode_urls))
+		view.add_item(WikiLinks(self.wiki_urls))
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.green, disabled=True, label="More Soon..."))
 
 		await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
@@ -344,6 +346,10 @@ class Basic(commands.Cog):
 							page = match.split("|")[-1].lower().replace(" ", "-")
 							if page in self.misode_urls.keys():
 								await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>", mention_author=False)
+						elif "wiki" in match.split("|")[0].lower():
+							page = match.split("|")[-1].lower()
+							if page in self.wiki_urls.keys():
+								await message.reply(f"Wiki {page.replace('-', ' ').title()} link: <{self.wiki_urls[page]}>", mention_author=False)
 
 			#Pastebin feature
 			if len(message.attachments) > 0:
@@ -456,8 +462,20 @@ class MisodeLinks(discord.ui.Button):
 	
 	async def callback(self, interaction: discord.Interaction):
 		embed = interaction.message.embeds[0]
-		embed.title = "General Textlinks"
+		embed.title = "Misode Textlinks"
 		embed.description = "  -  ".join([f"[Misode|{textlink.replace('-', ' ').title()}]({self.misode_urls[textlink]})" for textlink in self.misode_urls])
+
+		await interaction.response.edit_message(embed=embed)
+
+class WikiLinks(discord.ui.Button):
+	def __init__(self, wiki_urls: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='Wiki Textlinks')
+		self.wiki_urls = wiki_urls
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Wiki Textlinks"
+		embed.description = "  -  ".join([f"[Wiki|{textlink.title()}]({self.wiki_urls[textlink]})" for textlink in self.wiki_urls]) + " ... and more! Too much to fit in discord, but every wiki page works."
 
 		await interaction.response.edit_message(embed=embed)
 
