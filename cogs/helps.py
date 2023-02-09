@@ -62,15 +62,28 @@ class Helps(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_thread_create(self, thread):
-		if thread.parent_id == 1019651246078038128:
+		if thread.parent_id == 1045346794864918569: #1019651246078038128
 			embed = discord.Embed(
 				colour=discord.Colour.brand_green(),
 				description="Thanks for creating a thread! Be patient, and we will answer your question when we are able to. In the meantime...\n\n• Check the FAQ by doing `/faq` to see if your question is already answered.\n• Did you **describe** your issue thoroughly?\n• Are relevant **logs** attached?\n• Is your thread **tagged** appropriately?\n• Ensure you've answered the questions outlined in our **Post Guidelines**.\n\nWhen your question is answered, please close it with `/close`. Thank you!"
 			)
 			embed.set_author(name="Your Support Question", icon_url="https://cdn.discordapp.com/emojis/1058423314672013382.png")
 
-			await thread.send(embed=embed)
+			view = discord.ui.View()
+			view.add_item(CloseButton())
 
+			await thread.send(embed=embed, view=view)
+
+class CloseButton(discord.ui.Button):
+	def __init__(self):
+		super().__init__(style=discord.ButtonStyle.green, label="Close Thread", emoji="🚫")
+
+	async def callback(self, interaction: discord.Interaction):
+		if isinstance(interaction.channel, discord.Thread) and (interaction.user.id == interaction.channel.owner_id or interaction.user.guild_permissions.administrator):
+			await interaction.response.send_message("Closing thread now. Thanks!")
+			await interaction.channel.edit(locked=True, archived=True)
+		else:
+			await interaction.response.send_message("Sorry, you don't have permission to close this thread!", ephemeral=True)
 
 class HelpView(discord.ui.View):
 	def __init__(self):
