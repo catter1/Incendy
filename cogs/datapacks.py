@@ -2,6 +2,10 @@ import discord
 import os
 import json
 import requests
+from mecha.api import Mecha
+from mecha.contrib.statistics import Analyzer, Summary
+from beet.library.data_pack import DataPack
+from beet.contrib.json_log import JsonLogHandler
 from discord import app_commands
 from discord.ext import commands
 from resources import incendy
@@ -18,6 +22,62 @@ class Datapacks(commands.Cog):
 		print(f' - {self.__cog_name__} cog unloaded.')
 
 	datapack_group = app_commands.Group(name="datapack", description="Various commands for datapack development")
+
+	@datapack_group.command(name="analyze", description="Analyze and validate your datapackto see its stats and errors")
+	@app_commands.describe(datapack="Attach your datapack ZIP here")
+	async def analyze(self, interaction: discord.Interaction, datapack: discord.Attachment):
+		if datapack.content_type != "application/zip":
+			await interaction.response.send_message("Your attachment is not a valid datapack! It **must** be a zip file (not rar)!", ephemeral=True)
+			return
+		
+		await interaction.response.defer(thinking=True)
+		
+		filename = f"{interaction.user.name}_datapack.zip"
+		await datapack.save(f"tmp/{filename}")
+
+		pack = DataPack(zipfile=f"tmp/{filename}")
+
+		json_log_handler = JsonLogHandler()
+		with json_log_handler.activate():
+			mc = Mecha()
+			analyzer = Analyzer(mc)
+			mc.compile(pack, report=mc.diagnostics)
+			mc.log_reported_diagnostics()
+
+		errors = json_log_handler.entries
+		error1 = errors[0].dict()
+		colour = (discord.Colour.green() if len(errors) == 0 else discord.Colour.red())
+		stats = analyzer.stats.dict()
+		nl = '\n'
+
+		headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+		url = "https://api.mclo.gs/1/log"
+		data = {"content": f"{Summary(mc.spec, analyzer.stats)}"}
+		x = requests.post(url, data=data, headers=headers)
+		logurl = json.loads(x.text)["url"]
+
+		embed = discord.Embed(
+			title=f"{datapack.filename[:-4]} Analysis",
+			color=colour, #<:i_blazing:1026201263509086228>
+			description=f"""
+			[Full Function Breakdown]({logurl})
+			📁 **Total Functions**: {stats.get('function_count')}
+			<:cmdblk:1073005612285308958> **Commands**: {sum([stats['command_count'][item][key] for item in stats['command_count'].keys() for key in stats['command_count'][item].keys()])}
+			{nl.join([f'...🔹 __{cmd}__: {cnt}' for cmd, cnt in sorted(((item, sum(key for key in stats['command_count'][item].values())) for item in stats['command_count'].keys()), reverse=True, key=lambda item: item[1])[:5]])}
+			
+			🔪 **Execute Commands**: {stats.get('execute_count')}
+			{'...execute **:** ' + ', '.join([f'__{cmd}__ ({cnt})' for cmd, cnt in sorted(stats['command_behind_execute_count'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['command_behind_execute_count'].keys()) != 0 else ''}
+			👉 **Selectors**: {', '.join([f'{cnt} **@{sel}**' for sel, cnt in ((item, stats['selector_count'][item]) for item in stats['selector_count'].keys())]) if len(stats['selector_count'].keys()) != 0 else 0}
+			🥅 **Top Scoreboards**: {', '.join([f'__{sb}__ ({cnt})' for sb, cnt in sorted(stats['scoreboard_references'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['scoreboard_references'].keys()) != 0 else 0}
+
+			{'**No errors!** This datapack is valid.' if len(errors) == 0 else f'There {f"is **1** error." if len(errors) == 1 else f"are **{len(errors)}** errors. Here is the first one:"}{nl}```{error1["annotation"] + nl*2 + nl.join(error1["details"])}```'}
+			"""
+		)
+		embed.set_footer(text="Powered by Beet and Mecha.")
+
+		await interaction.followup.send(embed=embed)
+		os.remove(f"tmp/filepath")
+
 
 	@datapack_group.command(name="mcmeta", description="Download the latest default Vanilla datapack")
 	@app_commands.describe(version="Minecraft version to get datapack for")
