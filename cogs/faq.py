@@ -24,7 +24,6 @@ class Faq(commands.Cog):
 
         qp_dict = {
             "Standards": "https://xkcd.com/927/",
-            "Discord Links": "Hey, need to get a link for a relevant Discord server? Do `/discord` to see an autocompletable list of invites.",
             "Try it and See": "https://tryitands.ee/",
             "Dont Ask to Ask": "https://dontasktoask.com/",
             "Notch Code": "`bl2 = !bls[(ab * 16 + ac) * 8 + ad] && (ab < 15 && bls[((ab + 1) * 16 + ac) * 8 + ad] || ab > 0 && bls[((ab - 1) * 16 + ac) * 8 + ad] || ac < 15 && bls[(ab * 16 + ac + 1) * 8 + ad] || ac > 0 && bls[(ab * 16 + (ac - 1)) * 8 + ad] || ad < 7 && bls[(ab * 16 + ac) * 8 + ad + 1] || ad > 0 && bls[(ab * 16 + ac) * 8 + (ad - 1)]);`",
@@ -52,17 +51,17 @@ class Faq(commands.Cog):
 
     @app_commands.command(name="faq", description="Frequently Asked Questions (for support)")
     @app_commands.describe(
-        q="The FAQ to view",
+        faq="The FAQ to view",
         public="Whether to make the FAQ visible to everyone. Keep it False unless you're trying to share!"
     )
-    async def faq(self, interaction: discord.Interaction, q: str, public: bool = False):
+    async def faq(self, interaction: discord.Interaction, faq: str, public: bool = False):
         """ /faq [q] """
         faq_colour = discord.Colour.brand_red()
         public = not public
         view = None
         file = None
 
-        match q:
+        match faq:
             case "Biome IDs":
                 await interaction.response.defer(ephemeral=public, thinking=True)
                 versions = await self.get_versions()
@@ -153,7 +152,7 @@ class Faq(commands.Cog):
                     color=faq_colour
                 )
                 view = Realms()
-            case "Removal":
+            case "Removing Worldgen Packs":
                 embed = discord.Embed(
                     title='Removing Worldgen Packs',
                     description='You cannot simply remove a worldgen pack from your world. The way to do so involves completely resetting your dimension, so we do not recommend it unless you have a good reason. In order to do so, you must follow these three steps:\n\n**1.** Ensure your world/server is stopped, and remove the worldgen datapack.\n**2.** You must completely reset the dimension that the worldgen pack was affecting. For the nether and end, this is done by deleting the `world/DIM-1` and `world/DIM1` folders in Vanilla/Fabric/Forge, and `world_nether` and `world_the_end` folders in Spigot/Paper, respectively. It\'s more tricky for the overworld - either just reset everything, or ask for further help.\n**3.** You must remove all biome entries from your `level.dat`. If you do not know how to do this, ask for assistance. There will be tools for this later.',
@@ -216,7 +215,7 @@ class Faq(commands.Cog):
                     color=faq_colour
                 )
                 view = Update()
-            case "Versions":
+            case "Version Table":
                 embed = discord.Embed(
                     title='All Versions',
                     description='Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#900598465430716426>.',
@@ -239,7 +238,7 @@ class Faq(commands.Cog):
             if view:
                 await interaction.response.send_message(embed=embed, file=file, view=view, ephemeral=public)
             else:
-                if q == "Biome IDs":
+                if faq == "Biome IDs":
                     await interaction.followup.send(embed=embed, file=file, ephemeral=public)
                 else:
                     await interaction.response.send_message(embed=embed, file=file, ephemeral=public)
@@ -252,7 +251,7 @@ class Faq(commands.Cog):
         # Enter into DB
         if interaction.guild_id == self.client.settings["stardust-guild-id"]:
             query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
-            await self.client.db.execute(query, interaction.user.id, q, interaction.created_at)
+            await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
 
     @faq.autocomplete('q')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
