@@ -216,13 +216,14 @@ async def update_content(index: str) -> tuple:
 				('help', 'Display this help menu'),
 				('faq <q> [public=None]', 'Choose from a large list of FAQs to display'),
 				('qp <post>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
-				('wiki <action>', 'Do various **action**s through the Stardust Labs\' wiki, such as searching or uploading images')
+				('wiki <search|upload>', 'Do various actions through the Stardust Labs\' wiki')
 			)
 		case "2":
 			entries = (
 				('bug <project>', '**Contributors only.** Opens a bug report for a Stardust Labs **project**'),
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
+				('datapack <analyze|mcmeta>', 'Various datapack development related commands'),
 				('discord <server>', 'Sends the Discord invite link from a list of datapack-relevant Discord server'),
 				('remindme <time> <reminder>', 'Sets a reminder. Time should be formatted like this example: `12s` where `s` means `seconds`, supported from seconds to days'),
 				('textlinks', 'Displays all available textlinks')
