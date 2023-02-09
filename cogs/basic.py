@@ -55,6 +55,29 @@ class Basic(commands.Cog):
 
 	### COMMANDS ###
 
+	@app_commands.command(name="apply", description="Send your interest in becoming a StardustMC Security member for Season 2")
+	@app_commands.checks.dynamic_cooldown(incendy.super_long_cd)
+	@app_commands.describe(
+		ign="Your Minecraft username",
+		timezone="What is your timezone?"
+	)
+	async def apply(self, interaction: discord.Interaction, ign: str, timezone: str):
+		"""/apply <ign> <timezone>"""
+
+		embed = discord.Embed(
+			title="Security Application",
+			color=discord.Colour.dark_blue(),
+			description=f"""
+			Minecraft Username: {ign}
+			Timezone: {timezone}
+			"""
+		)
+		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
+
+		channel = self.client.get_channel(1002216414335221841)
+		await channel.send(embed=embed)
+		await interaction.response.send_message("Thanks for your Security member application! Don't ask about your application - we will get back to you when we're ready.", ephemeral=True)
+
 	@app_commands.command(name="discord", description="Gets links for other Discord servers")
 	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
 	@app_commands.describe(

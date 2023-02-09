@@ -211,7 +211,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 		command = interaction.command.name
 		if command == "Translate to English":
 			await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
-		elif command in ["feedback", "reportad", "remindme"]:
+		elif command in ["feedback", "reportad", "remindme", "apply"]:
 			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
 		else:
 			await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
