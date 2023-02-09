@@ -92,7 +92,7 @@ class Basic(commands.Cog):
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
 		server_dict = {
 			"New In Town": "https://discord.gg/KvdmxHM",
-			"MC Configs": "https://discord.gg/EjrKNBU",
+			"Minecraft Configs": "https://discord.gg/EjrKNBU",
 			"Still Loading": "https://discord.gg/vkUtRKCdtg",
 			"REDUX": "https://discord.gg/BBNavaXH8v",
 			"Hashs": "https://discord.gg/eKQSEmH9dY",
@@ -101,7 +101,8 @@ class Basic(commands.Cog):
 			"Complementary": "https://discord.gg/A6faFYt",
 			"Apollo": "https://discord.gg/vFz67Pvceu",
 			"Smithed": "https://discord.gg/gkp6UqEUph",
-			"MC Commands": "https://discord.gg/QAFXFtZ",
+			"Beet": "https://discord.gg/98MdSGMm8j",
+			"Minecraft Commands": "https://discord.gg/QAFXFtZ",
 			"LimeSplatus": "https://discord.gg/5DqYxxZdeb",
 			"WWOO": "https://discord.gg/jT34CWwzth",
 			"BYG": "https://discord.gg/F28fGPCJH8",
@@ -111,6 +112,9 @@ class Basic(commands.Cog):
 			#"LPS": "https://discord.gg/8ZmhaPPbjE",
 			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
 			"rx": "https://discord.gg/CzjCF8QNX6",
+			"Bisect Hosting": "https://discord.gg/zb8vZap",
+			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
+			"Fabric": "https://discord.gg/v6v4pMv",
 			"Stardust Labs": "https://discord.gg/stardustlabs"
 		}
 		server_list = sorted([server for server in server_dict.keys()])
@@ -133,8 +137,15 @@ class Basic(commands.Cog):
 			"LMAO! Stop procrastinating and go do your work!",
 			"And then they said \"it's pinging time\", so I pinged all over the place",
 			"Gee, I can't wait for ||[REDACTED]|| to release!",
-			"*Shh, want to hear catter's biggest secret? So, did you kn- [DATA EXPUNGED] [DATA EXPUNGED]",
-			"Sometimes, it's tiring. But you are entertaining!"
+			"*Shh, want to hear catter's biggest secret? So, did you kn-* [DATA EXPUNGED] [DATA EXPUNGED]",
+			"Sometimes, it's tiring. But you are entertaining!",
+			"Wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki",
+			"You should ask Apollo about docs!",
+			"Who am I? Well, I'm certainly not him! It's not that hard!",
+			"Some say Scarlet Mountains is the best, but only I know which is truly the greatest...",
+			"You think the End is desolate? Ha! Consider yourself lucky. You know nothing.",
+			"Can confirm: cats are indeed better than dogs. They're quite intelligent, and the one I met i- [REDACTED]",
+			"Fried, boiled, jacket, baked, red, russet, scalloped, cheesy, loaded, mashed, dilled, roasted, sweet..."
 		]
 		await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
