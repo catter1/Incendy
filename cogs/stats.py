@@ -15,7 +15,7 @@ class Stats(commands.Cog):
 
 	async def cog_load(self):
 		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
-			self.loop_get_wiki.start()
+			self.loop_get_stats.start()
 		else:
 			logging.warn("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
 		print(f' - {self.__cog_name__} cog loaded.')
