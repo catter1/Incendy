@@ -211,8 +211,8 @@ async def on_message(message: discord.Message):
 
 @client.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+	command = interaction.command.name
 	if isinstance(error, app_commands.CommandOnCooldown):
-		command = interaction.command.name
 		if command == "Translate to English":
 			await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
 		elif command in ["feedback", "reportad", "remindme", "apply"]:
@@ -222,7 +222,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 	elif isinstance(error, app_commands.CheckFailure):
 		if command in ["stats", "incendy", "changelog"]:
 			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
-		elif command == "bug":
+		elif command in ["bug", "upload"]:
 			await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
 		elif command == "close":
 			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
