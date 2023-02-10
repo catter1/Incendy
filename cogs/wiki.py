@@ -211,7 +211,6 @@ class Wiki(commands.Cog):
 		await interaction.followup.send(f"Your image has successfully been uploaded to the wiki! You can view it here: {img_resp['upload']['imageinfo']['url']}", ephemeral=False)
 
 	@wiki_group.command(name="search", description="Explore the Stardust Labs Wiki!")
-	@incendy.in_bot_channel()
 	async def search(self, interaction: discord.Interaction):
 		""" /wiki search """
 
