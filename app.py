@@ -134,38 +134,41 @@ cog_group = app_commands.Group(name='cog', description='[ADMIN] Uses the cog man
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def load(interaction: discord.Interaction, cog: str):
+	await interaction.response.defer(thinking=True, ephemeral=True)
 	try:
 		await client.load_extension(cog)
 	except Exception as error:
-		await interaction.response.send_message("Issue loading cog!", ephemeral=True)
+		await interaction.followup.send("Issue loading cog!", ephemeral=True)
 		raise error
 	else:
-		await interaction.response.send_message("Cog loaded successfully", ephemeral=True)
+		await interaction.followup.send("Cog loaded successfully", ephemeral=True)
 
 @cog_group.command(name="unload", description="[ADMIN] Unloads a cog")
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def unload(interaction: discord.Interaction, cog: str):
+	await interaction.response.defer(thinking=True, ephemeral=True)
 	try:
 		await client.unload_extension(cog)
 	except Exception as error:
-		await interaction.response.send_message("Issue unloading cog!", ephemeral=True)
+		await interaction.followup.send("Issue unloading cog!", ephemeral=True)
 		raise error
 	else:
-		await interaction.response.send_message("Cog unloaded successfully", ephemeral=True)
+		await interaction.followup.send("Cog unloaded successfully", ephemeral=True)
 
 @cog_group.command(name="reload", description="[ADMIN] Reloads a cog")
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def _reload(interaction: discord.Interaction, cog: str):
+	await interaction.response.defer(thinking=True, ephemeral=True)
 	try:
 		await client.unload_extension(cog)
 		await client.load_extension(cog)
 	except Exception as error:
-		await interaction.response.send_message("Issue reloading cog!", ephemeral=True)
+		await interaction.followup.send("Issue reloading cog!", ephemeral=True)
 		raise error
 	else:
-		await interaction.response.send_message("Cog reloaded successfully", ephemeral=True)
+		await interaction.followup.send("Cog reloaded successfully", ephemeral=True)
 
 
 @load.autocomplete('cog')
