@@ -144,7 +144,8 @@ class Bulletin(commands.Cog):
 	async def library(self, interaction: discord.Interaction):
 		""" /library """
 
-		data = self.client.settings
+		with open("resources/textlinks.json", 'r') as f:
+			textlinks = json.load(f)
 
 		embed = discord.Embed(
 			title="**Amplified Nether**",
@@ -154,7 +155,7 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Amplified Nether.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Amplified())
-		data["textlinks"]["amplified nether"] = msg.jump_url
+		textlinks["amplified nether"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Continents**",
@@ -164,7 +165,7 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Continents.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Continents())
-		data["textlinks"]["continents"] = msg.jump_url
+		textlinks["continents"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Structory: Towers**", 
@@ -174,9 +175,9 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Structory Towers.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Towers())
-		data["textlinks"]["structory: towers"] = msg.jump_url
-		data["textlinks"]["structory towers"] = msg.jump_url
-		data["textlinks"]["towers"] = msg.jump_url
+		textlinks["structory: towers"] = msg.jump_url
+		textlinks["structory towers"] = msg.jump_url
+		textlinks["towers"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Nullscape**", 
@@ -186,7 +187,7 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Nullscape.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Nullscape())
-		data["textlinks"]["nullscape"] = msg.jump_url
+		textlinks["nullscape"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Incendium**", 
@@ -196,7 +197,7 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Incendium.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Incendium())
-		data["textlinks"]["incendium"] = msg.jump_url
+		textlinks["incendium"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Structory**", 
@@ -206,7 +207,7 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Structory.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Structory())
-		data["textlinks"]["structory"] = msg.jump_url
+		textlinks["structory"] = msg.jump_url
 
 		embed = discord.Embed(
 			title="**Terralith**", 
@@ -216,11 +217,12 @@ class Bulletin(commands.Cog):
 		file = discord.File(f"assets/Terralith.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed, view=Terralith())
-		data["textlinks"]["terralith"] = msg.jump_url
+		textlinks["terralith"] = msg.jump_url
 
-		if interaction.guild_id == data["stardust-guild-id"]:
-			with open("resources/settings.json", 'w') as f:
-				json.dump(data, f, indent=4)
+		with open("resources/settings.json", 'r') as f:
+			if interaction.guild_id == json.load(f)["stardust-guild-id"]:
+				with open("resources/textlinks.json", 'w') as f:
+					json.dump(textlinks, f, indent=4)
 
 	### LISTENERS ###
 
