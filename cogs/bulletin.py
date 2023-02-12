@@ -257,7 +257,7 @@ class Incendium(discord.ui.View):
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/incendium/versions'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files'))
-		self.add_item(discord.ui.Button(label='Optional Resource Pack', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/downloads-library/tree/main/Incendium/Resource%20Pack'))
+		self.add_item(discord.ui.Button(label='Optional Resource Pack', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.16.5)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/releases'))
 
 class Nullscape(discord.ui.View):
@@ -278,7 +278,7 @@ class Structory(discord.ui.View):
 class Towers(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
+		#self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19.x)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files'))
 		self.add_item(discord.ui.Button(label='All Versions (1.19.x)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases'))
 
