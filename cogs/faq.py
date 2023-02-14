@@ -1,6 +1,7 @@
 import discord
 import requests
 import json
+import os
 from discord import app_commands
 from discord.ext import commands
 from resources import incendy
@@ -240,6 +241,7 @@ class Faq(commands.Cog):
             else:
                 if faq == "Biome IDs":
                     await interaction.followup.send(embed=embed, file=file, ephemeral=public)
+                    os.remove('resources/funny_biomes.txt')
                 else:
                     await interaction.response.send_message(embed=embed, file=file, ephemeral=public)
         else:
