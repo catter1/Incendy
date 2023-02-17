@@ -58,14 +58,14 @@ class Datapacks(commands.Cog):
 
 		embed = discord.Embed(
 			title=f"{datapack.filename[:-4]} Analysis",
-			color=colour, #<:i_blazing:1026201263509086228>
+			color=colour,
 			description=f"""
 			[Full Function Breakdown]({logurl})
 			📁 **Total Functions**: {stats.get('function_count')}
 			<:cmdblk:1073005612285308958> **Commands**: {sum([stats['command_count'][item][key] for item in stats['command_count'].keys() for key in stats['command_count'][item].keys()])}
 			{nl.join([f'...🔹 __{cmd}__: {cnt}' for cmd, cnt in sorted(((item, sum(key for key in stats['command_count'][item].values())) for item in stats['command_count'].keys()), reverse=True, key=lambda item: item[1])[:5]])}
 			
-			🔪 **Execute Commands**: {stats.get('execute_count')}
+			<:i_blazing:1026201263509086228> **Execute Commands**: {stats.get('execute_count')}
 			{'...execute **:** ' + ', '.join([f'__{cmd}__ ({cnt})' for cmd, cnt in sorted(stats['command_behind_execute_count'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['command_behind_execute_count'].keys()) != 0 else ''}
 			👉 **Selectors**: {', '.join([f'{cnt} **@{sel}**' for sel, cnt in ((item, stats['selector_count'][item]) for item in stats['selector_count'].keys())]) if len(stats['selector_count'].keys()) != 0 else 0}
 			🥅 **Top Scoreboards**: {', '.join([f'__{sb}__ ({cnt})' for sb, cnt in sorted(stats['scoreboard_references'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['scoreboard_references'].keys()) != 0 else 0}
