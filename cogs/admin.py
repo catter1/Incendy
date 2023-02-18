@@ -1,6 +1,5 @@
 import discord
 import logging
-import aiohttp
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
