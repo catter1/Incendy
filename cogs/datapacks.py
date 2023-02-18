@@ -25,13 +25,19 @@ class Datapacks(commands.Cog):
 	datapack_group = app_commands.Group(name="datapack", description="Various commands for datapack development")
 
 	@datapack_group.command(name="analyze", description="Analyze and validate your datapackto see its stats and errors")
-	@app_commands.describe(datapack="Attach your datapack ZIP here")
-	async def analyze(self, interaction: discord.Interaction, version: str, datapack: discord.Attachment):
+	@app_commands.describe(
+		version="Minecraft version for your datapack",
+		datapack="Attach your datapack ZIP here",
+		public="Whether to display the results publicly or not"
+	)
+	async def analyze(self, interaction: discord.Interaction, version: str, datapack: discord.Attachment, public: bool = True):
+		public = not public
+
 		if datapack.content_type != "application/zip":
 			await interaction.response.send_message("Your attachment is not a valid datapack! It **must** be a zip file (not rar)!", ephemeral=True)
 			return
 		
-		await interaction.response.defer(thinking=True)
+		await interaction.response.defer(thinking=True, ephemeral=public)
 		
 		filename = f"{interaction.user.name}_datapack.zip"
 		await datapack.save(f"tmp/{filename}")
@@ -76,7 +82,7 @@ class Datapacks(commands.Cog):
 		)
 		embed.set_footer(text="Powered by Beet and Mecha.")
 
-		await interaction.followup.send(embed=embed)
+		await interaction.followup.send(embed=embed, ephemeral=public)
 		os.remove(f"tmp/{filename}")
 
 	@analyze.autocomplete('version')
