@@ -6,7 +6,7 @@ import os
 import re
 import random
 import googletrans
-from libraries.incendy_image import resize
+from libraries.image_tools import resize
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy

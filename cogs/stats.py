@@ -6,7 +6,7 @@ import logging
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy
-from libraries import incendy_image as ii
+from libraries import image_tools
 from libraries import stardust_downloads as sd
 
 class Stats(commands.Cog):
@@ -47,7 +47,7 @@ class Stats(commands.Cog):
 			news = json.load(f)
 
 		catter = interaction.guild.get_member(260929689126699008)
-		colour = await ii.get_user_color(catter)
+		colour = await image_tools.get_user_color(catter)
 		embed = discord.Embed(color=colour)
 		embed.set_author(name="Incendy Changelog", icon_url=catter.avatar.url)
 		
@@ -60,7 +60,7 @@ class Stats(commands.Cog):
 	@incendy.in_bot_channel()
 	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
 	async def _incendy(self, interaction: discord.Interaction):
-		colour = await ii.get_user_color(self.client.user)
+		colour = await image_tools.get_user_color(self.client.user)
 
 		embed = discord.Embed(
 			color=colour,
@@ -85,7 +85,7 @@ class Stats(commands.Cog):
 		if member:
 			await interaction.response.defer(thinking=True)
 			# Get color
-			colour = await ii.get_user_color(member)
+			colour = await image_tools.get_user_color(member)
 
 			# Total messages
 			msg_query = 'SELECT COUNT(message_id) FROM messages WHERE user_id = $1;'
@@ -144,7 +144,7 @@ class Stats(commands.Cog):
 			# Get color
 			filename = f"tmp/{interaction.guild.id}.webp"
 			await interaction.guild.icon.save(filename)
-			colour = ii.get_color(filename)
+			colour = image_tools.get_color(filename)
 			os.remove(f"{os.curdir}/{filename}")
 
 			# Top commands
@@ -167,7 +167,7 @@ class Stats(commands.Cog):
 			data["version"] = self.client.settings["version"]
 			
 			# Create image
-			filepath = ii.create_stats_image(data)
+			filepath = image_tools.create_stats_image(data)
 			file = discord.File(filepath, filename="stats.jpg")
 
 			embed = discord.Embed(color=colour)
