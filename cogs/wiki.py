@@ -176,13 +176,13 @@ class Wiki(commands.Cog):
 
 	wiki_group = app_commands.Group(name='wiki', description='Various commands regarding the wiki')
 
-	@wiki_group.command(name="upload", description="Allows Photographers and Wiki Contributors to upload a photo to the wiki.")
+	@wiki_group.command(name="upload", description="Allows Photographers and Wiki Contributors to upload media to the wiki.")
 	@incendy.can_edit_wiki()
 	@app_commands.describe(
-		name="The name of the image",
-		image="The image itself. Must be png, jpg, or jpeg."
+		name="The name of the media",
+		media="The media itself. Must be png, jpg, jpeg, or mp4."
 	)
-	async def _upload(self, interaction: discord.Interaction, name: str, image: discord.Attachment):
+	async def _upload(self, interaction: discord.Interaction, name: str, media: discord.Attachment):
 		""" /wiki upload """
 
 		async def login() -> requests.Session:
@@ -208,8 +208,8 @@ class Wiki(commands.Cog):
 			await interaction.response.send_message("There was an error logging into the Miraheze Wiki! Try again later. If the issue continues, let catter know.", ephemeral=True)
 			return
 		
-		if image.content_type != "image/jpeg" and image.content_type != "image/png":
-			await interaction.response.send_message("Your attachment is not a valid image! It must be a png, jpg, or jpeg. Try again.", ephemeral=True)
+		if media.content_type not in ["image/png", "image/jpeg", "video/mp4"]:
+			await interaction.response.send_message("Your attachment is not a valid media type! It must be a png, jpg, jpeg, or mp4. Try again.", ephemeral=True)
 
 		await interaction.response.defer(thinking=True)
 
@@ -219,21 +219,24 @@ class Wiki(commands.Cog):
 		csrf_params = {"action":"query", "meta":"tokens", "type":"csrf", "format":"json"}
 		csrf_token = self.client.wiki_session.post(url=url, data=csrf_params, headers=headers).json()["query"]["tokens"]["csrftoken"]
 
-		img_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{image.filename.split('.')[-1]}", "url":image.url, "format":"json", "token":csrf_token}
-		img_resp = self.client.wiki_session.post(url=url, data=img_params, headers=headers).json()
+		media_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{media.filename.split('.')[-1]}", "url":media.url, "format":"json", "token":csrf_token}
+		media_resp = self.client.wiki_session.post(url=url, data=media_params, headers=headers).json()
 
-		if not img_resp.get("upload"):
-			await interaction.followup.send("There was an error uploading your image!", ephemeral=True)
-			logging.error("Could not upload image to Wiki!")
-			logging.error(img_resp)
+		if not media_resp.get("upload"):
+			await interaction.followup.send("There was an error uploading your media!", ephemeral=True)
+			logging.error("Could not upload media to media!")
+			logging.error(media_resp)
 			return
-		if img_resp["upload"]["result"] != "Success":
-			await interaction.followup.send("There was an error uploading your image!", ephemeral=True)
-			logging.error("Could not upload image to Wiki!")
-			logging.error(img_resp)
+		if media_resp["upload"]["result"] != "Success":
+			await interaction.followup.send("There was an error uploading your media!", ephemeral=True)
+			logging.error("Could not upload media to Wiki!")
+			logging.error(media_resp)
 			return
 		
-		await interaction.followup.send(f"Your image has successfully been uploaded to the wiki! You can view it here: {img_resp['upload']['imageinfo']['url']}", ephemeral=False)
+		if media_resp['upload'].get('imageinfo'):
+			await interaction.followup.send(f"Your image has successfully been uploaded to the wiki! You can view it here: {media_resp['upload']['imageinfo']['url']}", ephemeral=False)
+		else:
+			await interaction.followup.send(f"Your image has successfully been uploaded to the wiki! You can view it here: {media_resp['upload']['videoinfo']['url']}", ephemeral=False)
 
 	@wiki_group.command(name="search", description="Explore the Stardust Labs Wiki!")
 	async def search(self, interaction: discord.Interaction):
