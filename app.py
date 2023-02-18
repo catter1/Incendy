@@ -5,7 +5,6 @@ import os
 import json
 import asyncio
 import asyncpg
-import requests
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
@@ -54,38 +53,27 @@ cog_list = sorted([
 
 # Start everything up!
 async def run():
+	def get_env() -> dict:
+		environment = {}
+		env_token = os.environ.get("INCENDY_BOT_TOKEN")
+		environment["INCENDY_BOT_TOKEN"] = (env_token if env_token else "incendy-token")
+		environment["INCENDY_WIKI_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_WIKI_UPDATE_ENABLED"))) if os.environ.get("INCENDY_WIKI_UPDATE_ENABLED") else False)
+		environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
+
+		return environment
 	try:
 		client.settings = settings
 		client.keys = keys
-
-		client.environment = {}
-		env_token = os.environ.get("INCENDY_BOT_TOKEN")
-		client.environment["INCENDY_BOT_TOKEN"] = (env_token if env_token else "incendy-token")
-		client.environment["INCENDY_WIKI_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_WIKI_UPDATE_ENABLED"))) if os.environ.get("INCENDY_WIKI_UPDATE_ENABLED") else False)
-		client.environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
-
-		wiki_session = requests.Session()
-		base_url = "https://stardustlabs.miraheze.org/w/api.php"
-		token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
-		login_token = wiki_session.get(url=base_url, params=token_params).json()['query']['tokens']['logintoken']
-		login_params = {'action': "clientlogin", 'username': keys['wiki-username'], 'password': keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
-		resp = wiki_session.post(url=base_url, data=login_params).json()
-
-		if not resp.get('clientlogin'):
-			logging.error(resp)
-		elif resp['clientlogin']['status'] == 'PASS':
-			logging.info("Successfully logged into Miraheze Wiki")
-		else:
-			logging.error("Could not log into Miraheze Wiki")
+		client.environment = get_env()
 
 		try:
 			client.db = await asyncpg.create_pool(**credentials)
-			client.wiki_session = wiki_session
 			client.miraheze = MediaWiki(
 				url="https://stardustlabs.miraheze.org/w/api.php",
 				user_agent=keys["wiki-user-agent"]
 			)
 		except TimeoutError as e:
+			logging.error("Could not log into the Miraheze Wiki via pymediawiki!")
 			raise e
 
 		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
@@ -96,12 +84,6 @@ async def run():
 		
 @client.event
 async def setup_hook():
-	print('Incendy has woken up! Say good morning!')
-	
-	for filename in os.listdir('./cogs'):
-		if filename.endswith('.py'):
-			await client.load_extension(f'cogs.{filename[:-3]}')
-
 	# Messages Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS user_index ON messages (user_id);')
@@ -121,6 +103,15 @@ async def setup_hook():
 	# Wiki Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS title_index ON wiki (title);')
+	
+
+	# Load cogs
+	for filename in os.listdir('./cogs'):
+		if filename.endswith('.py'):
+			await client.load_extension(f'cogs.{filename[:-3]}')
+		
+	# All set!
+	logging.info('Incendy has woken up, ready for an amazing day! Say good morning!')
 
 @client.command(name="sync")
 @incendy.is_catter()
