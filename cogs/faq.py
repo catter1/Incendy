@@ -75,7 +75,14 @@ class Faq(commands.Cog):
             case "Compatibility":
                 embed = discord.Embed(
                     title='Stardust Labs Compatibility',
-                    description='Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:\n\n**•** Incendium and Amplified Nether do **not** work together. Do `/faq Incendium vs Amplified Nether` for more information.\n**•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, we do not recommend it. There will be several micro biomes, Terralith will only make up around 5% of total biomes, and some surface biomes can be screwed up.\n**•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.\n**•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.',
+                    description='''
+                    Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:
+                    
+                    **•** Incendium and Amplified Nether do **not** work together. Do `/faq Incendium vs Amplified Nether` for more information.
+                    **•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, you may not find the best results. There will be several micro biomes, and Terralith biomes will be rarer than the rest. You can improve this by increasing the Vanilla weight in Terrablender config, but otherwise, that's it.
+                    **•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.
+                    **•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.
+                    ''',
                     color=faq_colour
                 )
                 view = Compat()
@@ -98,19 +105,30 @@ class Faq(commands.Cog):
             case "Foliage Colors":
                 embed = discord.Embed(
                     title='Foliage Colors',
-                    description='Terralith uses a variety of grass and leaf colors, but does not use a resource pack. Instead, this is actually a Vanilla mechanic: for example, in Vanilla swamps, the water is browner and the leaves/grass is a dull/dark green. In Jungles and Mooshroom Islands, grass is a vibrant green.\n\nThis mechanic is what Terralith uses, but instead of doing different shades of green, Terralith will use the mechanic for all colors. This is how you see red leaves in Forested Highlands, blue grass in Mirage Isles, pink leaves in Sakura Groves, and much more.',
+                    description='''
+                    Terralith uses a variety of grass and leaf colors, but does not use a resource pack. Instead, this is actually a Vanilla mechanic: for example, in Vanilla swamps, the water is browner and the leaves/grass is a dull/dark green. In Jungles and Mooshroom Islands, grass is a vibrant green.
+                    
+                    This mechanic is what Terralith uses, but instead of doing different shades of green, Terralith will use the mechanic for all colors. This is how you see red leaves in Forested Highlands, blue grass in Mirage Isles, pink leaves in Sakura Groves, and much more.
+                    ''',
                     color=faq_colour
                 )
             case "Incendium vs Amplified Nether":
                 embed = discord.Embed(
                     title='FAQ - Incendium vs. Amplified Nether',
-                    description='Incendium and Amplified Nether are very different packs, and are **not** compatible with each other.\n**-** __Amplified Nether__ is a Vanilla nether, with 3D biomes, cool terrain shapes, and an extended height.\n**-** __Incendium__ has what Amplified Nether has, but with custom mobs, items, biomes, structures, and a cool boss. (Although, the Incendium height extension is not quite as Amplified Nether\'s.)',
+                    description='''Incendium and Amplified Nether are very different packs, and are **not** compatible with each other.
+                    **-** __Amplified Nether__ is a Vanilla nether, with 3D biomes, cool terrain shapes, and an extended height.
+                    **-** __Incendium__ has what Amplified Nether has, but with custom mobs, items, biomes, structures, and a cool boss. (Although, the Incendium height extension is not quite as Amplified Nether\'s.)
+                    ''',
                     color=faq_colour
                 )
             case "Is It Working":
                 embed = discord.Embed(
                     title='How Do I Tell If It\'s Working?',
-                    description="**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.\n**•** If the first step was successful, type `/locate biome #terralith:all_terralith_biomes` (`/locatebiome #terralith:all_terralith_biomes` for 1.18.2 and lower) in game and see if you get a result. Replace `terralith` with whatever relevant datapack you're installing. If you did not get any results, follow the Server Installation mentioned before.\n**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.\n**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.",
+                    description='''**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.
+                    **•** If the first step was successful, type `/locate biome #terralith:all_terralith_biomes` (`/locatebiome #terralith:all_terralith_biomes` for 1.18.2 and lower) in game and see if you get a result. Replace `terralith` with whatever relevant datapack you're installing. If you did not get any results, follow the Server Installation mentioned before.
+                    **•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.
+                    **•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynaMap if you'd like to see if it's working.
+                    ''',
                     color=faq_colour
                 )
             case "License":
@@ -122,7 +140,16 @@ class Faq(commands.Cog):
             case "Multiverse":
                 embed = discord.Embed(
                     title='Multiverse',
-                    description='Multiverse is not the friendliest with worldgen datapacks. Below you can find a method to try - it\'s not 100% guarenteed to work, but it\'s the best we have, and nothing else we can do to help other than recommend a BungeeCord server rather than using Multiverse. MyWorlds is untested.\n\n**1.** Stop your server and take a backup.\n**2.** Make sure your main world is the one with the worldgen datapacks, and delete the `region` folder *inside* of that `world` folder (or whatever it is equivalently named).\n**3.** Delete Multiverse\'s `world.yml`, along with a `worlds.txt` if you have it.\n**4.** The default world in your `server.properties` should be the one with the worldgen datapacks.\n**5.** Boot up your server, join, and see if it worked.\n**6.** If it works and you just have leftover broken chunks, you can either reset the world, edit with MCA Selector, or using WorldEdit\'s `//regen` command.',
+                    description='''
+                    Multiverse is not the friendliest with worldgen datapacks. Below you can find a method to try - it\'s not 100% guarenteed to work, but it\'s the best we have, and nothing else we can do to help other than recommend a BungeeCord server rather than using Multiverse. MyWorlds is untested.
+                    
+                    **1.** Stop your server and take a backup.
+                    **2.** Make sure your main world is the one with the worldgen datapacks, and delete the `region` folder *inside* of that `world` folder (or whatever it is equivalently named).
+                    **3.** Delete Multiverse\'s `world.yml`, along with a `worlds.txt` if you have it.
+                    **4.** The default world in your `server.properties` should be the one with the worldgen datapacks.
+                    **5.** Boot up your server, join, and see if it worked.
+                    **6.** If it works and you just have leftover broken chunks, you can either reset the world, edit with MCA Selector, or using WorldEdit\'s `//regen` command.
+                    ''',
                     color=faq_colour
                 )
             case "Ore Distribution":
@@ -136,13 +163,23 @@ class Faq(commands.Cog):
             case "Passive Animals":
                 embed = discord.Embed(
                     title='Passive Animal Spawns',
-                    description='Passive mobs only spawn on grass blocks (and similar), on less-spiky terrain, and closer to sea level. Because Terralith is more mountainous than Vanilla, and there are more biomes without grass blocks, you will tend to find less passive mobs.\n\nAlthough is is not possible to change passive mob spawning conditions, Terralith increases the spawn rates on the places they *are* able to spawn on. The TL;DR is that Terralith can\'t do anything about the rarity of mob spawning locations. If you want to learn more about Vanilla mob spawning rules, check out [this Minecraft Wiki article](https://minecraft.fandom.com/wiki/Spawn#Spawn_conditions).',
+                    description='''
+                    Passive mobs only spawn on grass blocks (and similar), on less-spiky terrain, and closer to sea level. Because Terralith is more mountainous than Vanilla, and there are more biomes without grass blocks, you will tend to find less passive mobs.
+                    
+                    Although is is not possible to change passive mob spawning conditions, Terralith increases the spawn rates on the places they *are* able to spawn on. The TL;DR is that Terralith can\'t do anything about the rarity of mob spawning locations. If you want to learn more about Vanilla mob spawning rules, check out [this Minecraft Wiki article](https://minecraft.fandom.com/wiki/Spawn#Spawn_conditions).
+                    ''',
                     color=faq_colour
                 )
             case "Pregeneration":
                 embed = discord.Embed(
                     title='Pregeneration',
-                    description='Worldgen alone only causes lag when generating chunks for the first time. Because of this, pregenerating your world is highly encouraged. One of the only and best pregen mods/plugins is Chunky.\n\nClick the buttons below for download links. Check out their respective websites for instructions on how to use it - don\'t ask here!.',
+                    description='''
+                    Worldgen alone only causes lag when generating chunks for the first time. Because of this, pregenerating your world is highly encouraged. One of the best pregen mods/plugins is Chunky, which is what we recommend.
+                    
+                    Click the buttons below for download links. Check out their respective websites for instructions on how to use it - __don\'t ask here__.
+
+                    Using a Vanilla server, and can't use mods or plugins? You can try out the [World Pregen](https://github.com/GoldenDelicios/world-pregen) datapack. 
+                    ''',
                     color=faq_colour
                 )
                 view = Pregen()
@@ -156,34 +193,58 @@ class Faq(commands.Cog):
             case "Removing Worldgen Packs":
                 embed = discord.Embed(
                     title='Removing Worldgen Packs',
-                    description='You cannot simply remove a worldgen pack from your world. The way to do so involves completely resetting your dimension, so we do not recommend it unless you have a good reason. In order to do so, you must follow these three steps:\n\n**1.** Ensure your world/server is stopped, and remove the worldgen datapack.\n**2.** You must completely reset the dimension that the worldgen pack was affecting. For the nether and end, this is done by deleting the `world/DIM-1` and `world/DIM1` folders in Vanilla/Fabric/Forge, and `world_nether` and `world_the_end` folders in Spigot/Paper, respectively. It\'s more tricky for the overworld - either just reset everything, or ask for further help.\n**3.** You must remove all biome entries from your `level.dat`. If you do not know how to do this, ask for assistance. There will be tools for this later.',
+                    description='''
+                    You cannot simply remove a worldgen pack from your world. The way to do so involves **completely resetting your dimension**, so we do not recommend it unless you have a good reason. In order to do so, you must follow these three steps:
+                    
+                    **1.** Ensure your world/server is stopped, and remove the worldgen datapack.
+                    **2.** You must completely reset the dimension that the worldgen pack was affecting. For the nether and end, this is done by deleting the `world/DIM-1` and `world/DIM1` folders in Vanilla/Fabric/Forge, and `world_nether` and `world_the_end` folders in Spigot/Paper, respectively. It\'s more tricky for the overworld - either just reset everything, or ask for further help.
+                    **3.** You must remove all biome entries from your `level.dat`. If you do not know how to do this, send your `level.dat` and ask for assistance. There will be tools for this later.
+                    ''',
                     color=faq_colour
                 )
             case "Resource Packs":
                 embed = discord.Embed(
                     title='Resource Packs',
-                    description='When using a minimap or any other mod that displays biomes, Stardust biome names may appear very long. <@212447019296489473> made a cool resource pack that fixes it! You can download it from the Modrinth page by clicking the button below.\n\nIf you want a resourcepack for Incendium that gives all of Incendium\'s custom stuff unique textures, check out <@234748321258799104>\'s Incendium Optional Resourcepack! You can download it from the GitHub repo by clicking the button below.',
+                    description='''
+                    When using a minimap or any other mod that displays biomes, Stardust biome names may appear very long. <@212447019296489473> made a cool resource pack that fixes it! You can download it from Modrinth by clicking the button below.
+                    
+                    If you want a resourcepack for Incendium that gives all of Incendium\'s custom stuff unique textures, check out <@234748321258799104>\'s Incendium Optional Resourcepack! You can download it from Modrinth by clicking the button below.
+                    ''',
                     color=faq_colour
                 )
                 view = Resource()
             case "Seedfix":
                 embed = discord.Embed(
                     title='SeedFix',
-                    description=' In 1.18.x **only**, there is a [Minecraft bug](https://bugs.mojang.com/browse/MC-195717) that makes all worldgen datapacks use the same seed. To use the datapack version of Terralith in 1.18.2, download a version from the SeedFix website, which allows you to input your own seed. The download is Terralith itself, so you put it in the datapack folder by itself. The mod versions have SeedFix built in, so you can use seeds as you normally would in Vanilla.\n\nAlso because of the bug, in 1.18.x, there are two "types" of seeds when dealing with worldgen datapacks.\n**•** The **world seed** is the seed you get from looking at `/seed`, `level.dat`, or `server.properties`. This seed effects how __structures__ generate and where __slime chunks__ are.\n\n**•** The **terrain seed** is the seed found in Terralith\'s `overworld.json` file (it\'s what SeedFix changes!). This seed affects how terrain generates and where biomes are.',
+                    description='''
+                    In 1.18.x **only**, there is a [Minecraft bug](https://bugs.mojang.com/browse/MC-195717) that makes all worldgen datapacks use the same seed. This is **not** the case in 1.19+, as you can use seeds as normal! To use the datapack version of Terralith in 1.18.2, download a version from the SeedFix website, which allows you to input your own seed. The download is Terralith itself, so you put it in the datapack folder by itself. The mod versions have SeedFix built in, so you can use seeds as you normally would in Vanilla.
+                    
+                    Also because of the bug, in 1.18.x, there are two "types" of seeds when dealing with worldgen datapacks.
+                    **•** The **world seed** is the seed you get from looking at `/seed`, `level.dat`, or `server.properties`. This seed effects how __structures__ generate and where __slime chunks__ are.
+                    **•** The **terrain seed** is the seed found in Terralith\'s `overworld.json` file (it\'s what SeedFix changes!). This seed affects how terrain generates and where biomes are.
+                    ''',
                     color=faq_colour
                 )
                 view = Seedfix()
             case "Server Installation":
                 embed = discord.Embed(
                     title='Server Installation',
-                    description='Select an installation method from the Select Menu below!\n\nYou should **__ONLY__** select the "Install Method 1.19.3 ONLY" selection if you are using 1.19.3 - it will *not* work if you are using 1.19.2 or lower!"',
+                    description='''
+                    Select an installation method from the Select Menu below!
+                    
+                    You should **__ONLY__** select the "Install Method 1.19.3 ONLY" selection if you are using 1.19.3 - it will *not* work if you are using 1.19.2 or lower!
+                    ''',
                     color=faq_colour
                 )
                 view=Server()
             case "Stone Generation":
                 embed = discord.Embed(
                     title='Stone Generation',
-                    description='In Terralith, granite, diorite, and andesite do not generate in blobs like in Vanilla. Instead, they only generate in the respective cave biomes: Andesite Caves, Granite Caves, and Diorite Caves. These cave biomes are relatively common, and are made entirely out of their respective stone, which makes it perfect for mods like Create!\n\nIf you have trouble finding the caves, you can look at the surface of your world for granite pillars, andesite boulders, and diorite patches. These features mean the respective stone\'s cave biome can be found underneath! Check the graphic attached to see examples of how they look like, or view the [wiki entry](https://stardustlabs.miraheze.org/wiki/Terralith#Andesite_boulders).',
+                    description='''
+                    In Terralith, granite, diorite, and andesite do not generate in blobs like in Vanilla. Instead, they only generate in the respective cave biomes: Andesite Caves, Granite Caves, and Diorite Caves. These cave biomes are relatively common, and are made entirely out of their respective stone, which makes it perfect for mods like Create!
+                    
+                    If you have trouble finding the caves, you can look at the surface of your world for granite pillars, andesite boulders, and diorite patches. These features mean the respective stone\'s cave biome can be found underneath! Check the graphic attached to see examples of how they look like, or view the [wiki entry](https://stardustlabs.miraheze.org/wiki/Terralith#Andesite_boulders).
+                    ''',
                     color=faq_colour
                 )
                 file = discord.File("assets/cavefeatures.png", filename="image.png")
@@ -200,13 +261,33 @@ class Faq(commands.Cog):
                     description='Want to support Stardust Labs and get some cool perks? If so, thank you!',
                     color=faq_colour
                 )
-                embed.add_field(name="Support Methods", value="**•** Stardust Labs is partnered with **Bisect Hosting**! Use code `STARDUST` to get 25% off your first month, as well as access to the __Supporter Showcase__.\n**•**By **Nitro Boosting** the Discord server, you also gain access to the __Supporter Showcase__!\n**•** Subscribing to either our **Patreon** or **Server Subscription**, you have access to a range of __Patron Benefits__.\n**•** If a subscription doesn't suit you, feel free to do a one-time donation to our **Ko-Fi** to gain access to the __Supporter Showcase__.", inline=False)
-                embed.add_field(name="Supporter Benefits", value="**•** The **Supporter Showcase** gives you access to small projects, such as Terralith: Fire Extinguisher. You also get access to a more exclusive <#774837076821540864>, being able to see images before anyone else.\n**•** Our **Patron Benefits** have a lot to offer, including beta versions of our main projects, access to our build server, and the ability to add an easter egg somewhere. More details in the Patreon/Server Subscription buttons below!", inline=False)
+                embed.add_field(
+                    name='Support Methods',
+                    value='''
+                    **•** Stardust Labs is partnered with **Bisect Hosting**! Use code `STARDUST` to get 25% off your first month, as well as access to the __Supporter Showcase__.
+                    **•** By **Nitro Boosting** the Discord server, you also gain access to the __Supporter Showcase__!
+                    **•** Subscribing to either our **Patreon** or **Server Subscription**, you have access to a range of __Patron Benefits__.
+                    **•** If a subscription doesn\'t suit you, feel free to do a one-time donation to our **Ko-Fi** to gain access to the __Supporter Showcase__.
+                    ''',
+                    inline=False
+                )
+                embed.add_field(
+                    name='Supporter Benefits',
+                    value='''
+                    **•** The **Supporter Showcase** gives you access to small projects, such as Terralith: Fire Extinguisher. You also get access to a more exclusive <#774837076821540864>, being able to see images before anyone else.
+                    **•** Our **Patron Benefits** have a lot to offer, including beta versions of our main projects, access to our build server, and the ability to add an easter egg somewhere. More details in the Patreon/Server Subscription buttons below!
+                    ''',
+                    inline=False
+                )
                 view=Support()
             case "Traveller Maps":
                 embed = discord.Embed(
                     title='Traveller\'s Maps',
-                    description='If your world/server is crashing upon opening a chest in a Terralith structure, it is probably due to the Traveller\'s Maps. Because the lag is just absurd, they have been removed in the recent versions of Terralith. If you\'re on 1.18.2, ensure you\'re using Terralith v2.2.3, and if on 1.19.x, ensure you\'re on Terralith v2.3.3 or higher.\n\n As a fun note, some changes in Minecraft 1.19.3 has greatly improved the lookup speed for structures, which is what the maps rely on. Although the changes are appreciated, it is still slow, so the Traveller\'s Maps will likely not yet return.',
+                    description='''
+                    If your world/server is crashing upon opening a chest in a Terralith structure, it is probably due to the Traveller\'s Maps. Because the lag is just absurd, they have been removed in the recent versions of Terralith. If you\'re on 1.18.2, ensure you\'re using Terralith v2.2.3, and if on 1.19.x, ensure you\'re on Terralith v2.3.3 or higher.
+                    
+                    As a fun note, some changes in Minecraft 1.19.3 has greatly improved the lookup speed for structures, which is what the maps rely on. Although the changes are appreciated, it is still slow, so the Traveller\'s Maps will likely not yet return.
+                    ''',
                     color=faq_colour
                 )
             case "Updating Versions":
@@ -227,7 +308,11 @@ class Faq(commands.Cog):
             case "WWOO":
                 embed = discord.Embed(
                     title='WWOO Compatibility',
-                    description='Terralith is compatible with William Wyther\'s Overhauled Overworld __only__ when using the mod version 3.0 or higher of WWOO. Terrablender ([Fabric](https://www.curseforge.com/minecraft/mc-mods/terrablender-fabric) or [Forge](https://www.curseforge.com/minecraft/mc-mods/terrablender)) is required.\n\nYou will need to go inside WWOO\'s configs and enable Terralith compat, or in-game if using Fabric with [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files). More information can be found on WWOO\'s [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/william-wythers-overhauled-overworld).',
+                    description='''
+                    Terralith is compatible with William Wyther\'s Overhauled Overworld __only__ when using the mod version 3.0 or higher of WWOO. Terrablender ([Fabric](https://www.curseforge.com/minecraft/mc-mods/terrablender-fabric) or [Forge](https://www.curseforge.com/minecraft/mc-mods/terrablender)) is required.
+                    
+                    You will need to go inside WWOO\'s configs and enable Terralith compat, or in-game if using Fabric with [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files). More information can be found on WWOO\'s [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/william-wythers-overhauled-overworld).
+                    ''',
                     color=faq_colour
                 )
             case _:
@@ -465,10 +550,36 @@ class ServerMenu(discord.ui.Select):
         match self.values[0]:
             case 'Normal Install Method':
                 embed.title = 'Normal Install Method'
-                embed.description = 'Pick your favorite server software (Fabric, Paper, etc) since this method will work on all of them, whether you\'re using a hosting service or not!\n\n**1.** If using datapacks (ends in `.zip`), put them all in the `world/datapacks` folder. If using mods (ends in `.jar`), put them all in the `mods` folder.\n\n**2.** Start your server, wait for it to load, then stop it.\n\n**3a.** [Terralith/Structory/Continents] Inside the `world` folder, delete the entire `region` folder, and *nothing* else.\n**3b.** [Incendium/Amplified Nether] Inside the nether folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the nether folder is `world_nether`, and it\'s `world/DIM-1` on Fabric/Vanilla.\n**3c.** [Nullscape] Inside the end folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the end folder is `world_the_end`, and it\'s `world/DIM1` on Fabric/Vanilla.\n\n**4.** Start your server again, and enjoy!\n\nNote: *If only using Structory, these steps are not necessary - you just might not find Structory structures within a couple chunks of spawn if you don\'t. Therefore, you can add Structory to an already generated world with no issues!'
+                embed.description = '''
+                This **will** reset your dimension(s) - you should only do this on a new world, or if you're okay with resetting! Pick your favorite server software (Fabric, Paper, etc) since this method will work on all of them, whether you\'re using a hosting service or not.
+                
+                **1.** If using datapacks (ends in `.zip`), put them all in the `world/datapacks` folder. If using mods (ends in `.jar`), put them all in the `mods` folder.
+                
+                **2.** Start your server, wait for it to load, then stop it.
+                
+                **3a.** [Terralith/Continents] Inside the `world` folder, delete the entire `region` folder, and *nothing* else.
+                **3b.** [Incendium/Amplified Nether] Inside the nether folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the nether folder is `world_nether/DIM-1`, and it\'s `world/DIM-1` on Fabric/Vanilla.
+                **3c.** [Nullscape] Inside the end folder, delete **__only__** the `region` folder, and **__nothing__** else. On Spigot/Paper, the end folder is `world_the_end/DIM1`, and it\'s `world/DIM1` on Fabric/Vanilla.
+                
+                **4.** Start your server again, and enjoy!
+                
+                Note: *You can add Structory to an already generated world - the structures will only generate in new chunks, though.
+                '''
+
             case 'Install Method 1.19.3 ONLY':
                 embed.title = 'Install Method 1.19.3 ONLY'
-                embed.description = '**__Warning__**: this method works on **1.19.3 ONLY!** It will __not__ work on 1.19.2 or lower. If you are on 1.19.2 or lower, select the "Normal Install Method" in the select menu below instead. If you use this method, and it does not work, try the Normal method.\n\nPick your favorite server software (Fabric, Paper, etc), since this method will work on all of them.\n\n**1.** __Do not__ start your server at all. If you are using a server host and they have already generated your `world` folder, this method will **not** work. Same goes for self hosting, and if you already started the server. Swap to "Normal Install Method" immediately!\n\n**2a.** [Datapacks only] Manually create a `world` folder. Inside that folder, manually create a `datapacks` folder. Insert all your datapacks in that folder.\n**2b.** [Mods only] Manually create a `mods` folder. Insert all your mods in that folder.\n\n**3.** Start your server and enjoy!'
+                embed.description = '''
+                **__Warning__**: this method works on **1.19.3 ONLY!** It will __not__ work on 1.19.2 or lower. If you are on 1.19.2 or lower, select the "Normal Install Method" in the select menu below instead. If you use this method, and it does not work, try the Normal method.
+                
+                Pick your favorite server software (Fabric, Paper, etc), since this method will work on all of them.
+                
+                **1.** __Do not__ start your server at all. If you are using a server host and they have already generated your `world` folder, this method will **not** work. Same goes for self hosting, and if you already started the server. Swap to "Normal Install Method" immediately.
+                
+                **2a.** [Datapacks (.zip) only] Manually create a `world` folder. Inside that folder, manually create a `datapacks` folder. Insert all your datapacks in that folder.
+                **2b.** [Mods (.jar) only] Manually create a `mods` folder. Insert all your mods in that folder.
+                
+                **3.** Start your server and enjoy!
+                '''
 
         await interaction.response.edit_message(embed=embed)
 
@@ -494,19 +605,44 @@ class UpdateMenu(discord.ui.Select):
         match self.values[0]:
             case 'Terralith':
                 embed.title = 'Updating (Terralith)'
-                embed.description = '**•** Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.\n**•** If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.\n**•** If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.\n**•** Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.'
+                embed.description = '''
+                **•** Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.
+                **•** If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.
+                **•** If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.
+                **•** Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.
+                '''
+
             case 'Terralith (1.19)':
                 embed.title = 'Updating (Terralith 1.19)'
-                embed.description = '**1.** If you used Seedfix, continue. If you downloaded the datapack directly from Planet Minecraft without entering a seed into the Seedfix website, skip to Step **4**.\n**2.** Open your `world/level.dat` using <@149241652391706625>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).\n**3.** In the `level.dat`, change the overworld seed in `Data>WorldGenSettings>dimensions` to the seed displayed in `Data>WorldGenSettings>dimensions>minecraft:overworld>generator>biome_source`. If it is the same, you\'re all good! Do not forget the  "-" if there is any.\n**4.** Once that is done, you can replace Terralith 2.x.x with Terralith 2.3.x and start up your world!'
+                embed.description = '''
+                **1.** If you used Seedfix, continue. If you downloaded the datapack directly from Planet Minecraft without entering a seed into the Seedfix website, skip to Step **4**.
+                **2.** Open your `world/level.dat` using <@149241652391706625>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).
+                **3.** In the `level.dat`, change the overworld seed in `Data>WorldGenSettings>dimensions` to the seed displayed in `Data>WorldGenSettings>dimensions>minecraft:overworld>generator>biome_source`. If it is the same, you\'re all good! Do not forget the  "-" if there is any.
+                **4.** Once that is done, you can replace Terralith 2.x.x with Terralith 2.3.x and start up your world!
+                '''
+
             case 'Incendium':
                 embed.title = 'Updating (Incendium)'
-                embed.description = '**•** You cannot update Incendium worlds used in 1.17.1 (Incendium 4.0.0) or lower to 1.18.2 (Incendium 5.0.x).\n**•** Updating from 1.18.2 to 1.19 (5.0.x to 5.1.x) is mostly fine!\n**•** Updating to minor versions (5.1.x) works fine - for example, 5.1.2 to 5.1.4.'
+                embed.description = '''
+                **•** You cannot update Incendium worlds used in 1.17.1 (Incendium 4.0.0) or lower to 1.18.2 (Incendium 5.0.x).
+                **•** Updating from 1.18.2 to 1.19 (5.0.x to 5.1.x) is mostly fine!
+                **•** Updating to minor versions (5.1.x) works fine - for example, 5.1.2 to 5.1.4.
+                '''
+
             case 'Nullscape':
                 embed.title = 'Updating (Nullscape)'
-                embed.description = '**•** Updating to minor versions (v1.2.x) works fine.\n**•** We do not recommend using any 1.18.x version of Nullscape. Period. We offer very little support for these versions.\n**•** Nullscape 1.19 (v1.2) is different from all other versions, since it is combined into one dimension, like it should! Because of that, you cannot update a 1.18.x Nullscape world (v1.1.x) to 1.19 (v1.2) without completely resetting your end and heavily editing your `level.dat`.'
+                embed.description = '''
+                **•** Updating to minor versions (v1.2.x) works fine.
+                **•** We do not recommend using any 1.18.x version of Nullscape. Period. We offer very little support for these versions.
+                **•** Nullscape 1.19 (v1.2) is different from all other versions, since it is combined into one dimension, like it should! Because of that, you cannot update a 1.18.x Nullscape world (v1.1.x) to 1.19 (v1.2) without completely resetting your end and heavily editing your `level.dat`.
+                '''
+
             case 'Other Stardust Packs':
                 embed.title = 'Updating (Other Stardust Packs)'
-                embed.description = '**•** Updating between minor and major versions is mostly okay!\n**•** You cannot update Amplified Nether from older versions to 1.18.x or higher.'
+                embed.description = '''
+                **•** Updating between minor and major versions is mostly okay!
+                **•** You cannot update Amplified Nether from older versions to 1.18.x or higher.
+                '''
         
         await interaction.response.edit_message(embed=embed)
 
