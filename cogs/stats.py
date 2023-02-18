@@ -137,11 +137,13 @@ class Stats(commands.Cog):
 				data["commands"].append({record["command_name"]: '{:,}'.format(record["count"])})
 
 			# Streams/Videos/Tweets
-			with open("resources/stats.json", 'r') as f:
-				media = json.load(f)
-			data["tweets"] = '{:,}'.format(0)
-			data["streams"] = '{:,}'.format(len(media["streams"]))
-			data["videos"] = '{:,}'.format(len(media["videos"]))
+			streams = await self.client.db.fetchval('SELECT COUNT(slug) FROM stardusttv WHERE media = $1;', "stream")
+			videos = await self.client.db.fetchval('SELECT COUNT(slug) FROM stardusttv WHERE media = $1;', "video")
+			tweets = await self.client.db.fetchval('SELECT COUNT(slug) FROM stardusttv WHERE media = $1;', "tweet")
+
+			data["tweets"] = '{:,}'.format(tweets)
+			data["streams"] = '{:,}'.format(streams)
+			data["videos"] = '{:,}'.format(videos)
 
 			# Discord info
 			data["members"] = '{:,}'.format(interaction.guild.member_count)
