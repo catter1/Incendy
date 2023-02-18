@@ -29,7 +29,7 @@ class Wiki(commands.Cog):
 			self.loop_get_wiki.start()
 		else:
 			logging.warn("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
@@ -182,6 +182,29 @@ class Wiki(commands.Cog):
 	)
 	async def _upload(self, interaction: discord.Interaction, name: str, image: discord.Attachment):
 		""" /wiki upload """
+
+		async def login() -> requests.Session:
+			wiki_session = requests.Session()
+			base_url = "https://stardustlabs.miraheze.org/w/api.php"
+			token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
+			login_token = wiki_session.get(url=base_url, params=token_params).json()['query']['tokens']['logintoken']
+			login_params = {'action': "clientlogin", 'username': self.keys['wiki-username'], 'password': self.keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
+			resp = wiki_session.post(url=base_url, data=login_params).json()
+
+			if not resp.get('clientlogin'):
+				logging.error(resp)
+				return None
+			elif resp['clientlogin']['status'] == 'PASS':
+				logging.info("Successfully logged into Miraheze Wiki")
+				return wiki_session
+			else:
+				logging.error("Could not log into Miraheze Wiki")
+				return None			
+
+		self.client.wiki_session = await login()
+		if not self.client.wiki_session:
+			await interaction.response.send_message("There was an error logging into the Miraheze Wiki! Try again later. If the issue continues, let catter know.", ephemeral=True)
+			return
 		
 		if image.content_type != "image/jpeg" and image.content_type != "image/png":
 			await interaction.response.send_message("Your attachment is not a valid image! It must be a png, jpg, or jpeg. Try again.", ephemeral=True)
