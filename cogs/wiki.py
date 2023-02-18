@@ -354,10 +354,10 @@ class PageButton(discord.ui.Button):
 
 		# Send the message!
 		if file:
-			await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
+			await interaction.response.edit_message(embed=embed, attachments=[file], view=SearchView(self.db, label=f"View {self.title} Wiki page", url=data["pageurl"]))
 			os.remove(filepath)
 		else:
-			await interaction.response.edit_message(embed=embed, attachments=[], view=SearchView(self.db, label=f"View {self.title} Wikipage", url=data["pageurl"]))
+			await interaction.response.edit_message(embed=embed, attachments=[], view=SearchView(self.db, label=f"View {self.title} Wiki page", url=data["pageurl"]))
 
 class WikiView(discord.ui.View):
 	def __init__(self, buttons: list[discord.ui.Button]):
