@@ -2,11 +2,9 @@ import discord
 import requests
 import typing
 import json
-import os
 import re
 import random
 import googletrans
-from libraries.image_tools import resize
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy
@@ -225,115 +223,6 @@ class Basic(commands.Cog):
 
 		await self.webchan.send(embed=embed)
 		await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
-
-	@app_commands.command(name="seed", description="[ADMIN] Submits a seed to the Seedfix site")
-	@app_commands.default_permissions(administrator=True)
-	@app_commands.checks.has_permissions(administrator=True)
-	@app_commands.describe(
-		seed="Seed number (must be integer)",
-		description="Description of seed, 450 characters or less",
-		image="Image of the seed showing what makes it special (must be .png)"
-	)
-	async def seed(self, interaction: discord.Interaction, seed: int, description: str, image: discord.Attachment):
-		""" /seed seed description image """
-
-		if seed == None or description == None:
-			embed = discord.Embed(color=discord.Colour.dark_teal(), title="Submit a Seed", description="Would you like to submit a seed to the Terralith Seed Library? At this webpage, users can browse, like, and download user-submitted seeds.")
-			embed.add_field(name="**Command to Submit Seed:**", value="`!seed (seed) (description)` All fields are required. You must upload a screenshot as well. Look below for descriptions on each field.", inline=False)
-			embed.add_field(name="seed", value="If you found this seed using the datapack, the seed is **NOT** from `/seed`. Instead, get it from the name of the zipped datpack.", inline=False)
-			embed.add_field(name="description", value="Write a short description about your seed and why you think it's cool! Feel free to include biomes, formations, or even coordinates. You are limited to 450 characters.", inline=False)
-			embed.add_field(name="screenshot", value="You must upload a screenshot (`png` only) of the seed. This `seed` command will be in the \"description\" of the image you upload. If screenshot is not relevant, it will be denied.", inline=False)
-			await interaction.response.send_message(embed=embed)
-		else:
-			if len(interaction.message.attachments) == 0:
-				await interaction.send("Please upload a screenshot in the same message as the command (And ensure it is a `png`).")
-			elif len(interaction.message.attachments) > 1:
-				await interaction.send("Please upload *only* one screenshot.")
-			else:
-				if not str(interaction.message.attachments[0]).endswith(".png"):
-					await interaction.send("Please upload only a `png` screenshot.")
-				else:
-					try:
-						int(seed)
-					except:
-						await interaction.response.send_message("Your seed must be a valid integer.")
-					else:
-						if len(description) >= 450:
-							await interaction.response.send_message("Your description must be shorter than 450 characters.")
-						else:
-							await self.verify_seed(interaction, seed, description)
-							await interaction.response.send_message(f"Your seed has been submitted for approval! Once the Helpers verify your seed, you can find it at https://seedfix.stardustlabs.net/seeds/{seed}.")
-
-	async def verify_seed(self, interaction: discord.Interaction, seed, description):
-		img_data = requests.get(str(interaction.message.attachments[0])).content
-		with open(f'seeds/{seed}.png', 'wb') as handler:
-			handler.write(img_data)
-			resize(f'seeds/{seed}.png')
-		with open('resources/seeds.json', 'r') as f:
-			data = json.load(f)
-		info = {
-			"user" : interaction.author.name,
-			"description" : description
-		}
-		data[seed] = info
-		with open('resources/seeds.json', 'w') as f:
-			f.writelines(json.dumps(data, indent=2))
-		
-		embed = discord.Embed(color=discord.Colour.dark_teal(), title="Seed Submission")
-		if interaction.author.avatar == None:
-			embed.set_author(name=interaction.author.name, icon_url=self.client.user.avatar)
-		else:
-			embed.set_author(name=interaction.author.name, icon_url=interaction.author.avatar)
-		embed.add_field(name=seed, value=description)
-		file = discord.File(f"seeds/{seed}.png", filename="image.png")
-		embed.set_image(url="attachment://image.png")
-		embed.set_footer(text="React with ✅ to verify submission, and ❌ to deny.", icon_url=self.client.get_user(780588749825638410).avatar)
-		x = await self.client.get_channel(928749390531809332).send(file=file, embed=embed)
-		await x.add_reaction("✅")
-		await x.add_reaction("❌")
-
-	async def submit_seed(self, seed):
-		with open('resources/seeds.json', 'r') as f:
-			data = json.load(f)
-
-		url = 'https://seedfix.stardustlabs.net/api/receive_content_from_incendy/'
-		obj = data[seed]
-		info = {
-			'seed' : seed,
-			'user' : obj["user"],
-			'description' : obj["description"].replace('"', '\"'),
-			'likes' : 0,
-			'downloads' : 0,
-			'curated' : False
-		}
-		info = json.dumps(info)
-
-		data.pop(seed, None)
-		with open('resources/seed.json', 'w') as f:
-			f.writelines(json.dumps(data, indent=2))
-
-		x = requests.post(url, data=info)
-		print(x.text)
-
-		os.replace(f'{os.path.expanduser("~")}/bots/Incendy/seeds/{seed}.png', f'{os.path.expanduser("~")}/stardustSite/static/images/seeds/{seed}.png')
-	
-	# @commands.Cog.listener()
-	# async def on_raw_reaction_add(self, payload):
-	#     msg = await self.client.get_channel(payload.channel_id).fetch_message(payload.message_id)
-	#     if payload.channel_id == 928749390531809332 and payload.event_type == "REACTION_ADD" and not payload.member.bot and msg.author.bot and len(msg.embeds) == 1:
-	#         if msg.embeds[0].title == "Seed Submission":
-	#             if payload.emoji.name == "✅":
-	#                 embed = msg.embeds[0]
-	#                 seed = embed.fields[0].name
-	#                 await self.submit_seed(seed)
-	#                 embed.title = "Seed Submision - Accepted"
-	#                 embed.set_footer(text="✅ Seed accepted.", icon_url=self.client.get_user(780588749825638410).avatar)
-	#                 await msg.edit(embed=embed)
-	#             elif payload.emoji.name == "❌":
-	#                 embed = msg.embeds[0]
-	#                 embed.title = "Seed Submision - Denied"
-	#                 embed.set_footer(text="❌ Seed denied.", icon_url=self.client.get_user(780588749825638410).avatar)
-	#                 await msg.edit(embed=embed)
 
 	### EVENTS ###
 
