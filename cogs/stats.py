@@ -58,7 +58,7 @@ class Stats(commands.Cog):
 	
 	@app_commands.command(name="stats", description="Shows stats about Stardust Labs")
 	@incendy.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
+	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
 	async def stats(self, interaction: discord.Interaction, member: discord.Member = None):
 		""" /stats [member]"""
 
