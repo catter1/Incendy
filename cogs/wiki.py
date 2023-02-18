@@ -17,7 +17,7 @@ from time import perf_counter
 from mediawiki import MediaWiki, MediaWikiPage
 from nltk.tokenize import sent_tokenize
 from thefuzz import process
-from resources import incendy
+from libraries import incendy
 
 class Wiki(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

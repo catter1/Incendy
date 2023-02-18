@@ -5,7 +5,7 @@ import asyncio
 import typing
 from discord import app_commands
 from discord.ext import commands
-from resources import incendy
+from libraries import incendy
 
 # Tons of thanks to pikaninja! https://gist.github.com/pikaninja/d9ab2a91cb3344c62b3d13a435255154
 

@@ -5,7 +5,7 @@ import logging
 import logging.handlers
 import json
 from discord.ext import commands
-from resources import incendy
+from libraries import incendy
 
 # Get keys
 with open('resources/keys.json', 'r') as f:

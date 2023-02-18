@@ -1,7 +1,7 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-from resources import custom_checks as cc
+from libraries import incendy
 
 class Media(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

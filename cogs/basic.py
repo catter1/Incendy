@@ -6,10 +6,10 @@ import os
 import re
 import random
 import googletrans
-from resources.incendy_image import resize
+from libraries.incendy_image import resize
 from discord import app_commands
 from discord.ext import commands, tasks
-from resources import incendy
+from libraries import incendy
 
 class Basic(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

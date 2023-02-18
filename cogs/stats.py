@@ -5,9 +5,9 @@ import time
 import logging
 from discord import app_commands
 from discord.ext import commands, tasks
-from resources import incendy
-from resources import incendy_image as ii
-from resources import stardust_downloads as sd
+from libraries import incendy
+from libraries import incendy_image as ii
+from libraries import stardust_downloads as sd
 
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

@@ -4,7 +4,7 @@ import typing
 from discord.ext import commands
 from discord import app_commands
 from colorsys import hls_to_rgb
-from resources import incendy
+from libraries import incendy
 
 class Bulletin(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

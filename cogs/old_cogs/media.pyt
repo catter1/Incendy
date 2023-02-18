@@ -11,7 +11,7 @@ from itertools import cycle
 from discord import FFmpegPCMAudio
 from discord.ext import commands, tasks
 from discord.ext.tasks import loop
-from resources import incendy
+from libraries import incendy
 
 class Media(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

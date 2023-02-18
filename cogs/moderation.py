@@ -5,7 +5,7 @@ import datetime
 import validators
 from discord import app_commands
 from discord.ext import commands, tasks
-from resources import incendy
+from libraries import incendy
 
 class Moderation(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
