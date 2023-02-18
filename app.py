@@ -61,6 +61,7 @@ async def run():
 		environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
 
 		return environment
+	
 	try:
 		client.settings = settings
 		client.keys = keys
@@ -81,9 +82,35 @@ async def run():
 	except KeyboardInterrupt:
 		await client.db.close()
 		await client.logout()
-		
-@client.event
-async def setup_hook():
+
+async def file_init():
+	if not os.path.isdir("logs"):
+		os.mkdir("logs")
+
+	if not os.path.isfile("resources/keys.json"):
+		keys_base = {"incendy-token": "","dummy-token": "","dbbot-token": "","twitch-id": "","twitch-secret": "","youtube-key": "","spotify-id": "","spotify-secret": "","pastebin-key": "","postgres-pswd": "","git-pat": "","cf-key": "","wiki-user-agent": "","wiki-username": "","wiki-password": ""}
+		with open("resources/keys.json", 'w') as f:
+			json.dump(keys_base, f, indent=4)
+	
+	if not os.path.isfile("resources/naughty.txt"):
+		with open("resources/naughty.txt", 'w') as f:
+			f.write()
+	
+	if not os.path.isfile("resources/pinglog.txt"):
+		with open("resources/pinglog.txt", 'w') as f:
+			f.write()
+
+	if not os.path.isfile("resources/settings.json"):
+		settings_base = {"locked": False,"contest-ongoing": False,"version": "","stardust-guild-id": None}
+		with open("resources/settings.json", 'w') as f:
+			json.dump(settings_base, f, indent=4)
+
+	if not os.path.isfile("resources/timeout.json"):
+		timeout_base = {"days": [],"members": {}}
+		with open("resources/timeout.json", 'w') as f:
+			json.dump(timeout_base, f, indent=4)
+
+async def table_init():
 	# Messages Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, user_id BIGINT, message_id BIGINT, sent_on TIMESTAMPTZ, message_content TEXT);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS user_index ON messages (user_id);')
@@ -103,7 +130,15 @@ async def setup_hook():
 	# Wiki Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS title_index ON wiki (title);')
-	
+
+	# Stardusttv Table
+	await client.db.execute('CREATE TABLE IF NOT EXISTS stardusttv(id SERIAL PRIMARY KEY, media TEXT, slug TEXT);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS slug_index ON stardusttv (slug);')
+		
+@client.event
+async def setup_hook():
+	await file_init()
+	await table_init()
 
 	# Load cogs
 	for filename in os.listdir('./cogs'):
@@ -229,4 +264,4 @@ try:
 	loop = asyncio.new_event_loop()
 	loop.run_until_complete(run())
 except KeyboardInterrupt:
-	print("Incendy shutting down...")
+	logging.info("Incendy shutting down...")
