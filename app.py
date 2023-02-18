@@ -259,7 +259,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 		elif command == "close":
 			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
 		else:
-			raise error
+			await interaction.response.send_message("You are not allowed to perform this command!", ephemeral=True)
 	else:
 		raise error
 
