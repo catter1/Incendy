@@ -264,7 +264,7 @@ class Basic(commands.Cog):
 					await message.add_reaction('🧷')
 
 			#Textlinks
-			matches = re.findall(r"[\[]{2}(\w[\w |]+\w)?[\]]{2}", message.content)
+			matches = re.findall(r"[\[]{2}(\w[\w |:]+\w)?[\]]{2}", message.content)
 			if len(matches) > 0:
 				for match in matches:
 					if match.lower() in [textlink for textlink in self.textlinks]:
