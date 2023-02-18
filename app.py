@@ -149,7 +149,7 @@ async def setup_hook():
 			await client.load_extension(f'cogs.{filename[:-3]}')
 		
 	# All set!
-	logging.info('Incendy has woken up, ready for an amazing day! Say good morning!')
+	print('Incendy has woken up, ready for an amazing day! Say good morning!')
 
 @client.command(name="sync")
 @incendy.is_catter()
