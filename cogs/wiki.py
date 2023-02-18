@@ -139,6 +139,8 @@ class Wiki(commands.Cog):
 
 			# Do a bunch of pain to find the image url, and set it
 			imgname = pageprops.get("image")
+			if imgname == None:
+				imgname = pageprops.get("page_image_free")
 			pages[item]["imgurl"] = get_image_url(imgname)
 
 			# Get the page content
