@@ -356,6 +356,7 @@ class ConfigMenu(discord.ui.Select):
         	discord.SelectOption(label='Smaller Biomes', description='How to decrease biome size in Terralith'),
 			discord.SelectOption(label='Remove Biomes', description='How to remove/replace biomes in Terralith'),
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
+            discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
 			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout'),
 			discord.SelectOption(label='Amplified Terrain', description='Super tall mountains in Terralith?')
 		]
@@ -367,22 +368,81 @@ class ConfigMenu(discord.ui.Select):
         match self.values[0]:
             case 'Bigger Biomes':
                 embed.title = 'Configuration (Bigger Biomes)'
-                embed.description = 'Currently, the Terralith biome sizes are on average slightly larger than Vanilla, but *can* be huge. If you still want larger biomes:\n**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.\n**•** Subtract **1** from all instances of `firstOctave` in the `erosion`, `continentalness`, `temperature`, and `vegetation` files.\n**•** Do *not* edit the `ridge` file.'
+                embed.description = '''
+                Currently, the Terralith biome sizes are on average slightly larger than Vanilla, but *can* be huge. If you still want larger biomes:
+                **•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.
+                **•** Subtract **1** from all instances of `firstOctave` in the `erosion`, `continentalness`, `temperature`, and `vegetation` files.
+                **•** Do *not* edit the `ridge` file.
+                '''
+
             case 'Smaller Biomes':
                 embed.title = 'Configuration (Smaller Biomes)'
-                embed.description = 'Keep in mind that doing this will make the biomes quite tiny. There is a reason the biomes are the size that they are. If you still want smaller biomes:\n**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.\n**•** Open the `erosion` file.\n**•** Change `firstOctave` from **-10** to **-9**.'
+                embed.description = '''
+                Keep in mind that doing this will make the biomes quite tiny. There is a reason the biomes are the size that they are. If you still want smaller biomes:
+                **•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.
+                **•** Open the `erosion` file.
+                **•** Change `firstOctave` from **-10** to **-9**.
+                '''
+
             case 'Amplified Terrain':
                 embed.title = 'Configuration (Amplified Terrain)'
-                embed.description = 'There isn\'t an easy way to do this. Thankfully, if you like *really* tall mountains, and enjoy your computer blowing up, there is a datapack just for that. Because it is so unstable, it is not released publically, and only available to [Patrons](https://www.patreon.com/stardustlabs), [Supporters](https://bisecthosting.com/stardust), [Donators](https://ko-fi.com/stardustlabs), and Server Boosters.'
+                embed.description = '''
+                There isn\'t an easy way to do this. Thankfully, if you like *really* tall mountains, and enjoy your computer blowing up, there is a datapack just for that. Because it is so unstable, it is not released publically, and only available to [Patrons](https://www.patreon.com/stardustlabs), [Supporters](https://bisecthosting.com/stardust), [Donators](https://ko-fi.com/stardustlabs), and Server Boosters.
+                '''
+
             case 'Remove Biomes':
                 embed.title = 'Configuration (Remove Biomes)'
-                embed.description = 'This is a little difficult and finicky.\n**•** Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.\n**•** Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.\n**•** To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.\n**•** When removing Skylands, replace their instances with an ocean type.\n**•** Be careful, as this doesn\'t always work well and can break.'
+                embed.description = '''
+                This is a little difficult and finicky.
+                **•** Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
+                **•** Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.
+                **•** To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.
+                **•** When removing Skylands, replace their instances with an ocean type.
+                **•** Be careful, as this doesn\'t always work well and can break.
+                '''
+
             case 'Biome Layout':
                 embed.title = 'Configuration (Biome Layout)'
                 embed.description = '*No.*'
+
             case 'Taller Nether':
                 embed.title = 'Configuration (Taller Nether)'
-                embed.description = 'This tutorial (graciously provided by <@212447019296489473>) will show you how to add extra space above the bedrock roof in Amplified Nether.\n**•** Download slicedlime\'s datapack [here](https://github.com/slicedlime/examples).\n**•** Unzip Amplified Nether and navigate to the `/data/minecraft/` directory. Copy the `dimension_type` folder from slicedlime\'s datapack and stick it here.\n**•** Delete every file in the `dimension_type` directory EXCEPT `the_nether.json`.\n**•** Edit that file and look for `”height”:` and change the value to 320. This will add 64 blocks of air above the bedrock roof.\n**•** __If on 1.18/1.18.1 only__, find the line that says `"infiniburn": "minecraft:infiniburn_nether"` and remove the `#`.\n**•** Save/exit, rezip Amplified Nether, and load it to your world. Enjoy!\n**•** This will *not* work with Better Nether.'
+                embed.description = '''
+                This tutorial (graciously provided by <@212447019296489473>) will show you how to add extra space above the bedrock roof in Amplified Nether.
+                **•** Download slicedlime\'s datapack [here](https://github.com/slicedlime/examples).
+                **•** Unzip Amplified Nether and navigate to the `/data/minecraft/` directory. Copy the `dimension_type` folder from slicedlime\'s datapack and stick it here.
+                **•** Delete every file in the `dimension_type` directory EXCEPT `the_nether.json`.
+                **•** Edit that file and look for `”height”:` and change the value to 320. This will add 64 blocks of air above the bedrock roof.
+                **•** __If on 1.18/1.18.1 only__, find the line that says `"infiniburn": "minecraft:infiniburn_nether"` and remove the `#`.
+                **•** Save/exit, rezip Amplified Nether, and load it to your world. Enjoy!
+                **•** This will *not* work with Better Nether.'''
+
+            case 'Adjusted Continent Size':
+                embed.title = 'Configuration (Adjusted Continent Size)'
+                embed.description = """
+                This tutorial (graciously provided by <@897998124478521356>) will show you how to adjust continent size with the Continents project.
+                **•** Unzip Continents and open the `Continents/data/continents/worldgen/density_function` folder.
+                **•** Open `adjusted_continents.json`. You should see this: ```json
+                {
+                    "location": 0.205,
+                    "derivative": 0.7,
+                    "value": -0.25
+                },
+                {
+                    "location": 0.265,
+                    "derivative": 1.785,
+                    "value": -0.19
+                },
+                {
+                    "location": 0.6325,
+                    "derivative": 1.275,
+                    "value": 0.6
+                }```
+                **•** To increase the continent sizes, lower the `location` values. Make sure each value is changed by the same amount.
+                **•** To decrease the continent sizes, raise the `location` values. Make sure each value is changed by the same amount.
+                **•** Do **NOT** change `derivative` or `value`!!!
+                **•** Zip it up and enjoy!
+                """
             
         await interaction.response.edit_message(embed=embed)
 
