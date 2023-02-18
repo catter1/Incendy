@@ -37,25 +37,6 @@ class Stats(commands.Cog):
 
 	### COMMANDS ###
 
-	@app_commands.command(name="changelog", description="Incendy's Changelog")
-	@incendy.in_bot_channel()
-	@app_commands.checks.dynamic_cooldown(incendy.very_long_cd)
-	async def changelog(self, interaction: discord.Interaction):
-		""" /changelog """
-
-		with open("resources/changelog.json", 'r') as f:
-			news = json.load(f)
-
-		catter = interaction.guild.get_member(260929689126699008)
-		colour = await image_tools.get_user_color(catter)
-		embed = discord.Embed(color=colour)
-		embed.set_author(name="Incendy Changelog", icon_url=catter.avatar.url)
-		
-		for item in news:
-			embed.add_field(name=item["title"], value=f"{item['desc']}\n<t:{item['timestamp']}:d>", inline=False)
-
-		await interaction.response.send_message(embed=embed)
-
 	@app_commands.command(name="incendy", description="Shows information about Incendy!")
 	@incendy.in_bot_channel()
 	@app_commands.checks.dynamic_cooldown(incendy.long_cd)

@@ -230,7 +230,6 @@ async def update_content(index: str) -> tuple:
 			)
 		case "3":
 			entries = (
-				('changelog', 'View Incendy\'s changelog'),
 				('feedback', 'Send feedback about Incendy so she can improve herself'),
 				('incendy', 'Shows information about Incendy'),
 				('ping', 'Shows you your connection latency'),
