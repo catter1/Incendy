@@ -5,6 +5,7 @@ import json
 import re
 import random
 import googletrans
+import logging
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy
@@ -31,7 +32,7 @@ class Basic(commands.Cog):
 		self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		self.change_presence.stop()

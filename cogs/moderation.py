@@ -1,8 +1,8 @@
 import discord
 import json
-import time
 import datetime
 import validators
+import logging
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy
@@ -25,7 +25,7 @@ class Moderation(commands.Cog):
 		self.ping_check.start()
 		self.detect.start()
 		self.timeout_check.start()
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 	
 	async def cog_unload(self):
 		self.client.tree.remove_command(self.shutup_app.name, type=self.shutup_app.type)

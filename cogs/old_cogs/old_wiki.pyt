@@ -4,6 +4,7 @@ import json
 import nltk
 import requests
 import shutil
+import logging
 from discord import app_commands
 from discord.ext import commands
 from mediawiki import MediaWiki, MediaWikiPage
@@ -16,7 +17,7 @@ class Wiki(commands.Cog):
 
 	async def cog_load(self):
 		#nltk.download('punkt', quiet=True)
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')

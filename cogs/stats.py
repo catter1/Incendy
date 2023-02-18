@@ -18,7 +18,7 @@ class Stats(commands.Cog):
 			self.loop_get_stats.start()
 		else:
 			logging.warn("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:

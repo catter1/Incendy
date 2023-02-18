@@ -2,6 +2,7 @@ import discord
 import os
 import json
 import requests
+import logging
 from mecha.api import Mecha
 from mecha.contrib.statistics import Analyzer, Summary
 from beet.library.data_pack import DataPack
@@ -16,7 +17,7 @@ class Datapacks(commands.Cog):
 		self.all_versions = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").json()
 
 	async def cog_load(self):
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		print(f' - {self.__cog_name__} cog unloaded.')

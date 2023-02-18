@@ -3,6 +3,7 @@ import asyncio
 import os
 import json
 import decimal
+import logging
 import time as pytime
 from datetime import *
 from twitchAPI.twitch import Twitch
@@ -20,7 +21,7 @@ class Media(commands.Cog):
 		youtube = build('youtube', 'v3', developerKey=self.client.keys["youtube-key"])
 
 	async def cog_load(self):
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 		self.twitch_timer.start()
 		self.youtube_timer.start()
 

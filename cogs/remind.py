@@ -3,6 +3,7 @@ import datetime
 import asyncpg
 import asyncio
 import typing
+import logging
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
@@ -91,7 +92,7 @@ class Remind(commands.Cog):
 		self.clock = Clock(client)
 
 	async def cog_load(self):
-		print(f' - {self.__cog_name__} cog loaded.')
+		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		self.clock.db.close()
