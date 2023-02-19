@@ -215,8 +215,8 @@ async def update_content(index: str) -> tuple:
 		case "1":
 			entries = (
 				('help', 'Display this help menu'),
-				('faq <q> [public=None]', 'Choose from a large list of FAQs to display'),
-				('qp <post>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
+				('faq <faq> [public=None]', 'Choose from a large list of FAQs to display'),
+				('qp <qp>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
 				('wiki <search|upload>', 'Do various actions through the Stardust Labs\' wiki')
 			)
 		case "2":
@@ -247,8 +247,9 @@ async def update_content(index: str) -> tuple:
 		case "5":
 			entries = (
 				('cog <load|unload|reload> <cog>', 'Performs the specified **action** on a **cog**'),
-				('github <project> <pack_ver> <mc_ver> <datapack>', 'Updates the **project**\'s GitHub repo, and creates a release with the provided **pack** and **mc** versions'),
-				('role', 'Gives all users Member that do not have any roles')
+				('role', 'Gives all users Member that do not have any roles'),
+				('thread <thread> <forum>', 'Moves any **thread** from its channel into a **forum** channel'),
+				('upload <project> <archive>', 'Uploads the **project** to any distribution platform, accepting either a datapack or mod **archive** file')
 			)
 		case "6":
 			entries = (
