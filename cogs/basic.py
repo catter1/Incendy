@@ -258,7 +258,7 @@ class Basic(commands.Cog):
 					await message.add_reaction('👋')
 
 			#Pineapple Pin
-			if "pin" in message.content.lower():
+			if " pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin"):
 				if message.author.id == 234748321258799104:
 					await message.add_reaction('🍍')
 					await message.add_reaction('🧷')
