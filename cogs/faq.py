@@ -288,6 +288,8 @@ class Faq(commands.Cog):
 
                     **Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
                     **Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
+                    
+                    Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvceu)!
                     ''',
                     color=faq_colour
                 )
