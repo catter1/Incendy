@@ -280,6 +280,17 @@ class Faq(commands.Cog):
                     inline=False
                 )
                 view=Support()
+            case "Tectonic":
+                embed = discord.Embed(
+                    title='Tectonic Compatibility',
+                    description='''
+                    By default, Terralith and Tectonic are not compatible with each other. If you'd like them to work together, you'll have to use the compat method that Apollo created called **Terratonic**. This exists for both datapack and mod versions of the packs.
+
+                    **Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
+                    **Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
+                    ''',
+                    color=faq_colour
+                )
             case "Traveller Maps":
                 embed = discord.Embed(
                     title='Traveller\'s Maps',
@@ -342,7 +353,7 @@ class Faq(commands.Cog):
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic"])
 
         return [
             app_commands.Choice(name=faq, value=faq)
