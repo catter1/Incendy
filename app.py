@@ -245,22 +245,14 @@ async def on_message(message: discord.Message):
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
 	command = interaction.command.name
 	if isinstance(error, app_commands.CommandOnCooldown):
-		if command == "Translate to English":
-			await interaction.response.send_message("Yikes! " + str(error) + ". We don't want to overwhelm the API servers...", ephemeral=True)
-		elif command in ["feedback", "reportad", "remindme", "apply"]:
-			await interaction.response.send_message("Yikes! " + str(error), ephemeral=True)
+		if command in ["ping", "qp", "stats", "discord", "Translate to English"]: #short_cd or default_cd
+			await interaction.response.send_message(str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
 		else:
-			await interaction.response.send_message("Yikes! " + str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
-	elif isinstance(error, app_commands.CheckFailure):
-		if command in ["stats", "incendy", "changelog"]:
-			await interaction.response.send_message("This command can only be used in a bot command channel like <#923571915879231509>.", ephemeral=True)
-		elif command in ["bug", "upload"]:
-			await interaction.response.send_message("This command is only available for Contributors!", ephemeral=True)
-		elif command == "close":
-			await interaction.response.send_message("This command can only be executed in a support thread! You also must be the creator of the thread.", ephemeral=True)
-		else:
-			await interaction.response.send_message("You are not allowed to perform this command!", ephemeral=True)
+			await interaction.response.send_message(str(error), ephemeral=True)
+	elif isinstance(error, (app_commands.CheckFailure, app_commands.MissingPermissions, incendy.NotInBotChannel, incendy.CantCloseThread)):
+		await interaction.response.send_message(str(error), ephemeral=True)
 	else:
+		await interaction.response.send_message("An unregistered error has occurred!", ephemeral=True)
 		raise error
 
 try:

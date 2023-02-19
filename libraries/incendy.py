@@ -16,6 +16,12 @@ class IncendyBot(commands.Bot):
 		self.settings = settings
 		self.environment = environment
 
+class NotInBotChannel(app_commands.CheckFailure):
+	pass
+
+class CantCloseThread(app_commands.CheckFailure):
+	pass
+
 def in_bot_channel():
 	"""Interaction is in bot channel"""
 
@@ -25,7 +31,7 @@ def in_bot_channel():
 		if interaction.user.guild_permissions.administrator:
 			return True
 		else:
-			return False
+			raise NotInBotChannel("You must be in <#923571915879231509> to use this command!")
 	return app_commands.check(bot_channel)
 
 def is_catter():
@@ -35,7 +41,7 @@ def is_catter():
 		if interaction.user.id == 260929689126699008:
 			return True
 		else:
-			return False
+			return app_commands.MissingPermissions("Only catter is allowed to use this command!")
 	return app_commands.check(catter)
 
 def can_report_bug():
@@ -47,7 +53,7 @@ def can_report_bug():
 		if interaction.user.guild_permissions.administrator:
 			return True
 		else:
-			return False
+			return app_commands.MissingPermissions("You must be a Contributor or Dev Team member to use this command!")
 	return app_commands.check(bug_reporter)
 
 def can_edit_wiki():
@@ -59,7 +65,7 @@ def can_edit_wiki():
 		if interaction.user.guild_permissions.administrator:
 			return True
 		else:
-			return False
+			return app_commands.MissingPermissions("You must be a Photographer, Wiki Contributor, or another higher role to use this command!")
 	return app_commands.check(wiki_editor)
 
 def can_close():
@@ -67,12 +73,12 @@ def can_close():
 
 	def closer(interaction: discord.Interaction):
 		if not isinstance(interaction.channel, discord.Thread):
-			return False
+			return CantCloseThread("This command can only be used in Threads!")
 		if interaction.user.id == interaction.channel.owner_id:
 			return True
 		elif interaction.user.guild_permissions.administrator:
 			return True
-		return False
+		return CantCloseThread("You must either be the owner of the thread, or a Contributor/staff member to close this thread.")
 	return app_commands.check(closer)
 
 def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
