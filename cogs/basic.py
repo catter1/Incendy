@@ -161,27 +161,21 @@ class Basic(commands.Cog):
 		
 		await interaction.response.send_message(embed=embed, ephemeral=True)
 
-	@app_commands.command(name="bug", description="Creates a bug report on a GitHub repo")
+	@app_commands.command(name="issue", description="Creates an issue on a GitHub repo")
 	@incendy.can_report_bug()
-	async def bug(self, interaction: discord.Interaction, project: str):
+	async def issue(self, interaction: discord.Interaction, project: str):
 		modal = BugInfo(project=project)
 		await interaction.response.send_modal(modal)
 
-	@bug.autocomplete('project')
+	@issue.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack"])
+		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack", "Incendy"])
 
 		return [
 			app_commands.Choice(name=project.replace("-", " "), value=project)
 			for project in projects
 			if current.replace(" ", "").lower() in project.replace(" ", "").lower()
 		]
-
-	@app_commands.command(name="feedback", description="Sends feedback to/about Incendy")
-	@app_commands.checks.dynamic_cooldown(incendy.long_cd)
-	async def feedback(self, interaction: discord.Interaction):
-		feedback_chan = self.client.get_channel(747626471819968554)
-		await interaction.response.send_modal(Feedback(feedback_chan))
 
 	@app_commands.command(name="textlinks", description="Displays all available textlinks")
 	async def _textlinks(self, interaction: discord.Interaction):
@@ -342,7 +336,10 @@ class BugInfo(discord.ui.Modal, title='Bug Information'):
 	)
 	
 	async def on_submit(self, interaction: discord.Interaction):
-		url = f'https://api.github.com/repos/Stardust-Labs-MC/{self.project}/issues'
+		if self.project == "Incendy":
+			url = f'https://api.github.com/repos/catter1/{self.project}/issues'
+		else:
+			url = f'https://api.github.com/repos/Stardust-Labs-MC/{self.project}/issues'
 		headers = {'User-Agent': 'application/vnd.github+json'}
 		auth = ('catter1', self.pat)
 		data = {
