@@ -250,7 +250,7 @@ class Terralith(discord.ui.View):
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/'))
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2)', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/terralith/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.17)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith/releases'))
 
 class Incendium(discord.ui.View):
@@ -258,7 +258,7 @@ class Incendium(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/incendium/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files'))
 		self.add_item(discord.ui.Button(label='Optional Resource Pack', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.16.5)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/releases'))
 
@@ -267,21 +267,21 @@ class Nullscape(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/nullscape/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/nullscape/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.17)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.17)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.17)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape/releases'))
 
 class Structory(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory/'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/releases'))
 
 class Towers(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		#self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19.x)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19.x)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files'))
 		self.add_item(discord.ui.Button(label='All Versions (1.19.x)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases'))
 
 class Continents(discord.ui.View):
@@ -289,7 +289,7 @@ class Continents(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (from 1.18.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/continents/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/continents/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/continents'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/continents'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents/releases'))
 
 class Amplified(discord.ui.View):
@@ -297,13 +297,13 @@ class Amplified(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/amplified-nether-1-18/'))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/amplified-nether/versions'))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files'))
 		self.add_item(discord.ui.Button(label='All Versions (from 1.16.5)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Amplified-Nether/releases'))
 
 class Cave(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.1)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/cave-tweaks/files'))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.1)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/cave-tweaks/files'))
 
 class ServerDesc(discord.ui.Modal, title='Server Info'):
 	def __init__(self, client: incendy.IncendyBot, image: discord.Attachment):

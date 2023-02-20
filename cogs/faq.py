@@ -417,7 +417,7 @@ class Pregen(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(label='Chunky (Fabric)', emoji='<:fabric:962456210773262346>', url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator'))
-        self.add_item(discord.ui.Button(label='Chunky (Forge)', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator-forge'))
+        self.add_item(discord.ui.Button(label='Chunky (Forge)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator-forge'))
         self.add_item(discord.ui.Button(label='Chunky (Paper/Spigot)', emoji='<:spigot:964945252890861649>', url='https://www.spigotmc.org/resources/chunky.81534/'))
 
 class Realms(discord.ui.View):
@@ -435,7 +435,7 @@ class Seedfix(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(label='SeedFix Website', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
-        self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:1045336245900939274>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
+        self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
 
 class Support(discord.ui.View):
     def __init__(self):
