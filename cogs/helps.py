@@ -22,22 +22,24 @@ class Helps(commands.Cog):
 		""" /help """
 
 		embed = discord.Embed(
-			title='Help Menu',
-			description='Welcome to the Help Menu! Read the context below to understand the descriptions for some of the commands. When you\'re ready, click any of the buttons below to view the available commands!',
+			title="Essential Commands",
 			color=discord.Colour.brand_red()
 		)
 		
 		entries = (
-			('<argument>', 'The argument is __**required**__.'),
-			('[argument]', 'The argument is __**optional**__.'),
-			('[argument=True]', 'The argument is __**optional**__, but equal to __**True**__ if not set.'),
-			('[A|B]', 'The argument can be __**either A or B**__.')
+			('help', 'Display this help menu'),
+			('faq <faq> [public=None]', 'Choose from a large list of FAQs to display'),
+			('qp <qp>', 'Posts a Quick Post: similar to an FAQ, but not directly related to support'),
+			('wiki <search|upload>', 'Do various actions through the Stardust Labs\' wiki')
 		)
 
 		for name, value in entries:
 			embed.add_field(name=name, value=value, inline=False)
-
-		embed.set_footer(text="Buttons gone? The menu expired - do /help again!")
+		
+		if interaction.permissions.administrator:
+			embed.set_footer(text="Page 1/6")
+		else:
+			embed.set_footer(text="Page 1/3")
 
 		await interaction.response.send_message(embed=embed, view=HelpView())
 
@@ -118,7 +120,7 @@ class BackButton(discord.ui.Button):
 
 
 class NextButton(discord.ui.Button):
-	def __init__(self, index='1', disabled=False):
+	def __init__(self, index='2', disabled=False):
 		super().__init__(style=discord.ButtonStyle.blurple, label='❯', custom_id=index, disabled=disabled)
 
 	async def callback(self, interaction: discord.Interaction):
@@ -164,8 +166,8 @@ async def do_button(self, interaction: discord.Interaction):
 		embed.add_field(name=name, value=value, inline=False)
 
 	# Get permission-friendly info for the new button indexes
-	back_index = await get_index(str(int(index) - 1), is_admin)
-	next_index = await get_index(str(int(index) + 1), is_admin)
+	back_index = str(int(await get_index(index, is_admin)) - 1)
+	next_index = str(int(await get_index(index, is_admin)) + 1)
 	smart_max = await get_index("7", is_admin)
 	#print(f"Current Index: {index}\nBack Index: {back_index}\nNext Index:{next_index}")
 
@@ -177,7 +179,7 @@ async def do_button(self, interaction: discord.Interaction):
 	else:
 		self.view.add_item(SuperBackButton(disabled=False))
 		self.view.add_item(BackButton(index=back_index, disabled=False))
-	if next_index == smart_max:
+	if int(next_index) == int(smart_max) + 1:
 		self.view.add_item(NextButton(index=next_index, disabled=True))
 		self.view.add_item(SuperNextButton(disabled=True))
 	else:
@@ -197,9 +199,9 @@ async def get_index(index: str, is_admin: bool) -> str:
 			index = "3"
 
 	# This shouldn't happen, but just in case
-	if int(index) > 7:
+	if int(index) > 6:
 		if is_admin:
-			index = "7"
+			index = "6"
 	
 	# Again, don't think it will happen, but just in case
 	if int(index) <= 0:
@@ -221,7 +223,7 @@ async def update_content(index: str) -> tuple:
 			)
 		case "2":
 			entries = (
-				('bug <project>', '**Contributors only.** Opens a bug report for a Stardust Labs **project**'),
+				('issue <project>', '**Contributors only.** Opens an issue for a Stardust Labs **project**'),
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
 				('datapack <analyze|mcmeta>', 'Various datapack development related commands'),
@@ -231,7 +233,6 @@ async def update_content(index: str) -> tuple:
 			)
 		case "3":
 			entries = (
-				('feedback', 'Send feedback about Incendy so she can improve herself'),
 				('incendy', 'Shows information about Incendy'),
 				('ping', 'Shows you your connection latency'),
 				('reportad <image>', 'If you see a bad/inappropriate ad on [our website](https://www.stardustlabs.net/), report an **image** of it here'),
@@ -275,9 +276,9 @@ async def get_title(index: str) -> str:
 		case "4":
 			title = "Admin (Moderation)"
 		case "5":
-			title = "Essential (Helper)"
+			title = "Admin (Other)"
 		case "6":
-			title = "Essential (Bulletin)"
+			title = "Admin (Bulletin)"
 		case _:
 			title = index
 	
