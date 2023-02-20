@@ -150,7 +150,7 @@ async def do_button(self, interaction: discord.Interaction):
 	if self.custom_id == "start":
 		upcoming_index = "1"
 	elif self.custom_id == "end":
-		upcoming_index = "6"
+		upcoming_index = "7"
 	else:
 		upcoming_index = self.custom_id
 	index = await get_index(upcoming_index, is_admin)
@@ -192,9 +192,9 @@ async def do_button(self, interaction: discord.Interaction):
 
 async def get_index(index: str, is_admin: bool) -> str:
 	# If the button presser ain't admin, reset them!
-	if int(index) > 3:
+	if int(index) > 4:
 		if not is_admin:
-			index = "3"
+			index = "4"
 
 	# This shouldn't happen, but just in case
 	if int(index) > 7:
