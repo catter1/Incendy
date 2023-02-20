@@ -150,7 +150,7 @@ async def do_button(self, interaction: discord.Interaction):
 	if self.custom_id == "start":
 		upcoming_index = "1"
 	elif self.custom_id == "end":
-		upcoming_index = "7"
+		upcoming_index = "6"
 	else:
 		upcoming_index = self.custom_id
 	index = await get_index(upcoming_index, is_admin)
@@ -186,15 +186,15 @@ async def do_button(self, interaction: discord.Interaction):
 	self.view.add_item(ExitButton())
 
 	# Edit message with embed and view
-	embed.set_footer(text=f"Page {index}/{int(smart_max) - 1}")
+	embed.set_footer(text=f"Page {index}/{int(smart_max)}")
 	await interaction.response.edit_message(embed=embed, view=self.view)
 
 
 async def get_index(index: str, is_admin: bool) -> str:
 	# If the button presser ain't admin, reset them!
-	if int(index) > 4:
+	if int(index) > 3:
 		if not is_admin:
-			index = "4"
+			index = "3"
 
 	# This shouldn't happen, but just in case
 	if int(index) > 7:
