@@ -71,7 +71,7 @@ async def run():
 			client.db = await asyncpg.create_pool(**credentials)
 			client.miraheze = MediaWiki(
 				url="https://stardustlabs.miraheze.org/w/api.php",
-				user_agent=keys["wiki-user-agent"]
+				user_agent=keys["user-agent"]
 			)
 		except TimeoutError as e:
 			logging.error("Could not log into the Miraheze Wiki via pymediawiki!")
@@ -91,7 +91,7 @@ async def file_init():
 		os.mkdir("tmp")
 
 	if not os.path.isfile("resources/keys.json"):
-		keys_base = {"incendy-token": "","dummy-token": "","dbbot-token": "","twitch-id": "","twitch-secret": "","youtube-key": "","spotify-id": "","spotify-secret": "","pastebin-key": "","postgres-pswd": "","git-pat": "","cf-key": "","wiki-user-agent": "","wiki-username": "","wiki-password": ""}
+		keys_base = {"incendy-token": "","dummy-token": "","dbbot-token": "","twitch-id": "","twitch-secret": "","youtube-key": "","spotify-id": "","spotify-secret": "","pastebin-key": "","postgres-pswd": "","git-pat": "","cf-key": "","user-agent": "","wiki-username": "","wiki-password": ""}
 		with open("resources/keys.json", 'w') as f:
 			json.dump(keys_base, f, indent=4)
 	

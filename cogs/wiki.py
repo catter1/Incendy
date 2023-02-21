@@ -213,7 +213,7 @@ class Wiki(commands.Cog):
 
 		await interaction.response.defer(thinking=True)
 
-		headers = {"User-Agent": self.client.keys["wiki-user-agent"], "Content-Type":"application/x-www-form-urlencoded"}
+		headers = {"User-Agent": self.client.keys["user-agent"], "Content-Type":"application/x-www-form-urlencoded"}
 		url = "https://stardustlabs.miraheze.org/w/api.php"
 
 		csrf_params = {"action":"query", "meta":"tokens", "type":"csrf", "format":"json"}
