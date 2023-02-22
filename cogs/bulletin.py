@@ -260,9 +260,9 @@ class Terralith(discord.ui.View):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2)', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/terralith/versions', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.17)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/terralith/versions', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.17+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Terralith/issues', row=1))
@@ -273,9 +273,9 @@ class Incendium(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/incendium/versions', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.16.5)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/incendium/versions', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.16.5+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/issues', row=1))
@@ -286,9 +286,9 @@ class Nullscape(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/nullscape/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/nullscape/versions', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.17)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.17)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/nullscape/versions', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.17+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.17+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape/issues', row=1))
@@ -299,8 +299,8 @@ class Structory(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory/files', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.18.2+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory/issues', row=1))
@@ -320,10 +320,10 @@ class Towers(discord.ui.View):
 class Continents(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (from 1.18.2)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/continents/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/continents/versions', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/continents', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.18.2)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents/releases', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2+)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/continents/', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/continents/versions', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/continents', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.18.2+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Continents/issues', row=1))
@@ -333,9 +333,9 @@ class Amplified(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/amplified-nether-1-18/', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/amplified-nether/versions', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (from 1.18.2)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (from 1.16.5)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Amplified-Nether/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/amplified-nether/versions', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files', row=0))
+		self.add_item(discord.ui.Button(label='All Versions (1.16.5+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Amplified-Nether/releases', row=0))
 
 		self.add_item(discord.ui.Button(label='Source', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Amplified-Nether', row=1))
 		self.add_item(discord.ui.Button(label='Bug Reports', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Amplified-Nether/issues', row=1))
