@@ -258,20 +258,30 @@ class Basic(commands.Cog):
 					await message.add_reaction('🧷')
 
 			#Textlinks
-			matches = re.findall(r"[\[]{2}(\w[\w |:]+\w)?[\]]{2}", message.content)
+			matches = re.findall(r"[\[]{2}(\w[\w |':]+\w)?[\]]{2}", message.content)
 			if len(matches) > 0:
+				links = []
 				for match in matches:
 					if match.lower() in [textlink for textlink in self.textlinks]:
-						await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=match.lower().title(), url=self.textlinks[match.lower()]))
+						#await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
 					elif "|" in match:
 						if "misode" in match.split("|")[0].lower():
 							page = match.split("|")[-1].lower().replace(" ", "-")
 							if page in self.misode_urls.keys():
-								await message.reply(f"Misode {page.replace('-', ' ').title()} link: <{self.misode_urls[page]}>", mention_author=False)
+								links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page]))
+								#await message.reply(f"{page.replace('-', ' ').title()} Misode link: <{self.misode_urls[page]}>", mention_author=False)
 						elif "wiki" in match.split("|")[0].lower():
 							page = match.split("|")[-1].lower()
 							if page in self.wiki_urls.keys():
-								await message.reply(f"Wiki {page.title()} link: <{self.wiki_urls[page]}>", mention_author=False)
+								links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page]))
+								#await message.reply(f"{page.title()} Wiki link: <{self.wiki_urls[page]}>", mention_author=False)
+				
+				view = discord.ui.View()
+				if len(links) > 0:
+					for item in links:
+						view.add_item(item)
+					await message.reply(view=view, mention_author=False)
 
 			#Pastebin feature
 			if len(message.attachments) > 0:
