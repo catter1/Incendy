@@ -40,6 +40,8 @@ class Admin(commands.Cog):
 
 		async for message in thread.history(limit=None, oldest_first=True):
 			if message.type in [discord.MessageType.default, discord.MessageType.reply, discord.MessageType.thread_starter_message, discord.MessageType.context_menu_command]:
+				if message.content == "" or message.content == None:
+					continue
 				await webhook.send(
 					content=message.content,
 					username=message.author.display_name,
