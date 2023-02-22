@@ -24,6 +24,8 @@ class Admin(commands.Cog):
 	async def thread(self, interaction: discord.Interaction, thread: discord.Thread, forum: discord.ForumChannel):
 		""" /thread <thread> <forum> """
 
+		await interaction.response.defer(ephemeral=True)
+
 		new_thread: discord.Thread
 		webhook: discord.Webhook
 
@@ -35,7 +37,6 @@ class Admin(commands.Cog):
 		), "thread")
 
 		webhook = await forum.create_webhook(name="Thread Mover")
-		await interaction.response.defer(ephemeral=True)
 
 		async for message in thread.history(limit=None, oldest_first=True):
 			if message.type in [discord.MessageType.default, discord.MessageType.reply, discord.MessageType.thread_starter_message, discord.MessageType.context_menu_command]:
