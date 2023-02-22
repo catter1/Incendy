@@ -2,6 +2,7 @@
 __pycache__
 apicache-py3
 .vscode
+venv
 
 # Incendy Folders
 logs
