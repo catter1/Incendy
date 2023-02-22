@@ -54,7 +54,7 @@ python3 app.py
 - `INCENDY_WIKI_UPDATE_ENABLED`: a boolean on whether to auto-update the `wiki` table in the database.
 - `INCENDY_STATS_UPDATE_ENABLED`: a boolean on whether to auto-update the `downloads` table in the database.
 
-8. Run Incendy again, and enjoy. Once successfully up and running, Incendy will say:
+8. Run Incendy again, and enjoy. The log file is `logs/incendy.log`. Once successfully up and running, Incendy will say:
 > Incendy has woken up, ready for an amazing day! Say good morning!
 
 # License and Contributing
