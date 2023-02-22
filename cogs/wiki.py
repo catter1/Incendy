@@ -190,7 +190,7 @@ class Wiki(commands.Cog):
 			base_url = "https://stardustlabs.miraheze.org/w/api.php"
 			token_params = {"action":"query", "meta":"tokens", "type":"login", "format":"json"}
 			login_token = wiki_session.get(url=base_url, params=token_params).json()['query']['tokens']['logintoken']
-			login_params = {'action': "clientlogin", 'username': self.keys['wiki-username'], 'password': self.keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
+			login_params = {'action': "clientlogin", 'username': self.client.keys['wiki-username'], 'password': self.client.keys['wiki-password'], 'logintoken': login_token, 'loginreturnurl': 'http://127.0.0.1', 'format': "json"}
 			resp = wiki_session.post(url=base_url, data=login_params).json()
 
 			if not resp.get('clientlogin'):
