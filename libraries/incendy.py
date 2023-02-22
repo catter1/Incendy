@@ -44,11 +44,22 @@ def is_catter():
 			return app_commands.MissingPermissions("Only catter is allowed to use this command!")
 	return app_commands.check(catter)
 
+def can_upload_projects():
+	"""Is a project uploader"""
+	
+	def project_uploader(interaction: discord.Interaction):
+		# catter, Star, Tera, Kuma
+		if interaction.user.id in [260929689126699008, 332701537535262720, 234748321258799104, 212447019296489473]:
+			return True
+		else:
+			return app_commands.MissingPermissions("You must have VERY special permissions for this command!")
+	return app_commands.check(project_uploader)
+
 def can_report_bug():
 	"""Is Contributor or Dev"""
 
 	def bug_reporter(interaction: discord.Interaction):
-		if any([role.id for role in interaction.user.roles if role.id == 749701703938605107 or role.id == 885719021176119298]):
+		if any([role.id for role in interaction.user.roles if role.id in [749701703938605107, 885719021176119298]]):
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True

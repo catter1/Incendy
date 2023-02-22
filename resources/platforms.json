@@ -1,0 +1,73 @@
+{
+    "Planet Minecraft": {
+        "projects": {
+            "Terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
+            "Incendium": "incendium-nether-expansion",
+            "Nullscape": "nullscape",
+            "Structory": "structory",
+            "Amplified Nether": "amplified-nether-1-18",
+            "Continents": "continents"
+        },
+        "emoji": "<:pmc:1045336243216584744>",
+        "description": "Datapack Changelogs"
+    },
+    "Curseforge": {
+        "projects": {
+            "Terralith": "terralith",
+            "Incendium": "incendium",
+            "Nullscape": "nullscape",
+            "Structory": "structory",
+            "Amplified Nether": "amplified-nether",
+            "Continents": "continents",
+            "Structory: Towers": "structory-towers"
+        },
+        "emoji": "<:curseforge:1077301605717770260>",
+        "description": "Mods"
+    },
+    "Modrinth": {
+        "projects": {
+            "Terralith": "8oi3bsk5",
+            "Incendium": "ZVzW5oNS",
+            "Nullscape": "LPjGiSO4",
+            "Amplified Nether": "wXiGiyGX",
+            "Continents": "bQ5TJA1E",
+            "Incendium Optional Resourcepack": "HfNmMQ9E",
+            "Biome Name Fix": "J9bjUrwA"
+        },
+        "emoji": "<:modrinth:1045336248950214706>",
+        "description": "Mods and Resourcepacks"
+    },
+    "GitHub": {
+        "projects": {
+            "Terralith": "Terralith",
+            "Incendium": "Incendium",
+            "Nullscape": "Nullscape",
+            "Structory": "Structory",
+            "Amplified Nether": "Amplified-Nether",
+            "Continents": "Continents",
+            "Structory: Towers": "Structory-Towers",
+            "Incendium Optional Resourcepack": "Incendium-Optional-Resourcepack"
+        },
+        "emoji": "<:github:1045336251605188679>",
+        "description": "Datapacks and Resourcepacks"
+    },
+    "Stardust Labs": {
+        "projects": {
+            "Terralith": "",
+            "Incendium": "",
+            "Nullscape": "",
+            "Structory": "",
+            "Amplified Nether": "",
+            "Continents": ""
+        },
+        "emoji": "<:stardust:1058423314672013382>",
+        "description": "Datapacks"
+    },
+    "Seedfix": {
+        "projects": {
+            "Terralith": "terralith"
+        },
+        "emoji": "<:seedfix:917599175259070474>",
+        "description": "1.18.2 Datapack"
+    }
+}
