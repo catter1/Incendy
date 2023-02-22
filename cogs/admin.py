@@ -45,8 +45,6 @@ class Admin(commands.Cog):
 					avatar_url=message.author.avatar.url,
 					tts=False,
 					ephemeral=False,
-					files=message.attachments,
-					embeds=message.embeds,
 					thread=new_thread
 				)
 		
