@@ -51,6 +51,7 @@ class Stats(commands.Cog):
 		embed.set_author(name=self.client.user.display_name, icon_url=self.client.user.display_avatar.url)
 
 		view = discord.ui.View()
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Source Code", url="https://github.com/catter1/incendy", emoji="<:github:1045336251605188679>"))
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji="<:kofi:962411326666334259>"))
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon™️!)", disabled=True))
 
