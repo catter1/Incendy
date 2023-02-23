@@ -786,20 +786,49 @@ class Project:
 			A dictionary of all the responses per upload site.
 		"""
 
-		def insert_patrons(filepath: str) -> None:
+		def insert_translations(zip_path: str) -> None:
+			"""
+			Insert translations into the resourcepack.
+
+			Parameters
+			----------
+			zip_path : str
+				The filepath for the zip file to insert the translations into
+			"""
+
+			if self.project_name == "Incendium Optional Resourcepack":
+				lang_path = self.set_translations("tmp", "all", "incendium")
+			elif self.project_name == "Biome Name Fix":
+				lang_path = self.set_translations("tmp", "omni-biome", "all")
+
+			for file in os.listdir(lang_path):
+				full_path = f"assets/{self.project_id}/lang/{file}"
+				zip_path.write(full_path)
+
+		def insert_patrons(zip_path: str) -> None:
+			"""
+			Insert translations into the resourcepack.
+
+			Parameters
+			----------
+			zip_path : str
+				The filepath for the zip file to insert the translations into
+			"""
+
 			patron_filepath = self.create_patron_md("tmp")
 
-			with ZipFile(filepath, 'a') as zf:
+			with ZipFile(zip_path, 'a') as zf:
 				zf.write(patron_filepath)
 			
 			os.remove(patron_filepath)
 
-		# Init the files/filepaths
+		## Init the files/filepaths
 
 		# Resourcepacks will ALWAYS be zips
 		if self.file_type == "resourcepack":
 			zip_filepath = f"tmp/{self.filename}.zip"
 			await self.archive.save(zip_filepath)
+			insert_translations(zip_filepath)
 
 		# Datapacks should be mod-isized if uploaded to mod site
 		elif self.file_type == "datapack":
