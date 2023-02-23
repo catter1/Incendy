@@ -169,6 +169,7 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 		self.project_upload.set_version_number(self.version_number.value)
 		self.project_upload.set_changelog(self.changelog.value)
 
+		self.clear_items()
 		await interaction.response.defer(thinking=True, ephemeral=False)
 
 		responses = await self.project_upload.upload()
@@ -195,6 +196,7 @@ class ModModal(discord.ui.Modal, title='Mod Information'):
 	async def on_submit(self, interaction: discord.Interaction):
 		self.project_upload.set_version_number(self.version_number.value)
 
+		self.clear_items()
 		await interaction.response.defer(thinking=True, ephemeral=False)
 
 		filepath = await self.project_upload.create_mod()
