@@ -448,8 +448,10 @@ class Project:
 		edit_java_class(f"{filepath}/src/main/java/net/stardustlabs/{self.project_id}")
 		edit_mods_toml(f"{filepath}/src/main/resources/META-INF")
 		self.create_patron_md(f"{filepath}/src/main/resources")
-		if self.project_id in ["terralith", "incendium", "nullscape"]:
-			await self.set_translations(f"{filepath}/src/main/resources")
+		if self.project_id == "incendium":
+			await self.set_translations(f"{filepath}/src/main/resources", "all", "incendium")
+		if self.project_id in ["terralith", "nullscape"]:
+			await self.set_translations(f"{filepath}/src/main/resources", "omni-biome", self.project_id)
 
 		# Give gradle a second...
 		await asyncio.sleep(2.0)
