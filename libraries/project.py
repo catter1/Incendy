@@ -871,6 +871,6 @@ class Project:
 		if zip_filepath:
 			os.remove(zip_filepath)
 		if jar_filepath:
-			os.remove(zip_filepath)
+			os.remove(jar_filepath)
 			
 		return responses

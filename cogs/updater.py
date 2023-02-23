@@ -1,5 +1,6 @@
 import discord
 import logging
+import os
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
@@ -204,6 +205,8 @@ class ModModal(discord.ui.Modal, title='Mod Information'):
 			modfile = discord.File(f, filename=filepath.split('/')[-1])
 
 		await interaction.followup.send(file=modfile)
+
+		os.remove(filepath)
 
 async def setup(client):
 	await client.add_cog(Updater(client))
