@@ -230,9 +230,9 @@ class Project:
 					
 		return lang_path
 	
-	def create_patron_md(self, filepath: str) -> str:
+	def create_patron_txt(self, filepath: str) -> str:
 		"""
-		Creates the patrons.md for the Project object.
+		Creates the patrons.txt for the Project object.
 
 		Parameters
 		----------
@@ -242,30 +242,28 @@ class Project:
 		Returns
 		----------
 		patron_filepath : str
-			The filepath for the created patrons.md
+			The filepath for the created patrons.txt
 		"""
 		
-		nl = "\n"
-		data = f"""
-		# Patreon Supporters
+		blaze_str = "Blaze:\n"
+		for name in self.patrons['blaze']:
+			blaze_str += f"- {name}\n"
+		sentry_str = "Sentry:\n"
+		for name in self.patrons['sentry']:
+			sentry_str += f"- {name}\n"
+		inferno_str = "Inferno:\n"
+		for name in self.patrons['inferno']:
+			inferno_str += f"- {name}\n"
+		overlord_str = "Overlord:\n"
+		for name in self.patrons['overlord']:
+			overlord_str += f"- {name}\n"
 
-		Special thanks to all of our Patrons for supporting us! Here is a list of all patrons in our
-		[Discord server](https://discord.gg/stardustlabs) at the time of publishing this version.
+		data = f"Patreon Supporters\n\nSpecial thanks to all of our Patrons for supporting us! Here is a list of all patrons in our\nDiscord server (https://discord.gg/stardustlabs) at the time of publishing this version.\n\n{overlord_str}\n{inferno_str}\n{sentry_str}\n{blaze_str}"
 
-		**Overlord**
-		{["- " + name + nl for name in self.patrons["overlord"]]}
-		**Inferno**
-		{["- " + name + nl for name in self.patrons["inferno"]]}
-		**Sentry**
-		{["- " + name + nl for name in self.patrons["sentry"]]}
-		**Blaze**
-		{["- " + name + nl for name in self.patrons["blaze"]]}
-		"""
-
-		with open(f"{filepath}/patrons.md", 'w') as f:
+		with open(f"{filepath}/patrons.txt", 'w') as f:
 			f.write(data)
 
-		return f"{filepath}/patrons.md"
+		return f"{filepath}/patrons.txt"
 
 
 	async def create_mod(self) -> str:
@@ -444,7 +442,7 @@ class Project:
 		edit_quilt_json(f"{filepath}/src/main/resources")
 		edit_java_class(f"{filepath}/src/main/java/net/stardustlabs/{self.project_id}")
 		edit_mods_toml(f"{filepath}/src/main/resources/META-INF")
-		self.create_patron_md(f"{filepath}/src/main/resources")
+		self.create_patron_txt(f"{filepath}/src/main/resources")
 		if self.project_id == "incendium":
 			await self.set_translations(filepath=f"{filepath}/src/main/resources", category="all", project="incendium")
 		if self.project_id in ["terralith", "nullscape"]:
@@ -816,7 +814,7 @@ class Project:
 				The filepath for the zip file to insert the translations into
 			"""
 
-			patron_filepath = self.create_patron_md("tmp")
+			patron_filepath = self.create_patron_txt("tmp")
 
 			with ZipFile(zip_path, 'a') as zf:
 				zf.write(patron_filepath)
