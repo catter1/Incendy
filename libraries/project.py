@@ -224,9 +224,6 @@ class Project:
 		lang_path = f"{filepath}/assets/{self.project_id}/lang"
 		os.makedirs(lang_path)
 
-		category = "all" if self.project_id == "incendium" else "omni-biome"
-		translations = await self.get_translations(category=category, project=self.project_id)
-
 		for lang in translations:
 			with open(f"{lang_path}/{lang}.json", 'w') as f:
 				json.dump(translations[lang], f, indent=4)
