@@ -294,6 +294,20 @@ class Project:
 			Returns: filepath for build.gradle
 			"""
 
+			# Certified Forge moment :/
+			version_dict = {
+				"1.17.1": "37.1.1",
+				"1.18": "38.0.17",
+				"1.18.1": "39.1.0",
+				"1.18.2": "40.2.0",
+				"1.19": "41.1.0",
+				"1.19.1": "42.0.9",
+				"1.19.2": "43.2.0",
+				"1.19.3": "44.1.0",
+				"1.19.4": "44.1.0",
+				"1.20": "44.1.0"
+			}
+
 			with open(f"{filepath}/build.gradle", 'r') as f:
 				lines = f.readlines()
 
@@ -302,8 +316,10 @@ class Project:
 					lines[i] = line.replace("2.3.7", self.version_number)
 				if "terralith" in line:
 					lines[i] = line.replace("terralith", self.project_id)
-				if "1.19.3" in line:
+				if "1.19.3" in line and not "44.1.16" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
+				if "1.19.3-44.1.16" in line:
+					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
 				f.writelines(lines)
