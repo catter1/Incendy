@@ -205,7 +205,7 @@ class Project:
 				with open(f"{repo_path}/{cat}/{lang}.json", 'r') as f:
 					data = json.load(f)
 
-				data = {item: data[item] for item in data if (cat == "omni-biome") and item.split(".")[1] not in project}
+				data = {item: data[item] for item in data if (cat == "omni-biome") and item.split(".")[1] in project}
 
 				for item in data:
 					if data[item] == "" and lang != "en_us":
