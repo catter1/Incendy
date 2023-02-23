@@ -463,7 +463,7 @@ class Project:
 		# Run gradlew
 		os.chdir(filepath)
 		proc = subprocess.Popen([f"./gradlew", "build"])
-		proc.wait(timeout=120.0)
+		proc.wait(timeout=360.0)
 		os.chdir("../..")
 
 		# Grab jar and go!
