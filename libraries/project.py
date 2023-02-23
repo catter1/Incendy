@@ -449,9 +449,9 @@ class Project:
 		edit_mods_toml(f"{filepath}/src/main/resources/META-INF")
 		self.create_patron_md(f"{filepath}/src/main/resources")
 		if self.project_id == "incendium":
-			await self.set_translations(f"{filepath}/src/main/resources", category="all", project="incendium")
+			await self.set_translations(filepath=f"{filepath}/src/main/resources", category="all", project="incendium")
 		if self.project_id in ["terralith", "nullscape"]:
-			await self.set_translations(f"{filepath}/src/main/resources", category="omni-biome", project=self.project_id)
+			await self.set_translations(filepath=f"{filepath}/src/main/resources", category="omni-biome", project=self.project_id)
 
 		# Give gradle a second...
 		await asyncio.sleep(2.0)
@@ -799,13 +799,15 @@ class Project:
 			"""
 
 			if self.project_name == "Incendium Optional Resourcepack":
-				lang_path = self.set_translations("tmp", category="all", project="incendium")
+				lang_path = self.set_translations(filepath="tmp", category="all", project="incendium")
 			elif self.project_name == "Biome Name Fix":
-				lang_path = self.set_translations("tmp", category="omni-biome", project="all")
+				lang_path = self.set_translations(filepath="tmp", category="omni-biome", project="all")
 
 			for file in os.listdir(lang_path):
 				full_path = f"assets/{self.project_id}/lang/{file}"
 				zip_path.write(full_path)
+
+			shutil.rmtree("tmp/assets")
 
 		def insert_patrons(zip_path: str) -> None:
 			"""
