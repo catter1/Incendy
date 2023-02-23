@@ -823,6 +823,8 @@ class Project:
 			os.remove(patron_filepath)
 
 		## Init the files/filepaths
+		zip_filepath: str = None
+		jar_filepath: str = None
 
 		# Resourcepacks will ALWAYS be zips
 		if self.file_type == "resourcepack":
@@ -864,4 +866,10 @@ class Project:
 		if "Seedfix" in self.selected_platforms:
 			responses["seedfix"] = await self.upload_seedfix(zip_filepath)
 
+		# Clean up and return
+		if zip_filepath:
+			os.remove(zip_filepath)
+		if jar_filepath:
+			os.remove(zip_filepath)
+			
 		return responses
