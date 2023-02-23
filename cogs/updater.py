@@ -32,6 +32,31 @@ class Updater(commands.Cog):
 		return patrons
 
 	### COMMANDS ###
+
+	@app_commands.default_permissions(administrator=True)
+	@app_commands.checks.has_permissions(administrator=True)
+	@app_commands.command(name="makemod", description="[ADMIN] Create a mod version of a given datapack")
+	@app_commands.describe(
+		project="The name of the project to upload for",
+		archive="A physical Zip file to upload"
+	)
+	async def makemod(self, interaction: discord.Interaction, project: str, archive: discord.Attachment):
+		if archive.content_type != "application/zip":
+			await interaction.response.send_message("The attachment is not a valid datapack! It **must** be a zip (not rar)!", ephemeral=True)
+			return
+		
+		embed = discord.Embed(
+			title=project,
+			color=discord.Colour.blue(),
+			description=f"Select which Minecraft versions that this {project} version is compatible with.\n\n**OBS**: Make sure you select *all* compatible versions! For example, if uploading a 1.19.3 pack, select 1.19, 1.19.1, 1.19.2, and 1.19.3."
+		)
+		view = discord.ui.View()
+		patrons = await self.get_patrons()
+		project_upload = Project(client=self.client, archive=archive, project_name=project, patrons=patrons)
+		view.add_item(VersionSelect(project_upload))
+		
+		await interaction.response.send_message(embed=embed, view=view)
+
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.command(name="upload", description="[ADMIN] Upload datapacks or mods to any of our distribution platforms")
@@ -56,6 +81,7 @@ class Updater(commands.Cog):
 		
 		await interaction.response.send_message(embed=embed, view=view)
 
+	@makemod.autocomplete('project')
 	@update.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
 		if interaction.user.id == 234748321258799104:
@@ -104,9 +130,9 @@ class VersionSelect(discord.ui.Select):
 
 	async def callback(self, interaction: discord.Interaction):
 		self.project_upload.set_mc_versions(sorted(self.values))
-		await interaction.response.send_modal(TextModal(self.project_upload))
+		await interaction.response.send_modal(UploadModal(self.project_upload))
 
-class TextModal(discord.ui.Modal, title='Update Information'):
+class UploadModal(discord.ui.Modal, title='Update Information'):
 	def __init__(self, project_upload: Project):
 		super().__init__(timeout=1200.0)
 		self.project_upload = project_upload
@@ -133,11 +159,37 @@ class TextModal(discord.ui.Modal, title='Update Information'):
 
 		await interaction.response.defer(thinking=True, ephemeral=False)
 
+		responses = await self.project_upload.upload()
+
+		await interaction.followup.send(f"""
+		Here's the upload responses!```json
+		{responses}
+		```
+		""")
+
+class ModModal(discord.ui.Modal, title='Mod Information'):
+	def __init__(self, project_upload: Project):
+		super().__init__(timeout=1200.0)
+		self.project_upload = project_upload
+
+	version_number = discord.ui.TextInput(
+        label='Version Number',
+        style=discord.TextStyle.short,
+        placeholder='ex: 5.1.5 (not v5.1.5)',
+        required=True,
+        max_length=10
+    )
+
+	async def on_submit(self, interaction: discord.Interaction):
+		self.project_upload.set_version_number(self.version_number.value)
+
+		await interaction.response.defer(thinking=True, ephemeral=False)
+
 		filepath = await self.project_upload.create_mod()
 		with open(filepath, 'rb') as f:
 			modfile = discord.File(f, filename=filepath.split('/')[-1])
 
-		await interaction.followup.send("Testing purposes: here's the jar!", file=modfile)
+		await interaction.followup.send(file=modfile)
 
 async def setup(client):
 	await client.add_cog(Updater(client))
