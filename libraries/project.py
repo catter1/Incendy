@@ -300,11 +300,11 @@ class Project:
 				lines = f.readlines()
 
 			for i, line in enumerate(lines):
-				if "2.3.7" in lines:
+				if "2.3.7" in line:
 					lines[i] = line.replace("2.3.7", self.version_number)
-				if "terralith" in lines:
+				if "terralith" in line:
 					lines[i] = line.replace("terralith", self.project_id)
-				if "1.19.3" in lines:
+				if "1.19.3" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
