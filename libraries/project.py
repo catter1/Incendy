@@ -316,10 +316,13 @@ class Project:
 					lines[i] = line.replace("2.3.7", self.version_number)
 				if "terralith" in line:
 					lines[i] = line.replace("terralith", self.project_id)
-				if "1.19.3" in line and not "44.1.16" in line:
+				if "1.19.3" in line and not "44.1.16" in line and not "mappings channel" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
 				if "1.19.3-44.1.16" in line:
 					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
+				if "mappings channel" in line:
+					mapver = self.newest_mc_version if self.newest_mc_version not in ["1.19.4", "1.20"] else "1.19.3"
+					lines[i] = line.replace("1.19.3", mapver)
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
 				f.writelines(lines)
