@@ -51,7 +51,7 @@ class Updater(commands.Cog):
 			description=f"Select which Minecraft versions that this {project} version is compatible with.\n\n**OBS**: Make sure you select *all* compatible versions! For example, if uploading a 1.19.3 pack, select 1.19, 1.19.1, 1.19.2, and 1.19.3."
 		)
 		view = discord.ui.View()
-		patrons = await self.get_patrons()
+		patrons = await self.get_patrons(interaction)
 		project_upload = Project(client=self.client, archive=archive, project_name=project, patrons=patrons)
 		view.add_item(VersionSelect(project_upload))
 		
@@ -75,7 +75,7 @@ class Updater(commands.Cog):
 			description=f"Select which platforms you'd like to upload {project} to.\n\n**OBS**: If you've uploaded a datapack, and select a modded platform, Incendy will automatically turn it into a mod!\n\n(Seedfix will not be included for 1.18.x uploads. You'll have to do that manually.)"
 		)
 		view = discord.ui.View()
-		patrons = await self.get_patrons()
+		patrons = await self.get_patrons(interaction)
 		project_upload = Project(client=self.client, archive=archive, project_name=project, patrons=patrons)
 		view.add_item(PlatformSelect(project_upload))
 		
