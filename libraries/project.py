@@ -319,7 +319,7 @@ class Project:
 				if "1.19.3" in line and not "44.1.16" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
 				if "1.19.3-44.1.16" in line:
-					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
+					lines[i] = line.replace("1.19.3-44.1.16", f"{self.newest_mc_version}-{version_dict[self.newest_mc_version]}")
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
 				f.writelines(lines)
