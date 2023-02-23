@@ -296,16 +296,16 @@ class Project:
 
 			# Certified Forge moment :/
 			version_dict = {
-				"1.17.1": "37.1.1",
-				"1.18": "38.0.17",
-				"1.18.1": "39.1.0",
-				"1.18.2": "40.2.0",
-				"1.19": "41.1.0",
-				"1.19.1": "42.0.9",
-				"1.19.2": "43.2.0",
-				"1.19.3": "44.1.0",
-				"1.19.4": "44.1.0",
-				"1.20": "44.1.0"
+				"1.17.1": "1.17.1-37.1.1",
+				"1.18": "1.18-38.0.17",
+				"1.18.1": "1.18.1-39.1.0",
+				"1.18.2": "1.18.2-40.2.0",
+				"1.19": "1.19-41.1.0",
+				"1.19.1": "1.19.1-42.0.9",
+				"1.19.2": "1.19.2-43.2.0",
+				"1.19.3": "1.19.3-44.1.0",
+				"1.19.4": "1.19.3-44.1.0",
+				"1.20": "1.19.3-44.1.0"
 			}
 
 			with open(f"{filepath}/build.gradle", 'r') as f:
@@ -319,7 +319,7 @@ class Project:
 				if "1.19.3" in line and not "44.1.16" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
 				if "1.19.3-44.1.16" in line:
-					lines[i] = line.replace("1.19.3-44.1.16", f"{self.newest_mc_version}-{version_dict[self.newest_mc_version]}")
+					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
 				f.writelines(lines)
