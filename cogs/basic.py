@@ -37,7 +37,7 @@ class Basic(commands.Cog):
 	async def cog_unload(self):
 		self.change_presence.stop()
 		self.client.tree.remove_command(self.translate_app.name, type=self.translate_app.type)
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@tasks.loop(seconds=1200.0)
 	async def change_presence(self):

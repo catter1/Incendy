@@ -34,7 +34,7 @@ class Wiki(commands.Cog):
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
 			self.loop_get_wiki.stop()
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 

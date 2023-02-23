@@ -20,7 +20,7 @@ class Wiki(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@app_commands.command(name="wiki", description="Explore the Stardust Labs Wiki!")
 	@incendy.in_bot_channel()

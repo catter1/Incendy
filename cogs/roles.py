@@ -14,7 +14,7 @@ class Roles(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@commands.Cog.listener()
 	async def on_member_join(self, member):		

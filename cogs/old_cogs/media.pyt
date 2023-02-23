@@ -26,7 +26,7 @@ class Media(commands.Cog):
 		self.youtube_timer.start()
 
 	async def cog_unload(self):
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 		self.twitch_timer.stop()
 		self.youtube_timer.stop()
 	

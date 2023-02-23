@@ -12,7 +12,7 @@ class Admin(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@app_commands.command(name="thread", description="[ADMIN] Transfer a channel thread to a forum thread")
 	@app_commands.default_permissions(administrator=True)

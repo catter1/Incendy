@@ -32,7 +32,7 @@ class Moderation(commands.Cog):
 		self.ping_check.stop()
 		self.detect.stop()
 		self.timeout_check.stop()
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 

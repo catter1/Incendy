@@ -23,7 +23,7 @@ class Stats(commands.Cog):
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
 			self.loop_get_stats.stop()
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 

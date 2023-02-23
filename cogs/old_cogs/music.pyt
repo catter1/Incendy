@@ -17,7 +17,7 @@ class Music(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 	
 	@commands.command()
 	async def join(self, ctx):

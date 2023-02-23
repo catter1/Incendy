@@ -96,7 +96,7 @@ class Remind(commands.Cog):
 
 	async def cog_unload(self):
 		self.clock.db.close()
-		print(f' - {self.__cog_name__} cog unloaded.')
+		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	### COMMANDS ###
 	@app_commands.command(name="remindme", description="Set a reminder up for later")
