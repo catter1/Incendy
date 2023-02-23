@@ -53,7 +53,7 @@ class Updater(commands.Cog):
 		view = discord.ui.View()
 		patrons = await self.get_patrons(interaction)
 		project_upload = Project(client=self.client, archive=archive, project_name=project, patrons=patrons)
-		view.add_item(VersionSelect(project_upload))
+		view.add_item(ModVersionSelect(project_upload))
 		
 		await interaction.response.send_message(embed=embed, view=view)
 
@@ -131,6 +131,18 @@ class VersionSelect(discord.ui.Select):
 	async def callback(self, interaction: discord.Interaction):
 		self.project_upload.set_mc_versions(sorted(self.values))
 		await interaction.response.send_modal(UploadModal(self.project_upload))
+
+class ModVersionSelect(discord.ui.Select):
+	def __init__(self, project_upload: Project):
+		self.project_upload = project_upload
+
+		options = [discord.SelectOption(label=version) for version in ["1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+
+		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
+
+	async def callback(self, interaction: discord.Interaction):
+		self.project_upload.set_mc_versions(sorted(self.values))
+		await interaction.response.send_modal(ModModal(self.project_upload))
 
 class UploadModal(discord.ui.Modal, title='Update Information'):
 	def __init__(self, project_upload: Project):
