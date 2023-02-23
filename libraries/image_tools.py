@@ -76,7 +76,7 @@ def create_stats_image(stats: dict) -> str:
     return filepath
 
 async def get_user_color(user: discord.ClientUser | discord.Member | discord.User) -> discord.Color:
-    filename = f"tmp/{user.id}.webp"
+    filename = f"{os.getcwd()}/tmp/{user.id}.webp"
     await user.display_avatar.save(filename)
     colour = get_color(filename)
     os.remove(f"{os.curdir}/{filename}")
