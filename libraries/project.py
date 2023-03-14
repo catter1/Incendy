@@ -804,7 +804,7 @@ class Project:
 			A dictionary of all the responses per upload site.
 		"""
 
-		def insert_translations(zip_path: str) -> None:
+		async def insert_translations(zip_path: str) -> None:
 			"""
 			Insert translations into the resourcepack.
 
@@ -815,9 +815,9 @@ class Project:
 			"""
 
 			if self.project_name == "Incendium Optional Resourcepack":
-				lang_path = self.set_translations(filepath="tmp", category="all", project="incendium")
+				lang_path = await self.set_translations(filepath="tmp", category="all", project="incendium")
 			elif self.project_name == "Biome Name Fix":
-				lang_path = self.set_translations(filepath="tmp", category="omni-biome", project="all")
+				lang_path = await self.set_translations(filepath="tmp", category="omni-biome", project="all")
 
 			for file in os.listdir(lang_path):
 				full_path = f"assets/{self.project_id}/lang/{file}"
@@ -850,7 +850,7 @@ class Project:
 		if self.file_type == "resourcepack":
 			zip_filepath = f"tmp/{self.filename}.zip"
 			await self.archive.save(zip_filepath)
-			insert_translations(zip_filepath)
+			await insert_translations(zip_filepath)
 
 		# Datapacks should be mod-isized if uploaded to mod site
 		elif self.file_type == "datapack":
