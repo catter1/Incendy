@@ -360,7 +360,7 @@ class Project:
 				data = toml.load(f)
 
 			data["mods"][0]["modId"] = self.project_id
-			data["mods"][0]["version"] = f"v{self.version_number}"
+			data["mods"][0]["version"] = f"{self.version_number}"
 			data["mods"][0]["displayName"] = self.project_name
 			data["mods"][0]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
 			
