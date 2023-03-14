@@ -224,7 +224,10 @@ class Project:
 		shutil.rmtree(repo_path, ignore_errors=True)
 
 		# Set the translations
-		lang_path = f"{filepath}/assets/{self.project_id}/lang"
+		if self.project_id == "incendium-optional-resourcepack":
+			lang_path = f"{filepath}/assets/incendium/lang"
+		else:
+			lang_path = f"{filepath}/assets/{self.project_id}/lang"
 		os.makedirs(lang_path)
 
 		for lang in translations:
