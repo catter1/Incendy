@@ -641,7 +641,7 @@ class Project:
 		# Clone
 		repo_path = f"{os.getcwd()}/tmp/{proj_tag}"
 		repo = Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path)
-		repo.create_remote(self.project_name, f"https://github.com/Stardust-Labs-MC/{proj_tag}.git")
+		repo.create_remote(self.project_name_safe, f"https://github.com/Stardust-Labs-MC/{proj_tag}.git")
 
 		# Remove all except .git
 		for thing in os.listdir(repo_path):
