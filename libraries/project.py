@@ -822,7 +822,8 @@ class Project:
 
 			for file in os.listdir(lang_path):
 				full_path = f"assets/{self.project_id}/lang/{file}"
-				zip_path.write(full_path)
+				with ZipFile(zip_path, 'a') as zf:
+					zf.write(full_path)
 
 			shutil.rmtree("tmp/assets")
 
