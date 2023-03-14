@@ -825,9 +825,9 @@ class Project:
 
 			for file in os.listdir(lang_path):
 				if self.project_id == "incendium-optional-resourcepack":
-					full_path = f"tmp/assets/incendium/lang/{file}"
+					full_path = f"assets/incendium/lang/{file}"
 				else:
-					full_path = f"tmp/assets/{self.project_id}/lang/{file}"
+					full_path = f"assets/{self.project_id}/lang/{file}"
 				with ZipFile(zip_path, 'a') as zf:
 					zf.write(full_path)
 
