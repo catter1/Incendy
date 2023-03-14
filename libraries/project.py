@@ -652,7 +652,7 @@ class Project:
 				os.remove(f"{repo_path}/{thing}")
 
 		# Save datapack
-		zip_name = f"{repo_path}/{self.proj_tag}.zip"
+		zip_name = f"{repo_path}/{proj_tag}.zip"
 		shutil.copyfile(filepath, zip_name)
 		with open(zip_name, 'rb') as f:
 			zip_contents = f.read()
