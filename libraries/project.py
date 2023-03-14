@@ -523,7 +523,7 @@ class Project:
 		}
 
 		# Build post data
-		project_id = self.platforms["modrinth"]["projects"][self.project_name]
+		project_id = self.platforms["Modrinth"]["projects"][self.project_name]
 		loaders = ["minecraft"] if self.file_type == "resourcepack" else ["fabric", "forge", "quilt"]
 		data = {
 			"name": self.version_name,
@@ -571,7 +571,7 @@ class Project:
 		"""
 
 		# Init extra request stuff
-		project_id = self.platforms["modrinth"]["projects"][self.project_name]
+		project_id = self.platforms["Curseforge"]["projects"][self.project_name]
 		base_url = "https://minecraft.curseforge.com"
 		url = f"{base_url}/api/projects/{project_id}/upload-file"
 		headers = {
