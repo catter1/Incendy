@@ -258,7 +258,7 @@ class Bulletin(commands.Cog):
 class Terralith(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.19.4)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2)', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/terralith/versions', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=0))
@@ -272,7 +272,7 @@ class Terralith(discord.ui.View):
 class Incendium(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.19.4)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/incendium/versions', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=0))
 		self.add_item(discord.ui.Button(label='All Versions (1.16.5+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Incendium/releases', row=0))
@@ -285,7 +285,7 @@ class Incendium(discord.ui.View):
 class Nullscape(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19.x)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/nullscape/', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.19.4)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/nullscape/', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18+)', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/mod/nullscape/versions', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.17+)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=0))
 		self.add_item(discord.ui.Button(label='All Versions (1.17+)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Nullscape/releases', row=0))
