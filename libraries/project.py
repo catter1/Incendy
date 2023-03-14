@@ -63,6 +63,8 @@ class Project:
 		Gets and sets the translations for the Project
 	async create_mod()
 		Creates a mod version of the Project
+	async create_datapack()
+		Finalizes the datapack of the Project
 	async upload_github()
 		Uploads the Project to GitHub
 	async upload_modrinth()
