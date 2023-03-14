@@ -540,11 +540,16 @@ class Project:
 
 		# Create file data
 		file = open(filepath, 'rb')
-		data_type = "application/zip" if self.file_type == "resourcepack" else "application/java-archive"
-		files = {
-			"data": json.dumps(data),
-			"file": (self.filename, file, data_type)
-		}
+		if self.file_type == "resourcepack":
+			files = {
+				"data": json.dumps(data),
+				"file": (f"{self.filename}.zip", file, "application/zip")
+			}
+		else:
+			files = {
+				"data": json.dumps(data),
+				"file": (f"{self.filename}.jar", file, "application/java-archive")
+			}
 
 		# Post and reflect
 		r = requests.post(url, headers=headers, files=files)
