@@ -197,8 +197,9 @@ class Project:
 		Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/translations.git", to_path=repo_path)
 
 		# Init language info
-		languages = [filename.split(".")[0] for filename in os.listdir(f"{repo_path}/incendium") if filename.split(".")[0] != "en_us"]
-		languages.insert(0, "en_us")
+		languages = ["en_us"]
+		more_languages = [filename.split(".")[0] for filename in os.listdir(f"{repo_path}/incendium") if filename.split(".")[0] != "en_us"]
+		languages.extend(more_languages)
 		translations = {lang: {} for lang in languages}
 
 		# Sort through and get translation information
@@ -213,7 +214,7 @@ class Project:
 					if data[item] == "" and lang != "en_us":
 						data[item] = translations["en_us"][item]
 
-				if data == translations.get("en_us"):
+				if data == translations.get("en_us") and lang != "en_us":
 					translations.pop(lang, None)
 					continue
 
