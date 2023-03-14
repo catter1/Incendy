@@ -821,7 +821,10 @@ class Project:
 				lang_path = await self.set_translations(filepath="tmp", category="omni-biome", project="all")
 
 			for file in os.listdir(lang_path):
-				full_path = f"assets/{self.project_id}/lang/{file}"
+				if self.project_id == "incendium-optional-resourcepack":
+					full_path = f"tmp/assets/incendium/lang/{file}"
+				else:
+					full_path = f"tmp/assets/{self.project_id}/lang/{file}"
 				with ZipFile(zip_path, 'a') as zf:
 					zf.write(full_path)
 
