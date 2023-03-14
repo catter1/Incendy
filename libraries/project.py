@@ -218,7 +218,7 @@ class Project:
 					translations.pop(lang, None)
 					continue
 
-				translations[lang].update(data)
+				translations[lang] = data
 
 		# Clean up
 		shutil.rmtree(repo_path, ignore_errors=True)
