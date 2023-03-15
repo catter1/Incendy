@@ -854,7 +854,7 @@ class Project:
 			with ZipFile(zip_path, 'a') as zf:
 				zf.write(patron_filepath)
 			
-			os.remove(patron_filepath)
+			os.remove(patron_filepath, arcname=patron_filepath[len("tmp/"):])
 
 		## Init the files/filepaths
 		zip_filepath: str = None
