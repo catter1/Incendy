@@ -485,7 +485,7 @@ class Project:
 
 		# Run gradlew
 		os.chdir(filepath)
-		log = open("tmp/gradle.log", 'a')
+		log = open("logs/gradle.log", 'a')
 		log.flush()
 		proc = subprocess.Popen([f"./gradlew", "build"], stdout=log, stderr=log)
 		proc.wait(timeout=360.0)
