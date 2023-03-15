@@ -310,8 +310,8 @@ class Project:
 				"1.19.1": "1.19.1-42.0.9",
 				"1.19.2": "1.19.2-43.2.0",
 				"1.19.3": "1.19.3-44.1.0",
-				"1.19.4": "1.19.3-44.1.0",
-				"1.20": "1.19.3-44.1.0"
+				"1.19.4": "1.19.4-45.0.0",
+				"1.20": "1.19.4-45.0.0"
 			}
 
 			with open(f"{filepath}/build.gradle", 'r') as f:
@@ -327,7 +327,7 @@ class Project:
 				if "1.19.3-44.1.16" in line:
 					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
 				if "mappings channel" in line:
-					mapver = self.newest_mc_version if self.newest_mc_version not in ["1.19.4", "1.20"] else "1.19.3"
+					mapver = self.newest_mc_version if self.newest_mc_version not in ["1.20"] else "1.19.3"
 					lines[i] = line.replace("1.19.3", mapver)
 
 			with open(f"{filepath}/build.gradle", 'w') as f:
