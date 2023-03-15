@@ -852,9 +852,9 @@ class Project:
 			patron_filepath = self.create_patron_txt("tmp")
 
 			with ZipFile(zip_path, 'a') as zf:
-				zf.write(patron_filepath)
+				zf.write(patron_filepath, arcname=patron_filepath[len("tmp/"):])
 			
-			os.remove(patron_filepath, arcname=patron_filepath[len("tmp/"):])
+			os.remove(patron_filepath)
 
 		## Init the files/filepaths
 		zip_filepath: str = None
