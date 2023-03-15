@@ -618,10 +618,11 @@ class Project:
 		# Post and reflect
 		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr})
 
-		if r.get("id"):
+		try:
+			_ = r.json().get("id")
 			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.get('id')}"
-		else:
-			r.text
+		except:
+			return r.text
 
 
 	async def upload_github(self, filepath: str) -> str:
