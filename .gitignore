@@ -3,6 +3,7 @@ __pycache__
 apicache-py3
 .vscode
 venv
+.gradle
 
 # Incendy Folders
 logs
