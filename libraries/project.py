@@ -890,7 +890,13 @@ class Project:
 			else:
 				responses["modrinth"] = await self.upload_modrinth(jar_filepath)
 		if "Curseforge" in self.selected_platforms:
-			responses["curseforge"] = await self.upload_curseforge(jar_filepath)
+			cf_resp = await self.upload_curseforge(jar_filepath)
+			if len(cf_resp) < 1995:
+				responses["curseforge"] = cf_resp
+			else:
+				responses["curseforge"] = "See cf_resp.txt"
+				with open("cf_resp.txt", 'w') as f:
+					f.write(cf_resp)
 		if "GitHub" in self.selected_platforms:
 			responses["github"] = await self.upload_github(zip_filepath)
 		if "Planet Minecraft" in self.selected_platforms:
