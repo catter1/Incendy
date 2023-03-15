@@ -370,8 +370,8 @@ class Project:
 			data["mods"][0]["displayName"] = self.project_name
 			data["mods"][0]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
 			
-			dependencies = data["dependencies"][self.project_id]
-			del data["dependencies"][self.project_id]
+			dependencies = data["dependencies"]["terralith"]
+			del data["dependencies"]["terralith"]
 			data["dependencies"][self.project_id] = dependencies
 			minecraft_dict = next((d for d in data["dependencies"][self.project_id] if d["modId"] == "minecraft"), None)
 			if minecraft_dict is not None:
