@@ -370,10 +370,10 @@ class Project:
 			data["mods"][0]["displayName"] = self.project_name
 			data["mods"][0]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
 			
-			dependencies = data["dependencies"]["terralith"]
-			del data["dependencies"]["terralith"]
+			dependencies = data["dependencies"][self.project_id]
+			del data["dependencies"][self.project_id]
 			data["dependencies"][self.project_id] = dependencies
-			minecraft_dict = next((d for d in data["dependencies"]["terralith"] if d["modId"] == "minecraft"), None)
+			minecraft_dict = next((d for d in data["dependencies"][self.project_id] if d["modId"] == "minecraft"), None)
 			if minecraft_dict is not None:
 				minecraft_dict["versionRange"] = f"[{self.oldest_mc_version},1.20)"
 
@@ -595,7 +595,7 @@ class Project:
 			"1.19.1": 9259,
 			"1.19.2": 9366,
 			"1.19.3": 9550,
-			"1.19.4": 9559
+			"1.19.4": 9776
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 
