@@ -53,12 +53,13 @@
     },
     "Stardust Labs": {
         "projects": {
-            "Terralith": "",
-            "Incendium": "",
-            "Nullscape": "",
-            "Structory": "",
-            "Amplified Nether": "",
-            "Continents": ""
+            "Terralith": "513688",
+            "Incendium": "591388",
+            "Nullscape": "570354",
+            "Structory": "636540",
+            "Structory: Towers": "783522",
+            "Amplified Nether": "552176",
+            "Continents": "682515"
         },
         "emoji": "<:stardust:1058423314672013382>",
         "description": "Datapacks"
