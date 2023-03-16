@@ -713,7 +713,7 @@ class Project:
 		release_link = response.json()['html_url']
 
 		# Inits info for the binary
-		url = f"https://uploads.github.com/repos/Stardust-Labs-MC/{proj_tag}/releases/{response.json()['id']}/assets?name={self.filename}"
+		url = f"https://uploads.github.com/repos/Stardust-Labs-MC/{proj_tag}/releases/{response.json()['id']}/assets?name={self.filename}.zip"
 		headers = {'Accept': 'application/vnd.github+json', 'Content-Type': 'application/zip'}
 		
 		# Send the binary
