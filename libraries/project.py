@@ -656,7 +656,7 @@ class Project:
 		# Remove all except .git
 		for thing in os.listdir(repo_path):
 			if os.path.isdir(f"{repo_path}/{thing}"):
-				if thing != '.git':
+				if thing not in ['.git', 'README.md']:
 					shutil.rmtree(f"{repo_path}/{thing}")
 			else:
 				os.remove(f"{repo_path}/{thing}")
