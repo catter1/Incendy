@@ -392,6 +392,8 @@ class Project:
 
 			with open(f"{filepath}/Terralith.java", 'r') as f:
 				lines = f.readlines()
+			
+			os.remove(f"{filepath}/Terralith.java")
 
 			for i, line in enumerate(lines):
 				if "terralith" in line:
