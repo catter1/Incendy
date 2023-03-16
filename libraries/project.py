@@ -658,10 +658,11 @@ class Project:
 		# Remove all except .git
 		for thing in os.listdir(repo_path):
 			if os.path.isdir(f"{repo_path}/{thing}"):
-				if thing not in ['.git', 'README.md']:
+				if thing not in ['.git']:
 					shutil.rmtree(f"{repo_path}/{thing}")
 			else:
-				os.remove(f"{repo_path}/{thing}")
+				if thing not in ['README.md']:
+					os.remove(f"{repo_path}/{thing}")
 
 		# Save datapack
 		zip_name = f"{repo_path}/{proj_tag}.zip"
