@@ -397,14 +397,14 @@ class Project:
 
 			for i, line in enumerate(lines):
 				if "terralith" in line:
-					lines[i] = line.replace("terralith", self.project_id)
+					lines[i] = line.replace("terralith", self.project_id.replace('-', ''))
 				if "Terralith" in line:
-					lines[i] = line.replace("Terralith", self.project_name_safe)
+					lines[i] = line.replace("Terralith", self.project_name_safe.replace('_', ''))
 			
-			with open(f"{filepath}/{self.project_name_safe}.java", 'w') as f:
+			with open(f"{filepath}/{self.project_name_safe.replace('_', '')}.java", 'w') as f:
 				f.writelines(lines)
 
-			return f"{filepath}/{self.project_name_safe}.class"
+			return f"{filepath}/{self.project_name_safe.replace('_', '')}.class"
 		
 
 		def edit_fabric_json(filepath: str) -> str:
