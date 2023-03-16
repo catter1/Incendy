@@ -484,12 +484,12 @@ class Project:
 		await asyncio.sleep(2.0)
 
 		# Run gradlew
-		#log = open("logs/gradle.log", 'a')
+		log = open("logs/gradle.log", 'a')
 		os.chdir(filepath)
-		#log.flush()
+		log.flush()
 		proc = subprocess.Popen([f"./gradlew", "build"])#, stdout=log, stderr=log)
 		proc.wait(timeout=360.0)
-		#log.close()
+		log.close()
 		os.chdir("../..")
 
 		# Grab jar and go!

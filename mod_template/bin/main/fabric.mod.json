@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "terralith",
+  "version": "2.3",
+  "name": "Terralith",
+  "description": "Terralith - Overworld Evolved",
+  "authors": [
+    "Starmute"
+  ],
+  "contact": {
+    "homepage": "https://www.stardustlabs.net/",
+    "sources": "https://github.com/Stardust-Labs-MC/Terralith",
+    "issues": "https://github.com/Stardust-Labs-MC/Terralith/issues",
+    "discord": "https://discord.gg/zweCAdd"
+  },
+  "license": "Stardust Labs License",
+  "icon": "pack.png",
+  "environment": "*",
+  "entrypoints": {},
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.12.7",
+    "fabric-api-base": "*",
+    "minecraft": ">=1.19-beta.1"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/stardustlabs"
+      }
+    }
+  }
+}
