@@ -626,7 +626,7 @@ class Project:
 
 		try:
 			_ = r.json()
-			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.json()}"
+			return r.json()
 		except:
 			return r.text
 
