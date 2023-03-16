@@ -2,6 +2,7 @@ import discord
 import logging
 import logging.handlers
 import os
+import shutil
 import json
 import asyncio
 import asyncpg
@@ -84,6 +85,14 @@ async def run():
 		await client.logout()
 
 async def file_init():
+	# Clear tmp dir
+	for filename in os.listdir("tmp"):
+		file_path = os.path.join("tmp", filename)
+		if os.path.isfile(file_path) or os.path.islink(file_path):
+			os.unlink(file_path)
+		elif os.path.isdir(file_path):
+			shutil.rmtree(file_path)
+			
 	if not os.path.isdir("logs"):
 		os.mkdir("logs")
 
