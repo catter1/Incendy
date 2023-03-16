@@ -876,13 +876,13 @@ class Project:
 
 		# Datapacks should be mod-isized if uploaded to mod site
 		elif self.file_type == "datapack":
-			if any([platform in self.selected_platforms for platform in ["Curseforge", "Modrinth"]]):
-				jar_filepath = await self.create_mod()
-				
 			if any([platform not in self.selected_platforms for platform in ["Curseforge", "Modrinth"]]):
 				zip_filepath = f"tmp/{self.filename}.zip"
 				await self.archive.save(zip_filepath)
 				insert_patrons(zip_filepath)
+				
+			if any([platform in self.selected_platforms for platform in ["Curseforge", "Modrinth"]]):
+				jar_filepath = await self.create_mod()
 
 		# Mods will ALWAYS be jars
 		elif self.file_type == "mod":
