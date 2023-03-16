@@ -497,7 +497,7 @@ class Project:
 
 		# Grab jar and go!
 		modfilename = f"tmp/{self.filename}.jar"
-		shutil.copy(f"{filepath}/build/libs/{self.project_id}-{self.version_number}.jar", modfilename)
+		shutil.copy(f"{filepath}/build/libs/{self.project_id.replace('-', '')}-{self.version_number}.jar", modfilename)
 
 		# Clean up and return
 		if os.path.isdir(filepath):
