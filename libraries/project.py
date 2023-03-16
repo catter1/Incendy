@@ -484,13 +484,14 @@ class Project:
 		await asyncio.sleep(2.0)
 
 		# Run gradlew
-		log = open("logs/gradle.log", 'a')
+		#log = open("logs/gradle.log", 'a')
+		lastdir = os.getcwd()
 		os.chdir(filepath)
-		log.flush()
-		proc = subprocess.Popen([f"./gradlew", "build"], stdout=log, stderr=log)
+		#log.flush()
+		proc = subprocess.Popen([f"./gradlew", "build"])#, stdout=log, stderr=log)
 		proc.wait(timeout=360.0)
-		log.close()
-		os.chdir("../..")
+		#log.close()
+		os.chdir(lastdir)
 
 		# Grab jar and go!
 		modfilename = f"tmp/{self.filename}.jar"
@@ -859,7 +860,7 @@ class Project:
 			with ZipFile(zip_path, 'a') as zf:
 				zf.write(patron_filepath, arcname=patron_filepath[len("tmp/"):])
 			
-			os.remove(patron_filepath)
+			#os.remove(patron_filepath)
 
 		## Init the files/filepaths
 		zip_filepath: str = None
