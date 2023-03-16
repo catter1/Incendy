@@ -622,7 +622,7 @@ class Project:
 		}
 
 		# Post and reflect
-		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr})
+		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr}, auth=("Starmute", self.keys['curseforge-key']))
 
 		try:
 			_ = r.json()
