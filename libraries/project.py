@@ -586,7 +586,7 @@ class Project:
 		base_url = "https://minecraft.curseforge.com"
 		url = f"{base_url}/api/projects/{project_id}/upload-file"
 		headers = {
-			'User-Agnet': self.keys['user-agent'],
+			'User-Agent': self.keys['user-agent'],
 			'Accept': 'application/json',
 			'X-Api-Token': self.keys['curseforge-key']
 		}
