@@ -321,7 +321,7 @@ class Project:
 				if "2.3.7" in line:
 					lines[i] = line.replace("2.3.7", self.version_number)
 				if "terralith" in line:
-					lines[i] = line.replace("terralith", self.project_id)
+					lines[i] = line.replace("terralith", self.project_id.replace("-", ""))
 				if "1.19.3" in line and not "44.1.16" in line and not "mappings channel" in line:
 					lines[i] = line.replace("1.19.3", self.newest_mc_version)
 				if "1.19.3-44.1.16" in line:
@@ -347,7 +347,7 @@ class Project:
 
 			for i, line in enumerate(lines):
 				if "terralith" in lines:
-					lines[i] = line.replace("terralith", self.project_id)
+					lines[i] = line.replace("terralith", self.project_id.replace("-", ""))
 
 			with open(f"{filepath}/settings.gradle", 'w') as f:
 				f.writelines(lines)
@@ -365,7 +365,7 @@ class Project:
 			with open(f"{filepath}/mods.toml", 'r') as f:
 				data = toml.load(f)
 
-			data["mods"][0]["modId"] = self.project_id
+			data["mods"][0]["modId"] = self.project_id.replace("-", "")
 			data["mods"][0]["version"] = f"{self.version_number}"
 			data["mods"][0]["displayName"] = self.project_name
 			data["mods"][0]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
