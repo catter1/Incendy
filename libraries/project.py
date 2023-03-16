@@ -622,8 +622,8 @@ class Project:
 		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr})
 
 		try:
-			_ = r.json().get("id")
-			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.get('id')}"
+			_ = r.json()
+			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.json()}"
 		except:
 			return r.text
 
