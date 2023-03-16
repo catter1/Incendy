@@ -177,7 +177,7 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 
 		embed = discord.Embed(title=f"{self.project_upload.project_name} {self.project_upload.version_name} Upload Status", color=discord.Color.blue())
 		for site, resp in responses.items():
-			embed.add_field(name=site, value=resp)
+			embed.add_field(name=site, value=resp, inline=False)
 
 		await interaction.followup.send(embed=embed)
 
