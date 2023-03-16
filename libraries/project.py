@@ -618,7 +618,7 @@ class Project:
 		# Create file data
 		file = open(filepath, "rb")
 		files = {
-			"file": (self.filename, file, 'application/java-archive')
+			"file": (f"{self.filename}.jar", file, 'application/java-archive')
 		}
 
 		# Post and reflect
