@@ -175,11 +175,11 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 
 		responses = await self.project_upload.upload()
 
-		await interaction.followup.send(f"""
-		Here's the upload responses!```json
-		{responses}
-		```
-		""")
+		embed = discord.Embed(title=f"{self.project_upload.project_name} {self.project_upload.version_name} Upload Status", color=discord.Color.blue())
+		for site, resp in responses.items():
+			embed.add_field(name=site, value=resp)
+
+		await interaction.followup.send(embed=embed)
 
 class ModModal(discord.ui.Modal, title='Mod Information'):
 	def __init__(self, project_upload: Project):

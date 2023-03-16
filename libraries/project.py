@@ -561,7 +561,7 @@ class Project:
 		r = requests.post(url, headers=headers, files=files)
 
 		if r.status_code == 200:
-			return f"https://modrinth.com/project/{project_id}/versions/{self.version_number}"
+			return f"Successfully uploaded! [Link](https://modrinth.com/project/{self.project_id}/versions/{self.version_number})"
 		else:
 			return r.text
 		
@@ -625,8 +625,8 @@ class Project:
 		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr}, auth=("Starmute", self.keys['curseforge-key']))
 
 		try:
-			_ = r.json()
-			return r.json()
+			_ = r.json().get('id')
+			return f"Successfully uploaded! [Link](https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.json()['id']})"
 		except:
 			return r.text
 
@@ -724,7 +724,7 @@ class Project:
 		
 		# Finish off with responses for the user
 		if response.status_code == 201:
-			return f"The {self.project_name} repository has updated! You can view the release here: {release_link}"
+			return f"Successfully uploaded! [Link]({release_link})"
 		else:
 			logging.error(response.text)
 			return "There's been an error attaching the datapack to the release!"
@@ -771,7 +771,7 @@ class Project:
 		with open(f"{site_path}/static/info.json", "w") as f:
 			f.writelines(json.dumps(data, indent=2))
         
-		return "Terralith successfully updated!"
+		return "Successfully uploaded!"
 	
 
 	async def upload_stardust(self, filepath: str) -> str:
