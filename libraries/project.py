@@ -621,10 +621,8 @@ class Project:
 			"file": (f"{self.filename}.jar", file, 'application/java-archive')
 		}
 
-		author = "botanydev" if "structory" in self.project_id else "Starmute"
-
 		# Post and reflect
-		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr}, auth=(author, self.keys['curseforge-key']))
+		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr}, auth=("Starmute", self.keys['curseforge-key']))
 
 		try:
 			_ = r.json().get('id')
