@@ -31,6 +31,10 @@
         "link": "https://github.com/Stardust-Labs-MC/license/blob/main/license.txt",
         "icon": "<:github:1045336251605188679>"
     },
+    "cave tweaks": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095460956373073",
+        "icon": "<:stardust:1058423314672013382>"
+    },
     "amplified nether": {
         "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095460956373073",
         "icon": "<:stardust:1058423314672013382>"
@@ -44,10 +48,6 @@
         "icon": "<:stardust:1058423314672013382>"
     },
     "structory towers": {
-        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
-        "icon": "<:stardust:1058423314672013382>"
-    },
-    "towers": {
         "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
         "icon": "<:stardust:1058423314672013382>"
     },
@@ -65,14 +65,6 @@
     },
     "terralith": {
         "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095487149809745",
-        "icon": "<:stardust:1058423314672013382>"
-    },
-    "resourcepack": {
-        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104",
-        "icon": "<:stardust:1058423314672013382>"
-    },
-    "resourcepacks": {
-        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104",
         "icon": "<:stardust:1058423314672013382>"
     }
 }
