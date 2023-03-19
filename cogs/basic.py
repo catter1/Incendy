@@ -284,7 +284,7 @@ class Basic(commands.Cog):
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
 					if bug_id.isdigit():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"MC {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji="<:mojira:1087079351452958761>"))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{match.split('|')[0].upper()} {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji="<:mojira:1087079351452958761>"))
 
 		view = discord.ui.View()
 		if len(links) > 0:
