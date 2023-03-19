@@ -161,6 +161,16 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
                 )
                 file = discord.File("assets/ore.jpeg", filename="image.jpeg")
                 embed.set_image(url="attachment://image.jpeg")
+            case "Other World Types":
+                embed = discord.Embed(
+                    title='Other World Types',
+                    description='''
+Terralith is not compatible with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome.
+
+This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by <@897998124478521356>. If/when this gets fixed, Terralith may be compatible with the world types!
+                    ''',
+                    color=faq_colour
+                )
             case "Passive Animals":
                 embed = discord.Embed(
                     title='Passive Animal Spawns',
@@ -352,7 +362,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types"])
 
         return [
             app_commands.Choice(name=faq, value=faq)
