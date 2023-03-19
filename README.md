@@ -79,9 +79,4 @@ python3 app.py
 
 # License and Contributing
 
-Incendy is listed under the [**Stardust Labs License**](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt). What does this mean for a bot?
-
-- You may edit Incendy and use it for your own personal use, but you may not redistribute your modified copy.
-- You are forbidden from reuploading Incendy as your own
-- Incendy is not fully open source. You may view and edit as much as you want, but for now, I (catter1) will not be accepting contributions from others on the main project.
-- You may not use Incendy's image or code for any AI purpose without my (catter1) permission.
+Incendy is listed under [**GNU GPLv3**](https://www.gnu.org/licenses/gpl-3.0.en.html). In addition, I don't tend to accept community *code* contributions to the main project. Feel free to do everything else enabled by the license, though!
