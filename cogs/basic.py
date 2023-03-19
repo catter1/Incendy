@@ -443,9 +443,8 @@ class WikiLinks(discord.ui.Button):
 		await interaction.response.edit_message(embed=embed)
 
 class MojiraLinks(discord.ui.Button):
-	def __init__(self, wiki_urls: dict):
+	def __init__(self):
 		super().__init__(style=discord.ButtonStyle.green, label='Mojira')
-		self.wiki_urls = wiki_urls
 	
 	async def callback(self, interaction: discord.Interaction):
 		embed = interaction.message.embeds[0]
