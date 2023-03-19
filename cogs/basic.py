@@ -377,7 +377,10 @@ class BugInfo(discord.ui.Modal, title='Bug Information'):
 
 		response = requests.post(url, auth=auth, json=data, headers=headers)
 		if response.status_code == 201:
-			await interaction.response.send_message(f"Issue created successfully! You can view and add to it here: {response.json()['html_url']}")
+			view = discord.ui.View()
+			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{self.project} Issue", url=response.json()['html_url'], emoji="<:github:1045336251605188679>"))
+
+			await interaction.response.send_message(f"Issue created successfully! You can view and add to it by clicking the button below.", view=view)
 		else:
 			await interaction.response.send_message('There was an error creating the issue! Please try again, or contact catter if the issue continues.', ephemeral=True)
 	
