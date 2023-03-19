@@ -127,7 +127,7 @@ class Bulletin(commands.Cog):
 		embed3 = discord.Embed(
 			colour=discord.Colour.teal(),
 			title="General Info",
-			description="> • Java/Bedrock Address: **stardustmc.net**\n> • Bedrock Port: **19132**\n> • Java Version: **1.19.1 - 1.19.2**\n> • Bedrock Version: **Latest Release**\n\n- To leave spawn, do **/rt**.\n- You have up to 3 homes. Set them using **/sethome [home name]**. Do this after you leave spawn, so you don't lose your spot!\n- Teleport to your home with **/home [home_name]**, and to other players with **/tpa [player]**.\n- Claim your area by doing **/claim**, then clicking the two corners of the claim.\n- You start out with 400 claim blocks, and will earn 100 per hour of playtime.\n- Do **/warp shops** to visit the Flipside Shopping District, and even create your own shop!"
+			description="> • Java/Bedrock Address: **stardustmc.net**\n> • Bedrock Port: **19132**\n> • Java Version: **1.19.3**\n> • Bedrock Version: **Latest Release**\n\n- To leave spawn, do **/rt**.\n- You have up to 3 homes. Set them using **/sethome [home name]**. Do this after you leave spawn, so you don't lose your spot!\n- Teleport to your home with **/home [home_name]**, and to other players with **/tpa [player]**.\n- Claim your area by doing **/claim**, then clicking the two corners of the claim.\n- You start out with 400 claim blocks, and will earn 100 per hour of playtime.\n- Do **/warp shops** to visit the Flipside Shopping District, and even create your own shop!"
 		)
 		embed4 = discord.Embed(
 			colour=discord.Colour.teal(),
