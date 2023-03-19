@@ -24,7 +24,6 @@ class Basic(commands.Cog):
 	async def cog_load(self):
 		self.change_presence.start()
 
-		self.webchan = self.client.get_channel(917905247056306246)
 		with open('resources/textlinks.json', 'r') as f:
 			self.textlinks = json.load(f)
 
@@ -189,6 +188,7 @@ class Basic(commands.Cog):
 		view.add_item(GeneralLinks(self.textlinks))
 		view.add_item(MisodeLinks(self.misode_urls))
 		view.add_item(WikiLinks(self.wiki_urls))
+		view.add_item(MojiraLinks())
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.green, disabled=True, label="More Soon..."))
 
 		await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
@@ -215,7 +215,8 @@ class Basic(commands.Cog):
 		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
 		embed.set_image(url=ad.url)
 
-		await self.webchan.send(embed=embed)
+		webchan = self.client.get_channel(917905247056306246)
+		await webchan.send(embed=embed)
 		await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
 
 	### HELPER FUNCTIONS ###
@@ -272,6 +273,11 @@ class Basic(commands.Cog):
 					page = match.split("|")[-1].lower()
 					if page in self.wiki_urls.keys():
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page], emoji="<:miraheze:890077957069111316>"))
+
+				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
+					bug_id = match.split("|")[-1].lower()
+					if bug_id.isdigit():
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"MC {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji="<:mojira:1087079351452958761>"))
 
 		view = discord.ui.View()
 		if len(links) > 0:
@@ -423,6 +429,18 @@ class WikiLinks(discord.ui.Button):
 		embed = interaction.message.embeds[0]
 		embed.title = "Wiki Textlinks"
 		embed.description = "  -  ".join([f"[Wiki|{textlink.title()}]({self.wiki_urls[textlink]})" for textlink in sorted(self.wiki_urls)[:45]]) + " ... and more! Too much to fit in discord, but every wiki page works."
+
+		await interaction.response.edit_message(embed=embed)
+
+class MojiraLinks(discord.ui.Button):
+	def __init__(self, wiki_urls: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='Mojira')
+		self.wiki_urls = wiki_urls
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Mojira Textlinks"
+		embed.description = "Create a textlink for any Minecraft bug report based on its issue ID. For example, [MCPE|28723](https://bugs.mojang.com/browse/MCPE-28723) or [MC|260949](https://bugs.mojang.com/browse/MC-260949).\n\nOnly MC, MCPE, and REALMS are supported."
 
 		await interaction.response.edit_message(embed=embed)
 
