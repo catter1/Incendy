@@ -86,6 +86,9 @@ async def run():
 
 async def file_init():
 	# Clear tmp dir
+	if not os.path.isdir("tmp"):
+		os.mkdir("tmp")
+		
 	for filename in os.listdir("tmp"):
 		file_path = os.path.join("tmp", filename)
 		if os.path.isfile(file_path) or os.path.islink(file_path):
@@ -95,9 +98,6 @@ async def file_init():
 			
 	if not os.path.isdir("logs"):
 		os.mkdir("logs")
-
-	if not os.path.isdir("tmp"):
-		os.mkdir("tmp")
 
 	if not os.path.isfile("resources/keys.json"):
 		keys_base = {"incendy-token": "","dummy-token": "","dbbot-token": "","twitch-id": "","twitch-secret": "","youtube-key": "","spotify-id": "","spotify-secret": "","pastebin-key": "","postgres-pswd": "","git-pat": "","overwolf-key": "","modrinth-key": "","curseforge-key": "","user-agent": "","wiki-username": "","wiki-password": ""}
