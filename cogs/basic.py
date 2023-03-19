@@ -117,7 +117,14 @@ class Basic(commands.Cog):
 			"Bisect Hosting": "https://discord.gg/zb8vZap",
 			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
 			"Fabric": "https://discord.gg/v6v4pMv",
-			"Stardust Labs": "https://discord.gg/stardustlabs"
+			"Stardust Labs": "https://discord.gg/stardustlabs",
+			"Chunky": "https://discord.gg/ZwVJukcNQG",
+			"The Expansion": "https://discord.gg/3evKFsHE4P",
+			"Naomieow": "https://discord.gg/ER3yfhRscJ",
+			"Minecraft Worldgen": "https://discord.gg/BuBGds9",
+			"BOP": "https://discord.gg/GyyzU6T",
+			"Forge": "https://discord.gg/UvedJ9m",
+			"Minecraft": "https://discord.gg/minecraft"
 		}
 		server_list = sorted([server for server in server_dict.keys()])
 
