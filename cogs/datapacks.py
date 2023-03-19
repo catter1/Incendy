@@ -8,19 +8,25 @@ from mecha.contrib.statistics import Analyzer, Summary
 from beet.library.data_pack import DataPack
 from beet.contrib.json_log import JsonLogHandler
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
 from libraries import incendy
 
 class Datapacks(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		self.all_versions = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").json()
+		self.all_versions: dict
 
 	async def cog_load(self):
+		self.get_versions.start()
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
+		self.get_versions.stop()
 		logging.info(f'> {self.__cog_name__} cog unloaded')
+
+	@tasks.loop(hours=12.0)
+	async def get_versions(self):
+		self.all_versions = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").json()
 
 	datapack_group = app_commands.Group(name="datapack", description="Various commands for datapack development")
 
