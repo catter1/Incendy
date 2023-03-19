@@ -83,7 +83,7 @@ async def get_user_color(user: discord.ClientUser | discord.Member | discord.Use
     else:
         await user.display_avatar.save(filename)
     colour = get_color(filename)
-    os.remove(f"{os.curdir}/{filename}")
+    os.remove(filename)
 
     return colour
 
