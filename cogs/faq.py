@@ -364,11 +364,13 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
         faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types"])
 
-        return [
+        choices = [
             app_commands.Choice(name=faq, value=faq)
             for faq in faq_list
             if current.replace(" ", "").lower() in faq.replace(" ", "").lower()
         ]
+
+        return choices[:25]
 
     async def get_versions(self) -> dict:
         versions = {"Incendium":"", "Terralith":"", "Nullscape":""}
