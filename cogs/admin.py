@@ -21,7 +21,7 @@ class Admin(commands.Cog):
 		channel="The channel or thread to transfer over",
 		forum="The forum channel to move the channel to"
 	)
-	async def move(self, interaction: discord.Interaction, channel: discord.TextChannel, forum: discord.ForumChannel):
+	async def move(self, interaction: discord.Interaction, channel: discord.TextChannel | discord.Thread, forum: discord.ForumChannel):
 		""" /move <channel> <forum> """
 
 		await interaction.response.defer(ephemeral=True)
