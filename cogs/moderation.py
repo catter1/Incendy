@@ -258,6 +258,34 @@ class Moderation(commands.Cog):
 
 	### LISTENERS ###
 
+	async def video_check(self, message: discord.Message) -> None:
+		ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
+		if not [role.id for role in message.author.roles if role.id in ids]:
+			#pattern = re.compile(r'(http|ftp|https|www):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')
+
+			for item in message.attachments:
+				if item.content_type.split("/")[0] == "video":
+					await message.delete()
+					await message.channel.send("Sorry, no videos allowed \:)")
+					return
+
+			#matches = pattern.finditer(message.content)
+			if any([word for word in message.content.split() if validators.url(word) and any([word for ext in ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp'] if word.endswith(ext)])]):
+				await message.delete()
+				await message.channel.send("Sorry, no videos allowed \:)")
+
+	async def ping_check(self, message: discord.Message) -> None:
+		with open('resources/pinglog.txt', 'a') as log:
+			log.write(str(message.author.id)+"\n")
+		with open('resources/pinglog.txt', 'r') as log:
+			def strip_line(x):
+				return x.strip("\n")
+
+			users = list(map(strip_line, log.readlines()))
+			if users.count(str(message.author.id)) > 2:
+				await message.reply("Please disable the ping on replies! https://tenor.com/view/discord-reply-discord-reply-off-discord-reply-gif-22150762")
+
+
 	@commands.Cog.listener()
 	async def on_thread_create(self, thread: discord.Thread):
 		await thread.join()
@@ -310,38 +338,25 @@ class Moderation(commands.Cog):
 	async def on_message(self, message: discord.Message):
 		if not message.author.bot and not message.author.guild_permissions.administrator:
 
-			#Naughty spammers :3
+			# Naughty spammers :3
 			if any([word.strip("\n") in message.content.lower() for word in self.naughty]):
 				await self.ban_hammer(message)
 
-			#No videos in #general
+			# No videos in #general
 			if message.channel.id == 771617249910849556:
-				ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
-				if not [role.id for role in message.author.roles if role.id in ids]:
-					#pattern = re.compile(r'(http|ftp|https|www):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')
+				await self.video_check(message=message)
 
-					for item in message.attachments:
-						if item.content_type.split("/")[0] == "video":
-							await message.delete()
-							await message.channel.send("Sorry, no videos allowed \:)")
-							return
-
-					#matches = pattern.finditer(message.content)
-					if any([word for word in message.content.split() if validators.url(word) and any([word for ext in ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp'] if word.endswith(ext)])]):
-						await message.delete()
-						await message.channel.send("Sorry, no videos allowed \:)")
-
-			#PING
+			# Ping check
 			if 332701537535262720 in message.raw_mentions:
-				with open('resources/pinglog.txt', 'a') as log:
-					log.write(str(message.author.id)+"\n")
-				with open('resources/pinglog.txt', 'r') as log:
-					def strip_line(x):
-						return x.strip("\n")
+				await self.ping_check(message=message)
+	
+	@commands.Cog.listener()
+	async def on_message_edit(self, _: discord.Message, after: discord.Message):
+		if not after.author.bot and not after.author.guild_permissions.administrator:
 
-					users = list(map(strip_line, log.readlines()))
-					if users.count(str(message.author.id)) > 2:
-						await message.reply("Please disable the ping on replies! https://tenor.com/view/discord-reply-discord-reply-off-discord-reply-gif-22150762")
+			# No videos in #general
+			if after.channel.id == 771617249910849556:
+				await self.video_check(message=after)
 
 async def setup(client):
 	await client.add_cog(Moderation(client))
