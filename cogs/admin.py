@@ -14,45 +14,86 @@ class Admin(commands.Cog):
 	async def cog_unload(self):
 		logging.info(f'> {self.__cog_name__} cog unloaded')
 
-	@app_commands.command(name="thread", description="[ADMIN] Transfer a channel thread to a forum thread")
+	@app_commands.command(name="move", description="[ADMIN] Move a channel or thread to a forum thread")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(
-		thread="The thread to transfer over and delete",
-		forum="The forum channel to move the thread to"
+		channel="The channel or thread to transfer over",
+		forum="The forum channel to move the channel to"
 	)
-	async def thread(self, interaction: discord.Interaction, thread: discord.Thread, forum: discord.ForumChannel):
-		""" /thread <thread> <forum> """
+	async def move(self, interaction: discord.Interaction, channel: discord.TextChannel, forum: discord.ForumChannel):
+		""" /move <channel> <forum> """
 
 		await interaction.response.defer(ephemeral=True)
 
-		new_thread: discord.Thread
+		new_thread: discord.Thread | discord.TextChannel
 		webhook: discord.Webhook
 
+		if isinstance(channel, discord.Thread):
+			content = f"This thread used to be <#{channel.id}> as part of <#{channel.parent_id}>, but was transferred to this forum."
+		else:
+			content = f"This thread used to be <#{channel.id}>, but was transferred to this forum."
+
 		new_thread = getattr(await forum.create_thread(
-			content=f"This thread used to be <#{thread.id}> as part of <#{thread.parent_id}>, but was transferred to this forum.",
-			name=thread.name,
-			auto_archive_duration=thread.auto_archive_duration,
-			slowmode_delay=thread.slowmode_delay
+			content=content,
+			name=channel.name
 		), "thread")
 
-		webhook = await forum.create_webhook(name="Thread Mover")
+		webhook = await forum.create_webhook(name="Channel Mover")
 
-		async for message in thread.history(limit=None, oldest_first=True):
+		async for message in channel.history(limit=None, oldest_first=True):
 			if message.type in [discord.MessageType.default, discord.MessageType.reply, discord.MessageType.thread_starter_message, discord.MessageType.context_menu_command]:
-				if message.content == "" or message.content == None:
+				
+				files = [await attachment.to_file(filename=attachment.filename) for attachment in message.attachments if attachment.size < 8000000]
+
+				if (message.content == "" or message.content == None) and len(files) == 0:
 					continue
-				await webhook.send(
-					content=message.content,
-					username=message.author.display_name,
-					avatar_url=message.author.avatar.url,
-					tts=False,
-					ephemeral=False,
-					thread=new_thread
-				)
+				
+				if "Deleted User" in message.author.display_name:
+					avatar_url = self.client.user.avatar.url
+					username = "Deleted User"
+				else:
+					avatar_url = message.author.avatar.url if message.author.avatar.url else self.client.user.avatar.url
+					username = message.author.display_name
+				
+				content = "" if message.content in ["", " ", None] else message.content
+				if len(content) > 2000:
+					content1 = content[:2000]
+					content2 = content[2000:]
+
+					await webhook.send(
+						content=content1,
+						username=username,
+						avatar_url=avatar_url,
+						tts=False,
+						ephemeral=False,
+						thread=new_thread
+					)
+					await webhook.send(
+						content=content2,
+						files=files,
+						username=username,
+						avatar_url=avatar_url,
+						tts=False,
+						ephemeral=False,
+						thread=new_thread
+					)
+				else:
+					await webhook.send(
+						content=content,
+						files=files,
+						username=username,
+						avatar_url=avatar_url,
+						tts=False,
+						ephemeral=False,
+						thread=new_thread
+					)
 		
-		await thread.send(f"This thread has been transferred to <#{new_thread.id}>.")
-		await thread.edit(archived=True, locked=True)
+		final_msg = f"This thread has been transferred to <#{new_thread.id}>." if isinstance(channel, discord.Thread) else f"This channel has been transferred to <#{new_thread.id}>."
+
+		await channel.send(final_msg)
+		if isinstance(channel, discord.Thread):
+			await channel.edit(archived=True, locked=True)
 		await webhook.delete()
 		
 		await interaction.followup.send("Moving complete!", ephemeral=True)
