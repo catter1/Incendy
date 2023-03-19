@@ -58,8 +58,8 @@ async def run():
 		environment = {}
 		env_token = os.environ.get("INCENDY_BOT_TOKEN")
 		environment["INCENDY_BOT_TOKEN"] = (env_token if env_token else "incendy-token")
-		environment["INCENDY_WIKI_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_WIKI_UPDATE_ENABLED"))) if os.environ.get("INCENDY_WIKI_UPDATE_ENABLED") else False)
-		environment["INCENDY_STATS_UPDATE_ENABLED"] = (bool(int(os.environ.get("INCENDY_STATS_UPDATE_ENABLED"))) if os.environ.get("INCENDY_STATS_UPDATE_ENABLED") else False)
+		environment["INCENDY_WIKI_UPDATE_ENABLED"] = os.environ.get("INCENDY_WIKI_UPDATE_ENABLED")
+		environment["INCENDY_STATS_UPDATE_ENABLED"] = os.environ.get("INCENDY_STATS_UPDATE_ENABLED")
 
 		return environment
 	
