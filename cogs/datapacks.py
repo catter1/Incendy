@@ -117,16 +117,11 @@ class Datapacks(commands.Cog):
 			for chunk in resp.iter_content(chunk_size=256):
 				f.write(chunk)
 
-		embed = discord.Embed(
-			title=f"{version}",
-			color=discord.Colour.brand_red(),
-			description=f"This Vanilla datapack was downloaded from <@149241652391706625>'s **mcmeta** repository."
-		)
 		file = discord.File(f"tmp/{filename}", filename=filename)
 		view = discord.ui.View()
-		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, emoji='<:github:1045336251605188679>', url="https://github.com/misode/mcmeta", label="Mcmeta Repository"))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, emoji='<:github:1045336251605188679>', url="https://github.com/misode/mcmeta", label="Misode's Mcmeta Repository"))
 
-		await interaction.followup.send(embed=embed, view=view, file=file)
+		await interaction.followup.send(view=view, file=file)
 		os.remove(f"tmp/{filename}")
 
 	@mcmeta.autocomplete('version')
