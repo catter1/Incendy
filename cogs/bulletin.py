@@ -153,7 +153,7 @@ class Bulletin(commands.Cog):
 		with open("resources/textlinks.json", 'r') as f:
 			textlinks = json.load(f)
 
-		await interaction.response.send_message(f"Posting the downloads library in <#{forum.id}>...")
+		await interaction.response.send_message(f"Posting the downloads library in <#{forum.id}>...", ephemeral=True)
 
 		
 		# Cave Tweaks
