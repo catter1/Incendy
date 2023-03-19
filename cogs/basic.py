@@ -219,86 +219,99 @@ class Basic(commands.Cog):
 		await self.webchan.send(embed=embed)
 		await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
 
+	### HELPER FUNCTIONS ###
+	async def add_reaction(self, message: discord.Message) -> None:
+		#SOON TM
+		if message.content == '\U0001F1FB\U0001F1E8':
+			await message.delete()
+			await message.channel.send("<:soontm:780592610666348585>")
+			return
+
+		#TERRALITH 1.16?!?!?
+		if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
+			await message.add_reaction('<:NEVER:909247811256713236>')
+
+		#Angry Ping
+		if str('332701537535262720') in str(message.mentions):
+			ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
+			if [role.id for role in message.author.roles if role.id in ids]:
+				await message.add_reaction('<:Kappa:852579238259327006>')
+			elif 804009152288260106 in message.author.roles:
+				await message.add_reaction('<:birb:982866294187638815>')
+			else:
+				await message.add_reaction('<:angryPING:875547905614839818>')
+		
+		#Pings Incendy
+		if str('780588749825638410') in str(message.mentions):
+			if random.randint(0, 20) == 1:
+				await message.add_reaction('<:cringe:828845270732374021>')
+			else:
+				await message.add_reaction('👋')
+
+		#Pineapple Pin
+		if " pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin"):
+			if message.author.id == 234748321258799104:
+				await message.add_reaction('🍍')
+				await message.add_reaction('🧷')
+	
+	async def do_textlinks(self, message: discord.Message, matches: list) -> None:
+		links = []
+		for match in matches:
+
+			# General matches
+			if match.lower() in [textlink for textlink in self.textlinks]:
+				links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=match.lower().title(), url=self.textlinks[match.lower()]["link"], emoji=self.textlinks[match.lower()]["icon"]))
+
+			elif "|" in match:
+
+				if "misode" in match.split("|")[0].lower():
+					page = match.split("|")[-1].lower().replace(" ", "-")
+					if page in self.misode_urls.keys():
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page], emoji="<:misode:1087040969574187010>"))
+				
+				elif "wiki" in match.split("|")[0].lower():
+					page = match.split("|")[-1].lower()
+					if page in self.wiki_urls.keys():
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page], emoji="<:miraheze:890077957069111316>"))
+
+		view = discord.ui.View()
+		if len(links) > 0:
+			for item in links:
+				view.add_item(item)
+			await message.reply(view=view, mention_author=False)
+
+	async def do_pastebin(self, message: discord.Message) -> None:
+		for file in message.attachments:
+			if ".log" in file.filename or ".txt" in file.filename:
+
+				bts = await file.read()
+				content = bts.decode('utf-8')
+				
+				headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+				url = "https://api.mclo.gs/1/log"
+				data = {"content": f"{content}"}
+				x = requests.post(url, data=data, headers=headers)
+
+				logurl = json.loads(x.text)["url"]
+
+				await message.reply(f"{file.filename}: {logurl}", mention_author=False)
+
 	### EVENTS ###
 
 	@commands.Cog.listener()
 	async def on_message(self, message: discord.Message):
 		if not message.author.bot:
-			#SOON TM
-			if message.content == '\U0001F1FB\U0001F1E8':
-				await message.delete()
-				await message.channel.send("<:soontm:780592610666348585>")
-				return
-
-			#TERRALITH 1.16?!?!?
-			if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
-				await message.add_reaction('<:NEVER:909247811256713236>')
-
-			#Angry Ping
-			if str('332701537535262720') in str(message.mentions):
-				ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
-				if [role.id for role in message.author.roles if role.id in ids]:
-					await message.add_reaction('<:Kappa:852579238259327006>')
-				elif 804009152288260106 in message.author.roles:
-					await message.add_reaction('<:birb:982866294187638815>')
-				else:
-					await message.add_reaction('<:angryPING:875547905614839818>')
-			
-			#Pings Incendy
-			if str('780588749825638410') in str(message.mentions):
-				if random.randint(0, 20) == 1:
-					await message.add_reaction('<:cringe:828845270732374021>')
-				else:
-					await message.add_reaction('👋')
-
-			#Pineapple Pin
-			if " pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin"):
-				if message.author.id == 234748321258799104:
-					await message.add_reaction('🍍')
-					await message.add_reaction('🧷')
+			# Various reactions
+			await self.add_reaction(message=message)
 
 			#Textlinks
 			matches = re.findall(r"[\[]{2}(\w[\w |':]+\w)?[\]]{2}", message.content)
 			if len(matches) > 0:
-				links = []
-				for match in matches:
-					if match.lower() in [textlink for textlink in self.textlinks]:
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=match.lower().title(), url=self.textlinks[match.lower()]))
-						#await message.reply(f"{match.lower().title()} link: <{self.textlinks[match.lower()]}>", mention_author=False)
-					elif "|" in match:
-						if "misode" in match.split("|")[0].lower():
-							page = match.split("|")[-1].lower().replace(" ", "-")
-							if page in self.misode_urls.keys():
-								links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page]))
-								#await message.reply(f"{page.replace('-', ' ').title()} Misode link: <{self.misode_urls[page]}>", mention_author=False)
-						elif "wiki" in match.split("|")[0].lower():
-							page = match.split("|")[-1].lower()
-							if page in self.wiki_urls.keys():
-								links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page]))
-								#await message.reply(f"{page.title()} Wiki link: <{self.wiki_urls[page]}>", mention_author=False)
-				
-				view = discord.ui.View()
-				if len(links) > 0:
-					for item in links:
-						view.add_item(item)
-					await message.reply(view=view, mention_author=False)
+				await self.do_textlinks(message=message, matches=matches)
 
 			#Pastebin feature
 			if len(message.attachments) > 0:
-				for file in message.attachments:
-					if ".log" in file.filename or ".txt" in file.filename:
-
-						bts = await file.read()
-						content = bts.decode('utf-8')
-						
-						headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-						url = "https://api.mclo.gs/1/log"
-						data = {"content": f"{content}"}
-						x = requests.post(url, data=data, headers=headers)
-
-						logurl = json.loads(x.text)["url"]
-
-						await message.reply(f"{file.filename}: {logurl}", mention_author=False)
+				await self.do_pastebin(message=message)
 
 class Feedback(discord.ui.Modal, title='Incendy Feedback'):
 	def __init__(self, feedback_chan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]):

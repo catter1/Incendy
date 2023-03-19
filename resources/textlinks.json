@@ -1,20 +1,78 @@
 {
-    "wiki": "https://stardustlabs.miraheze.org/wiki/Main_page",
-    "mclogs": "https://mclo.gs/",
-    "logs": "https://mclo.gs/",
-    "snowcapped": "https://snowcapped.jacobsjo.eu/",
-    "weblate": "https://weblate.catter.dev",
-    "translation": "https://weblate.catter.dev",
-    "license": "https://github.com/Stardust-Labs-MC/license/blob/main/license.txt",
-    "amplified nether": "https://discord.com/channels/738046951236567162/900598465430716426/1078095460956373073",
-    "continents": "https://discord.com/channels/738046951236567162/900598465430716426/1078095464869658694",
-    "structory: towers": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
-    "structory towers": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
-    "towers": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
-    "nullscape": "https://discord.com/channels/738046951236567162/900598465430716426/1078095473149222932",
-    "incendium": "https://discord.com/channels/738046951236567162/900598465430716426/1078095478203371530",
-    "structory": "https://discord.com/channels/738046951236567162/900598465430716426/1078095482368307291",
-    "terralith": "https://discord.com/channels/738046951236567162/900598465430716426/1078095487149809745",
-    "resourcepack": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104",
-    "resourcepacks": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104"
+    "wiki": {
+        "link": "https://stardustlabs.miraheze.org/wiki/Main_page",
+        "icon": "<:miraheze:890077957069111316>"
+    },
+    "mclogs": {
+        "link": "https://mclo.gs/",
+        "icon": "<:mclogs:1087036837996023910>"
+    },
+    "logs": {
+        "link": "https://mclo.gs/",
+        "icon": "<:mclogs:1087036837996023910>"
+    },
+    "snowcapped": {
+        "link": "https://snowcapped.jacobsjo.eu/",
+        "icon": "<:snowcapped:1087036050054058104>"
+    },
+    "map": {
+        "link": "https://map.jacobsjo.eu/",
+        "icon": "<:datapackmap:1087035532934135809>"
+    },
+    "weblate": {
+        "link": "https://weblate.catter.dev",
+        "icon": "<:weblate:1087038433031110676>"
+    },
+    "translation": {
+        "link": "https://weblate.catter.dev",
+        "icon": "<:weblate:1087038433031110676>"
+    },
+    "license": {
+        "link": "https://github.com/Stardust-Labs-MC/license/blob/main/license.txt",
+        "icon": "<:github:1045336251605188679>"
+    },
+    "amplified nether": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095460956373073",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "continents": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095464869658694",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "structory: towers": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "structory towers": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "towers": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095468409671760",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "nullscape": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095473149222932",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "incendium": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095478203371530",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "structory": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095482368307291",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "terralith": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095487149809745",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "resourcepack": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104",
+        "icon": "<:stardust:1058423314672013382>"
+    },
+    "resourcepacks": {
+        "link": "https://discord.com/channels/738046951236567162/900598465430716426/1078095458775343104",
+        "icon": "<:stardust:1058423314672013382>"
+    }
 }
