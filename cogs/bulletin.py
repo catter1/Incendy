@@ -145,7 +145,7 @@ class Bulletin(commands.Cog):
 		""" /library """
 
 		forum: discord.ForumChannel
-		forum = self.client.get_channel(1087041214911615058)
+		forum = self.client.get_channel(1087096245228679330)
 
 		for thread in forum.threads:
 			await thread.delete()
