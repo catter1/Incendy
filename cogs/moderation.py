@@ -274,7 +274,7 @@ class Moderation(commands.Cog):
 				await message.delete()
 				await message.channel.send("Sorry, no videos allowed \:)")
 
-	async def ping_check(self, message: discord.Message) -> None:
+	async def check_ping(self, message: discord.Message) -> None:
 		with open('resources/pinglog.txt', 'a') as log:
 			log.write(str(message.author.id)+"\n")
 		with open('resources/pinglog.txt', 'r') as log:
@@ -348,7 +348,7 @@ class Moderation(commands.Cog):
 
 			# Ping check
 			if 332701537535262720 in message.raw_mentions:
-				await self.ping_check(message=message)
+				await self.check_ping(message=message)
 	
 	@commands.Cog.listener()
 	async def on_message_edit(self, _: discord.Message, after: discord.Message):
