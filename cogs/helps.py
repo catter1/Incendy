@@ -223,7 +223,7 @@ async def update_content(index: str) -> tuple:
 			)
 		case "2":
 			entries = (
-				('issue <project>', '**Contributors only.** Opens an issue for a Stardust Labs **project**'),
+				('issue <project>', 'Opens an issue for a Stardust Labs **project**'),
 				('close', 'Only for support threads. Closes the thread if user is done with it'),
 				('contest <action> [submission]', 'Posts a **submission** to the ongoing contest, if there is one'),
 				('datapack <analyze|mcmeta>', 'Various datapack development related commands'),

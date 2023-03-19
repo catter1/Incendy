@@ -162,7 +162,6 @@ class Basic(commands.Cog):
 	# 	await interaction.response.send_message(embed=embed, ephemeral=True)
 
 	@app_commands.command(name="issue", description="Creates an issue on a GitHub repo")
-	@incendy.can_report_bug()
 	async def issue(self, interaction: discord.Interaction, project: str):
 		modal = BugInfo(project=project)
 		await interaction.response.send_modal(modal)
