@@ -564,7 +564,7 @@ class ServerMenu(discord.ui.Select):
     def __init__(self):
         options = [
         	discord.SelectOption(label='Normal Install Method'),
-			discord.SelectOption(label='Install Method 1.19.3 ONLY')
+			discord.SelectOption(label='Install Method 1.19.3+ ONLY')
 		]
         super().__init__(placeholder='Select a method...', min_values=1, max_values=1, options=options)
     
