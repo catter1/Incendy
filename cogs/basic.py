@@ -128,11 +128,13 @@ class Basic(commands.Cog):
 		}
 		server_list = sorted([server for server in server_dict.keys()])
 
-		return [
+		discords = [
 			app_commands.Choice(name=server, value=server_dict[server])
 			for server in server_list
 			if current.replace(" ", "").lower() in server.replace(" ", "").lower()
 		]
+
+		return discords[:25]
 
 	@app_commands.command(name="ping", description="Shows you your latency")
 	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
