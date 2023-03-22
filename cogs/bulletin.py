@@ -403,20 +403,22 @@ class Bulletin(commands.Cog):
 	### LISTENERS ###
 
 	@commands.Cog.listener()
-	async def on_raw_reaction_add(self, payload):
-		if not payload.member.bot and payload.emoji.name == "stardust":
-			guild = self.client.get_guild(738046951236567162)
-			role = guild.get_role(1045484675184984114)
-			await payload.member.add_roles(role)
+	async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+		if payload.channel_id == 1002721350143721603:
+			if not payload.member.bot and payload.emoji.name == "stardust":
+				guild = self.client.get_guild(738046951236567162)
+				role = guild.get_role(1045484675184984114)
+				await payload.member.add_roles(role)
 
 	@commands.Cog.listener()
-	async def on_raw_reaction_remove(self, payload):
+	async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
 		guild = self.client.get_guild(738046951236567162)
 		user = guild.get_member(payload.user_id)
 
-		if not user.bot and payload.emoji.name == "stardust":
-			role = guild.get_role(1045484675184984114)
-			await user.remove_roles(role)
+		if payload.channel_id == 1002721350143721603:
+			if not user.bot and payload.emoji.name == "stardust":
+				role = guild.get_role(1045484675184984114)
+				await user.remove_roles(role)
 
 ### BUTTONS ###
 
