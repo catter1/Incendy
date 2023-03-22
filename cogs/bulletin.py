@@ -404,7 +404,7 @@ class Bulletin(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-		if payload.channel_id == 1002721350143721603:
+		if payload.channel_id == 1001300888427700314:
 			if not payload.member.bot and payload.emoji.name == "stardust":
 				guild = self.client.get_guild(738046951236567162)
 				role = guild.get_role(1045484675184984114)
@@ -415,7 +415,7 @@ class Bulletin(commands.Cog):
 		guild = self.client.get_guild(738046951236567162)
 		user = guild.get_member(payload.user_id)
 
-		if payload.channel_id == 1002721350143721603:
+		if payload.channel_id == 1001300888427700314:
 			if not user.bot and payload.emoji.name == "stardust":
 				role = guild.get_role(1045484675184984114)
 				await user.remove_roles(role)
