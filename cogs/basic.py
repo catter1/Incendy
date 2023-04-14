@@ -2,24 +2,23 @@ import discord
 import requests
 import typing
 import json
-import re
 import random
-#import googletrans
 import logging
 from discord import app_commands
 from discord.ext import commands, tasks
+from translate import Translator
 from libraries import incendy
 
 class Basic(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		#self.translator = googletrans.Translator()
+		self.translator = Translator(to_lang="en")
 
-		#self.translate_app = app_commands.ContextMenu(
-		#	name='Translate to English',
-		#	callback=self._translate,
-		#)
-		#self.client.tree.add_command(self.translate_app)
+		self.translate_app = app_commands.ContextMenu(
+			name='Translate to English',
+			callback=self._translate,
+		)
+		self.client.tree.add_command(self.translate_app)
 	
 	async def cog_load(self):
 		self.change_presence.start()
@@ -153,14 +152,13 @@ class Basic(commands.Cog):
 		]
 		await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
-	# @app_commands.checks.dynamic_cooldown(incendy.default_cd)
-	# async def _translate(self, interaction: discord.Interaction, message: discord.Message):
-	# 	translation = self.translator.translate(message.content, dest='en')
+	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
+	async def _translate(self, interaction: discord.Interaction, message: discord.Message):
+		translation = self.translator.translate(message.content)
 
-	# 	embed = discord.Embed(title="Translation", description=translation.text, colour=discord.Colour.brand_red())
-	# 	embed.set_footer(text=f"Translated from {googletrans.LANGUAGES[translation.src]}")
+		embed = discord.Embed(title="Translation", description=translation.text, colour=discord.Colour.brand_red())
 		
-	# 	await interaction.response.send_message(embed=embed, ephemeral=True)
+		await interaction.response.send_message(embed=embed, ephemeral=True)
 
 	@app_commands.command(name="issue", description="Creates an issue on a GitHub repo")
 	async def issue(self, interaction: discord.Interaction, project: str):
