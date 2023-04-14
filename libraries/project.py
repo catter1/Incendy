@@ -93,7 +93,7 @@ class Project:
 	version_name: str
 	filename: str
 	changelog: str
-	patrons: str
+	patrons: dict
 	selected_platforms: list[str]
     
 	def __init__(self, client: incendy.IncendyBot, archive: discord.Attachment, project_name: str, patrons: dict) -> None:
@@ -250,6 +250,9 @@ class Project:
 		patron_filepath : str
 			The filepath for the created patrons.txt
 		"""
+
+		if len(self.patrons.keys()) == 0:
+			return
 		
 		blaze_str = "Blaze:\n"
 		for name in self.patrons['blaze']:
@@ -848,12 +851,12 @@ class Project:
 
 		def insert_patrons(zip_path: str) -> None:
 			"""
-			Insert translations into the resourcepack.
+			Insert patrons into the resourcepack.
 
 			Parameters
 			----------
 			zip_path : str
-				The filepath for the zip file to insert the translations into
+				The filepath for the zip file to insert the patrons into
 			"""
 
 			patron_filepath = self.create_patron_txt("tmp")

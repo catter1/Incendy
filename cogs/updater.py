@@ -21,6 +21,9 @@ class Updater(commands.Cog):
 	async def get_patrons(self, interaction: discord.Interaction) -> dict:
 		"""Get a dictionary of all patrons based on their level"""
 
+		if interaction.guild_id != self.client.settings['stardust-guild-id']:
+			return {}
+
 		patrons = {"blaze":[],"sentry":[],"inferno":[],"overlord":[]}
 		patrons["overlord"].extend([member.name for member in interaction.guild.get_role(877672384872738867).members])
 		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(795469887790252084).members])
