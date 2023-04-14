@@ -253,7 +253,7 @@ class Basic(commands.Cog):
 		#Pings Incendy
 		if str('780588749825638410') in str(message.mentions):
 			if random.randint(0, 20) == 1:
-				await message.add_reaction('<:cringe:828845270732374021>')
+				await message.add_reaction('<:cringe:1081394880460378122>')
 			else:
 				await message.add_reaction('👋')
 
