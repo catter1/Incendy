@@ -123,7 +123,10 @@ class Basic(commands.Cog):
 			"Minecraft Worldgen": "https://discord.gg/BuBGds9",
 			"BOP": "https://discord.gg/GyyzU6T",
 			"Forge": "https://discord.gg/UvedJ9m",
-			"Minecraft": "https://discord.gg/minecraft"
+			"Minecraft": "https://discord.gg/minecraft",
+			"Dynamic Trees": "https://discord.gg/PD8e4bhMRr",
+			"Curseforge": "https://discord.gg/curseforge",
+			"TelepathicGrunt": "https://discord.gg/T5MGNBB"
 		}
 		server_list = sorted([server for server in server_dict.keys()])
 
@@ -152,10 +155,15 @@ class Basic(commands.Cog):
 			"Wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki wiki",
 			"You should ask Apollo about docs!",
 			"Who am I? Well, I'm certainly not him! It's not that hard!",
-			"Some say Scarlet Mountains is the best, but only I know which is truly the greatest...",
+			"Some say Scarlet Mountains is the best, but only I know which is truly the greatest.",
 			"You think the End is desolate? Ha! Consider yourself lucky. You know nothing.",
-			"Can confirm: cats are indeed better than dogs. They're quite intelligent, and the one I met i- [REDACTED]",
-			"Fried, boiled, jacket, baked, red, russet, scalloped, cheesy, loaded, mashed, dilled, roasted, sweet..."
+			"Can confirm: cats are indeed better than dogs. They're quite intelligent, and the one I met in G- [REDACTED]",
+			"Fried, boiled, jacket, baked, red, russet, scalloped, cheesy, loaded, mashed, dilled, roasted, sweet...",
+			"Triple S Supreme.",
+			"No one but me and the *thing* knows where I am...",
+			"catter likes docs too!",
+			"Vers la Lune!",
+			"Ah, Paranoid Pillager. I remember that soul. So naïve."
 		]
 		await interaction.response.send_message(f"{interaction.user.mention} {random.choice(responses)}")
 
