@@ -6,6 +6,7 @@ import shutil
 import json
 import asyncio
 import asyncpg
+import requests
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
@@ -121,6 +122,11 @@ async def file_init():
 		timeout_base = {"days": [],"members": {}}
 		with open("resources/timeout.json", 'w') as f:
 			json.dump(timeout_base, f, indent=4)
+
+	if not os.path.isfile("resources/reposts.json"):
+		reposts = requests.get("https://api.stopmodreposts.org/minecraft/sites.json")
+		with open("resources/timeout.json", 'w') as f:
+			json.dump(reposts.json(), f, indent=4)
 
 async def table_init():
 	# Messages Table
