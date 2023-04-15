@@ -36,14 +36,20 @@ class Faq(commands.Cog):
             "Keep Exploring": "In Terralith, it is completely normal to spawn in an area that isn't as \"stunning\" or \"breathtaking\" as all the screenshots you see posted around are. To find them, you've got to go explore your world! Keep walking, and you *will* find beautiful landscapes.",
             "Find the Culprit": "Sometimes, when you are trying to figure out what mod is causing your crash, you need to result to the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!",
             "Give Details": "Please, please provide details and be descriptive with your issue. We literally cannot help you without context. It also helps if you check the faq (`/faq`) and attach logs.",
-            "Screenshot Tips": "Noelle went ahead and made a in-depth guide on taking amazing photos in Minecraft! View the wiki here: <https://github.com/Interstellar-Cow/Minecraft-Screenshotting/wiki>"
+            "Screenshot Tips": "Noelle went ahead and made a in-depth guide on taking amazing photos in Minecraft! View the wiki here: <https://github.com/Interstellar-Cow/Minecraft-Screenshotting/wiki>",
+            "Aternos Lag Meme": ""
         }
+
+        if qp == "Aternos Lag Meme":
+            file = discord.File("assets/aternos_meme.png", filename="image.png")
+            await interaction.response.send_message(qp_dict[qp], file=file)
+            return
 
         await interaction.response.send_message(qp_dict[qp])
 
     @qp.autocomplete('qp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit", "Give Details", "Screenshot Tips"])
+        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Find the Culprit", "Give Details", "Screenshot Tips", "Aternos Lag Meme"])
 
         return [
             app_commands.Choice(name=qp, value=qp)
@@ -300,6 +306,18 @@ Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvce
                     ''',
                     color=faq_colour
                 )
+            case "Terra Mods":
+                embed = discord.Embed(
+                    title='Difference Between all "Terra" Mods',
+                    description='''
+**Terralith**: A worldgen datapack/mod created by Stardust Labs
+**Terra**: A 1.16.5 worldgen mod, incompatible with Terralith
+**Terrablender**: A mod that allows compatibility between worldgen mods
+**Terraforged**: A 1.16.5 worldgen mod, incompatible with Terralith
+**Terratonic**: The compatibility between Terralith and Tectonic (see `/faq Tectonic`)
+                    ''',
+                    color=faq_colour
+                )
             case "Traveller Maps":
                 embed = discord.Embed(
                     title='Traveller\'s Maps',
@@ -362,7 +380,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types", "Terra Mods"])
 
         choices = [
             app_commands.Choice(name=faq, value=faq)
