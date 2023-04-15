@@ -1,5 +1,6 @@
 import discord
 import logging
+import json
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
@@ -97,6 +98,35 @@ class Admin(commands.Cog):
 		await webhook.delete()
 		
 		await interaction.followup.send("Moving complete!", ephemeral=True)
+
+	@app_commands.command(name="forever", description="[ADMIN] Toggles a thread's ability to never become inactive")
+	@app_commands.default_permissions(administrator=True)
+	@app_commands.checks.has_permissions(administrator=True)
+	@app_commands.describe(
+		thread="The thread to toggle"
+	)
+	async def forever(self, interaction: discord.Interaction, thread: discord.Thread):
+		""" /forever <thread> """
+		
+		if thread.id in self.client.settings["forever-threads"]:
+			self.client.settings["forever-threads"].remove(thread.id)
+			status = "**no longer**"
+		else:
+			self.client.settings["forever-threads"].append(thread.id)
+			status = "now"
+
+		with open("resources/settings.json", 'w') as f:
+			json.dump(self.client.settings, f, indent=4)
+
+		await interaction.response.send_message(f"<#{thread.id}> will {status} auto-archive.", ephemeral=True)
+
+	
+	### EVENTS ###
+
+	@commands.Cog.listener()
+	async def on_thread_update(self, thread: discord.Thread, _: discord.Thread):
+		if thread.id in self.client.settings["forever-threads"]:
+			a = await thread.send("a")
 
 async def setup(client):
 	await client.add_cog(Admin(client))
