@@ -1,18 +1,19 @@
 import discord
 import requests
-import typing
 import json
 import random
 import logging
+import detectlanguage
 from discord import app_commands
 from discord.ext import commands, tasks
-from translate import Translator
+from deep_translator import GoogleTranslator
 from libraries import incendy
 
 class Basic(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		self.translator = Translator(to_lang="en")
+		self.translator = GoogleTranslator(source="auto", target="en")
+		detectlanguage.configuration.api_key = self.client.keys["detect-lang-key"]
 
 		self.translate_app = app_commands.ContextMenu(
 			name='Translate to English',
@@ -169,9 +170,11 @@ class Basic(commands.Cog):
 
 	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
 	async def _translate(self, interaction: discord.Interaction, message: discord.Message):
-		translation = self.translator.translate(message.content)
+		translation = self.translator.translate(text=message.content)
+		lang = detectlanguage.simple_detect(message.content)
 
-		embed = discord.Embed(title="Translation", description=translation.text, colour=discord.Colour.brand_red())
+		embed = discord.Embed(title="Translation", description=translation, colour=discord.Colour.brand_red())
+		embed.set_footer(text=f"Translated from ({lang})")
 		
 		await interaction.response.send_message(embed=embed, ephemeral=True)
 
@@ -269,56 +272,13 @@ class Basic(commands.Cog):
 				await message.add_reaction('🍍')
 				await message.add_reaction('🧷')
 
-	async def do_pastebin(self, message: discord.Message) -> None:
-		for file in message.attachments:
-			if ".log" in file.filename or ".txt" in file.filename:
-
-				bts = await file.read()
-				content = bts.decode('utf-8')
-				
-				headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-				url = "https://api.mclo.gs/1/log"
-				data = {"content": f"{content}"}
-				x = requests.post(url, data=data, headers=headers)
-
-				logurl = json.loads(x.text)["url"]
-
-				await message.reply(f"{file.filename}: {logurl}", mention_author=False)
-
 	### EVENTS ###
 
+	# Reactions
 	@commands.Cog.listener()
 	async def on_message(self, message: discord.Message):
 		if not message.author.bot:
-			# Various reactions
 			await self.add_reaction(message=message)
-
-			#Pastebin feature
-			if len(message.attachments) > 0:
-				await self.do_pastebin(message=message)
-
-class Feedback(discord.ui.Modal, title='Incendy Feedback'):
-	def __init__(self, feedback_chan: typing.Optional[typing.Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]):
-		super().__init__(timeout=300.0)
-		self.feedback_chan = feedback_chan
-
-	feedback = discord.ui.TextInput(
-		label='Let Incendy know your feedback for her!',
-		style=discord.TextStyle.long,
-		placeholder='Insert feedback here...',
-		required=True,
-		max_length=1000
-	)
-
-	async def on_submit(self, interaction: discord.Interaction):
-		embed = discord.Embed(
-			title="Incendy Feedback",
-			description=self.feedback,
-			color=discord.Colour.brand_red()
-		)
-		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
-		await self.feedback_chan.send(embed=embed)
-		await interaction.response.send_message("Thanks for your feedback!")
 
 class BugInfo(discord.ui.Modal, title='Bug Information'):
 	def __init__(self, project: str):
