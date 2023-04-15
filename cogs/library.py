@@ -1,6 +1,7 @@
 import discord
 import logging
 import json
+import asyncio
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
@@ -24,10 +25,26 @@ class Library(commands.Cog):
 		""" /library """
 
 		forum: discord.ForumChannel
-		forum = self.client.get_channel(1087096245228679330)
+		if interaction.guild_id == self.client.settings["stardust-guild-id"]:
+			forum = self.client.get_channel(1087096245228679330)
+		else:
+			forum = self.client.get_channel(1087041214911615058)
+
+		threads: dict[str, discord.Thread | None]
+		threads = {
+			"[Discontinued] Cave Tweaks": None,
+			"Amplified Nether": None,
+			"Continents": None,
+			"Structory: Towers": None,
+			"Structory": None,
+			"Nullscape": None,
+			"Incendium": None,
+			"Terralith": None
+		}
 
 		for thread in forum.threads:
-			await thread.delete()
+			if thread.name in threads.keys():
+				threads[thread.name] = thread
 
 		with open("resources/textlinks.json", 'r') as f:
 			textlinks = json.load(f)
@@ -36,11 +53,24 @@ class Library(commands.Cog):
 
 		
 		# Cave Tweaks
-		post = await forum.create_thread(
-			name="[Discontinued] Cave Tweaks",
-			content="*A mod that allows for the extensive configuration of all caves.*",
-			file=discord.File(f"assets/Cave Tweaks.png", filename="image.png"),
-		)
+		if not threads["[Discontinued] Cave Tweaks"]:
+			post = await forum.create_thread(
+				name="[Discontinued] Cave Tweaks",
+				content="*A mod that allows for the extensive configuration of all caves.*",
+				file=discord.File(f"assets/Cave Tweaks.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["cave tweaks"]["link"] = post.jump_url
+		else:
+			post = threads["[Discontinued] Cave Tweaks"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -58,18 +88,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=CaveDownloads())
-		await post.thread.send(embed=embed2, view=CaveLinks())
-		textlinks["cave tweaks"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=CaveDownloads())
+		await post.send(embed=embed2, view=CaveLinks())
 
 
 
 		# Amplified Nether
-		post = await forum.create_thread(
-			name="Amplified Nether",
-			content="*A pack that uses the new 1.18 features to increase the Nether height to 256 blocks tall, add new terrain types, and use 3D biomes... all without adding any biomes, structures, items, or mobs.*",
-			file=discord.File(f"assets/Amplified Nether.png", filename="image.png"),
-		)
+		if not threads["Amplified Nether"]:
+			post = await forum.create_thread(
+				name="Amplified Nether",
+				content="*A pack that uses the new 1.18 features to increase the Nether height to 256 blocks tall, add new terrain types, and use 3D biomes... all without adding any biomes, structures, items, or mobs.*",
+				file=discord.File(f"assets/Amplified Nether.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["amplified nether"]["link"] = post.jump_url
+		else:
+			post = threads["Amplified Nether"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -87,18 +129,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=AmplifiedDownloads())
-		await post.thread.send(embed=embed2, view=AmplifiedLinks())
-		textlinks["amplified nether"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=AmplifiedDownloads())
+		await post.send(embed=embed2, view=AmplifiedLinks())
 
 		
 
 		# Continents
-		post = await forum.create_thread(
-			name="Continents",
-			content="*A small add-on pack to reshape the world so that landmasses are further apart, varying in size and shape.*",
-			file=discord.File(f"assets/Continents.png", filename="image.png"),
-		)
+		if not threads["Continents"]:
+			post = await forum.create_thread(
+				name="Continents",
+				content="*A small add-on pack to reshape the world so that landmasses are further apart, varying in size and shape.*",
+				file=discord.File(f"assets/Continents.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["continents"]["link"] = post.jump_url
+		else:
+			post = threads["Continents"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -116,18 +170,31 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=ContinentsDownloads())
-		await post.thread.send(embed=embed2, view=ContinentsLinks())
-		textlinks["continents"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=ContinentsDownloads())
+		await post.send(embed=embed2, view=ContinentsLinks())
 
 		
 
 		# Structory: Towers
-		post = await forum.create_thread(
-			name="Structory: Towers",
-			content="*Related to Structory, and adds plenty of unique towers scattered throughout the world.*",
-			file=discord.File(f"assets/Structory Towers.png", filename="image.png"),
-		)
+		if not threads["Structory: Towers"]:
+			post = await forum.create_thread(
+				name="Structory: Towers",
+				content="*Related to Structory, and adds plenty of unique towers scattered throughout the world.*",
+				file=discord.File(f"assets/Structory Towers.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["structory: towers"]["link"] = post.jump_url
+			textlinks["structory towers"]["link"] = post.jump_url
+		else:
+			post = threads["Structory: Towers"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -145,19 +212,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=TowersDownloads())
-		await post.thread.send(embed=embed2, view=TowersLinks())
-		textlinks["structory: towers"]["link"] = post.thread.jump_url
-		textlinks["structory towers"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=TowersDownloads())
+		await post.send(embed=embed2, view=TowersLinks())
 
 
 
 		# Structory
-		post = await forum.create_thread(
-			name="Structory",
-			content="*A seasonally updated, atmospheric structure pack with light lore, ruins, firetowers, cottages, stables, graveyards, settlements, boats, and more.*",
-			file=discord.File(f"assets/Structory.png", filename="image.png"),
-		)
+		if not threads["Structory"]:
+			post = await forum.create_thread(
+				name="Structory",
+				content="*A seasonally updated, atmospheric structure pack with light lore, ruins, firetowers, cottages, stables, graveyards, settlements, boats, and more.*",
+				file=discord.File(f"assets/Structory.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["structory"]["link"] = post.jump_url
+		else:
+			post = threads["Structory"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -175,18 +253,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=StructoryDownloads())
-		await post.thread.send(embed=embed2, view=StructoryLinks())
-		textlinks["structory"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=StructoryDownloads())
+		await post.send(embed=embed2, view=StructoryLinks())
 
 
 		
 		# Nullscape
-		post = await forum.create_thread(
-			name="Nullscape",
-			content="*Overhauling the End's generation to maintain its bleak and depressing design, this pack adds a couple of biomes and tons of wacky terrain.*",
-			file=discord.File(f"assets/Nullscape.png", filename="image.png"),
-		)
+		if not threads["Nullscape"]:
+			post = await forum.create_thread(
+				name="Nullscape",
+				content="*Overhauling the End's generation to maintain its bleak and depressing design, this pack adds a couple of biomes and tons of wacky terrain.*",
+				file=discord.File(f"assets/Nullscape.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["nullscape"]["link"] = post.jump_url
+		else:
+			post = threads["Nullscape"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -206,18 +296,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=NullscapeDownloads())
-		await post.thread.send(embed=embed2, view=NullscapeLinks())
-		textlinks["nullscape"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=NullscapeDownloads())
+		await post.send(embed=embed2, view=NullscapeLinks())
 
 
 
 		# Incendium
-		post = await forum.create_thread(
-			name="Incendium",
-			content="*Giving an almost modded feel, this pack adds tons of insane biomes, mobs, items, structures, and more, all while using Vanilla's features.*",
-			file=discord.File(f"assets/Incendium.png", filename="image.png"),
-		)
+		if not threads["Incendium"]:
+			post = await forum.create_thread(
+				name="Incendium",
+				content="*Giving an almost modded feel, this pack adds tons of insane biomes, mobs, items, structures, and more, all while using Vanilla's features.*",
+				file=discord.File(f"assets/Incendium.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["incendium"]["link"] = post.jump_url
+		else:
+			post = threads["Incendium"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -237,18 +339,30 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=IncendiumDownloads())
-		await post.thread.send(embed=embed2, view=IncendiumLinks())
-		textlinks["incendium"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=IncendiumDownloads())
+		await post.send(embed=embed2, view=IncendiumLinks())
 
 
 
 		# Terralith
-		post = await forum.create_thread(
-			name="Terralith",
-			content="*Adding over 95 brand new biomes and updating almost every vanilla biome, this staple pack turns the overworld into a beautiful place with new terrain, biomes, structures, and more.*",
-			file=discord.File(f"assets/Terralith.png", filename="image.png"),
-		)
+		if not threads["Terralith"]:
+			post = await forum.create_thread(
+				name="Terralith",
+				content="*Adding over 95 brand new biomes and updating almost every vanilla biome, this staple pack turns the overworld into a beautiful place with new terrain, biomes, structures, and more.*",
+				file=discord.File(f"assets/Terralith.png", filename="image.png"),
+			)
+			await post.message.pin()
+			post = post.thread
+			async for message in post.history(limit=1):
+				if message.type == discord.MessageType.pins_add:
+					await message.delete()
+			
+			textlinks["terralith"]["link"] = post.jump_url
+		else:
+			post = threads["Terralith"]
+			async for message in post.history(limit=10):
+				if not message.pinned:
+					await message.delete()
 
 		embed1 = discord.Embed(
 			title="Downloads",
@@ -268,16 +382,14 @@ class Library(commands.Cog):
 			description="Various other related links can be found here. This includes everything from the wiki, Github, and more."
 		)
 
-		await post.thread.send(embed=embed1, view=TerralithDownloads())
-		await post.thread.send(embed=embed2, view=TerralithLinks())
-		textlinks["terralith"]["link"] = post.thread.jump_url
+		await post.send(embed=embed1, view=TerralithDownloads())
+		await post.send(embed=embed2, view=TerralithLinks())
 
 
 
-		with open("resources/settings.json", 'r') as f:
-			if interaction.guild_id == json.load(f)["stardust-guild-id"]:
-				with open("resources/textlinks.json", 'w') as f:
-					json.dump(textlinks, f, indent=4)
+		if interaction.guild_id == self.client.settings["stardust-guild-id"]:
+			with open("resources/textlinks.json", 'w') as f:
+				json.dump(textlinks, f, indent=4)
 
 	
 	### BUTTONS ###
