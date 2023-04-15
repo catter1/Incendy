@@ -242,14 +242,15 @@ class Wiki(commands.Cog):
 	async def search(self, interaction: discord.Interaction):
 		""" /wiki search """
 
-		embed = discord.Embed(
-			title="Wiki Surfer",
-			description="Thanks to <@234748321258799104> and our other Wiki Contributors, Stardust Labs has an amazing Wiki for all its projects! Too lazy to click on the website link and search there? This command allows you to search the entire Wiki for whatever information your looking for and display it here in Discord instead.\n\nPress one of the button below to get started!",
-			color=discord.Colour.brand_red()
-		)
+		# embed = discord.Embed(
+		# 	title="Wiki Surfer",
+		# 	description="Thanks to <@234748321258799104> and our other Wiki Contributors, Stardust Labs has an amazing Wiki for all its projects! Too lazy to click on the website link and search there? This command allows you to search the entire Wiki for whatever information your looking for and display it here in Discord instead.\n\nPress one of the button below to get started!",
+		# 	color=discord.Colour.brand_red()
+		# )
 
-		view = SearchView(self.client.db)
-		await interaction.response.send_message(embed=embed, view=view)
+		# view = SearchView(self.client.db)
+		# await interaction.response.send_message(embed=embed, view=view)
+		await interaction.response.send_modal(SearchText(self.client.db, first=True))
 
 class SearchView(discord.ui.View):
 	def __init__(self, db: asyncpg.Pool, label: str = "View Wiki Webpage", url: str = "https://stardustlabs.miraheze.org/wiki/Main_page"):
@@ -266,9 +267,10 @@ class SearchButton(discord.ui.Button):
 		await interaction.response.send_modal(SearchText(self.db))
 
 class SearchText(discord.ui.Modal, title='Search Box'):
-	def __init__(self, db: asyncpg.Pool):
+	def __init__(self, db: asyncpg.Pool, first: bool = False):
 		super().__init__()
 		self.db = db
+		self.first = first
 
 	search_term = discord.ui.TextInput(
 		label='Search the Wiki',
@@ -298,7 +300,10 @@ class SearchText(discord.ui.Modal, title='Search Box'):
 				title=f"Page Results: {self.search_term.value}",
 				description="Oops! I found **no results** relating to your search. Click the button below to try again."
 			)
-			await interaction.response.edit_message(embed=embed, view=SearchView(self.db), attachments=[])
+			if self.first:
+				await interaction.response.send_message(embed=embed, view=SearchView(self.db), files=[])
+			else:
+				await interaction.response.edit_message(embed=embed, view=SearchView(self.db), attachments=[])
 			return
 
 		# Create the list of buttons
@@ -315,7 +320,10 @@ class SearchText(discord.ui.Modal, title='Search Box'):
 		file = discord.File("assets/Wiki_Banner.jpg", filename="image.jpg")
 		embed.set_image(url="attachment://image.jpg")
 
-		await interaction.response.edit_message(embed=embed, view=WikiView(buttons=buttons), attachments=[file])
+		if self.first:
+			await interaction.response.send_message(embed=embed, view=WikiView(buttons=buttons), files=[file])
+		else:
+			await interaction.response.edit_message(embed=embed, view=WikiView(buttons=buttons), attachments=[file])
 
 class PageButton(discord.ui.Button):
 	def __init__(self, db: asyncpg.Pool, label: str | None = None):
