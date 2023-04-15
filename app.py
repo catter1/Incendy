@@ -113,7 +113,7 @@ async def file_init():
 			f.write()
 
 	if not os.path.isfile("resources/settings.json"):
-		settings_base = {"locked": False,"contest-ongoing": False,"version": "","stardust-guild-id": None}
+		settings_base = {"locked": False,"contest-ongoing": False,"version": "","stardust-guild-id": None,"forever-threads":[]}
 		with open("resources/settings.json", 'w') as f:
 			json.dump(settings_base, f, indent=4)
 
@@ -142,6 +142,9 @@ async def table_init():
 	# Wiki Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS title_index ON wiki (title);')
+
+	await client.db.execute('CREATE TABLE IF NOT EXISTS reminders(id SERIAL PRIMARY KEY, channel_id BIGINT, user_id BIGINT, reminder TEXT, endtime TIMESTAMP);')
+	await client.db.execute('CREATE INDEX IF NOT EXISTS endtime_index ON reminders (endtime);')
 
 	# Stardusttv Table
 	await client.db.execute('CREATE TABLE IF NOT EXISTS stardusttv(id SERIAL PRIMARY KEY, media TEXT, slug TEXT);')
