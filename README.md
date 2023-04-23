@@ -11,7 +11,7 @@ This bot is not meant to be used on other servers. A lot of stuff *will* break! 
 ## Cogs
 
 - **Admin**: Used to be the cog for updating datapack to Github/Seedfix, but now just has some non-moderation admin functions.
-- **Autoresponse*: Handles textlinks, log uploading, and log scanning.
+- **Autoresponse**: Handles textlinks, log uploading, and log scanning.
 - **Basic**: Where all the miscellaneous "basic" functions are thrown in.
 - **Bulletin**: Stores all the commands for posting the embeds in their channels.
 - **Events**: Handles Discord events and competitions.
