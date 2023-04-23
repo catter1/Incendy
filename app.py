@@ -125,7 +125,7 @@ async def file_init():
 
 	if not os.path.isfile("resources/reposts.json"):
 		reposts = requests.get("https://api.stopmodreposts.org/minecraft/sites.json")
-		with open("resources/timeout.json", 'w') as f:
+		with open("resources/reposts.json", 'w') as f:
 			json.dump(reposts.json(), f, indent=4)
 
 async def table_init():
