@@ -1,3 +1,5 @@
+[![Latest Version](https://img.shields.io/github/v/release/catter1/Incendy?style=for-the-badge)](https://github.com/catter1/Incendy/releases) [![Maintainability](https://img.shields.io/codeclimate/maintainability/catter1/Incendy?style=for-the-badge)](https://codeclimate.com/github/catter1/Incendy) [![Quality](https://img.shields.io/codefactor/grade/github/catter1/Incendy?style=for-the-badge)](https://www.codefactor.io/repository/github/catter1/incendy) ![Activity](https://img.shields.io/github/commit-activity/m/catter1/Incendy?style=for-the-badge)
+
 # Incendy
 
 Welcome! This is the repository for the Stardust Labs discord server bot. Incendy was created back in late 2020, simply as a joke to react to certain messages with a certain emoji. Today, Incendy has expanded to become my (catter1) biggest project to date.
