@@ -456,7 +456,7 @@ class Resource(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(label='Omni Biome Name Fix', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/stardust-biome-name-fix'))
-        self.add_item(discord.ui.Button(label='Incendium Optional Resourcepack', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/downloads-library/tree/main/Incendium/Resource%20Pack'))
+        self.add_item(discord.ui.Button(label='Incendium Optional Resourcepack', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
 
 class Seedfix(discord.ui.View):
     def __init__(self):
