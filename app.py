@@ -270,7 +270,10 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 	elif isinstance(error, (app_commands.CheckFailure, app_commands.MissingPermissions, incendy.NotInBotChannel, incendy.CantCloseThread)):
 		await interaction.response.send_message(str(error), ephemeral=True)
 	else:
-		await interaction.response.send_message("An unregistered error has occurred!", ephemeral=True)
+		try:
+			await interaction.response.send_message("An unregistered error has occurred!", ephemeral=True)
+		except discord.errors.NotFound:
+			await interaction.followup.send("An unregistered error has occurred!", ephemeral=True)
 		raise error
 
 try:
