@@ -75,7 +75,7 @@ class Bulletin(commands.Cog):
 	@app_commands.command(name="announce", description="[ADMIN] Pastes a message as Incendy. Message controlled by catter")
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
-	async def serverrules(self, interaction: discord.Interaction):
+	async def announce(self, interaction: discord.Interaction):
 		g: discord.Thread
 		g = self.client.get_channel(1036998149954351105)
 		m = await g.fetch_message(1092099856954306580)
