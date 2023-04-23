@@ -48,6 +48,7 @@ class Library(commands.Cog):
 
 		async for thread in forum.archived_threads():
 			if thread.name in threads.keys():
+				thread.edit(archived=False, locked=False)
 				threads[thread.name] = thread
 
 		with open("resources/textlinks.json", 'r') as f:
