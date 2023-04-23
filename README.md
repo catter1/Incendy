@@ -11,11 +11,13 @@ This bot is not meant to be used on other servers. A lot of stuff *will* break! 
 ## Cogs
 
 - **Admin**: Used to be the cog for updating datapack to Github/Seedfix, but now just has some non-moderation admin functions.
+- **Autoresponse*: Handles textlinks, log uploading, and log scanning.
 - **Basic**: Where all the miscellaneous "basic" functions are thrown in.
-- **Bulletin**: Stores all the commands for posting the embeds in their channels, such as the `#downloads` library.
+- **Bulletin**: Stores all the commands for posting the embeds in their channels.
 - **Events**: Handles Discord events and competitions.
 - **Faq**: Where the faq and quickpost commands and data live.
 - **Helps**: For both the help command, and managing `#support` threads.
+- **Library**: Hosts all the code for the `#downloads` library forum.
 - **Moderation**: All the auto moderation tools, as well as fancy manual commands.
 - **Remind**: The cog just solely the `/remind` command.
 - **Roles**: An offshoot of Moderation, it deals with the auto-assigning of roles.
