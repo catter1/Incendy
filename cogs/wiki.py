@@ -176,6 +176,24 @@ class Wiki(commands.Cog):
 
 	wiki_group = app_commands.Group(name='wiki', description='Various commands regarding the wiki')
 
+	@wiki_group.command(name="titles", description="Prints a list of all titles in the wiki.")
+	@incendy.can_edit_wiki()
+	async def titles(self, interaction: discord.Interaction):
+		""" /wiki titles """
+
+		await interaction.response.defer(thinking=True, ephemeral=True)
+
+		pages_raw = self.client.miraheze.wiki_request({"action":"query", "list":"allpages", "apfilterredir":"nonredirects", "aplimit":500, "format":"json"})
+		pages = [page["title"] for page in pages_raw["query"]["allpages"]]
+
+		with open("tmp/wikipages.txt", 'w') as f:
+			f.write("\n".join(pages))
+		
+		file = discord.File("tmp/wikipages.txt", filename="wikipages.txt")
+		await interaction.followup.send("Here is the list of all wiki pages.", file=file, ephemeral=True)
+
+		os.remove("tmp/wikipages.txt")
+
 	@wiki_group.command(name="upload", description="Allows Photographers and Wiki Contributors to upload media to the wiki.")
 	@incendy.can_edit_wiki()
 	@app_commands.describe(
