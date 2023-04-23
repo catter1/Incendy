@@ -39,6 +39,7 @@ This bot is not meant to be used on other servers. A lot of stuff *will* break! 
 - **naughty.txt**: Users will be banned if they say any of the words in this file.
 - **pinglog.txt**: For tracking excessive amount of Starmute pings.
 - **platforms.json**: Stores data for the `updater` cog and `project` library.
+- **reposts.json**: All illegal mod hosting sites, created from StopModResposts API upon startup.
 - **settings.json**: Some basic settings and variables for general purpose.
 - **textlinks.json**: The "core" textlinks, some of which are auto-updated in the `bulletin` cog.
 - **timeout.json**: Tracks users that have been told to "shut up".
