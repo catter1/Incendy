@@ -63,12 +63,5 @@
         },
         "emoji": "<:stardust:1058423314672013382>",
         "description": "Datapacks"
-    },
-    "Seedfix": {
-        "projects": {
-            "Terralith": "terralith"
-        },
-        "emoji": "<:seedfix:917599175259070474>",
-        "description": "1.18.2 Datapack"
     }
 }

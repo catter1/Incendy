@@ -71,8 +71,6 @@ class Project:
 		Uploads the Project to Modrinth
 	async upload_curseforge()
 		Uploads the Project to Curseforge
-	async upload_seedfix()
-		Uploads the Project to Seedfix site
 	async upload_stardust()
 		Uploads the Project to Stardust Labs site
 	async upload_pmc()
@@ -733,50 +731,6 @@ class Project:
 			return "There's been an error attaching the datapack to the release!"
 	
 
-	async def upload_seedfix(self, filepath: str) -> str:
-		"""
-		Upload the project to Seedfix site.
-
-		Parameters
-		----------
-		filepath : str
-			The filepath for the file to upload
-
-		Returns
-		----------
-		message : str
-			Release link if successful, otherwise error message
-		"""
-
-		if not os.path.exists("/home/catter/stardustSite"):
-			return "Seedfix can only be updated on main server!"
-		
-		# Create filepath and save datapack
-		site_path = "/home/catter/stardustSite"
-		zip_name = f"Terralith_1.18.2_{self.version_number}.zip"
-		os.mkdir(f"{site_path}/newterralith")
-		shutil.copyfile(filepath, f"{site_path}/newterralith/Terralith_1.18.2_{self.version_number}.zip")
-
-		with ZipFile(f"{site_path}/newterralith/{zip_name}", "r") as zf:
-			zf.extractall(f"{site_path}/newterralith")
-		os.remove(f"{site_path}/newterralith/{zip_name}")
-		os.remove(f"{site_path}/overworld.json")
-
-		shutil.rmtree(f"{site_path}/terralith", ignore_errors=True)
-		shutil.rmtree(f"{site_path}/apiterralith", ignore_errors=True)
-		shutil.move(f"{site_path}/newterralith", f"{site_path}/terralith")
-		shutil.copytree(f"{site_path}/terralith", f"{site_path}/apiterralith")
-		shutil.copy(f"{site_path}/terralith/data/minecraft/dimension/overworld.json",f"{site_path}/overworld.json")
-
-		with open(f"{site_path}/static/info.json", "r") as f:
-			data = json.load(f)
-		data["version"] = self.version_number
-		with open(f"{site_path}/static/info.json", "w") as f:
-			f.writelines(json.dumps(data, indent=2))
-        
-		return "Successfully uploaded!"
-	
-
 	async def upload_stardust(self, filepath: str) -> str:
 		"""
 		Upload the project to Stardust Labs site.
@@ -878,7 +832,7 @@ class Project:
 
 		# Datapacks should be mod-isized if uploaded to mod site
 		elif self.file_type == "datapack":
-			if any([platform in self.selected_platforms for platform in ["GitHub", "Planet Minecraft", "Stardust Labs", "Seedfix"]]):
+			if any([platform in self.selected_platforms for platform in ["GitHub", "Planet Minecraft", "Stardust Labs"]]):
 				zip_filepath = f"tmp/{self.filename}.zip"
 				await self.archive.save(zip_filepath)
 				insert_patrons(zip_filepath)
@@ -913,8 +867,6 @@ class Project:
 			responses["pmc"] = await self.upload_pmc()
 		if "Stardust Labs" in self.selected_platforms:
 			responses["stardust"] = await self.upload_stardust(zip_filepath)
-		if "Seedfix" in self.selected_platforms:
-			responses["seedfix"] = await self.upload_seedfix(zip_filepath)
 
 		# Clean up and return
 		if zip_filepath:

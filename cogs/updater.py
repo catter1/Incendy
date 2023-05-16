@@ -76,7 +76,7 @@ class Updater(commands.Cog):
 		embed = discord.Embed(
 			title=project,
 			color=discord.Colour.blue(),
-			description=f"Select which platforms you'd like to upload {project} to.\n\n**OBS**: If you've uploaded a datapack, and select a modded platform, Incendy will automatically turn it into a mod!\n\n(Seedfix will not be included for 1.18.x uploads. You'll have to do that manually.)"
+			description=f"Select which platforms you'd like to upload {project} to.\n\n**OBS**: If you've uploaded a datapack, and select a modded platform, Incendy will automatically turn it into a mod!"
 		)
 		view = discord.ui.View()
 		patrons = await self.get_patrons(interaction)
