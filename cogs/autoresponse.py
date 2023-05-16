@@ -99,6 +99,8 @@ class Autoresponse(commands.Cog):
 	async def stop_mod_reposts(self, message: discord.Message, url: str) -> None:
 		for illegal in self.reposts:
 			if illegal["domain"] in url:
+				if illegal["path"] != "/" and illegal["path"] not in url:
+					continue
 				embed = discord.Embed(
 					title="WARNING: Illegal Mod Distribution Site!",
 					description=f"The site `{illegal['domain']}` has been marked by [StopModReposts](https://stopmodreposts.org/) as a website that illegally redistributes mods. You should **not** download anything from here!",
