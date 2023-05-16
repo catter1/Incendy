@@ -33,6 +33,7 @@ This bot is not meant to be used on other servers. A lot of stuff *will* break! 
 - **incendy**: Holds the custom `IncendyBot` class, as well as all the checks and cooldowns.
 - **project**: A massive class giving all the functionality to `/upload`.
 - **stardust_downloads**: For updating the `downloads` table in the database.
+- **url_search**: A simple override of `validator`'s `url.url` function to use `regex.search()` instead.
 
 ## Resources
 
