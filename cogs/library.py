@@ -491,8 +491,8 @@ class TowersDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.19.3)', emoji='<:pmc:1045336243216584744>', url='https://www.planetminecraft.com/data-pack/structory-towers/', row=0))
-		self.add_item(discord.ui.Button(label='All Versions (1.17-1.19.4)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.19.4)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files', row=1))
+		self.add_item(discord.ui.Button(label='All Versions (1.19-1.19.4)', emoji='<:github:1045336251605188679>', url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.19.4)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files', row=1))
 
 class TowersLinks(discord.ui.View):
 	def __init__(self):
