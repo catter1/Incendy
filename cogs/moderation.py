@@ -1,11 +1,11 @@
 import discord
 import json
 import datetime
-import validators
 import logging
+import validators
 from discord import app_commands
 from discord.ext import commands, tasks
-from libraries import incendy
+from libraries import incendy, url_search
 
 class Moderation(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -270,7 +270,8 @@ class Moderation(commands.Cog):
 					return
 
 			#matches = pattern.finditer(message.content)
-			if any([word for word in message.content.split() if validators.url(word) and any([word for ext in ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp'] if word.endswith(ext)])]):
+			exts = ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp']
+			if url_search.url(message) and any([ext for ext in exts if ext in message]):
 				await message.delete()
 				await message.channel.send("Sorry, no videos allowed \:)")
 
