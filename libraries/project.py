@@ -605,6 +605,8 @@ class Project:
 			"1.19.4": 9776
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
+		# This is Fabric/Forge, respectively
+		gameVersions.extend([7499, 7498])
 
 		# Build post data
 		metadata = {
