@@ -652,12 +652,11 @@ class Project:
 
 		proj_tag = self.platforms["GitHub"]["projects"][self.project_name]
 		pat = self.client.keys["git-pat"]
-		os.environ["GIT_PYTHON_GITHUB_TOKEN"] = pat
 		auth = ('Incendy-Bot', pat)
 
 		# Clone
 		repo_path = f"{os.getcwd()}/tmp/{proj_tag}"
-		repo = Repo.clone_from(url=f"https://github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path, branch=self.newest_mc_version)
+		repo = Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path, branch=self.newest_mc_version)
 		repo.create_remote(proj_tag, f"https://github.com/Stardust-Labs-MC/{proj_tag}.git")
 
 		# Remove all except .git
