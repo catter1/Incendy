@@ -182,5 +182,7 @@ class Stats(commands.Cog):
 			query, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified-nether"]
 		)
 
+		logging.info("Successfully updated the STATS table.")
+
 async def setup(client):
 	await client.add_cog(Stats(client))
