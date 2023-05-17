@@ -683,16 +683,16 @@ class Project:
 		# gitignore
 		if not os.path.exists(f"{repo_path}/.gitignore"):
 			with open(f"{repo_path}/.gitignore", 'w') as f:
-				f.writelines(["__MACOSX", "patrons.txt", "README.md"])
+				f.writelines(["__MACOSX\n", "patrons.txt\n", "README.md\n"])
 		else:
 			with open(f"{repo_path}/.gitignore", 'r') as f:
 				lines = f.readlines()
 			if "__MACOSX" not in lines:
-				lines.append("__MACOSX")
+				lines.append("__MACOSX\n")
 			if "patrons.txt" not in lines:
-				lines.append("patrons.txt")
+				lines.append("patrons.txt\n")
 			if "README.md" not in lines:
-				lines.append("README.md")
+				lines.append("README.md\n")
 			with open(f"{repo_path}/.gitignore", 'w') as f:
 				f.writelines(lines)
 
