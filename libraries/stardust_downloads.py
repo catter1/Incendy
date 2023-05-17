@@ -2,7 +2,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-def get_downloads(cf_key: str) -> dict:
+def get_downloads(cf_key: str, git_pat: str) -> dict:
     stats = {}
 
     projects = ["terralith", "incendium", "nullscape", "amplified-nether", "continents", "structory", "structory-towers"]
@@ -51,6 +51,31 @@ def get_downloads(cf_key: str) -> dict:
         x = requests.get(url=url, headers=headers)
         soup = BeautifulSoup(x.text, "html.parser")
         stats[project] += int(soup.find_all(text=" downloads, ")[0].parent.contents[1].text.replace(",", ""))
+
+    # GitHub
+    headers = {"Authorization": f"Bearer {git_pat}"}
+    projects.append('structory')
+    projects.append('structory-towers')
+
+    for project in projects:
+        url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases"
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        for release in response.json():
+            release_id = release["id"]
+            
+            for asset in release["assets"]:
+                asset_id = asset["id"]
+                
+                asset_url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases/{release_id}/assets/{asset_id}"
+                
+                asset_response = requests.get(asset_url, headers=headers)
+                asset_response.raise_for_status()
+                
+                asset_info = asset_response.json()
+                download_count = asset_info["download_count"]
+                stats[project] += download_count
 
     # Seedfix
     url = "https://seedfix.stardustlabs.net/api/get_downloads/"

@@ -172,7 +172,7 @@ class Stats(commands.Cog):
 		if potential != None:
 			return
 
-		stats = sd.get_downloads(self.client.keys["overwolf-key"])
+		stats = sd.get_downloads(self.client.keys["overwolf-key"], self.client.keys["git-pat"])
 
 		query = '''INSERT INTO downloads (day, terralith, incendium, nullscape, structory, towers, continents, amplified) VALUES(
 			current_date, $1, $2, $3, $4, $5, $6, $7
