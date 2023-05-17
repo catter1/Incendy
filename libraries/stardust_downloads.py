@@ -77,8 +77,8 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
                     asset_info = asset_response.json()
                     download_count = asset_info["download_count"]
                     stats[project] += download_count
-    except:
-        print("error")
+    except Exception as e:
+        print(e)
 
     # Seedfix
     url = "https://seedfix.stardustlabs.net/api/get_downloads/"
