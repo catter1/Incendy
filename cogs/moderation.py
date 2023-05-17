@@ -271,7 +271,7 @@ class Moderation(commands.Cog):
 
 			#matches = pattern.finditer(message.content)
 			exts = ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp']
-			if url_search.url(message) and any([ext for ext in exts if ext in message]):
+			if url_search.url(message.content) and any([ext for ext in exts if ext in message.content]):
 				await message.delete()
 				await message.channel.send("Sorry, no videos allowed \:)")
 
