@@ -57,25 +57,28 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
     projects.append('structory')
     projects.append('structory-towers')
 
-    for project in projects:
-        url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases"
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
+    try:
+        for project in projects:
+            url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases"
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
 
-        for release in response.json():
-            release_id = release["id"]
-            
-            for asset in release["assets"]:
-                asset_id = asset["id"]
+            for release in response.json():
+                release_id = release["id"]
                 
-                asset_url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases/{release_id}/assets/{asset_id}"
-                
-                asset_response = requests.get(asset_url, headers=headers)
-                asset_response.raise_for_status()
-                
-                asset_info = asset_response.json()
-                download_count = asset_info["download_count"]
-                stats[project] += download_count
+                for asset in release["assets"]:
+                    asset_id = asset["id"]
+                    
+                    asset_url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases/{release_id}/assets/{asset_id}"
+                    
+                    asset_response = requests.get(asset_url, headers=headers)
+                    asset_response.raise_for_status()
+                    
+                    asset_info = asset_response.json()
+                    download_count = asset_info["download_count"]
+                    stats[project] += download_count
+    except:
+        print("error")
 
     # Seedfix
     url = "https://seedfix.stardustlabs.net/api/get_downloads/"
