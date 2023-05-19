@@ -346,7 +346,7 @@ class GeneralLinks(discord.ui.Button):
 	async def callback(self, interaction: discord.Interaction):
 		embed = interaction.message.embeds[0]
 		embed.title = "General Textlinks"
-		embed.description = "  -  ".join([f"[{textlink.replace('-', ' ').title()}]({self.textlinks[textlink]})" for textlink in self.textlinks])
+		embed.description = "  -  ".join([f"[{textlink.replace('-', ' ').title()}]({self.textlinks[textlink]['link']})" for textlink in self.textlinks])
 
 		await interaction.response.edit_message(embed=embed)
 
