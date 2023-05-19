@@ -5,7 +5,6 @@ ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
 ip_last_octet = u"(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))"
 
 regex = re.compile(
-	u"^"
 	# protocol identifier
 	u"(?:(?:https?|ftp)://)"
 	# user:pass authentication
@@ -40,8 +39,7 @@ regex = re.compile(
 	# resource path
 	u"(?:/\S*)?"
 	# query string
-	u"(?:\?\S*)?"
-	u"$",
+	u"(?:\?\S*)?",
 	re.UNICODE | re.IGNORECASE
 )
 

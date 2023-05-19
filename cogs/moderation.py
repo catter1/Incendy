@@ -344,7 +344,7 @@ class Moderation(commands.Cog):
 				await self.ban_hammer(message)
 
 			# No videos in #general
-			if message.channel.id == 771617249910849556:
+			if message.channel.id in [771617249910849556]:
 				await self.video_check(message=message)
 
 			# Ping check
