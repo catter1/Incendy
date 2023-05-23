@@ -629,9 +629,11 @@ class Project:
 		r = requests.post(url, headers=headers, files=files, data={"metadata": metastr}, auth=("Starmute", self.keys['curseforge-key']))
 
 		try:
-			_ = r.json().get('id')
-			return f"Successfully uploaded! [Link](https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{r.json()['id']})"
-		except:
+			_id = r.json().get('id')
+			if _id == None:
+				raise ValueError("ID not found.")
+			return f"Successfully uploaded! [Link](https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{_id})"
+		except requests.JSONDecodeError:
 			return r.text
 
 

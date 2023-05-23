@@ -41,21 +41,15 @@ class Moderation(commands.Cog):
 		# ids: Starmute, Stardust, Dev Team, Assistant, Contributor, Overlord, Inferno, Sentry, Blaze, Supporter, Premium Member
 		ids = [744788173128859670, 744788229579866162, 885719021176119298, 862343886864384010, 749701703938605107, 877672384872738867, 795469887790252084, 795469805678755850, 1031650636544090166, 941157235390820382, 1031650634048487426]
 		strikes = []
-		#pattern = re.compile(r'(http|ftp|https|www):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')
 		
 		for cache in reversed(self.client.cached_messages):
-			try:
-				if cache.guild.id == 738046951236567162:
-					if (discord.utils.utcnow() - cache.created_at).seconds < 15:
-						if not [role.id for role in cache.author.roles if role.id in ids]:
-							#if len(re.findall(pattern, cache.content)) > 0 or "discord.gg" in cache.content:
-							if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
-								#if not re.findall(r'\.gif', cache.content):
-								strikes.append(cache)
-					else:
-						break
-			except:
-				pass
+			if cache.guild.id == 738046951236567162:
+				if (discord.utils.utcnow() - cache.created_at).seconds < 15:
+					if not [role.id for role in cache.author.roles if role.id in ids]:
+						if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
+							strikes.append(cache)
+				else:
+					break
 		
 		if len(strikes) >= 3:
 			sus_users = [cache.author.id for cache in strikes]

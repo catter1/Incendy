@@ -43,7 +43,7 @@ async def seed(self, interaction: discord.Interaction, seed: int, description: s
 			else:
 				try:
 					int(seed)
-				except:
+				except ValueError:
 					await interaction.response.send_message("Your seed must be a valid integer.")
 				else:
 					if len(description) >= 450:
