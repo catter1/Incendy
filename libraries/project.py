@@ -563,7 +563,13 @@ class Project:
 		r = requests.post(url, headers=headers, files=files)
 
 		if r.status_code == 200:
-			return f"https://modrinth.com/project/{self.project_id}/versions/{self.version_number}"
+			_id = r.json().get('id')
+			if _id == None:
+				logging.error("Modrinth ID not found.")
+				logging.error(r.json())
+				return f"https://modrinth.com/project/{self.project_id}/versions"
+			
+			return f"https://modrinth.com/project/{self.project_id}/versions/{_id}"
 		else:
 			logging.error(r.text)
 			return None
