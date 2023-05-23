@@ -39,7 +39,7 @@ class Moderation(commands.Cog):
 
 	@tasks.loop(seconds=5.0)
 	async def detect(self):
-		ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_PATRONS + Constants.Role.BOOSTER + Constants.Role.CONTRIBUTOR + Constants.Role.DEV_TEAM
+		ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_PATRONS + [Constants.Role.BOOSTER] + [Constants.Role.CONTRIBUTOR] + [Constants.Role.DEV_TEAM]
 		strikes = []
 		
 		for cache in reversed(self.client.cached_messages):

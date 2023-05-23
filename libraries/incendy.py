@@ -71,7 +71,7 @@ def can_edit_wiki():
 	"""Is Wiki Contributor, Photographer, or higher"""
 
 	def wiki_editor(interaction: discord.Interaction):
-		ids = Constants.Role.WIKI_CONTRIBUTOR + Constants.Role.CONTRIBUTOR + Constants.Role.WIKI_CEO + Constants.Role.ALL_ADMINISTRATION + Constants.Role.DEV_TEAM + Constants.Role.PHOTOGRAPHER
+		ids = [Constants.Role.WIKI_CONTRIBUTOR] + [Constants.Role.CONTRIBUTOR] + [Constants.Role.WIKI_CEO] + Constants.Role.ALL_ADMINISTRATION + [Constants.Role.DEV_TEAM] + [Constants.Role.PHOTOGRAPHER]
 		if any([role.id for role in interaction.user.roles if role.id in ids]):
 			return True
 		else:
