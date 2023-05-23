@@ -9,6 +9,7 @@ regex = re.compile(
 	u"(?:(?:https?|ftp)://)"
 	# user:pass authentication
 	u"(?:\S+(?::\S*)?@)?"
+	u"(?:cdn)"
 	u"(?:"
 	u"(?P<private_ip>"
 	# IP address exclusion
