@@ -117,7 +117,7 @@ async def file_init():
 			f.write()
 
 	if not os.path.isfile("resources/settings.json"):
-		settings_base = {"locked": False,"contest-ongoing": False,"version": "","stardust-guild-id": None,"forever-threads":[]}
+		settings_base = {"locked": False,"contest-ongoing": False,"version": ""}
 		with open("resources/settings.json", 'w') as f:
 			json.dump(settings_base, f, indent=4)
 
@@ -241,7 +241,7 @@ async def on_command_error(ctx, error):
 
 @client.event
 async def on_app_command_completion(interaction: discord.Interaction, command: app_commands.Command):
-	if interaction.guild.id == settings["stardust-guild-id"]:
+	if interaction.guild.id == Constants.Guild.STARDUST_LABS:
 		query = '''INSERT INTO commands(user_id, command_name, sent_on) VALUES(
 			$1, $2, $3
 		);'''
@@ -251,7 +251,7 @@ async def on_app_command_completion(interaction: discord.Interaction, command: a
 @client.listen('on_message')
 async def on_message(message: discord.Message):
 	try:
-		if message.guild.id == settings["stardust-guild-id"]:
+		if message.guild.id == Constants.Guild.STARDUST_LABS:
 			query = '''INSERT INTO messages(user_id, message_id, sent_on, message_content) VALUES(
 				$1, $2, $3, $4
 			);'''

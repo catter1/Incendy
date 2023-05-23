@@ -22,17 +22,16 @@ class Updater(commands.Cog):
 	async def get_patrons(self, interaction: discord.Interaction) -> dict:
 		"""Get a dictionary of all patrons based on their level"""
 
-		if interaction.guild_id != self.client.settings['stardust-guild-id']:
-			return {}
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 
 		patrons = {"blaze":[],"sentry":[],"inferno":[],"overlord":[]}
-		patrons["overlord"].extend([member.name for member in interaction.guild.get_role(Constants.Role.OVERLORD_PATRON).members])
-		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(Constants.Role.INFERNO_PATRON).members])
-		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(Constants.Role.INFERNO_SUB).members])
-		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(Constants.Role.SENTRY_PATRON).members])
-		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(Constants.Role.SENTRY_SUB).members])
-		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(Constants.Role.BLAZE_PATRON).members])
-		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(Constants.Role.BLAZE_SUB).members])
+		patrons["overlord"].extend([member.name for member in guild.get_role(Constants.Role.OVERLORD_PATRON).members])
+		patrons["inferno"].extend([member.name for member in guild.get_role(Constants.Role.INFERNO_PATRON).members])
+		patrons["inferno"].extend([member.name for member in guild.get_role(Constants.Role.INFERNO_SUB).members])
+		patrons["sentry"].extend([member.name for member in guild.get_role(Constants.Role.SENTRY_PATRON).members])
+		patrons["sentry"].extend([member.name for member in guild.get_role(Constants.Role.SENTRY_SUB).members])
+		patrons["blaze"].extend([member.name for member in guild.get_role(Constants.Role.BLAZE_PATRON).members])
+		patrons["blaze"].extend([member.name for member in guild.get_role(Constants.Role.BLAZE_SUB).members])
 
 		return patrons
 

@@ -375,7 +375,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
                 await interaction.response.send_message(embed=embed, ephemeral=public)
 
         # Enter into DB
-        if interaction.guild_id == self.client.settings["stardust-guild-id"]:
+        if interaction.guild_id == Constants.Guild.STARDUST_LABS:
             query = '''INSERT INTO faqs(user_id, faq_name, sent_on) VALUES($1, $2, $3);'''
             await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
 

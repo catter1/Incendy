@@ -26,7 +26,7 @@ class Library(commands.Cog):
 		""" /library """
 
 		forum: discord.ForumChannel
-		if interaction.guild_id == self.client.settings["stardust-guild-id"]:
+		if interaction.guild_id == Constants.Guild.STARDUST_LABS:
 			forum = self.client.get_channel(1087096245228679330)
 		else:
 			forum = self.client.get_channel(1087041214911615058)
@@ -393,7 +393,7 @@ class Library(commands.Cog):
 
 
 
-		if interaction.guild_id == self.client.settings["stardust-guild-id"]:
+		if interaction.guild_id == Constants.Guild.STARDUST_LABS:
 			with open("resources/textlinks.json", 'w') as f:
 				json.dump(textlinks, f, indent=4)
 
