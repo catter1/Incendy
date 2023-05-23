@@ -5,6 +5,7 @@ import requests
 from mediawiki import MediaWiki
 from discord import app_commands
 from discord.ext import commands
+import libraries.constants as Constants
 
 class IncendyBot(commands.Bot):
 	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, wiki_session: requests.Session = None, keys: dict = None, settings: dict = None, environment: dict = None):
@@ -26,19 +27,19 @@ def in_bot_channel():
 	"""Interaction is in bot channel"""
 
 	def bot_channel(interaction: discord.Interaction):
-		if interaction.channel_id == 923571915879231509:
+		if interaction.channel_id == Constants.Channel.BOT:
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True
 		else:
-			raise NotInBotChannel("You must be in <#923571915879231509> to use this command!")
+			raise NotInBotChannel(f"You must be in <#{Constants.Channel.BOT}> to use this command!")
 	return app_commands.check(bot_channel)
 
 def is_catter():
 	"""Is catter1"""
 	
 	def catter(interaction: discord.Interaction):
-		if interaction.user.id == 260929689126699008:
+		if interaction.user.id == Constants.User.CATTER:
 			return True
 		else:
 			return app_commands.MissingPermissions("Only catter is allowed to use this command!")
@@ -48,8 +49,7 @@ def can_upload_projects():
 	"""Is a project uploader"""
 	
 	def project_uploader(interaction: discord.Interaction):
-		# catter, Star, Tera, Kuma
-		if interaction.user.id in [260929689126699008, 332701537535262720, 234748321258799104, 212447019296489473]:
+		if interaction.user.id in [Constants.User.STARMUTE, Constants.User.CATTER, Constants.User.TERA, Constants.User.KUMA]:
 			return True
 		else:
 			return app_commands.MissingPermissions("You must have VERY special permissions for this command!")
@@ -59,7 +59,7 @@ def can_report_bug():
 	"""Is Contributor or Dev"""
 
 	def bug_reporter(interaction: discord.Interaction):
-		if any([role.id for role in interaction.user.roles if role.id in [749701703938605107, 885719021176119298]]):
+		if any([role.id for role in interaction.user.roles if role.id in [Constants.Role.CONTRIBUTOR, Constants.Role.DEV_TEAM]]):
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True
@@ -71,9 +71,8 @@ def can_edit_wiki():
 	"""Is Wiki Contributor, Photographer, or higher"""
 
 	def wiki_editor(interaction: discord.Interaction):
-		if any([role.id for role in interaction.user.roles if role.id in [749701703938605107, 885719021176119298, 871230128708010044, 1035916805794955295, 749701703938605107, 862343886864384010]]):
-			return True
-		if interaction.user.guild_permissions.administrator:
+		ids = Constants.Role.WIKI_CONTRIBUTOR + Constants.Role.CONTRIBUTOR + Constants.Role.WIKI_CEO + Constants.Role.ALL_ADMINISTRATION + Constants.Role.DEV_TEAM + Constants.Role.PHOTOGRAPHER
+		if any([role.id for role in interaction.user.roles if role.id in ids]):
 			return True
 		else:
 			return app_commands.MissingPermissions("You must be a Photographer, Wiki Contributor, or another higher role to use this command!")
@@ -97,7 +96,7 @@ def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands
 
 	if interaction.user.guild_permissions.administrator:
 		return None
-	if interaction.channel_id == 923571915879231509:
+	if interaction.channel_id == Constants.Channel.BOT:
 		return None
 	return app_commands.Cooldown(2, 25.0)
 
@@ -106,7 +105,7 @@ def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.C
 
 	if interaction.user.guild_permissions.administrator:
 		return None
-	if interaction.channel_id == 923571915879231509:
+	if interaction.channel_id == Constants.Channel.BOT:
 		return None
 	return app_commands.Cooldown(1, 15.0)
 

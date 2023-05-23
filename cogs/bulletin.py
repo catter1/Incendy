@@ -5,6 +5,7 @@ from discord.ext import commands
 from discord import app_commands
 from colorsys import hls_to_rgb
 from libraries import incendy
+import libraries.constants as Constants
 
 class Bulletin(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -76,10 +77,7 @@ class Bulletin(commands.Cog):
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	async def announce(self, interaction: discord.Interaction):
-		g: discord.Thread
-		g = self.client.get_channel(1036998149954351105)
-		m = await g.fetch_message(1092099856954306580)
-		await m.delete()
+		pass
 		#await interaction.channel.send("Hey y'all! It's getting close to a certain holiday that certain people may celebrate, and I wanted to give everyone the greatest gift of all: knowledge of cybersecurity :sunglasses:\n\nDuring the holidays especially, there are a lot of scam links. Discord especially... I already banned one person who's account got hacked and was sending phishing links (free nitro). Luckily, this person was able to get their account back. But you may not be so lucky.\n\nFirst of all, **one** click is all it takes. Just one. That can compromise your entire account, even if you don't explicitly say your private info. Outside of Discord, it can lead to more damage. It could instantly install malware, steal all accounts you are logged into (or passwords that your browser saves), and use all communication means (like email) that you have to phish more people. If your friend sends you a link from their actual email/Discord to this cool online Christmas card they made for you, wouldn't you click it? Always check the link first.\n\nAnd finally, scams aren't for stupid people. You don't have to be stupid to fall for scams. Although some scams are blatant, others are very well crafted. Here is a nice video (https://www.youtube.com/watch?v=ntrGrfvvkII) by Atomic Shrimp, who explains it quite nicely. Links are a lot more dangerous than you may think.\n\nAnyways, that's all. I wish that you will all be safe this holiday season, and for now on. It's a pleasure to be your friendly discord bot, and I love every minute of it here \<3")
 
 	@app_commands.command(name="serverrules", description="[ADMIN] Prints the #servers message")
@@ -120,7 +118,7 @@ class Bulletin(commands.Cog):
 		embed1 = discord.Embed(
 			colour=discord.Colour.teal(),
 			title="Rules",
-			description="**[1]** Respect others. See <#757077131699159060> for more information.\n**[2]** Follow both Discord ToS and Minecraft EULA.\n**[3]** Obey staff.\n**[4]** No griefing, hacking, duping, or otherwise gaining an unfair advantage. This list is non-exclusive.\n**[5]** No spamming. No excessive or directed profanity.\n\nFailure to comply with these rules can result in mutes, kicks, or bans, as seen fit."
+			description=f"**[1]** Respect others. See <#{Constants.Channel.RULES}> for more information.\n**[2]** Follow both Discord ToS and Minecraft EULA.\n**[3]** Obey staff.\n**[4]** No griefing, hacking, duping, or otherwise gaining an unfair advantage. This list is non-exclusive.\n**[5]** No spamming. No excessive or directed profanity.\n\nFailure to comply with these rules can result in mutes, kicks, or bans, as seen fit."
 		)
 		embed2 = discord.Embed(
 			colour=discord.Colour.teal(),
@@ -135,31 +133,33 @@ class Bulletin(commands.Cog):
 		embed4 = discord.Embed(
 			colour=discord.Colour.teal(),
 			title="Ping Role",
-			description="Want to be pinged with important StardustMC-related announcements in <#1002721350143721603>? If so, react to this message with <:stardust:1058423314672013382>!"
+			description=f"Want to be pinged with important StardustMC-related announcements in <#1002721350143721603>? If so, react to this message with {Constants.Emoji.STARDUST}!"
 		)
 
 		x = await interaction.channel.send(embeds=[embed1, embed2, embed3, embed4])
-		await x.add_reaction('<:stardust:1058423314672013382>')
+		await x.add_reaction(Constants.Emoji.STARDUST)
 
 
 	### LISTENERS ###
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-		if payload.channel_id == 1001300888427700314:
-			if not payload.member.bot and payload.emoji.name == "stardust":
-				guild = self.client.get_guild(738046951236567162)
-				role = guild.get_role(1045484675184984114)
-				await payload.member.add_roles(role)
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
+		user = guild.get_member(payload.user_id)
+
+		if payload.channel_id == Constants.Channel.SERVER_INFO:
+			if not user.bot and payload.emoji.name == "stardust":
+				role = guild.get_role(Constants.Role.STARDUSTMC)
+				await user.add_roles(role)
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-		guild = self.client.get_guild(738046951236567162)
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 		user = guild.get_member(payload.user_id)
 
-		if payload.channel_id == 1001300888427700314:
+		if payload.channel_id == Constants.Channel.SERVER_INFO:
 			if not user.bot and payload.emoji.name == "stardust":
-				role = guild.get_role(1045484675184984114)
+				role = guild.get_role(Constants.Role.STARDUSTMC)
 				await user.remove_roles(role)
 
 ### BUTTONS ###
@@ -168,7 +168,7 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
 	def __init__(self, client: incendy.IncendyBot, image: discord.Attachment):
 		super().__init__(timeout=600.0)
 		self.image = image
-		self.servchan = client.get_channel(756923587339878420)
+		self.servchan = client.get_channel(Constants.Channel.SERVER)
 	
 	server_name = discord.ui.TextInput(
         label='Your server\'s name',
@@ -213,7 +213,7 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
 		await self.servchan.send(embed=embed)
 		#await interaction.response.send_message(embed=embed)
 
-		await interaction.response.send_message("Thanks! Your server has been posted in <#756923587339878420>!", ephemeral=True)
+		await interaction.response.send_message(f"Thanks! Your server has been posted in <#{Constants.Channel.SERVER}>!", ephemeral=True)
 		
 	async def on_error(self, interaction: discord.Interaction, error: Exception):
 		await interaction.response.send_message("Oops! Something went wrong. Please try again.", ephemeral=True)

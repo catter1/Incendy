@@ -8,6 +8,7 @@ from discord import app_commands
 from discord.ext import commands, tasks
 from deep_translator import GoogleTranslator
 from libraries import incendy
+import libraries.constants as Constants
 
 class Basic(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -233,7 +234,7 @@ class Basic(commands.Cog):
 		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
 		embed.set_image(url=ad.url)
 
-		webchan = self.client.get_channel(917905247056306246)
+		webchan = self.client.get_channel(Constants.Channel.STARDUST)
 		await webchan.send(embed=embed)
 		await interaction.response.send_message("Ad successfully reported! Thank you!", ephemeral=True)
 
@@ -242,35 +243,35 @@ class Basic(commands.Cog):
 		#SOON TM
 		if message.content == '\U0001F1FB\U0001F1E8':
 			await message.delete()
-			await message.channel.send("<:soontm:780592610666348585>")
+			await message.channel.send(Constants.Emoji.SOON)
 			return
 
 		#TERRALITH 1.16?!?!?
 		if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
-			await message.add_reaction('<:NEVER:909247811256713236>')
+			await message.add_reaction(Constants.Emoji.NEVER)
 
 		#Angry Ping
-		if str('332701537535262720') in str(message.mentions):
-			ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
+		if Constants.User.STARMUTE in message.raw_mentions:
+			ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_CONTRIBUTORS + Constants.Role.ALL_DONATORS
 			if [role.id for role in message.author.roles if role.id in ids]:
-				await message.add_reaction('<:Kappa:852579238259327006>')
-			elif 804009152288260106 in message.author.roles:
-				await message.add_reaction('<:birb:982866294187638815>')
+				await message.add_reaction(Constants.Emoji.KAPPA)
+			elif Constants.Role.FINAL_WARN in message.author.roles:
+				await message.add_reaction(Constants.Emoji.BIRB)
 			else:
-				await message.add_reaction('<:angryPING:875547905614839818>')
+				await message.add_reaction(Constants.Emoji.ANGRY_PING)
 		
 		#Pings Incendy
-		if str('780588749825638410') in str(message.mentions):
+		if Constants.User.INCENDY in message.raw_mentions:
 			if random.randint(0, 20) == 1:
-				await message.add_reaction('<:cringe:1081394880460378122>')
+				await message.add_reaction(Constants.Emoji.CRINGE)
 			else:
-				await message.add_reaction('👋')
+				await message.add_reaction(Constants.Emoji.WAVE)
 
 		#Pineapple Pin
 		if " pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin"):
-			if message.author.id == 234748321258799104:
-				await message.add_reaction('🍍')
-				await message.add_reaction('🧷')
+			if message.author.id == Constants.User.TERA:
+				await message.add_reaction(Constants.Emoji.PINEAPPLE)
+				await message.add_reaction(Constants.Emoji.PIN)
 
 	### EVENTS ###
 
@@ -317,7 +318,7 @@ class BugInfo(discord.ui.Modal, title='Bug Information'):
 		response = requests.post(url, auth=auth, json=data, headers=headers)
 		if response.status_code == 201:
 			view = discord.ui.View()
-			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{self.project} Issue", url=response.json()['html_url'], emoji="<:github:1045336251605188679>"))
+			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{self.project} Issue", url=response.json()['html_url'], emoji=Constants.Emoji.GITHUB))
 
 			await interaction.response.send_message(f"Issue created successfully! You can view and add to it by clicking the button below.", view=view)
 		else:

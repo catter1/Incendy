@@ -5,6 +5,7 @@ import logging
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
+import libraries.constants as Constants
 
 class Roles(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -19,8 +20,8 @@ class Roles(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_join(self, member):		
 		if self.client.settings["locked"] == False:
-			guild = self.client.get_guild(738046951236567162)
-			role = guild.get_role(744790468428300330)
+			guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
+			role = guild.get_role(Constants.Role.MEMBER)
 			await member.add_roles(role)
 
 		# Check if user tries to circumvent SHUTUP
@@ -36,8 +37,8 @@ class Roles(commands.Cog):
 	async def role(self, interaction: discord.Interaction):
 		""" /role """
 		
-		guild = self.client.get_guild(738046951236567162)
-		role = guild.get_role(744790468428300330)
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
+		role = guild.get_role(Constants.Role.MEMBER)
 		fixcount = 0
 		
 		await interaction.response.defer()

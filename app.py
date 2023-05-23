@@ -12,6 +12,7 @@ from discord.ext import commands
 from discord.ext.tasks import loop
 from mediawiki import MediaWiki
 from libraries import incendy
+import libraries.constants as Constants
 
 # Get keys
 with open('resources/keys.json', 'r') as f:
@@ -266,7 +267,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 	command = interaction.command.name
 	if isinstance(error, app_commands.CommandOnCooldown):
 		if command in ["ping", "qp", "stats", "discord", "Translate to English"]: #short_cd or default_cd
-			await interaction.response.send_message(str(error) + ". If you want to keep using without a cooldown, head to <#923571915879231509>!", ephemeral=True)
+			await interaction.response.send_message(str(error) + f". If you want to keep using without a cooldown, head to <#{Constants.Channel.BOT}>!", ephemeral=True)
 		else:
 			await interaction.response.send_message(str(error), ephemeral=True)
 	elif isinstance(error, (app_commands.CheckFailure, app_commands.MissingPermissions, incendy.NotInBotChannel, incendy.CantCloseThread)):

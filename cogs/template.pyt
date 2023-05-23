@@ -3,6 +3,7 @@ import logging
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
+import libraries.constants as Constants
 
 class Template(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):

@@ -10,6 +10,7 @@ from beet.contrib.json_log import JsonLogHandler
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy
+import libraries.constants as Constants
 
 class Datapacks(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -119,7 +120,7 @@ class Datapacks(commands.Cog):
 
 		file = discord.File(f"tmp/{filename}", filename=filename)
 		view = discord.ui.View()
-		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, emoji='<:github:1045336251605188679>', url="https://github.com/misode/mcmeta", label="Misode's Mcmeta Repository"))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, emoji=Constants.Emoji.GITHUB, url="https://github.com/misode/mcmeta", label="Misode's Mcmeta Repository"))
 
 		await interaction.followup.send(view=view, file=file)
 		os.remove(f"tmp/{filename}")

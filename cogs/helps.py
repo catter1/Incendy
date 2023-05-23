@@ -4,6 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 from libraries import incendy
+import libraries.constants as Constants
 
 class Helps(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -65,7 +66,7 @@ class Helps(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_thread_create(self, thread):
-		if thread.parent_id == 1019651246078038128:
+		if thread.parent_id == Constants.Channel.SUPPORT:
 			embed = discord.Embed(
 				colour=discord.Colour.brand_green(),
 				description="Thanks for creating a thread! Be patient, and we will answer your question when we are able to. In the meantime...\n\n• Check the FAQ by doing `/faq` to see if your question is already answered.\n• Did you **describe** your issue thoroughly?\n• Are relevant **logs** attached?\n• Is your thread **tagged** appropriately?\n• Ensure you've answered the questions outlined in our **Post Guidelines**.\n\nWhen your question is answered, please close it with `/close`, or click the button. Thank you!"

@@ -8,6 +8,7 @@ from discord.ext import commands, tasks
 from libraries import incendy
 from libraries import image_tools
 from libraries import stardust_downloads as sd
+import libraries.constants as Constants
 
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -46,13 +47,13 @@ class Stats(commands.Cog):
 		embed = discord.Embed(
 			color=colour,
 			title="About Me",
-			description="Hi! I'm Incendy, the loyal Discord bot of Stardust Labs!\n\n<@260929689126699008> brought me into this world on November 24, 2020. I evolved from a joke bot that added funny reactions to messages, into the all-powerful bot I am today.\n\nIf you aren't familiar with my commands, do `/help`! As for my non-command functions:\n- Automatically detect and upload logs to [mclo.gs](https://mclo.gs/)\n- Check for and resolve \"textlinks\" such as `[[wiki]]`\n- Discover videos and streams made about Terralith and Incendium for <#879976073813700648>\n- Additional specialized moderation\n- An \"App Command\" that translates messages to English upon right-click\n- ...and more!\n\nIf Incendy has helped you in any way, you can submit feedback via `/feedback`, or even donate to catter via the link below. Thank you!"
+			description=f"Hi! I'm Incendy, the loyal Discord bot of Stardust Labs!\n\n<@{Constants.User.CATTER}> brought me into this world on November 24, 2020. I evolved from a joke bot that added funny reactions to messages, into the all-powerful bot I am today.\n\nIf you aren't familiar with my commands, do `/help`! As for my non-command functions:\n- Automatically detect and upload logs to [mclo.gs](https://mclo.gs/)\n- Check for and resolve \"textlinks\" such as `[[wiki]]`\n- Post Stardust project releases and social media posts in <#{Constants.Channel.STARDUST_NEWS}>\n- Additional specialized moderation\n- An \"App Command\" that translates messages to English upon right-click\n- ...and more!\n\nIf you have any suggestions or found any bugs, please submit them to the GitHub issue tracker, linked below. If Incendy has helped you in any way, consider donating to catter via the link below. Thank you!"
 		)
 		embed.set_author(name=self.client.user.display_name, icon_url=self.client.user.display_avatar.url)
 
 		view = discord.ui.View()
-		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Source Code", url="https://github.com/catter1/incendy", emoji="<:github:1045336251605188679>"))
-		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji="<:kofi:962411326666334259>"))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Source Code", url="https://github.com/catter1/incendy", emoji=Constants.Emoji.GITHUB))
+		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji=Constants.Emoji.KOFI))
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon™️!)", disabled=True))
 
 		await interaction.response.send_message(embed=embed, view=view)
@@ -91,7 +92,7 @@ class Stats(commands.Cog):
 			embed = discord.Embed(
 				title=f"{member.display_name}'s Stats",
 				color=colour,
-				description=f"<:stardust:1058423314672013382> joined <t:{joined}:R>\n<:discord:1048627498734342206> joined <t:{created}:R>"
+				description=f"{Constants.Emoji.STARDUST} joined <t:{joined}:R>\n{Constants.Emoji.DISCORD} joined <t:{created}:R>"
 			)
 			
 			embed.add_field(name="Total Messages", value="{:,}".format(totalmsgs), inline=False)
@@ -156,7 +157,7 @@ class Stats(commands.Cog):
 
 			embed = discord.Embed(color=colour)
 			embed.set_author(name=interaction.guild.name, icon_url=interaction.guild.icon)
-			embed.set_footer(text="Template by Tera", icon_url=self.client.get_user(234748321258799104).avatar.url)
+			embed.set_footer(text="Template by Tera", icon_url=self.client.get_user(Constants.User.TERA).avatar.url)
 			embed.set_image(url="attachment://stats.jpg")
 			await interaction.response.send_message(embed=embed, file=file)
 

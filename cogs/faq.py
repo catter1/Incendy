@@ -5,6 +5,7 @@ import logging
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
+import libraries.constants as Constants
 
 class Faq(commands.Cog):
     def __init__(self, client: incendy.IncendyBot):
@@ -106,8 +107,8 @@ Check out the in-depth compatibility table on the wiki by clicking the button be
                     description='Interested in contributing to Stardust Labs in some way? Here are some ways you can help!',
                     color=faq_colour
                 )
-                embed.add_field(name="Wiki", value="The wiki could always use your help! You can do anything from adding mod/datapack compatabilities to the [compat table](https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities), or help out greatly by helping with [Tera's to-do list](https://discord.com/channels/738046951236567162/794630105463783484/923270468956483584). Either way, ask in <#794630105463783484> and check out the [Wiki contribution guide](https://stardustlabs.miraheze.org/wiki/Contributing)! By helping out with some of the tougher stuff, you can earn the **Wiki Contributor** role.", inline=False)
-                embed.add_field(name="Translations", value="In Incendium, there is a lot of stuff to be translated. If you know another language, go check out our [Localization Website](https://weblate.catter.dev) to start translating for Incendium, Kuma's [Omni Biome Name Fix resourcepack](https://modrinth.com/resourcepack/stardust-biome-name-fix), and future Stardust Labs projects! Is your language not there? Ask <@260929689126699008> to add it! By translating, you can earn the **Translator** role.", inline=False)
+                embed.add_field(name="Wiki", value=f"The wiki could always use your help! You can do anything from adding mod/datapack compatabilities to the [compat table](https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities), or help out greatly by helping with [Tera's to-do list](https://discord.com/channels/738046951236567162/794630105463783484/923270468956483584). Either way, ask in <#{Constants.Channel.WIKI}> and check out the [Wiki contribution guide](https://stardustlabs.miraheze.org/wiki/Contributing)! By helping out with some of the tougher stuff, you can earn the **Wiki Contributor** role.", inline=False)
+                embed.add_field(name="Translations", value=f"In Incendium, there is a lot of stuff to be translated. If you know another language, go check out our [Localization Website](https://weblate.catter.dev) to start translating for Incendium, Kuma's [Omni Biome Name Fix resourcepack](https://modrinth.com/resourcepack/stardust-biome-name-fix), and future Stardust Labs projects! Is your language not there? Ask <@{Constants.User.CATTER}> to add it! By translating, you can earn the **Translator** role.", inline=False)
                 embed.add_field(name="Code, Structures, and Community", value="For the most part, we don\'t accept code contributions for our projects unless you are skilled, well-known in the community, and we're intersted in working with you. It's a similar story for structures: we already have great builders that help us out, but occasionally we might see stuff we like from others and ask if they want to contribute. Finally, the best way you can contribute to Stardust Labs is to hang around and be part of the community! For those who have helped in some way with either code, structures, creating helpful third-party tools, or just being an integral part of our community, you can earn the **Contributor** role.", inline=False)
             case "Foliage Colors":
                 embed = discord.Embed(
@@ -170,10 +171,10 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
             case "Other World Types":
                 embed = discord.Embed(
                     title='Other World Types',
-                    description='''
+                    description=f'''
 Terralith is not compatible with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome.
 
-This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by <@897998124478521356>. If/when this gets fixed, Terralith may be compatible with the world types!
+This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by <@{Constants.User.APOLLO}>. If/when this gets fixed, Terralith may be compatible with the world types!
                     ''',
                     color=faq_colour
                 )
@@ -222,10 +223,10 @@ You cannot simply remove a worldgen pack from your world. The way to do so invol
             case "Resource Packs":
                 embed = discord.Embed(
                     title='Resource Packs',
-                    description='''
-When using a minimap or any other mod that displays biomes, Stardust biome names may appear very long. <@212447019296489473> made a cool resource pack that fixes it! You can download it from Modrinth by clicking the button below.
+                    description=f'''
+When using a minimap or any other mod that displays biomes, Stardust biome names may appear very long. <@{Constants.User.KUMA}> made a cool resource pack that fixes it! You can download it from Modrinth by clicking the button below.
                     
-If you want a resourcepack for Incendium that gives all of Incendium\'s custom stuff unique textures, check out <@234748321258799104>\'s Incendium Optional Resourcepack! You can download it from Modrinth by clicking the button below.
+If you want a resourcepack for Incendium that gives all of Incendium\'s custom stuff unique textures, check out <@{Constants.User.TERA}>\'s Incendium Optional Resourcepack! You can download it from Modrinth by clicking the button below.
                     ''',
                     color=faq_colour
                 )
@@ -338,7 +339,7 @@ As a fun note, some changes in Minecraft 1.19.3 has greatly improved the lookup 
             case "Version Table":
                 embed = discord.Embed(
                     title='All Versions',
-                    description='Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#900598465430716426>.',
+                    description=f'Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#{Constants.Channel.DOWNLOADS}>.',
                     color=faq_colour
                 )
                 file = discord.File("assets/Version_Table.png", filename="image.png")
@@ -438,39 +439,39 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 class Compat(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Compatibility Table', emoji='<:miraheze:890077957069111316>', url='https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities'))
+        self.add_item(discord.ui.Button(label='Compatibility Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities'))
 
 class Pregen(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Chunky (Fabric)', emoji='<:fabric:962456210773262346>', url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator'))
-        self.add_item(discord.ui.Button(label='Chunky (Forge)', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator-forge'))
-        self.add_item(discord.ui.Button(label='Chunky (Paper/Spigot)', emoji='<:spigot:964945252890861649>', url='https://www.spigotmc.org/resources/chunky.81534/'))
+        self.add_item(discord.ui.Button(label='Chunky (Fabric)', emoji=Constants.Emoji.FABRIC, url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator'))
+        self.add_item(discord.ui.Button(label='Chunky (Forge)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator-forge'))
+        self.add_item(discord.ui.Button(label='Chunky (Paper/Spigot)', emoji=Constants.Emoji.SPIGOT, url='https://www.spigotmc.org/resources/chunky.81534/'))
 
 class Realms(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Bisect Hosting', emoji='<:bisect:962410759462203462>', url='https://bisecthosting.com/stardust'))
+        self.add_item(discord.ui.Button(label='Bisect Hosting', emoji=Constants.Emoji.BISECT, url='https://bisecthosting.com/stardust'))
 
 class Resource(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Omni Biome Name Fix', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/stardust-biome-name-fix'))
-        self.add_item(discord.ui.Button(label='Incendium Optional Resourcepack', emoji='<:modrinth:1045336248950214706>', url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
+        self.add_item(discord.ui.Button(label='Omni Biome Name Fix', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix'))
+        self.add_item(discord.ui.Button(label='Incendium Optional Resourcepack', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
 
 class Seedfix(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='SeedFix Website', emoji='<:seedfix:917599175259070474>', url='https://seedfix.stardustlabs.net/'))
-        self.add_item(discord.ui.Button(label='Mod Download', emoji='<:curseforge:1077301605717770260>', url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
+        self.add_item(discord.ui.Button(label='SeedFix Website', emoji=Constants.Emoji.SEEDFIX, url='https://seedfix.stardustlabs.net/'))
+        self.add_item(discord.ui.Button(label='Mod Download', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
 
 class Support(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Bisect Hosting', emoji='<:bisect:962410759462203462>', url='https://bisecthosting.com/stardust'))
-        self.add_item(discord.ui.Button(label='Patreon', emoji='<:patreon:962411326628581376>', url='https://www.patreon.com/stardustlabs'))
-        self.add_item(discord.ui.Button(label='Server Subscriptions', emoji='<:discord:1048627498734342206>', url='https://discord.com/servers/stardust-labs-738046951236567162'))
-        self.add_item(discord.ui.Button(label='Ko-Fi', emoji='<:kofi:962411326666334259>', url='https://ko-fi.com/stardustlabs'))
+        self.add_item(discord.ui.Button(label='Bisect Hosting', emoji=Constants.Emoji.BISECT, url='https://bisecthosting.com/stardust'))
+        self.add_item(discord.ui.Button(label='Patreon', emoji=Constants.Emoji.PATREON, url='https://www.patreon.com/stardustlabs'))
+        self.add_item(discord.ui.Button(label='Server Subscriptions', emoji=Constants.Emoji.DISCORD, url='https://discord.com/servers/stardust-labs-738046951236567162'))
+        self.add_item(discord.ui.Button(label='Ko-Fi', emoji=Constants.Emoji.KOFI, url='https://ko-fi.com/stardustlabs'))
 
 ### SELECT MENUS ###
 
@@ -532,8 +533,8 @@ This is a little difficult and finicky.
 
             case 'Taller Nether':
                 embed.title = 'Configuration (Taller Nether)'
-                embed.description = '''
-This tutorial (graciously provided by <@212447019296489473>) will show you how to add extra space above the bedrock roof in Amplified Nether.
+                embed.description = f'''
+This tutorial (graciously provided by <@{Constants.User.KUMA}>) will show you how to add extra space above the bedrock roof in Amplified Nether.
 **•** Download slicedlime\'s datapack [here](https://github.com/slicedlime/examples).
 **•** Unzip Amplified Nether and navigate to the `/data/minecraft/` directory. Copy the `dimension_type` folder from slicedlime\'s datapack and stick it here.
 **•** Delete every file in the `dimension_type` directory EXCEPT `the_nether.json`.
@@ -544,8 +545,8 @@ This tutorial (graciously provided by <@212447019296489473>) will show you how t
 
             case 'Adjusted Continent Size':
                 embed.title = 'Configuration (Adjusted Continent Size)'
-                embed.description = """
-This tutorial (graciously provided by <@897998124478521356>) will show you how to adjust continent size with the Continents project.
+                embed.description = f"""
+This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you how to adjust continent size with the Continents project.
 **•** Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
 **•** Open `base_continents.json`. You should see this: ```json
 {
@@ -656,9 +657,9 @@ class UpdateMenu(discord.ui.Select):
 
             case 'Terralith (1.19)':
                 embed.title = 'Updating (Terralith 1.19)'
-                embed.description = '''
+                embed.description = f'''
 **1.** If you used Seedfix, continue. If you downloaded the datapack directly from Planet Minecraft without entering a seed into the Seedfix website, skip to Step **4**.
-**2.** Open your `world/level.dat` using <@149241652391706625>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).
+**2.** Open your `world/level.dat` using <@{Constants.User.MISODE}>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).
 **3.** In the `level.dat`, change the overworld seed in `Data>WorldGenSettings>dimensions` to the seed displayed in `Data>WorldGenSettings>dimensions>minecraft:overworld>generator>biome_source`. If it is the same, you\'re all good! Do not forget the  "-" if there is any.
 **4.** Once that is done, you can replace Terralith 2.x.x with Terralith 2.3.x and start up your world!
                 '''

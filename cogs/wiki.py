@@ -3,7 +3,6 @@ import os
 import json
 import nltk
 import requests
-import urllib.parse
 import shutil
 import logging
 import asyncpg
@@ -14,10 +13,11 @@ import typing
 from discord import app_commands
 from discord.ext import commands, tasks
 from time import perf_counter
-from mediawiki import MediaWiki, MediaWikiPage
+from mediawiki import MediaWikiPage
 from nltk.tokenize import sent_tokenize
 from thefuzz import process
 from libraries import incendy
+import libraries.constants as Constants
 
 class Wiki(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -262,7 +262,7 @@ class Wiki(commands.Cog):
 
 		# embed = discord.Embed(
 		# 	title="Wiki Surfer",
-		# 	description="Thanks to <@234748321258799104> and our other Wiki Contributors, Stardust Labs has an amazing Wiki for all its projects! Too lazy to click on the website link and search there? This command allows you to search the entire Wiki for whatever information your looking for and display it here in Discord instead.\n\nPress one of the button below to get started!",
+		# 	description=f"Thanks to {Constants.User.TERA} and our other Wiki Contributors, Stardust Labs has an amazing Wiki for all its projects! Too lazy to click on the website link and search there? This command allows you to search the entire Wiki for whatever information your looking for and display it here in Discord instead.\n\nPress one of the button below to get started!",
 		# 	color=discord.Colour.brand_red()
 		# )
 
@@ -278,7 +278,7 @@ class SearchView(discord.ui.View):
 
 class SearchButton(discord.ui.Button):
 	def __init__(self, db: asyncpg.Pool):
-		super().__init__(style=discord.ButtonStyle.green, label='Search Wiki!', emoji='<:miraheze:890077957069111316>')
+		super().__init__(style=discord.ButtonStyle.green, label='Search Wiki!', emoji=Constants.Emoji.MIRAHEZE)
 		self.db = db
 	
 	async def callback(self, interaction: discord.Interaction):

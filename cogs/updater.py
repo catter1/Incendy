@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
 from libraries.project import Project
+import libraries.constants as Constants
 
 class Updater(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -25,13 +26,13 @@ class Updater(commands.Cog):
 			return {}
 
 		patrons = {"blaze":[],"sentry":[],"inferno":[],"overlord":[]}
-		patrons["overlord"].extend([member.name for member in interaction.guild.get_role(877672384872738867).members])
-		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(795469887790252084).members])
-		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(1031653951294144626).members])
-		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(795469805678755850).members])
-		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(1031652785025986576).members])
-		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(795463111561445438).members])
-		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(1031650636544090166).members])
+		patrons["overlord"].extend([member.name for member in interaction.guild.get_role(Constants.Role.OVERLORD_PATRON).members])
+		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(Constants.Role.INFERNO_PATRON).members])
+		patrons["inferno"].extend([member.name for member in interaction.guild.get_role(Constants.Role.INFERNO_SUB).members])
+		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(Constants.Role.SENTRY_PATRON).members])
+		patrons["sentry"].extend([member.name for member in interaction.guild.get_role(Constants.Role.SENTRY_SUB).members])
+		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(Constants.Role.BLAZE_PATRON).members])
+		patrons["blaze"].extend([member.name for member in interaction.guild.get_role(Constants.Role.BLAZE_SUB).members])
 
 		return patrons
 
@@ -88,9 +89,9 @@ class Updater(commands.Cog):
 	@makemod.autocomplete('project')
 	@update.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		if interaction.user.id == 234748321258799104:
+		if interaction.user.id == Constants.User.TERA:
 			projects = ["Incendium Optional Resourcepack"]
-		elif interaction.user.id == 212447019296489473:
+		elif interaction.user.id == Constants.User.KUMA:
 			projects = ["Biome Name Fix"]
 		else:
 			projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified Nether", "Continents", "Structory: Towers", "Incendium Optional Resourcepack", "Biome Name Fix"])

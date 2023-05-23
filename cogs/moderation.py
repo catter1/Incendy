@@ -6,6 +6,7 @@ import validators
 from discord import app_commands
 from discord.ext import commands, tasks
 from libraries import incendy, url_search
+import libraries.constants as Constants
 
 class Moderation(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -20,7 +21,7 @@ class Moderation(commands.Cog):
 		self.client.tree.add_command(self.shutup_app)
 
 	async def cog_load(self):
-		self.servchan = self.client.get_channel(756923587339878420)
+		self.servchan = self.client.get_channel(Constants.Channel.SERVER)
 		self.to_be_banned = []
 		self.ping_check.start()
 		self.detect.start()
@@ -38,12 +39,11 @@ class Moderation(commands.Cog):
 
 	@tasks.loop(seconds=5.0)
 	async def detect(self):
-		# ids: Starmute, Stardust, Dev Team, Assistant, Contributor, Overlord, Inferno, Sentry, Blaze, Supporter, Premium Member
-		ids = [744788173128859670, 744788229579866162, 885719021176119298, 862343886864384010, 749701703938605107, 877672384872738867, 795469887790252084, 795469805678755850, 1031650636544090166, 941157235390820382, 1031650634048487426]
+		ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_PATRONS + Constants.Role.BOOSTER + Constants.Role.CONTRIBUTOR + Constants.Role.DEV_TEAM
 		strikes = []
 		
 		for cache in reversed(self.client.cached_messages):
-			if cache.guild.id == 738046951236567162:
+			if cache.guild.id == Constants.Guild.STARDUST_LABS:
 				if (discord.utils.utcnow() - cache.created_at).seconds < 15:
 					if not [role.id for role in cache.author.roles if role.id in ids]:
 						if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
@@ -77,7 +77,7 @@ class Moderation(commands.Cog):
 		
 		today = datetime.datetime.today().strftime("%d/%m/%Y")
 		if today not in log["days"]:
-			guild = self.client.get_guild(725920503893590056)
+			guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 			
 			# Ensure days dict doesn't get bloated
 			log["days"].append(today)
@@ -122,7 +122,7 @@ class Moderation(commands.Cog):
 	### OTHER FUNCTIONS ###
 
 	async def ban_hammer(self, message):
-		stardust_channel = self.client.get_channel(825941927215890502)
+		stardust_channel = self.client.get_channel(Constants.Channel.STARDUST)
 		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
 		embed.set_author(name="Lmao, I caught someone being silly!")
 		embed.add_field(name=f"Here was {message.author.name}'s' silly message, censored for your convenience. \:)", value="||`" + message.content + "`||")
@@ -253,9 +253,8 @@ class Moderation(commands.Cog):
 	### LISTENERS ###
 
 	async def video_check(self, message: discord.Message) -> None:
-		ids = [744788173128859670, 760569251618226257, 744788229579866162, 821429484674220036, 885719021176119298, 862343886864384010, 749701703938605107, 908104350218469438, 918174846318428200, 877672384872738867, 795469887790252084, 795469805678755850, 795463111561445438]
+		ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_DONATORS + Constants.Role.ALL_CONTRIBUTORS
 		if not [role.id for role in message.author.roles if role.id in ids]:
-			#pattern = re.compile(r'(http|ftp|https|www):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')
 
 			for item in message.attachments:
 				if item.content_type.split("/")[0] == "video":
@@ -263,7 +262,6 @@ class Moderation(commands.Cog):
 					await message.channel.send("Sorry, no videos allowed \:)")
 					return
 
-			#matches = pattern.finditer(message.content)
 			exts = ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp']
 			if url_search.url(message.content) and any([ext for ext in exts if ext in message.content]):
 				await message.delete()
@@ -338,11 +336,11 @@ class Moderation(commands.Cog):
 				await self.ban_hammer(message)
 
 			# No videos in #general
-			if message.channel.id in [771617249910849556]:
+			if message.channel.id in [Constants.Channel.GENERAL]:
 				await self.video_check(message=message)
 
 			# Ping check
-			if 332701537535262720 in message.raw_mentions:
+			if Constants.User.STARMUTE in message.raw_mentions:
 				await self.check_ping(message=message)
 	
 	@commands.Cog.listener()
@@ -350,7 +348,7 @@ class Moderation(commands.Cog):
 		if not after.author.bot and not after.author.guild_permissions.administrator:
 
 			# No videos in #general
-			if after.channel.id == 771617249910849556:
+			if after.channel.id in [Constants.Channel.GENERAL]:
 				await self.video_check(message=after)
 
 async def setup(client):

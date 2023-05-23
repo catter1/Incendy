@@ -9,6 +9,7 @@ import validators
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
+import libraries.constants as Constants
 
 class Autoresponse(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -45,17 +46,17 @@ class Autoresponse(commands.Cog):
 				if "misode" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.misode_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page], emoji="<:misode:1087040969574187010>"))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
 				
 				elif "wiki" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower()
 					if page in self.wiki_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page], emoji="<:miraheze:890077957069111316>"))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page], emoji=Constants.Emoji.MIRAHEZE))
 
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
 					if bug_id.isdigit():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{match.split('|')[0].upper()} {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji="<:mojira:1087079351452958761>"))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{match.split('|')[0].upper()} {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji=Constants.Emoji.MOJIRA))
 
 		view = discord.ui.View()
 		if len(links) > 0:
@@ -87,7 +88,7 @@ class Autoresponse(commands.Cog):
 				# Init button
 				logurl = json.loads(x.text)["url"]
 				view = discord.ui.View()
-				view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji="<:mclogs:1087036837996023910>"))
+				view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji=Constants.Emoji.MCLOGS))
 
 				# Check for issues
 				scanner = LogScanner(content)
