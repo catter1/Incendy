@@ -507,7 +507,7 @@ class Project:
 		return modfilename
 	
 
-	async def upload_modrinth(self, filepath: str) -> str:
+	async def upload_modrinth(self, filepath: str) -> str | None:
 		"""
 		Upload the project to Modrinth.
 
@@ -519,7 +519,7 @@ class Project:
 		Returns
 		----------
 		message : str
-			Release link if successful, otherwise error message
+			Release link if successful, otherwise None
 		"""
 
 		# Init extra request stuff
@@ -563,12 +563,13 @@ class Project:
 		r = requests.post(url, headers=headers, files=files)
 
 		if r.status_code == 200:
-			return f"Successfully uploaded! [Link](https://modrinth.com/project/{self.project_id}/versions/{self.version_number})"
+			return f"https://modrinth.com/project/{self.project_id}/versions/{self.version_number}"
 		else:
-			return r.text
+			logging.error(r.text)
+			return None
 		
 
-	async def upload_curseforge(self, filepath: str) -> str:
+	async def upload_curseforge(self, filepath: str) -> str | None:
 		"""
 		Upload the project to Curseforge.
 
@@ -580,7 +581,7 @@ class Project:
 		Returns
 		----------
 		message : str
-			Release link if successful, otherwise error message
+			Release link if successful, otherwise None
 		"""
 
 		# Init extra request stuff
@@ -631,13 +632,18 @@ class Project:
 		try:
 			_id = r.json().get('id')
 			if _id == None:
-				raise ValueError("ID not found.")
-			return f"Successfully uploaded! [Link](https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{_id})"
+				logging.error("Curseforge ID not found.")
+				logging.error(r.json())
+				return None
+			
+			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{_id}"
+		
 		except requests.JSONDecodeError:
-			return r.text
+			logging.error(r.text)
+			return None
 
 
-	async def upload_github(self, filepath: str) -> str:
+	async def upload_github(self, filepath: str) -> str | None:
 		"""
 		Upload the project to GitHub.
 
@@ -649,7 +655,7 @@ class Project:
 		Returns
 		----------
 		message : str
-			Release link if successful, otherwise error message
+			Release link if successful, otherwise None
 		"""
 
 		proj_tag = self.platforms["GitHub"]["projects"][self.project_name]
@@ -717,7 +723,7 @@ class Project:
 		response = requests.post(url, json=data, headers=headers, auth=auth)
 		if response.status_code != 201:
 			logging.error(response.text)
-			return "There's been an error creating the release!"
+			return None
 		
 		# Link for later
 		release_link = response.json()['html_url']
@@ -734,13 +740,13 @@ class Project:
 		
 		# Finish off with responses for the user
 		if response.status_code == 201:
-			return f"Successfully uploaded! [Link]({release_link})"
+			return release_link
 		else:
 			logging.error(response.text)
-			return "There's been an error attaching the datapack to the release!"
+			return None
 	
 
-	async def upload_stardust(self, filepath: str) -> str:
+	async def upload_stardust(self) -> str | None:
 		"""
 		Upload the project to Stardust Labs site.
 
@@ -752,13 +758,13 @@ class Project:
 		Returns
 		----------
 		message : str
-			Release link if successful, otherwise error message
+			Download Library link if successful, otherwise None
 		"""
 		
 		return None
 	
 
-	async def upload_pmc(self) -> str:
+	async def upload_pmc(self) -> str | None:
 		"""
 		Upload the project changelogs to Planet Minecraft.
 
@@ -769,7 +775,7 @@ class Project:
 		Returns
 		----------
 		message : str
-			Release link if successful, otherwise error message
+			Project link if successful, otherwise None
 		"""
 
 		return None

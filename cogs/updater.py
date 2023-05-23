@@ -176,13 +176,38 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 		self.clear_items()
 		await interaction.response.defer(thinking=True, ephemeral=False)
 
+		# Upload
 		responses = await self.project_upload.upload()
 
+		# Uploader's response
 		embed = discord.Embed(title=f"{self.project_upload.project_name} {self.project_upload.version_name} Upload Status", color=discord.Color.blue())
 		for site, resp in responses.items():
-			embed.add_field(name=site, value=resp, inline=False)
+			if resp:
+				embed.add_field(name=site.title(), value=f"[SUCCESS!]({resp})", inline=False)
+			else:
+				embed.add_field(name=site.title(), value="FAILED - Check logs!", inline=False)
 
 		await interaction.followup.send(embed=embed)
+
+		# Stardust News Posting
+		embed = discord.Embed(
+			title=f"New {self.project_upload.project_name} Release!",
+			color=discord.Color.green(),
+			description=f"{self.project_upload.version_name} Changelog:\n\n{self.project_upload.changelog}"
+		)
+		view = discord.ui.View()
+
+		for site, resp in responses.items():
+			if resp:
+				view.add_item(discord.ui.Button(
+					style=discord.ButtonStyle.link,
+					label=site.title(),
+					url=resp,
+					emoji=Constants.Emoji.DOWNLOADS[site]
+				))
+
+		stardust_news = interaction.client.get_channel(Constants.Guild.STARDUST_LABS)
+		await stardust_news.send(embed=embed, view=view)
 
 class ModModal(discord.ui.Modal, title='Mod Information'):
 	def __init__(self, project_upload: Project):

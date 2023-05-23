@@ -75,6 +75,15 @@ class Emoji:
     SEEDFIX = "<:seedfix:917599175259070474>"
     PMC = "<:pmc:1045336243216584744>"
 
+    DOWNLOADS = {
+        "github": GITHUB,
+        "modrinth": MODRINTH,
+        "curseforge": CURSEFORGE,
+        "seedfix": SEEDFIX,
+        "pmc": PMC,
+        "stardust": STARDUST
+    }
+
     # Fun
     SOON = "<:soontm:780592610666348585>"
     NEVER = "<:NEVER:909247811256713236>"
