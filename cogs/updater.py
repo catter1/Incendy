@@ -206,7 +206,7 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 					emoji=Constants.Emoji.DOWNLOADS[site]
 				))
 
-		stardust_news = interaction.client.get_channel(Constants.Guild.STARDUST_LABS)
+		stardust_news = interaction.client.get_channel(Constants.Channel.STARDUST_NEWS)
 		await stardust_news.send(embed=embed, view=view)
 
 class ModModal(discord.ui.Modal, title='Mod Information'):
