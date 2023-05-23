@@ -549,10 +549,10 @@ This tutorial (graciously provided by <@{Constants.User.KUMA}>) will show you ho
 This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you how to adjust continent size with the Continents project.
 **•** Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
 **•** Open `base_continents.json`. You should see this: ```json
-{
+{{
     "type": "add",
-    "argument1":{
-        "argument": {
+    "argument1":{{
+        "argument": {{
             "xz_scale": 0.13,
             "y_scale": 0.0,
             "noise": "minecraft:continentalness",
@@ -560,11 +560,11 @@ This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you 
             "shift_y": 0.0,
             "shift_z": "minecraft:shift_z",
             "type": "minecraft:shifted_noise"
-        },
+        }},
         "type": "minecraft:flat_cache"
-    },
+    }},
     "argument2":"continents:continent_bias"
-}
+}}
 ```
 **•** To increase the continent sizes, lower the `xz_scale` value. Halving = 4x larger continents.
 **•** To decrease the continent sizes, raise the `xz_scale` value. Doubling = 4x smaller continents.
