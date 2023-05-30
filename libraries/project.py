@@ -618,7 +618,7 @@ class Project:
 
 		# Build post data
 		metadata = {
-			"changelog": self.changelog,
+			"changelog": self.changelog.replace("\n", "\n\n"),
 			"changelogType": "markdown",
 			"displayName": self.filename.replace("_", " "),
 			"gameVersions": gameVersions,
