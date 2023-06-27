@@ -8,6 +8,7 @@ import requests
 import validators
 from discord import app_commands
 from discord.ext import commands
+from lxml import etree
 from libraries import incendy
 import libraries.constants as Constants
 
@@ -21,8 +22,16 @@ class Autoresponse(commands.Cog):
 		with open('resources/reposts.json', 'r') as f:
 			self.reposts = json.load(f)
 
-		resp = requests.get("https://misode.github.io/sitemap.txt")
-		self.misode_urls = {url.split('/')[-2]: url for url in resp.text.split("\n") if len(url.split("/")) > 4}
+		apollo_resp = requests.get("https://www.worldgen.dev/sitemap.xml")
+		root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+
+		loc_elements = root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+		apollo_links = [element.text for element in loc_elements]
+		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
+
+		misode_resp = requests.get("https://misode.github.io/sitemap.txt")
+		self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
+
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
 		logging.info(f'> {self.__cog_name__} cog loaded')
@@ -46,7 +55,12 @@ class Autoresponse(commands.Cog):
 				if "misode" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.misode_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace("-", " ").title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace('-', ' ').title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
+
+				elif "worldgen" in match.split("|")[0].lower():
+					page = match.split("|")[-1].lower().replace(" ", "-")
+					if page in self.apollo_urls.keys():
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=self.apollo_urls[page]))
 				
 				elif "wiki" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower()

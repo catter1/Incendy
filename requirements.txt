@@ -4,7 +4,7 @@ anyio==3.6.2
 async-timeout==4.0.2
 asyncpg==0.27.0
 attrs==22.2.0
-beautifulsoup4==4.10.0
+beautifulsoup4==4.12.2
 beet==0.84.0
 bs4==0.0.1
 certifi==2022.12.7
