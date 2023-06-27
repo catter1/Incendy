@@ -46,7 +46,7 @@ class Autoresponse(commands.Cog):
 				if "misode" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.misode_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace("-", " ").title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
 				
 				elif "wiki" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower()
