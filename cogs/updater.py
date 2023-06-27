@@ -24,7 +24,9 @@ class Updater(commands.Cog):
 
 		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 
-		patrons = {"blaze":[],"sentry":[],"inferno":[],"overlord":[]}
+		patrons = {"blaze":[],"sentry":[],"inferno":[],"overlord":[],"undying":[],"flamekeeper":[]}
+		patrons["flamekeeper"].extend([member.name for member in guild.get_role(Constants.Role.FLAMEKEEPER_PATRON).members])
+		patrons["undying"].extend([member.name for member in guild.get_role(Constants.Role.UNDYING_PATRON).members])
 		patrons["overlord"].extend([member.name for member in guild.get_role(Constants.Role.OVERLORD_PATRON).members])
 		patrons["inferno"].extend([member.name for member in guild.get_role(Constants.Role.INFERNO_PATRON).members])
 		patrons["inferno"].extend([member.name for member in guild.get_role(Constants.Role.INFERNO_SUB).members])
@@ -128,7 +130,7 @@ class VersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
@@ -140,7 +142,7 @@ class ModVersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
