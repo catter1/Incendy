@@ -575,7 +575,7 @@ class Project:
 				logging.error(r.json())
 				return f"https://modrinth.com/project/{self.project_id}/versions"
 			
-			return f"https://modrinth.com/project/{self.project_id}/versions/{_id}"
+			return f"https://modrinth.com/project/{self.project_id}/version/{_id}"
 		else:
 			logging.error(r.text)
 			return None
