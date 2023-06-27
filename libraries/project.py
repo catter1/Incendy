@@ -264,8 +264,14 @@ class Project:
 		overlord_str = "Overlord:\n"
 		for name in self.patrons['overlord']:
 			overlord_str += f"- {name}\n"
+		undying_str = "Undying:\n"
+		for name in self.patrons['undying']:
+			undying_str += f"- {name}\n"
+		flamekeeper_str = "Flamekeeper:\n"
+		for name in self.patrons['flamekeeper']:
+			flamekeeper_str += f"- {name}\n"
 
-		data = f"Patreon Supporters\n\nSpecial thanks to all of our Patrons for supporting us! Here is a list of all patrons in our\nDiscord server (https://discord.gg/stardustlabs) at the time of publishing this version.\n\n{overlord_str}\n{inferno_str}\n{sentry_str}\n{blaze_str}"
+		data = f"Patreon Supporters\n\nSpecial thanks to all of our Patrons for supporting us! Here is a list of all patrons in our\nDiscord server (https://discord.gg/stardustlabs) at the time of publishing this version.\n\n{flamekeeper_str}\n{undying_str}\n{overlord_str}\n{inferno_str}\n{sentry_str}\n{blaze_str}"
 
 		with open(f"{filepath}/patrons.txt", 'w') as f:
 			f.write(data)
