@@ -617,7 +617,9 @@ class Project:
 			"1.19.1": 9259,
 			"1.19.2": 9366,
 			"1.19.3": 9550,
-			"1.19.4": 9776
+			"1.19.4": 9776,
+			"1.20": 9971,
+			"1.20.1": 9990
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is Fabric/Forge, respectively
