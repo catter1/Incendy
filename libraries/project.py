@@ -383,7 +383,7 @@ class Project:
 			data["dependencies"][self.project_id] = dependencies
 			minecraft_dict = next((d for d in data["dependencies"][self.project_id] if d["modId"] == "minecraft"), None)
 			if minecraft_dict is not None:
-				minecraft_dict["versionRange"] = f"[{self.oldest_mc_version},1.20)"
+				minecraft_dict["versionRange"] = f"[{self.oldest_mc_version},)"
 
 			with open(f"{filepath}/mods.toml", 'w') as f:
 				toml.dump(data, f)
