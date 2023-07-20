@@ -215,8 +215,11 @@ class Project:
 				if data == translations.get("en_us") and lang != "en_us":
 					translations.pop(lang, None)
 					continue
-
-				translations[lang] = data
+				
+				if lang not in translations.keys():
+					translations[lang] = data
+				else:
+					translations[lang].update(data)
 
 		# Clean up
 		shutil.rmtree(repo_path, ignore_errors=True)
