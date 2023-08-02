@@ -93,6 +93,7 @@ class Emoji:
     BIRB = "<:birb:982866294187638815>"
     ANGRY_PING = "<:angryPING:875547905614839818>"
     CRINGE = "<:cringe:1081394880460378122>"
+    BLAHAJ = "<:blahaj:1104463914772729898>"
 
     # Tools
     MCLOGS = "<:mclogs:1087036837996023910>"
