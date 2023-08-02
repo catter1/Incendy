@@ -209,7 +209,8 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
 				))
 
 		stardust_news = interaction.client.get_channel(Constants.Channel.STARDUST_NEWS)
-		await stardust_news.send(embed=embed, view=view)
+		release = await stardust_news.send(embed=embed, view=view)
+		await release.publish()
 
 class ModModal(discord.ui.Modal, title='Mod Information'):
 	def __init__(self, project_upload: Project):
