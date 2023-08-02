@@ -117,15 +117,6 @@ This mechanic is what Terralith uses, but instead of doing different shades of g
                     ''',
                     color=faq_colour
                 )
-            case "Incendium vs Amplified Nether":
-                embed = discord.Embed(
-                    title='FAQ - Incendium vs. Amplified Nether',
-                    description='''Incendium and Amplified Nether are very different packs, and are **not** compatible with each other.
-**-** __Amplified Nether__ is a Vanilla nether, with 3D biomes, cool terrain shapes, and an extended height.
-**-** __Incendium__ has what Amplified Nether has, but with custom mobs, items, biomes, structures, and a cool boss. (Although, the Incendium height extension is not quite as Amplified Nether\'s.)
-                    ''',
-                    color=faq_colour
-                )
             case "Is It Working":
                 embed = discord.Embed(
                     title='How Do I Tell If It\'s Working?',
@@ -378,7 +369,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Incendium vs Amplified Nether", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types", "Terra Mods"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types", "Terra Mods"])
 
         choices = [
             app_commands.Choice(name=faq, value=faq)
