@@ -6,6 +6,7 @@ import gzip
 import json
 import requests
 import validators
+import datetime
 from discord import app_commands
 from discord.ext import commands
 from lxml import etree
@@ -151,6 +152,14 @@ class Autoresponse(commands.Cog):
 			for word in message.content.split():
 				if validators.url(word):
 					await self.stop_mod_reposts(message=message, url=word)
+					
+	@commands.Cog.listener()
+	async def on_message_edit(self, before: discord.Message, after: discord.Message):
+		if not after.author.bot and datetime.datetime.now(datetime.timezone.utc) - before.created_at < datetime.timedelta(minutes=1):
+			# Textlinks
+			matches = re.findall(r"[\[]{2}(\w[\w |':]+\w)?[\]]{2}", after.content)
+			if len(matches) > 0:
+				await self.do_textlinks(message=after, matches=matches)
 
 class LogScanner:
 	"""
