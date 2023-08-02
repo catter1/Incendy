@@ -284,7 +284,6 @@ class Basic(commands.Cog):
 				await message.add_reaction(Constants.Emoji.PIN)
 				
 		#Trans Love
-		print(message.content.lower())
 		if any([trans for trans in [" trans ", "🏳️‍⚧️", "blahaj", "blåhaj", "<:blahaj:1104463914772729898>"] if trans in message.content.lower()]) or message.content.startswith("trans ") or message.content.endswith(" trans"):
 			await message.add_reaction(Constants.Emoji.BLAHAJ)
 
