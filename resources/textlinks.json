@@ -15,6 +15,10 @@
         "link": "https://misode.github.io/",
         "icon": "<:misode:1087040969574187010>"
     },
+    "worldgen": {
+        "link": "https://www.worldgen.dev/",
+        "icon": ""
+    },
     "snowcapped": {
         "link": "https://snowcapped.jacobsjo.eu/",
         "icon": "<:snowcapped:1087036050054058104>"

@@ -48,7 +48,8 @@ class Autoresponse(commands.Cog):
 
 			# General matches
 			if match.lower() in [textlink for textlink in self.textlinks]:
-				links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=match.lower().title(), url=self.textlinks[match.lower()]["link"], emoji=self.textlinks[match.lower()]["icon"]))
+				emoji = self.textlinks[match.lower()]["icon"] if self.textlinks[match.lower()]["icon"] != "" else None
+				links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=match.lower().title(), url=self.textlinks[match.lower()]["link"], emoji=emoji))
 
 			elif "|" in match:
 
