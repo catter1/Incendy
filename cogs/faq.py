@@ -433,6 +433,14 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
 ### BUTTONS ###
 
+class Compat(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(discord.ui.Button(label='Terralith Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Incendium Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Nullscape Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
+        self.add_item(CompatMenu())
+
 class Pregen(discord.ui.View):
     def __init__(self):
         super().__init__()
@@ -467,7 +475,7 @@ class Support(discord.ui.View):
 
 ### SELECT MENUS ###
 
-class Compat(discord.ui.View):
+class CompatMenu(discord.ui.Select):
     def __init__(self):
         options = [
         	discord.SelectOption(label='Stardust Labs', description='Compatibility within Stardust Labs\' own projects'),
@@ -475,9 +483,7 @@ class Compat(discord.ui.View):
 			discord.SelectOption(label='Other Biome Mods', description='Specifics on other biome mod compatibility')
 		]
         super().__init__(placeholder='Select an option...', min_values=1, max_values=1, options=options)
-        self.add_item(discord.ui.Button(label='Terralith Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
-        self.add_item(discord.ui.Button(label='Incendium Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
-        self.add_item(discord.ui.Button(label='Nullscape Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
+
     async def callback(self, interaction: discord.Interaction):
         embed = interaction.message.embeds[0]
 
