@@ -436,10 +436,10 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 class Compat(discord.ui.View):
     def __init__(self):
         super().__init__()
+        self.add_item(CompatMenu())
         self.add_item(discord.ui.Button(label='Terralith Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
         self.add_item(discord.ui.Button(label='Incendium Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
         self.add_item(discord.ui.Button(label='Nullscape Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
-        self.add_item(CompatMenu())
 
 class Pregen(discord.ui.View):
     def __init__(self):
