@@ -437,9 +437,9 @@ class Compat(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(CompatMenu())
-        self.add_item(discord.ui.Button(label='Terralith Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
-        self.add_item(discord.ui.Button(label='Incendium Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
-        self.add_item(discord.ui.Button(label='Nullscape Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Terralith Compat', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Incendium Compat', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Nullscape Compat', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
 
 class Pregen(discord.ui.View):
     def __init__(self):
@@ -491,7 +491,7 @@ class CompatMenu(discord.ui.Select):
             case 'Stardust Labs':
                 embed.title = 'Compatibility (Stardust Labs)'
                 embed.description = '''
-All of Stardust Labs's datapacks are compatible with one another (Terralith, Incendium*, Nullscape, Continents, Structory, Structory: Towers, Amplified Nether*), with one exception: Incendium and Amplified Nether are mutually exclusive (not compatible) with one another. If you try to load them together, one of two things will happen:
+All of Stardust Labs's datapacks are compatible with one another (Terralith, Incendium\*, Nullscape, Continents, Structory, Structory: Towers, Amplified Nether\*), with one exception: Incendium and Amplified Nether are mutually exclusive (not compatible) with one another. If you try to load them together, one of two things will happen:
 - Amplified Nether won't load at all, it'll just be regular Incendium.
 - Amplified Nether will load, but all surfaces in Incendium will be broken (one of multiple examples is no quartz in Quartz Flats)
 If you do want both, just use Incendium! It has all the custom mobs, structures, mobs, items, etc; as well as Amplified Nether's terrain and part of its height.
@@ -510,10 +510,10 @@ Due to the way Folia works, functions cannot run on servers using it.
             case 'Other Biome Mods':
                 embed.title = 'Compatibility (Other Biome Mods)'
                 embed.description = '''
--If the mod relies on Terrablender, it will technically work. However, Terralith biomes will be very rare and you'll get a lot of "microbiomes" (biomes less than a few chunks big). The exception is if you use Terralith 2.2.4+ for 1.18.2, which has specific Terrablender compatibility coded in.
--If the mod relies on Biolith, the biomes that mods generate may be rarer but otherwise it will work without issues.
--If the mod relies on another dependency such as Blueprint, it may or may not work. Your best bet is to try it and see.
--If the mod relies on none of these, it very likely won't work with Terralith. Ask the mod offer for clarification if you wish.
+- If the mod relies on Terrablender, it will technically work. However, Terralith biomes will be very rare and you'll get a lot of "microbiomes" (biomes less than a few chunks big). The exception is if you use Terralith 2.2.4+ for 1.18.2, which has specific Terrablender compatibility coded in.
+- If the mod relies on Biolith, the biomes that mods generate may be rarer but otherwise it will work without issues.
+- If the mod relies on another dependency such as Blueprint, it may or may not work. Your best bet is to try it and see.
+- If the mod relies on none of these, it very likely won't work with Terralith. Ask the mod offer for clarification if you wish.
                 '''
         
         await interaction.response.edit_message(embed=embed)
@@ -526,7 +526,7 @@ class ConfigMenu(discord.ui.Select):
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
             discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
             discord.SelectOption(label='Resized Continents Spawn Island', description='How to change the size of the spawn island in Continents'),
-			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout')
+			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout or terrain shaping')
 		]
         super().__init__(placeholder='Select a configuration...', min_values=1, max_values=1, options=options)
         
@@ -569,8 +569,8 @@ This is a little difficult and finicky.
             case 'Biome Layout':
                 embed.title = 'Configuration (Biome Layout/Terrain Shaping)'
                 embed.description = '''
-Short answer: *No.*
-Long answer: Neither editing the biome layout or adjusting terrain shaping are possible without a lot of pain and suffering. You can try, but no one will offer support for this.
+**Short answer:** *No.*
+**Long answer:** Neither editing the biome layout or adjusting terrain shaping are possible without a lot of pain and suffering. You can try, but no one will offer support for this.
 '''
 
             case 'Taller Nether':
@@ -587,7 +587,8 @@ Warning: It is recommended you reset the nether dimension when making this chang
                 embed.description = f"""
 This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you how to adjust continent size with the Continents project.
 - Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
-- Open `base_continents.json`. You should see this: ```json
+- Open `base_continents.json`. You should see this:
+```json
 {{
     "type": "add",
     "argument1":{{
@@ -615,7 +616,8 @@ This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you 
                 embed.title = 'Configuration (Resized Continents Spawn Island)'
                 embed.description = f"""
 - Open the mod/datapack files and navigate to `data/continents/worldgen/density_function/centroid/`.
-- Open `spawn_island.json`. The 5th line of the file should be this: ```json
+- Open `spawn_island.json`. The 5th line of the file should be this:
+```json
 "argument1": 0.25,
 ```
 Only change this value, __do not touch anything else__. Smaller values = larger biomes. A value of 0.5 leads to a 4x smaller spawn island, and a value of 0.125 leads to a 4x larger spawn island.
