@@ -86,12 +86,7 @@ class Faq(commands.Cog):
                 embed = discord.Embed(
                     title='Stardust Labs Compatibility',
                     description='''
-Check out the in-depth compatibility table on the wiki by clicking the button below! Here are a couple of specific cases:
-                    
-**•** Incendium and Amplified Nether do **not** work together. Do `/faq Incendium vs Amplified Nether` for more information.
-**•** Terralith technically works with Biomes O\' Plenty and BYG if Terablender is present... but since Terrablender messes with the biome layout, you may not find the best results. There will be several micro biomes, and Terralith biomes will be rarer than the rest. You can improve this by increasing the Vanilla weight in Terrablender config, but otherwise, that's it.
-**•** Better Nether works with Amplified Nether and Incendium, except in 1.18.2.
-**•** Both Structory and Continents work with Terralith, as well as almost all other worldgen and structure packs/mods.
+If you are wondering about compatibility for specific mods/datapacks, check out the in-depth compatibility table on the wiki by clicking the button below! Otherwise, select one of the options below.
                     ''',
                     color=faq_colour
                 )
@@ -438,11 +433,6 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
 ### BUTTONS ###
 
-class Compat(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(discord.ui.Button(label='Compatibility Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith_compatibilities'))
-
 class Pregen(discord.ui.View):
     def __init__(self):
         super().__init__()
@@ -477,16 +467,60 @@ class Support(discord.ui.View):
 
 ### SELECT MENUS ###
 
+class Compat(discord.ui.View):
+    def __init__(self):
+        options = [
+        	discord.SelectOption(label='Stardust Labs', description='Compatibility within Stardust Labs\' own projects'),
+			discord.SelectOption(label='Folia', description='Compatibility with Folia, the server software'),
+			discord.SelectOption(label='Other Biome Mods', description='Specifics on other biome mod compatibility')
+		]
+        super().__init__(placeholder='Select an option...', min_values=1, max_values=1, options=options)
+        self.add_item(discord.ui.Button(label='Terralith Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Terralith#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Incendium Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Incendium#Compatibilities'))
+        self.add_item(discord.ui.Button(label='Nullscape Compat Table', emoji=Constants.Emoji.MIRAHEZE, url='https://stardustlabs.miraheze.org/wiki/Nullscape#Compatibilities'))
+    async def callback(self, interaction: discord.Interaction):
+        embed = interaction.message.embeds[0]
+
+        match self.values[0]:
+            case 'Stardust Labs':
+                embed.title = 'Compatibility (Stardust Labs)'
+                embed.description = '''
+All of Stardust Labs's datapacks are compatible with one another (Terralith, Incendium*, Nullscape, Continents, Structory, Structory: Towers, Amplified Nether*), with one exception: Incendium and Amplified Nether are mutually exclusive (not compatible) with one another. If you try to load them together, one of two things will happen:
+- Amplified Nether won't load at all, it'll just be regular Incendium.
+- Amplified Nether will load, but all surfaces in Incendium will be broken (one of multiple examples is no quartz in Quartz Flats)
+If you do want both, just use Incendium! It has all the custom mobs, structures, mobs, items, etc; as well as Amplified Nether's terrain and part of its height.
+                '''
+
+            case 'Folia':
+                embed.title = 'Compatibility (Folia)'
+                embed.description = '''
+Due to the way Folia works, functions cannot run on servers using it.
+- All of Incendium's custom mobs, items, bosses, etc. are completely broken by this. If you still wish to have the terrain and biomes of Incendium, use the [Incendium Biomes Only](https://modrinth.com/datapack/incendium-biomes-only) datapack. Keep in mind that this datapack is **completely** unsupported by Stardust Labs.
+- Terralith has a few functions for the intro message. Download [this datapack](https://discord.com/channels/738046951236567162/885616716091125810/1110047059366662234) to remove these.
+- Nullscape works as long as you aren't on 1.18.2. If you are on 1.18.2 there are functions to make the dragon fight and exit port work at all, these cannot be removed.
+- Amplfied Nether, Structory and Continents all work without any issues.
+                '''
+
+            case 'Other Biome Mods':
+                embed.title = 'Compatibility (Other Biome Mods)'
+                embed.description = '''
+-If the mod relies on Terrablender, it will technically work. However, Terralith biomes will be very rare and you'll get a lot of "microbiomes" (biomes less than a few chunks big). The exception is if you use Terralith 2.2.4+ for 1.18.2, which has specific Terrablender compatibility coded in.
+-If the mod relies on Biolith, the biomes that mods generate may be rarer but otherwise it will work without issues.
+-If the mod relies on another dependency such as Blueprint, it may or may not work. Your best bet is to try it and see.
+-If the mod relies on none of these, it very likely won't work with Terralith. Ask the mod offer for clarification if you wish.
+                '''
+        
+        await interaction.response.edit_message(embed=embed)
+
 class ConfigMenu(discord.ui.Select):
     def __init__(self):
         options = [
-        	discord.SelectOption(label='Bigger Biomes', description='How to increase biome size in Terralith'),
-        	discord.SelectOption(label='Smaller Biomes', description='How to decrease biome size in Terralith'),
+        	discord.SelectOption(label='Resized Terralith Biomes', description='How to adjust biome size in Terralith'),
 			discord.SelectOption(label='Remove Biomes', description='How to remove/replace biomes in Terralith'),
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
             discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
-			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout'),
-			discord.SelectOption(label='Amplified Terrain', description='Super tall mountains in Terralith?')
+            discord.SelectOption(label='Resized Continents Spawn Island', description='How to change the size of the spawn island in Continents'),
+			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout')
 		]
         super().__init__(placeholder='Select a configuration...', min_values=1, max_values=1, options=options)
         
@@ -494,63 +528,60 @@ class ConfigMenu(discord.ui.Select):
         embed = interaction.message.embeds[0]
 
         match self.values[0]:
-            case 'Bigger Biomes':
-                embed.title = 'Configuration (Bigger Biomes)'
+            case 'Resized Terralith Biomes':
+                embed.title = 'Configuration (Resized Terralith Biomes)'
                 embed.description = '''
-Currently, the Terralith biome sizes are on average slightly larger than Vanilla, but *can* be huge. If you still want larger biomes:
-**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.
-**•** Subtract **1** from all instances of `firstOctave` in the `erosion`, `continentalness`, `temperature`, and `vegetation` files.
-**•** Do *not* edit the `ridge` file.
-                '''
-
-            case 'Smaller Biomes':
-                embed.title = 'Configuration (Smaller Biomes)'
-                embed.description = '''
-Keep in mind that doing this will make the biomes quite tiny. There is a reason the biomes are the size that they are. If you still want smaller biomes:
-**•** Unzip Terralith and open the `Terralith/data/minecraft/worldgen/noise/` folder.
-**•** Open the `erosion` file.
-**•** Change `firstOctave` from **-10** to **-9**.
-                '''
-
-            case 'Amplified Terrain':
-                embed.title = 'Configuration (Amplified Terrain)'
-                embed.description = '''
-There isn\'t an easy way to do this. Thankfully, if you like *really* tall mountains, and enjoy your computer blowing up, there is a datapack just for that. Because it is so unstable, it is not released publically, and only available to [Patrons](https://www.patreon.com/stardustlabs), [Supporters](https://bisecthosting.com/stardust), [Donators](https://ko-fi.com/stardustlabs), and Server Boosters.
+Open the mod/datapack files and navigate to `data/minecraft/worldgen/density_function/overworld`.
+Open `base_erosion.json`, `temperature.json`, and `vegetation.json`. In each, you should see something like this: ```json
+{
+  "argument": {
+    "xz_scale": 0.25,
+    "y_scale": 0.0,
+    "noise": "minecraft:erosion",
+    "shift_x": "minecraft:shift_x",
+    "shift_y": 0.0,
+    "shift_z": "minecraft:shift_z",
+    "type": "minecraft:shifted_noise"
+  },
+  "type": "minecraft:flat_cache"
+}
+```
+Only change `xz_scale`, __do not touch anything else__. Smaller values = larger biomes. An `xz_scale` of 0.5 is 4x smaller biomes, and an `xz_scale` of 0.125 is 4x larger biomes. For context, the vanilla Large Biomes world type effectively uses an `xz_scale` of 0.0625.
                 '''
 
             case 'Remove Biomes':
                 embed.title = 'Configuration (Remove Biomes)'
                 embed.description = '''
 This is a little difficult and finicky.
-**•** Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
-**•** Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.
-**•** To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.
-**•** When removing Skylands, replace their instances with an ocean type.
-**•** Be careful, as this doesn\'t always work well and can break.
+- Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
+- Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.
+- To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.
+- When removing Skylands, replace their instances with an ocean type.
+- Be careful, as this doesn\'t always work well and can break.
                 '''
 
             case 'Biome Layout':
-                embed.title = 'Configuration (Biome Layout)'
-                embed.description = '*No.*'
+                embed.title = 'Configuration (Biome Layout/Terrain Shaping)'
+                embed.description = '''
+Short answer: *No.*
+Long answer: Neither editing the biome layout or adjusting terrain shaping are possible without a lot of pain and suffering. You can try, but no one will offer support for this.
+'''
 
             case 'Taller Nether':
                 embed.title = 'Configuration (Taller Nether)'
                 embed.description = f'''
-This tutorial (graciously provided by <@{Constants.User.KUMA}>) will show you how to add extra space above the bedrock roof in Amplified Nether.
-**•** Download slicedlime\'s datapack [here](https://github.com/slicedlime/examples).
-**•** Unzip Amplified Nether and navigate to the `/data/minecraft/` directory. Copy the `dimension_type` folder from slicedlime\'s datapack and stick it here.
-**•** Delete every file in the `dimension_type` directory EXCEPT `the_nether.json`.
-**•** Edit that file and look for `”height”:` and change the value to 320. This will add 64 blocks of air above the bedrock roof.
-**•** __If on 1.18/1.18.1 only__, find the line that says `"infiniburn": "minecraft:infiniburn_nether"` and remove the `#`.
-**•** Save/exit, rezip Amplified Nether, and load it to your world. Enjoy!
-**•** This will *not* work with Better Nether.'''
+Warning: It is recommended you reset the nether dimension when making this change. In currently loaded chunks, all space above y256 will be the Plains biome.
+- Go to [this](https://github.com/Apollounknowndev/pack-library/tree/main/nether-build-height) link, which will bring you to two datapacks that raise the nether build height to 384: One for 1.18.1 and before, one for 1.18.2 and above. Download the one you need.
+- Install it onto the world you want to have the taller nether as a datapack. __Load order with Amplified Nether/Incendium does not matter.__
+(Special thanks to <@{Constants.User.APOLLO}> for this tutorial and datapack)
+'''
 
             case 'Adjusted Continent Size':
                 embed.title = 'Configuration (Adjusted Continent Size)'
                 embed.description = f"""
 This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you how to adjust continent size with the Continents project.
-**•** Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
-**•** Open `base_continents.json`. You should see this: ```json
+- Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
+- Open `base_continents.json`. You should see this: ```json
 {{
     "type": "add",
     "argument1":{{
@@ -568,10 +599,20 @@ This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you 
     "argument2":"continents:continent_bias"
 }}
 ```
-**•** To increase the continent sizes, lower the `xz_scale` value. Halving = 4x larger continents.
-**•** To decrease the continent sizes, raise the `xz_scale` value. Doubling = 4x smaller continents.
-**•** Do not change anything else!
-**•** Zip it up and enjoy! Keep in mind that this has __zero__ impact on the spawn island.
+- To increase the continent sizes, lower the `xz_scale` value. Halving = 4x larger continents.
+- To decrease the continent sizes, raise the `xz_scale` value. Doubling = 4x smaller continents.
+- Do not change anything else!
+- Zip it up and enjoy! Keep in mind that this has __zero__ impact on the spawn island.
+                """
+
+            case 'Resized Continents Spawn Island':
+                embed.title = 'Configuration (Resized Continents Spawn Island)'
+                embed.description = f"""
+- Open the mod/datapack files and navigate to `data/continents/worldgen/density_function/centroid/`.
+- Open `spawn_island.json`. The 5th line of the file should be this: ```json
+"argument1": 0.25,
+```
+Only change this value, __do not touch anything else__. Smaller values = larger biomes. A value of 0.5 leads to a 4x smaller spawn island, and a value of 0.125 leads to a 4x larger spawn island.
                 """
             
         await interaction.response.edit_message(embed=embed)
@@ -651,10 +692,10 @@ class UpdateMenu(discord.ui.Select):
             case 'Terralith':
                 embed.title = 'Updating (Terralith)'
                 embed.description = '''
-**•** Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.
-**•** If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.
-**•** If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.
-**•** Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.
+- Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.
+- If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.
+- If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.
+- Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.
                 '''
 
             case 'Terralith (1.19)':
@@ -669,24 +710,24 @@ class UpdateMenu(discord.ui.Select):
             case 'Incendium':
                 embed.title = 'Updating (Incendium)'
                 embed.description = '''
-**•** You cannot update Incendium worlds used in 1.17.1 (Incendium 4.0.0) or lower to 1.18.2 (Incendium 5.0.x).
-**•** Updating from 1.18.2 to 1.19 (5.0.x to 5.1.x) is mostly fine!
-**•** Updating to minor versions (5.1.x) works fine - for example, 5.1.2 to 5.1.4.
+- You cannot update Incendium worlds used in 1.17.1 (Incendium 4.0.0) or lower to 1.18.2 (Incendium 5.0.x).
+- Updating from 1.18.2 to 1.19 (5.0.x to 5.1.x) is mostly fine!
+- Updating to minor versions (5.1.x) works fine - for example, 5.1.2 to 5.1.4.
                 '''
 
             case 'Nullscape':
                 embed.title = 'Updating (Nullscape)'
                 embed.description = '''
-**•** Updating to minor versions (v1.2.x) works fine.
-**•** If you want to use 1.18.2, ensure you use 1.1.2 **only**. This version is stable, unlike 1.1.1.
-**•** Nullscape 1.19 (v1.2) is different from all other versions, since it is combined into one dimension, like it should! Because of that, you cannot update a 1.18.x Nullscape world (v1.1.1) to 1.19 (v1.2) without completely resetting your end and heavily editing your `level.dat`.
+- Updating to minor versions (v1.2.x) works fine.
+- If you want to use 1.18.2, ensure you use 1.1.2 **only**. This version is stable, unlike 1.1.1.
+- Nullscape 1.19 (v1.2) is different from all other versions, since it is combined into one dimension, like it should! Because of that, you cannot update a 1.18.x Nullscape world (v1.1.1) to 1.19 (v1.2) without completely resetting your end and heavily editing your `level.dat`.
                 '''
 
             case 'Other Stardust Packs':
                 embed.title = 'Updating (Other Stardust Packs)'
                 embed.description = '''
-**•** Updating between minor and major versions is mostly okay!
-**•** You cannot update Amplified Nether from older versions to 1.18.x or higher.
+- Updating between minor and major versions is mostly okay!
+- You cannot update Amplified Nether from older versions to 1.18.x or higher.
                 '''
         
         await interaction.response.edit_message(embed=embed)
