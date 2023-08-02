@@ -80,6 +80,9 @@ class Autoresponse(commands.Cog):
 			await message.reply(view=view, mention_author=False)
 
 	async def do_pastebin(self, message: discord.Message) -> None:
+		view = discord.ui.View()
+		embed = None
+		
 		for file in message.attachments:
 			
 			if any(ext in file.filename for ext in [".log", ".txt", ".log.gz"]):
@@ -102,15 +105,14 @@ class Autoresponse(commands.Cog):
 
 				# Init button
 				logurl = json.loads(x.text)["url"]
-				view = discord.ui.View()
 				view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji=Constants.Emoji.MCLOGS))
 
 				# Check for issues
 				scanner = LogScanner(content)
 				embed = scanner.scan("embed")
 
-				# Send message
-				await message.reply(view=view, embed=embed, mention_author=False)
+		# Send message
+		await message.reply(view=view, embed=embed, mention_author=False)
 
 	async def stop_mod_reposts(self, message: discord.Message, url: str) -> None:
 		for illegal in self.reposts:
