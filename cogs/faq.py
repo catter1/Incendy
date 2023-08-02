@@ -39,7 +39,8 @@ class Faq(commands.Cog):
             "Give Details": "Please, please provide details and be descriptive with your issue. We literally cannot help you without context. It also helps if you check the faq (`/faq`) and attach logs.",
             "Screenshot Tips": "Noelle went ahead and made a in-depth guide on taking amazing photos in Minecraft! View the wiki here: <https://github.com/Interstellar-Cow/Minecraft-Screenshotting/wiki>",
             "Aternos Lag Meme": "",
-            "Fractureiser": "**All the information you need to know is found in this document:** <https://github.com/fractureiser-investigation/fractureiser/blob/main/docs/users.md>. Read it!\n\nIf you have further questions, ask in the designated Discord server. They will have the best and safest answers for you: https://discord.gg/zPdFK47682"
+            "Fractureiser": "**All the information you need to know is found in this document:** <https://github.com/fractureiser-investigation/fractureiser/blob/main/docs/users.md>. Read it!\n\nIf you have further questions, ask in the designated Discord server. They will have the best and safest answers for you: https://discord.gg/zPdFK47682",
+            "Connect Patreon": "Read [this article](https://support.patreon.com/hc/en-us/articles/212052266-Getting-Discord-access) for information on how to connect Patreon to your Discord account. Once connected, you will have access to special channels such as <#795485705949544468>."
         }
 
         if qp == "Aternos Lag Meme":

@@ -35,6 +35,10 @@
         "link": "https://weblate.catter.dev",
         "icon": "<:weblate:1087038433031110676>"
     },
+    "patreon": {
+        "link": "https://patreon.com/stardustlabs",
+        "icon": "<:patreon:962411326628581376>"
+    },
     "license": {
         "link": "https://github.com/Stardust-Labs-MC/license/blob/main/license.txt",
         "icon": "<:github:1045336251605188679>"
