@@ -405,7 +405,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
     async def get_biome_ids(self, project: str, biomeids: list[str], curr: str = '') -> list[str]:
         url = f'https://api.github.com/repos/Stardust-Labs-MC/{project}/contents/data/{project.lower()}/worldgen/biome/{curr}'
-        response = requests.get(url)
+        response = requests.get(url, params={"ref": "1.20.1"})
 
         if response.status_code == 200:
             data = response.json()
