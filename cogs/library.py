@@ -52,9 +52,6 @@ class Library(commands.Cog):
 				await thread.edit(archived=False, locked=False)
 				threads[thread.name] = thread
 
-		with open("resources/textlinks.json", 'r') as f:
-			textlinks = json.load(f)
-
 		await interaction.response.send_message(f"Posting the downloads library in <#{forum.id}>...", ephemeral=True)
 
 		
@@ -71,7 +68,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["cave tweaks"]["link"] = post.jump_url
 		else:
 			post = threads["[Discontinued] Cave Tweaks"]
 			async for message in post.history(limit=10):
@@ -112,7 +108,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["amplified nether"]["link"] = post.jump_url
 		else:
 			post = threads["Amplified Nether"]
 			async for message in post.history(limit=10):
@@ -153,7 +148,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["continents"]["link"] = post.jump_url
 		else:
 			post = threads["Continents"]
 			async for message in post.history(limit=10):
@@ -194,8 +188,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["structory: towers"]["link"] = post.jump_url
-			textlinks["structory towers"]["link"] = post.jump_url
 		else:
 			post = threads["Structory: Towers"]
 			async for message in post.history(limit=10):
@@ -236,7 +228,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["structory"]["link"] = post.jump_url
 		else:
 			post = threads["Structory"]
 			async for message in post.history(limit=10):
@@ -277,7 +268,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["nullscape"]["link"] = post.jump_url
 		else:
 			post = threads["Nullscape"]
 			async for message in post.history(limit=10):
@@ -320,7 +310,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["incendium"]["link"] = post.jump_url
 		else:
 			post = threads["Incendium"]
 			async for message in post.history(limit=10):
@@ -363,7 +352,6 @@ class Library(commands.Cog):
 				if message.type == discord.MessageType.pins_add:
 					await message.delete()
 			
-			textlinks["terralith"]["link"] = post.jump_url
 		else:
 			post = threads["Terralith"]
 			async for message in post.history(limit=10):
@@ -390,12 +378,6 @@ class Library(commands.Cog):
 
 		await post.send(embed=embed1, view=TerralithDownloads())
 		await post.send(embed=embed2, view=TerralithLinks())
-
-
-
-		if interaction.guild_id == Constants.Guild.STARDUST_LABS:
-			with open("resources/textlinks.json", 'w') as f:
-				json.dump(textlinks, f, indent=4)
 
 	
 	### BUTTONS ###
