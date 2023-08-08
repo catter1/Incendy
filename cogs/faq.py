@@ -40,7 +40,8 @@ class Faq(commands.Cog):
             "Screenshot Tips": "Noelle went ahead and made a in-depth guide on taking amazing photos in Minecraft! View the wiki here: <https://github.com/Interstellar-Cow/Minecraft-Screenshotting/wiki>",
             "Aternos Lag Meme": "",
             "Fractureiser": "**All the information you need to know is found in this document:** <https://github.com/fractureiser-investigation/fractureiser/blob/main/docs/users.md>. Read it!\n\nIf you have further questions, ask in the designated Discord server. They will have the best and safest answers for you: https://discord.gg/zPdFK47682",
-            "Connect Patreon": "Read [this article](https://support.patreon.com/hc/en-us/articles/212052266-Getting-Discord-access) for information on how to connect Patreon to your Discord account. Once connected, you will have access to special channels such as <#795485705949544468>."
+            "Connect Patreon": "Read [this article](https://support.patreon.com/hc/en-us/articles/212052266-Getting-Discord-access) for information on how to connect Patreon to your Discord account. Once connected, you will have access to special channels such as <#795485705949544468>.",
+            "Locate Command": "### Biomes\n- **1.18.2-** : `/locatebiome`\n- **1.19+** : `/locate biome`\n- **1.18.2-** (some Paper-like servers) : `/minecraft:locatebiome`\n- **1.19+** (some Paper-like servers) : `/minecraft:locate biome`\n### Structures\n- **1.18.2-** : `/locate`\n- **1.19+** : `/locate structure`\n- **1.18.2-** (some Paper-like servers) : `/minecraft:locate`\n- **1.19+** (some Paper-like servers) : `/minecraft:locate structure`"
         }
 
         if qp == "Aternos Lag Meme":
@@ -52,7 +53,7 @@ class Faq(commands.Cog):
 
     @qp.autocomplete('qp')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Binary Search", "Give Details", "Screenshot Tips", "Aternos Lag Meme", "Fractureiser"])
+        qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Binary Search", "Give Details", "Screenshot Tips", "Aternos Lag Meme", "Fractureiser", "Locate Command"])
 
         return [
             app_commands.Choice(name=qp, value=qp)
