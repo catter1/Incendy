@@ -65,9 +65,11 @@ class Autoresponse(commands.Cog):
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=self.apollo_urls[page]))
 				
 				elif "wiki" in match.split("|")[0].lower():
-					page = match.split("|")[-1].lower()
+					full = match.split("|")[-1]
+					page = full.split("#")[0].lower()
 					if page in self.wiki_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=self.wiki_urls[page], emoji=Constants.Emoji.MIRAHEZE))
+						header = "" if len(full.split("#")) <= 1 else f"#{full.split('#')[-1].title().replace(' ', '_')}"
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=f"{self.wiki_urls[page]}{header}", emoji=Constants.Emoji.MIRAHEZE))
 
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
@@ -140,7 +142,7 @@ class Autoresponse(commands.Cog):
 		if not message.author.bot:
 
 			# Textlinks
-			matches = re.findall(r"[\[]{2}(\w[\w |':]+\w)?[\]]{2}", message.content)
+			matches = re.findall(r"[\[]{2}(\w[\w |':#]+\w)?[\]]{2}", message.content)
 			if len(matches) > 0:
 				await self.do_textlinks(message=message, matches=matches)
 
