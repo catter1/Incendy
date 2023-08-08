@@ -282,25 +282,12 @@ If you have trouble finding the caves, you can look at the surface of your world
                     inline=False
                 )
                 view=Support()
-            case "Tectonic":
-                embed = discord.Embed(
-                    title='Tectonic Compatibility',
-                    description='''
-By default, Terralith and Tectonic are not compatible with each other. If you'd like them to work together, you'll have to use the compat method that Apollo created called **Terratonic**. This exists for both datapack and mod versions of the packs.
-
-**Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
-**Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
-                    
-Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvceu)!
-                    ''',
-                    color=faq_colour
-                )
             case "Terra Mods":
                 embed = discord.Embed(
                     title='Difference Between all "Terra" Mods',
                     description='''
 **Terralith**: A worldgen datapack/mod created by Stardust Labs
-**Terra**: A 1.16.5 worldgen mod, incompatible with Terralith
+**Terra**: A 1.16.5 and 1.18.2 worldgen mod, incompatible with Terralith
 **Terrablender**: A mod that allows compatibility between worldgen mods
 **Terraforged**: A 1.16.5 worldgen mod, incompatible with Terralith
 **Terratonic**: The compatibility between Terralith and Tectonic (see `/faq Tectonic`)
@@ -314,6 +301,28 @@ Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvce
 If your world/server is crashing upon opening a chest in a Terralith structure, it is probably due to the Traveller\'s Maps. Because the lag is just absurd, they have been removed in the recent versions of Terralith. If you\'re on 1.18.2, ensure you\'re using Terralith v2.2.3, and if on 1.19.x, ensure you\'re on Terralith v2.3.3 or higher. In Terralith 2.3.7, the maps have been 100% removed.
                     
 As a fun note, some changes in Minecraft 1.19.3 has greatly improved the lookup speed for structures, which is what the maps rely on. Although the changes are appreciated, it is still slow, so the Traveller\'s Maps have been removed completely from Terralith.
+
+If you are still having this issue (even with Vanilla!), it is recommended to use the [Async Locator](https://modrinth.com/mod/async-locator) mod on your client/server to improve this lag
+                    ''',
+                    color=faq_colour
+                )
+            case "Translation Strings":
+                embed = discord.Embed(
+                    title='Translation Strings',
+                    description='''
+When using Incendium, you may get some broken translation strings. Here is how to fix them based on what you see:
+### `%1$s%4733088$s`
+Update to the latest Incendium version based on your Minecraft version as shown:
+- 1.19-1.19.3: Incendium 5.1.6+
+- 1.19.4: Incendium 5.2.1+
+- 1.20+: Incendium 5.3.0+
+### `incendium.advancement.misc.root.title` (or similar formatting)
+Ensure you are updated as shown above, as well as the following:
+- If on a Paper/Spigot-like server, use the minimum versions as shown:
+ - Paper: 505
+ - Purpur: 1957
+ - Pufferfish: 66
+- If you are using a custom client such as Lunar, Badlion, Essential, or likely anything similar to it: __This is a bug with your client.__ They need to update to support the new format of translation strings, which was changed in 1.19.4.
                     ''',
                     color=faq_colour
                 )
@@ -332,16 +341,6 @@ As a fun note, some changes in Minecraft 1.19.3 has greatly improved the lookup 
                 )
                 file = discord.File("assets/Version_Table.png", filename="image.png")
                 embed.set_image(url="attachment://image.png")
-            case "WWOO":
-                embed = discord.Embed(
-                    title='WWOO Compatibility',
-                    description='''
-Terralith is compatible with William Wyther\'s Overhauled Overworld __only__ when using the mod version 3.0 or higher of WWOO. Terrablender ([Fabric](https://www.curseforge.com/minecraft/mc-mods/terrablender-fabric) or [Forge](https://www.curseforge.com/minecraft/mc-mods/terrablender)) is required.
-
-You will need to go inside WWOO\'s configs and enable Terralith compat, or in-game if using Fabric with [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files). More information can be found on WWOO\'s [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/william-wythers-overhauled-overworld).
-                    ''',
-                    color=faq_colour
-                )
             case _:
                 await interaction.response.send_message("An unexpected error ocurred! Try again, and let catter know what FAQ you were trying if the issue continues.", ephemeral=True)
                 return
@@ -369,7 +368,7 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "WWOO", "Tectonic", "Other World Types", "Terra Mods"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings"])
 
         choices = [
             app_commands.Choice(name=faq, value=faq)
@@ -470,6 +469,8 @@ class CompatMenu(discord.ui.Select):
     def __init__(self):
         options = [
         	discord.SelectOption(label='Stardust Labs', description='Compatibility within Stardust Labs\' own projects'),
+            discord.SelectOption(label='WWOO', description='Terralith compatibility with William Wyther\'s Overhauled Overworld'),
+            discord.SelectOption(label='Tectonic', description='Terralith compatibility with Tectonic/Terratonic'),
 			discord.SelectOption(label='Folia', description='Compatibility with Folia, the server software'),
 			discord.SelectOption(label='Other Biome Mods', description='Specifics on other biome mod compatibility')
 		]
@@ -486,6 +487,25 @@ All of Stardust Labs's datapacks are compatible with one another (Terralith, Inc
 - Amplified Nether won't load at all, it'll just be regular Incendium.
 - Amplified Nether will load, but all surfaces in Incendium will be broken (one of multiple examples is no quartz in Quartz Flats)
 If you do want both, just use Incendium! It has all the custom mobs, structures, mobs, items, etc; as well as Amplified Nether's terrain and part of its height.
+                '''
+
+            case 'WWOO':
+                embed.title = 'Compatibility (WWOO)'
+                embed.description = '''
+Terralith is compatible with William Wyther\'s Overhauled Overworld __only__ when using the mod version 3.0 or higher of WWOO. Terrablender ([Fabric](https://www.curseforge.com/minecraft/mc-mods/terrablender-fabric) or [Forge](https://www.curseforge.com/minecraft/mc-mods/terrablender)) is required.
+
+You will need to go inside WWOO\'s configs and enable Terralith compat, or in-game if using Fabric with [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files). More information can be found on WWOO\'s [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/william-wythers-overhauled-overworld).
+                '''
+
+            case 'Tectonic':
+                embed.title = 'Compatibility (Tectonic)'
+                embed.description = '''
+By default, Terralith and Tectonic are not compatible with each other. If you'd like them to work together, you'll have to use the compat method that Apollo created called **Terratonic**. This exists for both datapack and mod versions of the packs.
+
+**Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
+**Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
+                    
+Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvceu)!
                 '''
 
             case 'Folia':
