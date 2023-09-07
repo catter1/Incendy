@@ -24,11 +24,16 @@ class Autoresponse(commands.Cog):
 			self.reposts = json.load(f)
 
 		apollo_resp = requests.get("https://www.worldgen.dev/sitemap.xml")
-		root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
-
-		loc_elements = root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-		apollo_links = [element.text for element in loc_elements]
+		apollo_root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+		apollo_loc_elements = apollo_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+		apollo_links = [element.text for element in apollo_loc_elements]
 		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
+
+		sawdust_resp = requests.get("https://sawdust.stardustlabs.net/sitemap.xml")
+		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+		sawdust_links = [element.text for element in sawdust_loc_elements]
+		self.sawdust_urls = {url.split('/')[-2]: url for url in sawdust_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
 
 		misode_resp = requests.get("https://misode.github.io/sitemap.txt")
 		self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
@@ -63,6 +68,11 @@ class Autoresponse(commands.Cog):
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.apollo_urls.keys():
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=self.apollo_urls[page]))
+						
+				elif "sawdust" in match.split("|")[0].lower():
+					page = match.split("|")[-1].lower().replace(" ", "-")
+					if page in self.sawdust_urls.keys():
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Sawdust: {page.replace('-', ' ').title()}", url=self.sawdust_urls[page], emoji=Constants.Emoji.SEEDFIX))
 				
 				elif "wiki" in match.split("|")[0].lower():
 					full = match.split("|")[-1]
@@ -227,13 +237,13 @@ class LogScanner:
 		precipitation_4 = re.search(r"No key has_precipitation in MapLike", self.contents)
 
 		if precipitation_3:
-			error = "Your game/server is running 1.19.3, but one or more of your worldgen datapacks is made for 1.19.4. Update your server, or download the correct versions of your datapack(s)."
+			error = "Your game/server is running 1.19.3, but one or more of your worldgen datapacks is made for 1.19.4 or 1.20.x. Update your server, or download the correct versions of your datapack(s)."
 			self.responses.append(error)
 			self._precip = True
 			return
 		
 		if precipitation_4:
-			error = "Your game/server is running 1.19.4, but one or more of your worldgen datapacks is made for 1.19.3. Downgrade your server, or download the correct versions of your datapack(s)."
+			error = "Your game/server is running 1.19.4 or 1.20.x, but one or more of your worldgen datapacks is made for 1.19.3. Downgrade your server, or download the correct versions of your datapack(s)."
 			self.responses.append(error)
 			self._precip = True
 			return

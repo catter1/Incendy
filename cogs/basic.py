@@ -30,11 +30,16 @@ class Basic(commands.Cog):
 			self.textlinks = json.load(f)
 
 		apollo_resp = requests.get("https://www.worldgen.dev/sitemap.xml")
-		root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
-
-		loc_elements = root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-		apollo_links = [element.text for element in loc_elements]
+		apollo_root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+		apollo_loc_elements = apollo_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+		apollo_links = [element.text for element in apollo_loc_elements]
 		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
+
+		sawdust_resp = requests.get("https://sawdust.stardustlabs.net/sitemap.xml")
+		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+		sawdust_links = [element.text for element in sawdust_loc_elements]
+		self.sawdust_urls = {url.split('/')[-2]: url for url in sawdust_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
 
 		misode_resp = requests.get("https://misode.github.io/sitemap.txt")
 		self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
@@ -106,7 +111,6 @@ class Basic(commands.Cog):
 			"New In Town": "https://discord.gg/KvdmxHM",
 			"Minecraft Configs": "https://discord.gg/EjrKNBU",
 			"Still Loading": "https://discord.gg/vkUtRKCdtg",
-			"REDUX": "https://discord.gg/BBNavaXH8v",
 			"Hashs": "https://discord.gg/eKQSEmH9dY",
 			"Botany": "https://discord.gg/BMzTfru5tp",
 			"Distant Horizons": "https://discord.gg/Hdh2MSvwyc",
@@ -118,13 +122,12 @@ class Basic(commands.Cog):
 			"LimeSplatus": "https://discord.gg/5DqYxxZdeb",
 			"WWOO": "https://discord.gg/jT34CWwzth",
 			"BYG": "https://discord.gg/F28fGPCJH8",
-			"Kahora": "https://discord.gg/J6guYAySN8",
+			"Stellarity": "https://discord.gg/J6guYAySN8",
 			"YUNG": "https://discord.gg/rns3beq",
 			"BetterX": "https://discord.gg/kYuATbYbKW",
 			#"LPS": "https://discord.gg/8ZmhaPPbjE",
 			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
 			"rx": "https://discord.gg/CzjCF8QNX6",
-			"Bisect Hosting": "https://discord.gg/zb8vZap",
 			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
 			"Fabric": "https://discord.gg/v6v4pMv",
 			"Stardust Labs": "https://discord.gg/stardustlabs",
@@ -137,7 +140,8 @@ class Basic(commands.Cog):
 			"Minecraft": "https://discord.gg/minecraft",
 			"Dynamic Trees": "https://discord.gg/PD8e4bhMRr",
 			"Curseforge": "https://discord.gg/curseforge",
-			"TelepathicGrunt": "https://discord.gg/T5MGNBB"
+			"TelepathicGrunt": "https://discord.gg/T5MGNBB",
+			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t"
 		}
 		server_list = sorted([server for server in server_dict.keys()])
 
@@ -214,6 +218,7 @@ class Basic(commands.Cog):
 		view = discord.ui.View()
 		view.add_item(TextLinks())
 		view.add_item(GeneralLinks(self.textlinks))
+		view.add_item(SawdustLinks(self.sawdust_urls))
 		view.add_item(MisodeLinks(self.misode_urls))
 		view.add_item(ApolloLinks(self.apollo_urls))
 		view.add_item(WikiLinks(self.wiki_urls))
@@ -349,7 +354,7 @@ class TextLinks(discord.ui.Button):
 	async def callback(self, interaction: discord.Interaction):
 		embed = interaction.message.embeds[0]
 		embed.title = "Textlink Instructions"
-		embed.description = "Textlinks are an easy way to send related links in the middle of a message without having to go find them. For example, you could type: \"Check out the [[wiki]] for more information\", and Incendy will followup with the link to the wiki.\n\nTextlinks are always surrounded by double square brackets (`[[...]]`), and are case-insensitive. Click the buttons below to view the available textlinks. Use `/feedback` to send ideas of textlinks you'd like to see!"
+		embed.description = "Textlinks are an easy way to send related links in the middle of a message without having to go find them. For example, you could type: \"Check out the [[wiki]] for more information\", and Incendy will followup with the link to the wiki.\n\nTextlinks are always surrounded by double square brackets (`[[...]]`), and are case-insensitive. Click the buttons below to view the available textlinks. Create a feature request on the [Incedy Github Repo](https://github.com/catter1/Incendy) to send ideas of textlinks you'd like to see!"
 
 		await interaction.response.edit_message(embed=embed)
 	
@@ -362,6 +367,18 @@ class GeneralLinks(discord.ui.Button):
 		embed = interaction.message.embeds[0]
 		embed.title = "General Textlinks"
 		embed.description = "  -  ".join([f"[{textlink.replace('-', ' ').title()}]({self.textlinks[textlink]['link']})" for textlink in self.textlinks])
+
+		await interaction.response.edit_message(embed=embed)
+		
+class SawdustLinks(discord.ui.Button):
+	def __init__(self, sawdust_urls: dict):
+		super().__init__(style=discord.ButtonStyle.green, label='Sawdust')
+		self.sawdust_urls = sawdust_urls
+	
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = "Sawdust Textlinks"
+		embed.description = "  -  ".join([f"[Sawdust|{textlink.replace('-', ' ').title()}]({self.sawdust_urls[textlink]})" for textlink in self.sawdust_urls])
 
 		await interaction.response.edit_message(embed=embed)
 

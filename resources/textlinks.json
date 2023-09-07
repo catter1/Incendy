@@ -1,4 +1,8 @@
 {
+    "sawdust": {
+        "link": "https://sawdust.stardustlabs.net/",
+        "icon": "<:seedfix:917599175259070474>"
+    },
     "wiki": {
         "link": "https://stardustlabs.miraheze.org/wiki/Main_page",
         "icon": "<:miraheze:890077957069111316>"
@@ -39,9 +43,13 @@
         "link": "https://patreon.com/stardustlabs",
         "icon": "<:patreon:962411326628581376>"
     },
+    "kofi": {
+        "link": "https://ko-fi.com/stardustlabs",
+        "icon": "<:kofi:962411326666334259>"
+    },
     "license": {
-        "link": "https://github.com/Stardust-Labs-MC/license/blob/main/license.txt",
-        "icon": "<:github:1045336251605188679>"
+        "link": "https://sawdust.stardustlabs.net/license",
+        "icon": "<:seedfix:917599175259070474>"
     },
     "cave tweaks": {
         "link": "https://discord.com/channels/738046951236567162/1099642165015085097",
