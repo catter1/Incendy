@@ -222,7 +222,7 @@ If you're confused, we used to have two separate resourcepacks: Incendium Option
                 embed = discord.Embed(
                     title='SeedFix',
                     description='''
-In 1.18.x **only**, there is a [Minecraft bug](https://bugs.mojang.com/browse/MC-195717) that makes all worldgen datapacks use the same seed. This is **not** the case in 1.19+, as you can use seeds as normal! To use the datapack version of Terralith in 1.18.2, download a version from the SeedFix website, which allows you to input your own seed. The download is Terralith itself, so you put it in the datapack folder by itself. The mod versions have SeedFix built in, so you can use seeds as you normally would in Vanilla.
+In 1.18.x **only**, there is a [Minecraft bug](https://bugs.mojang.com/browse/MC-195717) that makes all worldgen datapacks use the same seed. This is **not** the case in 1.19+, as you can use seeds as normal! To use the datapack version of Terralith in 1.18.2, download a version from the SeedFix tool on the Sawdust website, which allows you to input your own seed. The resulting file is Terralith itself, so do not use it alongside another Terralith download. The mod versions rely on [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds), which fixes this issue without needing the website tool.
                     ''',
                     color=faq_colour
                 )
@@ -442,8 +442,8 @@ class Resource(discord.ui.View):
 class Seedfix(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='SeedFix Website', emoji=Constants.Emoji.SEEDFIX, url='https://seedfix.stardustlabs.net/'))
-        self.add_item(discord.ui.Button(label='Mod Download', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith'))
+        self.add_item(discord.ui.Button(label='Seedfix Tool', emoji=Constants.Emoji.SEEDFIX, url='https://sawdust.stardustlabs.net/tools/seedfix'))
+        self.add_item(discord.ui.Button(label='Mod Download', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/terralith'))
 
 class Support(discord.ui.View):
     def __init__(self):
