@@ -176,7 +176,7 @@ class Basic(commands.Cog):
 
 	@issue.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Incendium-Optional-Resourcepack", "Incendy"])
+		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Stardust-Optional-Resourcepack", "Incendy", "StardustMC"])
 
 		return [
 			app_commands.Choice(name=project.replace("-", " "), value=project)
