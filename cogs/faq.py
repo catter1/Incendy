@@ -131,7 +131,7 @@ This mechanic is what Terralith uses, but instead of doing different shades of g
             case "License":
                 embed = discord.Embed(
                     title='Stardust Labs License',
-                    description='You can find the license inside all Stardust Labs datapacks, or view it at [this link](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt). It applies to *all* projects created by Stardust Labs. Read it for important information, especially about modifying Stardust Labs\' projects.',
+                    description='You can find the license inside all Stardust Labs datapacks, or view it at [this link](https://sawdust.stardustlabs.net/license). It applies to *all* projects created by Stardust Labs. Read it for important information, especially about modifying Stardust Labs\' projects.',
                     color=faq_colour
                 )
             case "Multiverse":
