@@ -332,14 +332,6 @@ Ensure you are updated as shown above, as well as the following:
                     color=faq_colour
                 )
                 view = Update()
-            case "Version Table":
-                embed = discord.Embed(
-                    title='All Versions',
-                    description=f'Here is a table of the versions of our packs with which version of Minecraft they belong to. You can find this with explanations and downloads for each pack in the GitHub repos, which are linked in <#{Constants.Channel.DOWNLOADS}>.',
-                    color=faq_colour
-                )
-                file = discord.File("assets/Version_Table.png", filename="image.png")
-                embed.set_image(url="attachment://image.png")
             case _:
                 await interaction.response.send_message("An unexpected error ocurred! Try again, and let catter know what FAQ you were trying if the issue continues.", ephemeral=True)
                 return
@@ -367,7 +359,7 @@ Ensure you are updated as shown above, as well as the following:
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings"])
 
         choices = [
             app_commands.Choice(name=faq, value=faq)
