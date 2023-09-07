@@ -570,12 +570,11 @@ Only change `xz_scale`, __do not touch anything else__. Smaller values = larger 
             case 'Remove Biomes':
                 embed.title = 'Configuration (Remove Biomes)'
                 embed.description = '''
-This is a little difficult and finicky.
+This method is not perfect, but can get the job done. This is not offocially supported.
 - Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
-- Open `overworld.json` and replace all instances of the biome you don\'t want with biomes you do.
-- To simply remove a biome, you should replace its instances with a similar Minecraft or Terralith biome.
-- When removing Skylands, replace their instances with an ocean type.
-- Be careful, as this doesn\'t always work well and can break.
+- Open `overworld.json` and search (Ctrl+F) for the biomes you want to remove.
+- Replace **only** the name of the biome and ignore the numbers. For example, replace `terralith:unwanted_biome` with `minecraft:wanted_biome` 
+ - When removing Skylands, replace them with an ocean type (such as `minecraft:ocean`).
                 '''
 
             case 'Biome Layout':
