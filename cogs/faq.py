@@ -323,7 +323,7 @@ Ensure you are updated as shown above, as well as the following:
  - Paper: 505
  - Purpur: 1957
  - Pufferfish: 66
-- If you are using a custom client such as Lunar, Badlion, Essential, or likely anything similar to it: __This is a bug with your client.__ They need to update to support the new format of translation strings, which was changed in 1.19.4.
+- If you are using a custom client such as Lunar, Badlion, Essential, or likely anything similar to it: __This is a bug with your client.__ They need to update to support the new format of translation strings, which was changed in 1.19.4. However, there is [an untested/unofficial plugin](https://www.spigotmc.org/resources/serversidetranslations.112283/) you can use on your server that may solve the issue.
                     ''',
                     color=faq_colour
                 )
