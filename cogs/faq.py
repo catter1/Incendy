@@ -201,11 +201,9 @@ Using a Vanilla server, and can't use mods or plugins? You can try out the [Worl
                 embed = discord.Embed(
                     title='Removing Worldgen Packs',
                     description='''
-You cannot simply remove a worldgen pack from your world. The way to do so involves **completely resetting your dimension**, so we do not recommend it unless you have a good reason. In order to do so, you must follow these three steps:
-                    
-**1.** Ensure your world/server is stopped, and remove the worldgen datapack.
-**2.** You must completely reset the dimension that the worldgen pack was affecting. For the nether and end, this is done by deleting the `world/DIM-1` and `world/DIM1` folders in Vanilla/Fabric/Forge, and `world_nether` and `world_the_end` folders in Spigot/Paper, respectively. It\'s more tricky for the overworld - either just reset everything, or ask for further help.
-**3.** You must remove all biome entries from your `level.dat`. If you do not know how to do this, send your `level.dat` and ask for assistance. There will be tools for this later.
+There are two options for removing worldgen datapacks. One method involves resetting the dimension, while the other (Terralith only) method allows you to keep your world, but have ugly chunk borders.
+
+Read more information and instructions on the [Sawdust website](https://sawdust.stardustlabs.net/worldgen-removal)!
                     ''',
                     color=faq_colour
                 )
