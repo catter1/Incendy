@@ -207,13 +207,13 @@ Read more information and instructions on the [Sawdust website](https://sawdust.
                     ''',
                     color=faq_colour
                 )
-            case "Resource Packs":
+            case "Resource Pack":
                 embed = discord.Embed(
-                    title='Resource Packs',
+                    title='Resource Pack',
                     description=f'''
-When using a minimap or any other mod that displays biomes, Stardust biome names may appear very long. <@{Constants.User.KUMA}> made a cool resource pack that fixes it! You can download it from Modrinth by clicking the button below.
-                    
-If you want a resourcepack for Incendium that gives all of Incendium\'s custom stuff unique textures, check out <@{Constants.User.TERA}>\'s Incendium Optional Resourcepack! You can download it from Modrinth by clicking the button below.
+Thanks to the work from <@{Constants.User.TERA}>, <@{Constants.User.KUMA}>, and our volunteer translators, we have the Stardust Optional Resourcepack! This all-in-one resourcepack has custom textures for Incendium content, localizations for biomes and text, and fixes long biome names when using minimaps or simiar mods. Download it from Modrinth by clicking the link below.
+
+If you're confused, we used to have two separate resourcepacks: Incendium Optional Resourcepack and Stardust Biome Name Fix. They have been merged into this single resourcepack.
                     ''',
                     color=faq_colour
                 )
@@ -367,7 +367,7 @@ Ensure you are updated as shown above, as well as the following:
 
     @faq.autocomplete('faq')
     async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Packs", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings"])
+        faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Version Table", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings"])
 
         choices = [
             app_commands.Choice(name=faq, value=faq)
@@ -445,8 +445,7 @@ class Realms(discord.ui.View):
 class Resource(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Omni Biome Name Fix', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix'))
-        self.add_item(discord.ui.Button(label='Incendium Optional Resourcepack', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/incendium-optional-resourcepack'))
+        self.add_item(discord.ui.Button(label='Stardust Optional Resourcepack', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-optional-resourcepack'))
 
 class Seedfix(discord.ui.View):
     def __init__(self):
