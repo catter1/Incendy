@@ -297,7 +297,8 @@ class Project:
 				"1.19.3": "1.19.3-44.1.0",
 				"1.19.4": "1.19.4-45.0.6",
 				"1.20": "1.20-46.0.14",
-				"1.20.1": "1.20.1-47.0.34"
+				"1.20.1": "1.20.1-47.0.34",
+				"1.20.2": "1.20.2-48.0.1"
 			}
 
 			with open(f"{filepath}/build.gradle", 'r') as f:
@@ -597,11 +598,12 @@ class Project:
 			"1.19.3": 9550,
 			"1.19.4": 9776,
 			"1.20": 9971,
-			"1.20.1": 9990
+			"1.20.1": 9990,
+			"1.20.2": 10236
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is Fabric/Forge, respectively
-		gameVersions.extend([7499, 7498])
+		gameVersions.extend([7499, 7498, 9153])
 
 		# Build post data
 		metadata = {
