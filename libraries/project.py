@@ -9,20 +9,21 @@ import asyncio
 import discord
 from git import Repo
 from zipfile import ZipFile
+from distutils import dir_util
 from libraries import incendy
 
 class Project:
 	"""
-    A class representing a datapack or mod in order for it to be
-    uploaded to Stardust Labs' various distribution platforms.
+	A class representing a datapack or mod in order for it to be
+	uploaded to Stardust Labs' various distribution platforms.
 
-    ...
+	...
 
-    Attributes
-    ----------
-    platforms : dict
+	Attributes
+	----------
+	platforms : dict
 		The common dictionary of distribution platforms and their attributes
-    client : incendy.IncendyBot
+	client : incendy.IncendyBot
 		The current instance of the Incendy discord.Bot
 	keys : dict
 		All of Incendy's keys
@@ -55,10 +56,10 @@ class Project:
 	selected_platforms : list[str]
 		List of distribution platforms for the Project to be uplaoded to
 
-    Methods
-    -------
-    set_[attribute](attribute: attr_type)
-    	Sets that attribute and other attributes related to it
+	Methods
+	-------
+	set_[attribute](attribute: attr_type)
+		Sets that attribute and other attributes related to it
 	async set_translations()
 		Gets and sets the translations for the Project
 	async create_mod()
@@ -75,8 +76,8 @@ class Project:
 		Uploads the Project to Stardust Labs site
 	async upload_pmc()
 		Uploads the Project changelogs to Planet Minecraft
-    """
-    
+	"""
+	
 	client: incendy.IncendyBot
 	keys: dict
 	archive: discord.Attachment
@@ -93,20 +94,20 @@ class Project:
 	changelog: str
 	patrons: dict
 	selected_platforms: list[str]
-    
+	
 	def __init__(self, client: incendy.IncendyBot, archive: discord.Attachment, project_name: str, patrons: dict) -> None:
 		"""
-        Parameters
-        ----------
-        client : incendy.IncendyBot
-            The current instance of the Incendy discord.Bot
-        archive : discord.Attachment
-            The file for the working datapack
-        project_name : str
-            The name of the project with title capitalization, spaces, and appropriate symbols
+		Parameters
+		----------
+		client : incendy.IncendyBot
+			The current instance of the Incendy discord.Bot
+		archive : discord.Attachment
+			The file for the working datapack
+		project_name : str
+			The name of the project with title capitalization, spaces, and appropriate symbols
 		patrons : dict
 			All Patrons in the Discord at the time of publishing
-        """
+		"""
 
 		with open("resources/platforms.json", 'r') as f:
 			self.platforms = json.load(f)
@@ -153,7 +154,7 @@ class Project:
 		self.selected_platforms = selected_platforms
 
 	
-	async def set_translations(self, filepath: str, category: str, project: str) -> str:
+	async def set_translations(self, filepath: str, project: str):
 		"""
 		Get all the available translations for an available project.
 
@@ -162,80 +163,54 @@ class Project:
 		Parameters
 		----------
 		filepath : str
-			The base path of the project - does not include `assets/x/lang`
-		category : str
-			A category from [`all`, `incendium`, `omni-biome`]
+			The local path of the project - does not include `assets/x/lang`
 		project : str
 			A project from [`all`, `terralith`, `incendium`, `nullscape`]
 
 		Returns
 		----------
-		lang_path : str
-			The filepath where the translations were set
+		None
 		"""
 
 		# Var clean
-		if category not in ["all", "incendium", "omni-biome"]:
-			return "Invalid category!"
-		elif category == "all":
-			category = ["incendium", "omni-biome"]
-		else:
-			category = [category]
 
 		if project not in ["all", "terralith", "incendium", "nullscape"]:
 			return "Invalid category!"
 		elif project == "all":
-			project = ["terralith", "incendium", "nullscape"]
+			projects = ["terralith", "incendium", "nullscape"]
 		else:
-			project = [project]
+			projects = [project]
 
 		# Clone
 		pat = self.client.keys["git-pat"]
 		repo_path = f"{os.getcwd()}/tmp/translations"
 		Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/translations.git", to_path=repo_path)
 
-		# Init language info
-		languages = ["en_us"]
-		more_languages = [filename.split(".")[0] for filename in os.listdir(f"{repo_path}/incendium") if filename.split(".")[0] != "en_us"]
-		languages.extend(more_languages)
-		translations = {lang: {} for lang in languages}
+		# Start migrating
+		english: dict = {}
+		for project in projects:
 
-		# Sort through and get translation information
-		for cat in category:
-			for lang in languages:
-				with open(f"{repo_path}/{cat}/{lang}.json", 'r') as f:
+			# Init English
+			with open(f"{repo_path}/{project}/en_us.json", 'r') as f:
+				english[project] = json.load(f)
+			
+			# Transfer files
+			lang_path = f"{filepath}/assets/{project}/lang"
+			os.makedirs(lang_path)
+			dir_util.copy_tree(f"{repo_path}/{project}", lang_path)
+
+			# Fill in empty translations
+			for file in os.listdir(lang_path):
+				with open(f"{lang_path}/{file}", 'r') as f:
 					data = json.load(f)
 
-				data = {item: data[item] for item in data if (cat == "omni-biome") and item.split(".")[1] in project}
+				data = {k: (english[k] if len(data[k]) == 0 else v) for k, v in data.items()}
 
-				for item in data:
-					if data[item] == "" and lang != "en_us":
-						data[item] = translations["en_us"][item]
-
-				if data == translations.get("en_us") and lang != "en_us":
-					translations.pop(lang, None)
-					continue
-				
-				if lang not in translations.keys():
-					translations[lang] = data
-				else:
-					translations[lang].update(data)
-
+				with open(f"{lang_path}/{file}", 'w') as f:
+					json.dump(data, f, indent=4)
+		
 		# Clean up
 		shutil.rmtree(repo_path, ignore_errors=True)
-
-		# Set the translations
-		if self.project_id == "incendium-optional-resourcepack":
-			lang_path = f"{filepath}/assets/incendium/lang"
-		else:
-			lang_path = f"{filepath}/assets/{self.project_id}/lang"
-		os.makedirs(lang_path)
-
-		for lang in translations:
-			with open(f"{lang_path}/{lang}.json", 'w') as f:
-				json.dump(translations[lang], f, indent=4)
-					
-		return lang_path
 	
 	def create_patron_txt(self, filepath: str) -> str:
 		"""
@@ -821,18 +796,13 @@ class Project:
 				The filepath for the zip file to insert the translations into
 			"""
 
-			if self.project_name == "Incendium Optional Resourcepack":
-				lang_path = await self.set_translations(filepath="tmp", category="all", project="incendium")
-			elif self.project_name == "Biome Name Fix":
-				lang_path = await self.set_translations(filepath="tmp", category="omni-biome", project="all")
+			await self.set_translations(filepath="tmp", project="all")
 
-			for file in os.listdir(lang_path):
-				if self.project_id == "incendium-optional-resourcepack":
-					full_path = f"tmp/assets/incendium/lang/{file}"
-				else:
-					full_path = f"tmp/assets/{self.project_id}/lang/{file}"
-				with ZipFile(zip_path, 'a') as zf:
-					zf.write(full_path, arcname=full_path[len("tmp/"):])
+			for project in os.listdir("tmp/assets"):
+				for file in os.listdir(f"tmp/assets/{project}/lang"):
+					full_path = f"tmp/assets/{project}/lang/{file}"
+					with ZipFile(zip_path, 'a') as zf:
+						zf.write(full_path, arcname=full_path[len("tmp/"):])
 
 			shutil.rmtree("tmp/assets")
 

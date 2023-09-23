@@ -90,12 +90,10 @@ class Updater(commands.Cog):
 	@makemod.autocomplete('project')
 	@update.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
-		if interaction.user.id == Constants.User.TERA:
+		if interaction.user.id in [Constants.User.TERA, Constants.User.KUMA]:
 			projects = ["Incendium Optional Resourcepack"]
-		elif interaction.user.id == Constants.User.KUMA:
-			projects = ["Biome Name Fix"]
 		else:
-			projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified Nether", "Continents", "Structory: Towers", "Incendium Optional Resourcepack", "Biome Name Fix"])
+			projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified Nether", "Continents", "Structory: Towers", "Stardust Optional Resourcepack"])
 		
 		return [
             app_commands.Choice(name=project, value=project)
@@ -130,7 +128,7 @@ class VersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
@@ -142,7 +140,7 @@ class ModVersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
