@@ -118,37 +118,34 @@ class Autoresponse(commands.Cog):
 			await message.reply(view=view, mention_author=False)
 
 
-	async def do_pastebin(self, message: discord.Message) -> None:
+	async def do_pastebin(self, message: discord.Message, logs: list[discord.Attachment]) -> None:
 		view = discord.ui.View()
 		embed = None
 		
-		for file in message.attachments:
+		for file in logs:
+			# Read log or gzip content
+			if file.filename.endswith(".log.gz"):
+				bts = await file.read()
+
+				with gzip.GzipFile(fileobj=io.BytesIO(bts), mode='rb') as gz:
+					content = gz.read().decode('utf-8')
+			else:
+				bts = await file.read()
+				content = bts.decode('utf-8')
 			
-			if any(ext in file.filename for ext in [".log", ".txt", ".log.gz"]):
-				
-				# Read log or gzip content
-				if file.filename.endswith(".log.gz"):
-					bts = await file.read()
+			# Send content to mclo.gs
+			headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+			url = "https://api.mclo.gs/1/log"
+			data = {"content": f"{content}"}
+			x = requests.post(url, data=data, headers=headers)
 
-					with gzip.GzipFile(fileobj=io.BytesIO(bts), mode='rb') as gz:
-						content = gz.read().decode('utf-8')
-				else:
-					bts = await file.read()
-					content = bts.decode('utf-8')
-				
-				# Send content to mclo.gs
-				headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-				url = "https://api.mclo.gs/1/log"
-				data = {"content": f"{content}"}
-				x = requests.post(url, data=data, headers=headers)
+			# Init button
+			logurl = json.loads(x.text)["url"]
+			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji=Constants.Emoji.MCLOGS))
 
-				# Init button
-				logurl = json.loads(x.text)["url"]
-				view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji=Constants.Emoji.MCLOGS))
-
-				# Check for issues
-				scanner = LogScanner(content)
-				embed = scanner.scan("embed")
+			# Check for issues
+			scanner = LogScanner(content)
+			embed = scanner.scan("embed")
 
 		# Send message
 		await message.reply(view=view, embed=embed, mention_author=False)
@@ -187,8 +184,9 @@ class Autoresponse(commands.Cog):
 					await message.reply(view=view, mention_author=False)
 
 			# Pastebin feature
-			if len(message.attachments) > 0:
-				await self.do_pastebin(message=message)
+			logs = [file for file in message.attachments if ext in file.filename for ext in [".log", ".txt", ".log.gz"]]
+			if len(logs) > 0:
+				await self.do_pastebin(message=message, logs=logs)
 
 			# Stop Mod Reposts
 			for word in message.content.split():
