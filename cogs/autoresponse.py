@@ -29,7 +29,7 @@ class Autoresponse(commands.Cog):
 		apollo_links = [element.text for element in apollo_loc_elements]
 		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
 
-		sawdust_resp = requests.get("https://sawdust.stardustlabs.net/sitemap.xml")
+		sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
 		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
 		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
 		sawdust_links = [element.text for element in sawdust_loc_elements]
@@ -48,7 +48,7 @@ class Autoresponse(commands.Cog):
 	
 	### EVENTS ###
 
-	async def do_textlinks(self, message: discord.Message, matches: list) -> None:
+	async def do_textlinks(self, matches: list) -> discord.ui.View | None:
 		links = []
 		for match in matches:
 
@@ -90,7 +90,33 @@ class Autoresponse(commands.Cog):
 		if len(links) > 0:
 			for item in links:
 				view.add_item(item)
+			return view
+		
+		return None
+			
+	async def find_textlink_buttons(self, orig_message: discord.Message) -> discord.Message | None:
+		async for message in orig_message.channel.history(after=orig_message.created_at, limit=100, oldest_first=True):
+			if not message.author.bot:
+				continue
+			if not message.reference:
+				continue
+			if message.reference.message_id == orig_message.id:
+				return message
+			
+		return None
+			
+	async def edit_textlinks(self, message: discord.Message, matches: list) -> None:
+		textlink_message = await self.find_textlink_buttons(message)
+		view = await self.do_textlinks(matches=matches)
+		if not view:
+			view = discord.ui.View()
+			view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Textlink Removed", disabled=True))
+
+		if textlink_message:
+			await textlink_message.edit(view=view)
+		else:
 			await message.reply(view=view, mention_author=False)
+
 
 	async def do_pastebin(self, message: discord.Message) -> None:
 		view = discord.ui.View()
@@ -145,16 +171,20 @@ class Autoresponse(commands.Cog):
 
 				await message.reply(embed=embed, mention_author=False)
 				return
-
+			
+	async def parse_textlinks(self, content: str) -> list:
+		return re.findall(r"[\[]{2}(\w[\w |':#]+\w)?[\]]{2}", content)
 
 	@commands.Cog.listener()
 	async def on_message(self, message: discord.Message):
 		if not message.author.bot:
 
 			# Textlinks
-			matches = re.findall(r"[\[]{2}(\w[\w |':#]+\w)?[\]]{2}", message.content)
+			matches = await self.parse_textlinks(message.content)
 			if len(matches) > 0:
-				await self.do_textlinks(message=message, matches=matches)
+				view = await self.do_textlinks(matches=matches)
+				if view:
+					await message.reply(view=view, mention_author=False)
 
 			# Pastebin feature
 			if len(message.attachments) > 0:
@@ -167,11 +197,12 @@ class Autoresponse(commands.Cog):
 					
 	@commands.Cog.listener()
 	async def on_message_edit(self, before: discord.Message, after: discord.Message):
-		if not after.author.bot and datetime.datetime.now(datetime.timezone.utc) - before.created_at < datetime.timedelta(minutes=1):
+		if not after.author.bot and datetime.datetime.now(datetime.timezone.utc) - before.created_at < datetime.timedelta(minutes=5):
 			# Textlinks
-			matches = re.findall(r"[\[]{2}(\w[\w |':]+\w)?[\]]{2}", after.content)
-			if len(matches) > 0:
-				await self.do_textlinks(message=after, matches=matches)
+			after_matches = await self.parse_textlinks(after.content)
+			before_matches = await self.parse_textlinks(before.content)
+			if len(after_matches) > 0 or len(before_matches) > 0:
+				await self.edit_textlinks(message=after, matches=after_matches)
 
 class LogScanner:
 	"""
