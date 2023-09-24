@@ -70,9 +70,11 @@ class Autoresponse(commands.Cog):
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace('-', ' ').title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
 
 				elif "worldgen" in match.split("|")[0].lower():
-					page = match.split("|")[-1].lower().replace(" ", "-")
+					full = match.split("|")[-1].lower().replace(' ', '-')
+					page = full.split("#")[0]
 					if page in self.apollo_urls.keys():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=self.apollo_urls[page]))
+						header = "" if len(full.split("#")) <= 1 else f"#{full.split('#')[-1]}"
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=f"{self.apollo_urls[page]}{header}"))
 						
 				elif "sawdust" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
