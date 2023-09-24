@@ -43,13 +43,15 @@ class Moderation(commands.Cog):
 		strikes = []
 		
 		for cache in reversed(self.client.cached_messages):
-			if cache.guild.id == Constants.Guild.STARDUST_LABS:
-				if (discord.utils.utcnow() - cache.created_at).seconds < 15:
-					if not [role.id for role in cache.author.roles if role.id in ids]:
-						if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
-							strikes.append(cache)
-				else:
-					break
+			if (discord.utils.utcnow() - cache.created_at).seconds > 15:
+				break
+			if cache.guild.id != Constants.Guild.STARDUST_LABS:
+				continue
+			if [role.id for role in cache.author.roles if role.id in ids]:
+				continue
+
+			if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
+				strikes.append(cache)
 		
 		if len(strikes) >= 3:
 			sus_users = [cache.author.id for cache in strikes]
@@ -164,8 +166,8 @@ class Moderation(commands.Cog):
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(
-    	member="Member to shutup",
-    	days="(Optional) Amount of days to timeout for. If ignored, will shutup forever"
+		member="Member to shutup",
+		days="(Optional) Amount of days to timeout for. If ignored, will shutup forever"
 	)
 	async def shutup_cmd(self, interaction: discord.Interaction, member: discord.Member, days: int = 9999):
 		await self.shutup(interaction, member, days)
@@ -174,8 +176,8 @@ class Moderation(commands.Cog):
 	@app_commands.default_permissions(administrator=True)
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(
-    	strings="Purge all members that have any (space-separated) string in their name. Optional compat with minutes, but required if minutes not provided.",
-    	minutes="Purge all members that joined in past x minutes. Optional compat with strings, but required if strings not provided."
+		strings="Purge all members that have any (space-separated) string in their name. Optional compat with minutes, but required if minutes not provided.",
+		minutes="Purge all members that joined in past x minutes. Optional compat with strings, but required if strings not provided."
 	)
 	async def jschlatt(self, interaction: discord.Interaction, strings: str = None, minutes: int = 0):
 		# Double check in case if dumb
