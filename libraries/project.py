@@ -657,7 +657,11 @@ class Project:
 
 		# Clone
 		repo_path = f"{os.getcwd()}/tmp/{proj_tag}"
-		repo = Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path, branch=self.newest_mc_version)
+		if "1.20" in self.newest_mc_version:
+			branch = "1.20"
+		else:
+			branch = self.newest_mc_version
+		repo = Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path, branch=branch)
 
 		# Remove all except .git
 		for thing in os.listdir(repo_path):
