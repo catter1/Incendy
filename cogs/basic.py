@@ -1,5 +1,6 @@
 import discord
 import requests
+import re
 import json
 import random
 import logging
@@ -266,7 +267,7 @@ class Basic(commands.Cog):
 				await message.add_reaction(Constants.Emoji.PIN)
 				
 		#Trans Love
-		if any([trans for trans in [" trans ", "🏳️‍⚧️", "blahaj", "blåhaj", "<:blahaj:1104463914772729898>"] if trans in message.content.lower()]) or message.content.startswith("trans ") or message.content.endswith(" trans"):
+		if re.search(r"(?:\btrans\b)|(?:bl[a|å]haj)|🏳️‍⚧️", message.content.lower()):
 			await message.add_reaction(Constants.Emoji.BLAHAJ)
 
 	### EVENTS ###
