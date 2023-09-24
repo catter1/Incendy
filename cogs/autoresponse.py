@@ -1,9 +1,14 @@
+from typing import Any, Optional, Union
 import discord
 import logging
 import re
 import io
 import gzip
 import json
+from discord.emoji import Emoji
+from discord.enums import ButtonStyle
+from discord.interactions import Interaction
+from discord.partial_emoji import PartialEmoji
 import requests
 import validators
 import datetime
@@ -120,7 +125,7 @@ class Autoresponse(commands.Cog):
 
 	async def do_pastebin(self, message: discord.Message, logs: list[discord.Attachment]) -> None:
 		view = discord.ui.View()
-		embed = None
+		scanner = LogScanner()
 		
 		for file in logs:
 			# Read log or gzip content
@@ -137,18 +142,65 @@ class Autoresponse(commands.Cog):
 			headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 			url = "https://api.mclo.gs/1/log"
 			data = {"content": f"{content}"}
-			x = requests.post(url, data=data, headers=headers)
+			resp = requests.post(url, data=data, headers=headers)
 
 			# Init button
-			logurl = json.loads(x.text)["url"]
-			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=file.filename, url=logurl, emoji=Constants.Emoji.MCLOGS))
+			logurl = json.loads(resp.text)["url"]
+			view.add_item(discord.ui.Button(
+				style=discord.ButtonStyle.link,
+				label=file.filename,
+				url=logurl,
+				emoji=Constants.Emoji.MCLOGS
+			))
 
-			# Check for issues
-			scanner = LogScanner(content)
-			embed = scanner.scan("embed")
+			# Add log to Scanner
+			scanner.add_log(logdata=content, logname=file.filename, loglink=logurl)
 
 		# Send message
+		view.add_item(RawButton())
+		embed = scanner.scan(resp='embed', append_name=bool(len(logs) > 1))
 		await message.reply(view=view, embed=embed, mention_author=False)
+
+	async def do_other_logs(self, message: discord.Message, mclogs: list, pastebin: list) -> None:
+		scanner = LogScanner()
+
+		for log_id in mclogs:
+			raw_url = f"https://api.mclo.gs/1/raw/{log_id}"
+			insights_url = f"https://api.mclo.gs/1/insights/{log_id}"
+			raw = requests.get(raw_url)
+			insights = requests.get(insights_url)
+
+			# Check for insights failure
+			try:
+				title = insights.json()['title']
+			except requests.exceptions.JSONDecodeError:
+				continue
+			
+			# Check for data failure
+			try:
+				_ = raw.json()
+			except requests.exceptions.JSONDecodeError:
+				content = raw.text
+			else:
+				continue
+
+			scanner.add_log(logdata=content, logname=title, loglink=f"https://mclo.gs/{log_id}")
+
+		for i, log_id in enumerate(pastebin):
+			raw_url = f"https://pastebin.com/raw/{log_id}"
+			raw = requests.get(raw_url)
+
+			# Check for log failure
+			if raw.status_code == 404:
+				continue
+
+			content = raw.text
+
+			scanner.add_log(logdata=content, logname=f"Pastebin #{str(i+1)}", loglink=f"https://pastebin.com/{log_id}")
+
+		embed = scanner.scan(resp='embed', append_name=bool(len(mclogs) + len(pastebin) > 1))
+		if embed:
+			await message.reply(embed=embed, mention_author=False)
 
 	async def stop_mod_reposts(self, message: discord.Message, url: str) -> None:
 		for illegal in self.reposts:
@@ -184,9 +236,16 @@ class Autoresponse(commands.Cog):
 					await message.reply(view=view, mention_author=False)
 
 			# Pastebin feature
-			logs = [file for file in message.attachments if ext in file.filename for ext in [".log", ".txt", ".log.gz"]]
+			any([])
+			logs = [file for file in message.attachments if any(ext in file.filename for ext in [".log", ".txt", ".log.gz"])]
 			if len(logs) > 0:
 				await self.do_pastebin(message=message, logs=logs)
+
+			# Scan 3rd-party logs
+			mclogs = re.findall(r"https:\/\/mclo.gs\/(\w{5,})", message.content)
+			pastebin = re.findall(r"https:\/\/(?:w{3}.)?pastebin.com/(\w{5,})", message.content)
+			if len(mclogs) > 0 or len(pastebin) > 0:
+				await self.do_other_logs(message=message, mclogs=mclogs, pastebin=pastebin)
 
 			# Stop Mod Reposts
 			for word in message.content.split():
@@ -202,131 +261,219 @@ class Autoresponse(commands.Cog):
 			if len(after_matches) > 0 or len(before_matches) > 0:
 				await self.edit_textlinks(message=after, matches=after_matches)
 
+class LogContents:
+	"""
+	A class representing the contents and properties of a log file.
+
+	Attributes
+	-----
+	`logdata`
+		utf-8 encoded string of the contents of the log
+	`logname`
+		Name of the log
+	`loglink`
+		(Optional) Link to mclo.gs
+	`responses`
+		List of full responses of any errors in the logdata
+	`precip`
+		Whether the log was already marked with a precipitation error
+	"""
+
+	def __init__(self, logdata: str, logname: str, loglink: str = None) -> None:
+		if not logdata:
+			raise ValueError("Missing logdata to init LogContents!")
+		if not logname:
+			raise ValueError("Missing logname to init LogContents!")
+		
+		self.logdata: str = logdata
+		self.logname: str = logname
+		self.loglink: str = loglink
+		self.responses: list = []
+		self.precip: bool = False
+
 class LogScanner:
 	"""
-	A class representing the contents of a log file, able to do scans on itself.
+	A class representing a collection of a log files, able to do scans on itself.
 
 	Attributes
 	-----
 	`contents`
-		A string of utf-8 encoded text
-	`responses`
-		List of all issues found
+		A list of all log files with their errors
 	"""
-	def __init__(self, contents: str) -> None:
-		self.contents = contents
-		self.responses = []
-		self._precip = False
 
-	def scan(self, resp: str) -> list | discord.Embed | None:
+	def __init__(self, logdata: str = None, logname: str = '') -> None:
 		"""
-		Scan the contents of the log for hanging fruit errors.
+		Initialize the contents of this scanner instance
+
+		Parameters
+		-----
+		`logdata`
+			(Optional) To init first LogContents
+		`logname`
+			(Optional) To init first LogContents
+		"""
+
+		self.contents: list[LogContents] = []
+		if logdata:
+			self.contents.append(LogContents(logdata=logdata, logname=logname))
+
+	def add_log(self, logdata: str, logname: str, loglink: str = None) -> None:
+		self.contents.append(LogContents(logdata=logdata, logname=logname, loglink=loglink))
+
+	def scan(self, resp: str, append_name: bool = False) -> list | discord.Embed | None:
+		"""
+		Scan the contents of all logs for hanging fruit errors.
 
 		Parameters:
 			`resp` - Either "list" or "embed". For return type.
+			`append_name` = Whether to append lognames to errors. Defaults to False.
 
 		Returns:
-			A list of `responses`. `None` if no issues found.
+			A list of `responses`. If `append_name`, will be a list of tuples (response, name, link). `None` if no issues found.
 		or
 			An embed encoded with all the `responses`. `None` if no issues found.
 		"""
+
+		if len(self.contents) < 1:
+			raise ValueError("No logs have been added yet!")
 
 		if resp.lower().strip() not in ["list", "embed"]:
 			raise ValueError("Must be either 'list' or 'embed'")
 		
 		resp = resp.lower().strip()
+		
+		self._check_all()
 
-		self.check_precipitation()
-		self.check_messy_uninstall()
-		self.check_nullscape_seedfix()
-		self.check_plugin_installation()
-		self.check_auditory_incendium()
+		total_responses: list[tuple] = []
+		for log in self.contents:
+			total_responses.extend(map(lambda x: tuple([x, log.logname, log.loglink]), log.responses))
+
+		if len(total_responses) == 0:
+			return None
 
 		if resp == "list":
-			if len(self.responses) == 0:
-				return None
-			
-			return self.responses
+			if append_name:
+				return total_responses
+			return [resp[0] for resp in total_responses]
+		
 		else:
-			if len(self.responses) == 0:
-				return None
-			
-			nl = '\n'
+			if append_name:	
+				formatted_responses = '\n'.join([f'- {resp[0]} ({f"[{resp[1]}]({resp[2]})" if resp[2] else resp[1]})' for resp in total_responses])
+			else:
+				formatted_responses = '\n'.join([f'- {resp[0]}' for resp in total_responses])
 			embed = discord.Embed(
 				title="[Auto Scanner]",
 				color=discord.Colour.dark_magenta(),
-				description=f"I've taken a glance at your log. Here are some potential issues I found!\n\n{nl.join(['**•** ' + resp for resp in self.responses])}"
+				description=f"I've taken a glance at your log{'s' if len(self.contents) > 1 else ''}. Here are some potential issues I found!\n\n{formatted_responses}"
 			)
 			embed.set_footer(text="How was my response? Let me know!")
 
 			return embed
+		
+	def _check_all(self) -> None:
+		"""Loops through all checks and all log files."""
+
+		for i in range(len(self.contents)):
+			self.check_precipitation(i)
+			self.check_messy_uninstall(i)
+			self.check_nullscape_seedfix(i)
+			self.check_plugin_installation(i)
+			self.check_auditory_incendium(i)
 	
-	def check_precipitation(self) -> None:
-		precipitation_3 = re.search(r"No key precipitation in MapLike", self.contents)
-		precipitation_4 = re.search(r"No key has_precipitation in MapLike", self.contents)
+	def check_precipitation(self, index: int) -> None:
+		precipitation_3 = re.search(r"No key precipitation in MapLike", self.contents[index].logdata)
+		precipitation_4 = re.search(r"No key has_precipitation in MapLike", self.contents[index].logdata)
 
 		if precipitation_3:
 			error = "Your game/server is running 1.19.3, but one or more of your worldgen datapacks is made for 1.19.4 or 1.20.x. Update your server, or download the correct versions of your datapack(s)."
-			self.responses.append(error)
-			self._precip = True
+			self.contents[index].responses.append(error)
+			self.contents[index].precip = True
 			return
 		
 		if precipitation_4:
 			error = "Your game/server is running 1.19.4 or 1.20.x, but one or more of your worldgen datapacks is made for 1.19.3. Downgrade your server, or download the correct versions of your datapack(s)."
-			self.responses.append(error)
-			self._precip = True
+			self.contents[index].responses.append(error)
+			self.contents[index].precip = True
 			return
 		
 		return
 	
-	def check_messy_uninstall(self) -> None:
-		failed = re.search(r"Failed to get element ResourceKey\[minecraft:worldgen/biome / (?P<Namespace>[a-z]+):(?P<Biome>[a-z_\-\/]+)\]", self.contents)
-		unbound = re.search(r"Unbound values in registry ResourceKey\[minecraft:root / minecraft:worldgen/biome]: \[(?P<Namespace>[a-z]+):(?P<Biome>[a-z_\-\/]+)", self.contents)
+	def check_messy_uninstall(self, index: int) -> None:
+		failed = re.search(r"Failed to get element ResourceKey\[minecraft:worldgen/biome / (?P<Namespace>[a-z]+):(?P<Biome>[a-z_\-\/]+)\]", self.contents[index].logdata)
+		unbound = re.search(r"Unbound values in registry ResourceKey\[minecraft:root / minecraft:worldgen/biome]: \[(?P<Namespace>[a-z]+):(?P<Biome>[a-z_\-\/]+)", self.contents[index].logdata)
 
-		if failed or unbound and not self._precip:
-			if failed:
-				pack = failed.group(1).title()
-			else:
-				pack = unbound.group(1).title()
-
-			error = f"It appears {pack} was uninstalled incorrectly. Biomes must be removed from the `level.dat` - see `/faq Removing Worldgen Packs`."
-			self.responses.append(error)
+		if self.contents[index].precip:
+			return
+		if not (failed or unbound):
 			return
 		
+		if failed:
+			pack = failed.group(1).title()
+		else:
+			pack = unbound.group(1).title()
+
+		error = f"It appears {pack} was uninstalled incorrectly. Biomes must be removed from the `level.dat` - see `/faq Removing Worldgen Packs`."
+		self.contents[index].responses.append(error)
+
 		return
 	
-	def check_nullscape_seedfix(self) -> None:
-		seedfix = re.search(r"Exception in thread \"main\" java\.lang\.module\.ResolutionException: Modules ([a-z_-]+) and ([a-z_-]+) export package net\.hypercubemc\.seedfix to module ([a-z_-]+)", self.contents)
-		nullscape = re.search(r"Nullscape_1\.18\.2_v1\.1\.3\.jar", self.contents)
+	def check_nullscape_seedfix(self, index: int) -> None:
+		seedfix = re.search(r"Exception in thread \"main\" java\.lang\.module\.ResolutionException: Modules ([a-z_-]+) and ([a-z_-]+) export package net\.hypercubemc\.seedfix to module ([a-z_-]+)", self.contents[index].logdata)
+		nullscape = re.search(r"Nullscape_1\.18\.2_v1\.1\.3\.jar", self.contents[index].logdata)
 
 		if seedfix and nullscape:
-			error = f"You are using Nullscape 1.1.3, which currently has issues with its Seedfix implementation. Upgrade to Nullscape 1.1.4 and download its Unfixed Seeds dependency!"
-			self.responses.append(error)
+			error = f"You are using Nullscape 1.1.3, which currently has issues with its Seedfix implementation. Upgrade to [Nullscape 1.1.4](https://modrinth.com/mod/nullscape/versions?g=1.18.2) or higher and download its [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) dependency!"
+			self.contents[index].responses.append(error)
 			return
 		
 		return
 	
-	def check_plugin_installation(self) -> None:
-		plugin = re.search(r"Error loading plugin: File 'plugins\\(?P<Datapack>Terralith|Incendium|Nullscape|Amplified_Nether|Structory|Continents|Structory_Towers)", self.contents)
+	def check_plugin_installation(self, index: int) -> None:
+		plugin = re.search(r"Error loading plugin: File 'plugins\\(?P<Datapack>Terralith|Incendium|Nullscape|Amplified_Nether|Structory|Continents|Structory_Towers)", self.contents[index].logdata)
 
 		if plugin:
 			pack = plugin.group(1).replace('_', ' ').title()
 			error = f"You have installed {pack} as a plugin! The `jar` versions of our projects are mods, not plugins. To use {pack} on a Spigot/Paper server, use the datapack version and put it in the `world/datapacks` folder."
-			self.responses.append(error)
+			self.contents[index].responses.append(error)
 			return
 		
 		return
 	
-	def check_auditory_incendium(self) -> None:
-		auditory = re.search(r"auditory\$onHit", self.contents)
-		enderpearl = re.search(r"(ThrownEnderpearlMixin|EnderPearlSoundMixin|EnderPearlEntityMixin)", self.contents)
+	def check_auditory_incendium(self, index: int) -> None:
+		auditory = re.search(r"auditory\$onHit", self.contents[index].logdata)
+		enderpearl = re.search(r"(ThrownEnderpearlMixin|EnderPearlSoundMixin|EnderPearlEntityMixin)", self.contents[index].logdata)
 
 		if auditory:
 			error = f"This is an [issue with Auditory](https://github.com/Sydokiddo/auditory/issues/32). In the meantime, this can be fixed by disabling {'enderpearl' if enderpearl else 'the problem'} sounds in the Auditory config."
-			self.responses.append(error)
+			self.contents[index].responses.append(error)
 			return
 		
 		return
+	
+class RawButton(discord.ui.Button):
+	def __init__(self, label: str = 'Raw', custom_id: str = 'raw'):
+		super().__init__(style=discord.ButtonStyle.blurple, label=label, disabled=False, custom_id=custom_id, emoji='🗒️')
+
+	async def callback(self, interaction: discord.Interaction) -> Any:
+		view = discord.ui.View()
+
+		for item in self.view.children:
+			if item.emoji.name == 'mclogs':
+				log_id = item.url.split('/')[-1]
+				if interaction.data['custom_id'] == 'raw':
+					item.url = f"https://api.mclo.gs/1/raw/{log_id}"
+					item.label = f"{item.label} (raw)"
+				else:
+					item.url = f"https://mclo.gs/{log_id}"
+					item.label = item.label[:-6]
+				view.add_item(item)
+
+		if interaction.data['custom_id'] == 'raw':
+			view.add_item(RawButton(label='Pretty', custom_id='pretty'))
+		else:
+			view.add_item(RawButton())
+
+		await interaction.response.edit_message(view=view)
 
 
 async def setup(client):
