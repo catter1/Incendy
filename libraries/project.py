@@ -204,7 +204,7 @@ class Project:
 				with open(f"{lang_path}/{file}", 'r') as f:
 					data = json.load(f)
 
-				data = {k: (english[k] if len(data[k]) == 0 else v) for k, v in data.items()}
+				data = {k: (english[project][k] if len(data[k]) == 0 else v) for k, v in data.items()}
 
 				with open(f"{lang_path}/{file}", 'w') as f:
 					json.dump(data, f, indent=4)
