@@ -131,7 +131,7 @@ This mechanic is what Terralith uses, but instead of doing different shades of g
             case "License":
                 embed = discord.Embed(
                     title='Stardust Labs License',
-                    description='You can find the license inside all Stardust Labs datapacks, or view it at [this link](https://sawdust.stardustlabs.net/license). It applies to *all* projects created by Stardust Labs. Read it for important information, especially about modifying Stardust Labs\' projects.',
+                    description='You can find the license inside all Stardust Labs datapacks, or view it at [this link](https://sawdust.catter.dev/license). It applies to *all* projects created by Stardust Labs. Read it for important information, especially about modifying Stardust Labs\' projects.',
                     color=faq_colour
                 )
             case "Multiverse":
@@ -203,7 +203,7 @@ Using a Vanilla server, and can't use mods or plugins? You can try out the [Worl
                     description='''
 There are two options for removing worldgen datapacks. One method involves resetting the dimension, while the other (Terralith only) method allows you to keep your world, but have ugly chunk borders.
 
-Read more information and instructions on the [Sawdust website](https://sawdust.stardustlabs.net/worldgen-removal)!
+Read more information and instructions on the [Sawdust website](https://sawdust.catter.dev/worldgen-removal)!
                     ''',
                     color=faq_colour
                 )
@@ -442,7 +442,7 @@ class Resource(discord.ui.View):
 class Seedfix(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(label='Seedfix Tool', emoji=Constants.Emoji.SEEDFIX, url='https://sawdust.stardustlabs.net/tools/seedfix'))
+        self.add_item(discord.ui.Button(label='Seedfix Tool', emoji=Constants.Emoji.SEEDFIX, url='https://sawdust.catter.dev/tools/seedfix'))
         self.add_item(discord.ui.Button(label='Mod Download', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/terralith'))
 
 class Support(discord.ui.View):

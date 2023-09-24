@@ -35,7 +35,7 @@ class Basic(commands.Cog):
 		apollo_links = [element.text for element in apollo_loc_elements]
 		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
 
-		sawdust_resp = requests.get("https://sawdust.stardustlabs.net/sitemap.xml")
+		sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
 		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
 		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
 		sawdust_links = [element.text for element in sawdust_loc_elements]
