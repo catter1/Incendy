@@ -24,14 +24,12 @@ class Moderation(commands.Cog):
 		self.servchan = self.client.get_channel(Constants.Channel.SERVER)
 		self.to_be_banned = []
 		self.ping_check.start()
-		self.detect.start()
 		self.timeout_check.start()
 		logging.info(f'> {self.__cog_name__} cog loaded')
 	
 	async def cog_unload(self):
 		self.client.tree.remove_command(self.shutup_app.name, type=self.shutup_app.type)
 		self.ping_check.stop()
-		self.detect.stop()
 		self.timeout_check.stop()
 		logging.info(f'> {self.__cog_name__} cog unloaded')
 
