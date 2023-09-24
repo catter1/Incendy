@@ -25,7 +25,7 @@ class Roles(commands.Cog):
 			await member.add_roles(role)
 
 		# Check if user tries to circumvent SHUTUP
-		with open('resources/timeout.json') as f:
+		with open('resources/timeout.json', 'r') as f:
 			log = json.load(f)
 		if str(member.id) in log["members"].keys():
 			future = datetime.timedelta(days=28)
