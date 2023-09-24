@@ -74,7 +74,7 @@ class Moderation(commands.Cog):
 
 	@tasks.loop(hours=8.0)
 	async def timeout_check(self):
-		with open('resources/timeout.json') as f:
+		with open('resources/timeout.json', 'r') as f:
 			log = json.load(f)
 		
 		today = datetime.datetime.today().strftime("%d/%m/%Y")
