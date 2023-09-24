@@ -108,59 +108,6 @@ class Bulletin(commands.Cog):
 
 		modal = ServerDesc(self.client, image)
 		await interaction.response.send_modal(modal)
-	
-	@app_commands.command(name="stardustmc", description="[ADMIN] Prints the StardustMC info channel")
-	@app_commands.default_permissions(administrator=True)
-	@app_commands.checks.has_permissions(administrator=True)
-	async def stardustmc(self, interaction: discord.Interaction):
-		""" /stardustmc """
-
-		embed1 = discord.Embed(
-			colour=discord.Colour.teal(),
-			title="Rules",
-			description=f"**[1]** Respect others. See <#{Constants.Channel.RULES}> for more information.\n**[2]** Follow both Discord ToS and Minecraft EULA.\n**[3]** Obey staff.\n**[4]** No griefing, hacking, duping, or otherwise gaining an unfair advantage. This list is non-exclusive.\n**[5]** No spamming. No excessive or directed profanity.\n\nFailure to comply with these rules can result in mutes, kicks, or bans, as seen fit."
-		)
-		embed2 = discord.Embed(
-			colour=discord.Colour.teal(),
-			title="FAQ",
-			description="Q: Can I do ________?\nA: As long as it follows the rules, and __all players involved and affected__ are okay with it, sure! You can do anything from starting a friendly war, creating a nether hub, starting a community game/contest.\n\nQ: Will the server reset?\nA: Not for quite a while.\n\nQ: Are minimaps allowed?\nA: Normal client-side minimaps are allowed, but there is no server-side Dynamap or similar.\n\nQ: Can I have a channel to chat with just my teammates?\nA: Yes! in <#1001293556612345856>, click \"create thread\", check the \"private thread\" box, name the thread whatever you want, then @ people to invite them.\n\nQ: What is the world border?\nA: Infinite (well, practically infinite), but the Random TP distance is 100k blocks.\n\nQ: Are Chat Reports enabled?\nA: No, it is blocked by the server. You do not need client-side mods to block them (sometimes, they can even cause issues)."
-		)
-		embed3 = discord.Embed(
-			colour=discord.Colour.teal(),
-			title="General Info",
-			description="> • Java/Bedrock Address: **stardustmc.net**\n> • Bedrock Port: **19132**\n> • Java Version: **1.19.3**\n> • Bedrock Version: **Latest Release**\n\n- To leave spawn, do **/rt**.\n- You have up to 3 homes. Set them using **/sethome [home name]**. Do this after you leave spawn, so you don't lose your spot!\n- Teleport to your home with **/home [home_name]**, and to other players with **/tpa [player]**.\n- Claim your area by doing **/claim**, then clicking the two corners of the claim.\n- You start out with 400 claim blocks, and will earn 100 per hour of playtime.\n- Do **/warp shops** to visit the Flipside Shopping District, and even create your own shop!"
-		)
-		embed4 = discord.Embed(
-			colour=discord.Colour.teal(),
-			title="Ping Role",
-			description=f"Want to be pinged with important StardustMC-related announcements in <#1002721350143721603>? If so, react to this message with {Constants.Emoji.STARDUST}!"
-		)
-
-		x = await interaction.channel.send(embeds=[embed1, embed2, embed3, embed4])
-		await x.add_reaction(Constants.Emoji.STARDUST)
-
-
-	### LISTENERS ###
-
-	@commands.Cog.listener()
-	async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
-		user = guild.get_member(payload.user_id)
-
-		if payload.channel_id == Constants.Channel.SERVER_INFO:
-			if not user.bot and payload.emoji.name == "stardust":
-				role = guild.get_role(Constants.Role.STARDUSTMC)
-				await user.add_roles(role)
-
-	@commands.Cog.listener()
-	async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
-		user = guild.get_member(payload.user_id)
-
-		if payload.channel_id == Constants.Channel.SERVER_INFO:
-			if not user.bot and payload.emoji.name == "stardust":
-				role = guild.get_role(Constants.Role.STARDUSTMC)
-				await user.remove_roles(role)
 
 ### BUTTONS ###
 
