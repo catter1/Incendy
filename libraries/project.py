@@ -458,10 +458,8 @@ class Project:
 		edit_mods_toml(f"{filepath}/src/main/resources/META-INF")
 		if not "Structory" in self.project_name:
 			self.create_patron_txt(f"{filepath}/src/main/resources")
-		if self.project_id == "incendium":
-			await self.set_translations(filepath=f"{filepath}/src/main/resources", category="all", project="incendium")
-		if self.project_id in ["terralith", "nullscape"]:
-			await self.set_translations(filepath=f"{filepath}/src/main/resources", category="omni-biome", project=self.project_id)
+		if self.project_id in ["terralith", "incendium", "nullscape"]:
+			await self.set_translations(filepath=f"{filepath}/src/main/resources", project=self.project_id)
 
 		# Give gradle a second...
 		await asyncio.sleep(2.0)
