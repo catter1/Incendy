@@ -45,6 +45,8 @@ class Moderation(commands.Cog):
 		for cache in reversed(self.client.cached_messages):
 			if (discord.utils.utcnow() - cache.created_at).seconds > 15:
 				break
+			if not cache.guild:
+				continue
 			if cache.guild.id != Constants.Guild.STARDUST_LABS:
 				continue
 			if [role.id for role in cache.author.roles if role.id in ids]:
