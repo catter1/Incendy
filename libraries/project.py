@@ -700,7 +700,7 @@ class Project:
 				f.writelines(lines)
 
 		# git add/commit/push
-		repo.git.symbolic_ref("HEAD", f"refs/heads/{self.newest_mc_version}")
+		repo.git.symbolic_ref("HEAD", f"refs/heads/{branch}")
 		origin = repo.remote(name="origin")
 		repo.git.add(".")
 		repo.index.commit(f"Updated to version {self.version_number}")
