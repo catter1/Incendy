@@ -173,7 +173,7 @@ This may be changed in the future. Currently, there is a [bug report](https://bu
                     description='''
 Passive mobs only spawn on grass blocks (and similar), on less-spiky terrain, and closer to sea level. Because Terralith is more mountainous than Vanilla, and there are more biomes without grass blocks, you will tend to find less passive mobs.
                     
-Although is is not possible to change passive mob spawning conditions, Terralith increases the spawn rates on the places they *are* able to spawn on. The TL;DR is that Terralith can\'t do anything about the rarity of mob spawning locations. If you want to learn more about Vanilla mob spawning rules, check out [this Minecraft Wiki article](https://minecraft.fandom.com/wiki/Spawn#Spawn_conditions).
+Although is is not possible to change passive mob spawning conditions, Terralith increases the spawn rates on the places they *are* able to spawn on. The TL;DR is that Terralith can\'t do anything about the rarity of mob spawning locations. If you want to learn more about Vanilla mob spawning rules, check out [this Minecraft Wiki article](https://minecraft.wiki/w/Spawn#Spawn_conditions).
                     ''',
                     color=faq_colour
                 )
@@ -710,7 +710,7 @@ class UpdateMenu(discord.ui.Select):
                 embed.title = 'Updating (Terralith 1.19)'
                 embed.description = f'''
 **1.** If you used Seedfix, continue. If you downloaded the datapack directly from Planet Minecraft without entering a seed into the Seedfix website, skip to Step **4**.
-**2.** Open your `world/level.dat` using <@{Constants.User.MISODE}>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.fandom.com/wiki/Tutorials/Programs_and_editors/NBTExplorer).
+**2.** Open your `world/level.dat` using <@{Constants.User.MISODE}>\'s [NBT Viewer](https://marketplace.visualstudio.com/items?itemName=Misodee.vscode-nbt) extension for [Visual Studio Code](https://code.visualstudio.com/) or [NBT Explorer](https://minecraft.wiki/w/Tutorials/Programs_and_editors/NBTExplorer).
 **3.** In the `level.dat`, change the overworld seed in `Data>WorldGenSettings>dimensions` to the seed displayed in `Data>WorldGenSettings>dimensions>minecraft:overworld>generator>biome_source`. If it is the same, you\'re all good! Do not forget the  "-" if there is any.
 **4.** Once that is done, you can replace Terralith 2.x.x with Terralith 2.3.x and start up your world!
                 '''
