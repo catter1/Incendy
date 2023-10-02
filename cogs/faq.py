@@ -701,7 +701,7 @@ class UpdateMenu(discord.ui.Select):
                 embed.title = 'Updating (Terralith)'
                 embed.description = '''
 - Updating Terralith between minor versions (2.3.x) - for example, 2.3.3 to 2.3.5 - is perfectly fine! You can do so with little to no chunk borders.
-- If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from [SeedFix](https://seedfix.stardustlabs.net/). This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.
+- If using the datapack version in 1.18.2, __make sure you use the same seed both times__ from the [Seedfix](https://sawdust.catter1.com/tools/seedfix/) tool. This is the seed you entered into the site the first time (found in the name of the file you downloaded), *not* from `/seed`.
 - If updating from Terralith 2.0.x to 2.1.x, check if you have any deserts generated in your world. If so, make sure you generate them all the way, since 2.1.x completely revamped the desert terrain. If you don\'t, you will have ugly chunk borders there.
 - Updating from 2.2.x (1.18.2) to 2.3.x (1.19.x)? Click on the Terralith (1.19) option from the Selection Menu.
                 '''
