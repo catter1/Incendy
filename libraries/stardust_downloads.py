@@ -78,9 +78,9 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
                 stats[project] += download_count
 
     # Seedfix
-    url = "https://seedfix.stardustlabs.net/api/get_downloads/"
-    x = requests.get(url=url, headers=headers)
-    stats["terralith"] += int(x.text)
+    #url = "https://seedfix.stardustlabs.net/api/get_downloads/"
+    #x = requests.get(url=url, headers=headers)
+    #stats["terralith"] += int(x.text)
 
     return stats
 
