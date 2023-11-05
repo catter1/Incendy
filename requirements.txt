@@ -43,7 +43,7 @@ nltk==3.8.1
 numpy==1.24.2
 opencv-python==4.7.0.72
 pathspec==0.11.0
-Pillow==9.4.0
+Pillow==10.0.1
 pydantic==1.10.5
 pymediawiki==0.7.2
 python-Levenshtein==0.20.9
@@ -60,7 +60,7 @@ tokenstream==1.5.0
 toml==0.10.2
 tqdm==4.64.1
 typing_extensions==4.3.0
-urllib3==1.26.5
+urllib3>=1.26.17
 validators==0.20.0
 Wand==0.6.10
 wcwidth==0.2.6
