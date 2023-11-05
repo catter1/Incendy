@@ -19,9 +19,13 @@ class Helps(commands.Cog):
 	### COMMANDS ###
 
 	@app_commands.command(name="help", description="Displays the help menu")
-	async def _help(self, interaction: discord.Interaction):
+	@app_commands.describe(
+		public="Whether to make the Help menu visible to everyone. Keep it False unless you're trying to share!"
+	)
+	async def _help(self, interaction: discord.Interaction, public: bool = False):
 		""" /help """
 
+		public = not public
 		embed = discord.Embed(
 			title="Essential Commands",
 			color=discord.Colour.brand_red()
@@ -42,7 +46,7 @@ class Helps(commands.Cog):
 		else:
 			embed.set_footer(text="Page 1/3")
 
-		await interaction.response.send_message(embed=embed, view=HelpView())
+		await interaction.response.send_message(embed=embed, view=HelpView(), ephemeral=public)
 
 	@app_commands.command(name="close", description="Closes the support thread")
 	@incendy.can_close()
