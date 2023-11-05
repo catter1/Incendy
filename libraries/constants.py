@@ -94,6 +94,7 @@ class Emoji:
     ANGRY_PING = "<:angryPING:875547905614839818>"
     CRINGE = "<:cringe:1081394880460378122>"
     BLAHAJ = "<:blahaj:1104463914772729898>"
+    OPTICRIME = "<:opticrime:1085692661186445443>"
 
     # Tools
     MCLOGS = "<:mclogs:1087036837996023910>"

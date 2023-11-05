@@ -242,6 +242,10 @@ class Basic(commands.Cog):
 		#TERRALITH 1.16?!?!?
 		if '1.16' in message.content.lower() and 'terralith' in message.content.lower():
 			await message.add_reaction(Constants.Emoji.NEVER)
+			
+		#Opticrime
+		if 'optifine' in message.content.lower():
+			await message.add_reaction(Constants.Emoji.OPTICRIME)
 
 		#Angry Ping
 		if Constants.User.STARMUTE in message.raw_mentions:
