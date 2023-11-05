@@ -1,18 +1,13 @@
-from typing import Any, Optional, Union
+from typing import Any
 import discord
 import logging
 import re
 import io
 import gzip
 import json
-from discord.emoji import Emoji
-from discord.enums import ButtonStyle
-from discord.interactions import Interaction
-from discord.partial_emoji import PartialEmoji
 import requests
 import validators
 import datetime
-from discord import app_commands
 from discord.ext import commands
 from lxml import etree
 from libraries import incendy
