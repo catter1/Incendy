@@ -83,7 +83,7 @@ class CloseButton(discord.ui.Button):
 		super().__init__(style=discord.ButtonStyle.green, label="Close Thread", emoji="🚫")
 
 	async def callback(self, interaction: discord.Interaction):
-		if isinstance(interaction.channel, discord.Thread) and (interaction.user.id == interaction.channel.owner_id or interaction.user.guild_permissions.administrator):
+		if isinstance(interaction.channel, discord.Thread) and (interaction.user.id == interaction.channel.owner_id or interaction.user.id == interaction.user.guild_permissions.administrator):
 			await interaction.response.send_message("Closing thread now. Thanks!")
 			await interaction.channel.edit(locked=True, archived=True)
 		else:
