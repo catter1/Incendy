@@ -171,9 +171,24 @@ class Basic(commands.Cog):
 		await interaction.response.send_message(embed=embed, ephemeral=True)
 
 	@app_commands.command(name="issue", description="Creates an issue on a GitHub repo")
-	async def issue(self, interaction: discord.Interaction, project: str):
-		modal = BugInfo(project=project)
+	@app_commands.describe(
+		issue_type="Whether to make a bug or a feature request",
+		project="Which project to make an issue for",
+		image="Optional image/media"
+	)
+	async def issue(self, interaction: discord.Interaction, issue_type: str, project: str, image: discord.Attachment = None):
+		modal = BugInfo(issue_type=issue_type, project=project, image=image)
 		await interaction.response.send_modal(modal)
+		
+	@issue.autocomplete('type')
+	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		issue_types = ["bug", "enhancement"]
+
+		return [
+			app_commands.Choice(name=issue_type, value=issue_type)
+			for issue_type in issue_types
+			if current.lower() in issue_type.lower()
+		]
 
 	@issue.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
@@ -283,21 +298,23 @@ class Basic(commands.Cog):
 			await self.add_reaction(message=message)
 
 class BugInfo(discord.ui.Modal, title='Bug Information'):
-	def __init__(self, project: str):
+	def __init__(self, issue_type: str, project: str, image: discord.Attachment = None):
 		super().__init__(timeout=300.0)
 		self.project = project
+		self.issue_type = issue_type
+		self.image = image
 		with open('resources/keys.json', 'r') as f:
 			self.pat = json.load(f)["git-pat"]
 		
 	bug_title = discord.ui.TextInput(
-		label='The title for the bug report',
+		label='Title for the issue',
 		style=discord.TextStyle.short,
 		placeholder='Type title here...',
 		required=True,
 		max_length=100
 	)
 	bug_description = discord.ui.TextInput(
-		label='The description for the bug report',
+		label='Description for the issue',
 		style=discord.TextStyle.long,
 		placeholder='Type description here...',
 		required=True,
@@ -305,25 +322,41 @@ class BugInfo(discord.ui.Modal, title='Bug Information'):
 	)
 	
 	async def on_submit(self, interaction: discord.Interaction):
+		localized_issue_type = "Bug report" if self.issue_type == "bug" else "Feature request"
+
 		if self.project == "Incendy":
 			url = f'https://api.github.com/repos/catter1/{self.project}/issues'
 		else:
 			url = f'https://api.github.com/repos/Stardust-Labs-MC/{self.project}/issues'
+
+		if self.image:
+			body = f"""
+{self.bug_description.value}\n\n
+![{self.image.filename}]({self.image.url})\n\n
+*{localized_issue_type} created by **{interaction.user.name}** via [Incendy](https://github.com/catter1/Incendy) in the [Stardust Labs discord server](https://discord.gg/stardustlabs).*
+"""
+		else:
+			body = f"""
+{self.bug_description.value}\n\n
+*{localized_issue_type} created by **{interaction.user.name}** via [Incendy](https://github.com/catter1/Incendy) in the [Stardust Labs discord server](https://discord.gg/stardustlabs).*
+"""
+
 		headers = {'User-Agent': 'application/vnd.github+json'}
 		auth = ('catter1', self.pat)
 		data = {
-			'title': self.bug_title.value,
-			'body': f'{self.bug_description.value}\n\n*Bug created by {interaction.user.name} via Incendy in the Stardust Labs discord server*'
+			'title': f'[{self.issue_type.title()}] {self.bug_title.value}',
+			'body': body,
+			'labels': [self.issue_type]
 		}
 
 		response = requests.post(url, auth=auth, json=data, headers=headers)
 		if response.status_code == 201:
 			view = discord.ui.View()
-			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{self.project} Issue", url=response.json()['html_url'], emoji=Constants.Emoji.GITHUB))
+			view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{self.project} {localized_issue_type.title()}", url=response.json()['html_url'], emoji=Constants.Emoji.GITHUB))
 
-			await interaction.response.send_message(f"Issue created successfully! You can view and add to it by clicking the button below.", view=view)
+			await interaction.response.send_message(f"{localized_issue_type} created successfully! You can view and add to it by clicking the button below.", view=view)
 		else:
-			await interaction.response.send_message('There was an error creating the issue! Please try again, or contact catter if the issue continues.', ephemeral=True)
+			await interaction.response.send_message(f'There was an error creating the {localized_issue_type.lower()}! Please try again, or contact catter if the issue continues.', ephemeral=True)
 	
 	async def on_error(self, interaction: discord.Interaction, error: Exception):
 		await interaction.response.send_message("Oops! Something went wrong. Please try again.", ephemeral=True)
