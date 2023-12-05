@@ -386,7 +386,7 @@ class TerralithDownloads(discord.ui.View):
 		super().__init__()
 		#self.add_item(discord.ui.Button(label='Datapack (1.20.x)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.17-1.20.x)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Terralith/releases', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2 ONLY)', emoji=Constants.Emoji.SEEDFIX, url='https://seedfix.stardustlabs.net/', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2 ONLY)', emoji=Constants.Emoji.SEEDFIX, url='https://sawdust.catter1.com/tools/seedfix', row=0))
 		#self.add_item(discord.ui.Button(label='All Versions (1.17-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Terralith', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/terralith/versions', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=1))
