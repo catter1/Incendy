@@ -180,7 +180,7 @@ class Basic(commands.Cog):
 		modal = BugInfo(issue_type=issue_type, project=project, image=image)
 		await interaction.response.send_modal(modal)
 		
-	@issue.autocomplete('type')
+	@issue.autocomplete('issue_type')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
 		issue_types = ["bug", "enhancement"]
 
