@@ -519,7 +519,7 @@ class Project:
 
 		# Build post data
 		project_id = self.platforms["Modrinth"]["projects"][self.project_name]
-		loaders = ["minecraft"] if self.file_type == "resourcepack" else ["fabric", "forge", "quilt"]
+		loaders = ["minecraft"] if self.file_type == "resourcepack" else ["fabric", "forge", "neoforge", "quilt"]
 		data = {
 			"name": self.version_name,
 			"version_number": self.version_number,
@@ -603,8 +603,8 @@ class Project:
 			"1.20.2": 10236
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
-		# This is Fabric/Forge, respectively
-		gameVersions.extend([7499, 7498, 9153])
+		# This is [Fabric, Forge, NeoForge, Quilt]
+		gameVersions.extend([7499, 7498, 10150, 9153])
 
 		# Build post data
 		metadata = {
