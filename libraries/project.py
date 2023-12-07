@@ -210,7 +210,7 @@ class Project:
 						filled_data[k] = data[k]
 
 				with open(f"{lang_path}/{file}", 'w', encoding='utf-8') as f:
-					json.dump(data, f, indent=4, ensure_ascii=False)
+					json.dump(filled_data, f, indent=4, ensure_ascii=False)
 		
 		# Clean up
 		shutil.rmtree(repo_path, ignore_errors=True)
