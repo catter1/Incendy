@@ -91,9 +91,9 @@ class Updater(commands.Cog):
 	@update.autocomplete('project')
 	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
 		if interaction.user.id in [Constants.User.TERA, Constants.User.KUMA]:
-			projects = ["Incendium Optional Resourcepack"]
+			projects = ["Sparkles"]
 		else:
-			projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified Nether", "Continents", "Structory: Towers", "Stardust Optional Resourcepack"])
+			projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified Nether", "Continents", "Structory: Towers", "Sparkles"])
 		
 		return [
             app_commands.Choice(name=project, value=project)

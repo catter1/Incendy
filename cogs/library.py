@@ -413,7 +413,7 @@ class IncendiumDownloads(discord.ui.View):
 		#self.add_item(discord.ui.Button(label='All Versions (1.16.5-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Incendium', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/incendium/versions', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=1))
-		self.add_item(discord.ui.Button(label='Optional Resource Pack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/incendium-optional-resourcepack', row=2))
+		self.add_item(discord.ui.Button(label='Optional Resource Pack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 		self.add_item(discord.ui.Button(label='Biome Name Fix (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix', row=2))
 
 class IncendiumLinks(discord.ui.View):

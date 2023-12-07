@@ -120,7 +120,7 @@ class Project:
 		self.project_id = self.project_name.lower().replace(":", "").replace(" ", "-")
 		self.patrons = patrons
 
-		if self.project_name in ["Incendium Optional Resourcepack", "Biome Name Fix"]:
+		if self.project_name == "Sparkles":
 			self.file_type = "resourcepack"
 		elif self.archive.content_type == "application/zip":
 			self.file_type = "datapack"
@@ -174,10 +174,10 @@ class Project:
 
 		# Var clean
 
-		if project not in ["all", "terralith", "incendium", "nullscape"]:
+		if project not in ["all", "terralith", "incendium", "nullscape", "structory", "structory-towers"]:
 			return "Invalid category!"
 		elif project == "all":
-			projects = ["terralith", "incendium", "nullscape"]
+			projects = ["terralith", "incendium", "nullscape", "structory", "structory-towers"]
 		else:
 			projects = [project]
 
