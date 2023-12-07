@@ -390,7 +390,7 @@ class TerralithDownloads(discord.ui.View):
 		#self.add_item(discord.ui.Button(label='All Versions (1.17-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Terralith', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/terralith/versions', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=1))
-		self.add_item(discord.ui.Button(label='Biome Name Fix (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix', row=2))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 		self.add_item(discord.ui.Button(label='Remove Intro Message (1.17-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/remove-terralith-intro-message', row=2))
 
 class TerralithLinks(discord.ui.View):
@@ -413,8 +413,7 @@ class IncendiumDownloads(discord.ui.View):
 		#self.add_item(discord.ui.Button(label='All Versions (1.16.5-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Incendium', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/incendium/versions', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=1))
-		self.add_item(discord.ui.Button(label='Optional Resource Pack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
-		self.add_item(discord.ui.Button(label='Biome Name Fix (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix', row=2))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class IncendiumLinks(discord.ui.View):
 	def __init__(self):
@@ -436,7 +435,7 @@ class NullscapeDownloads(discord.ui.View):
 		#self.add_item(discord.ui.Button(label='All Versions (1.18.2-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Nullscape', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/mod/nullscape/versions', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=1))
-		self.add_item(discord.ui.Button(label='Biome Name Fix (1.18-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-biome-name-fix', row=2))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class NullscapeLinks(discord.ui.View):
 	def __init__(self):
@@ -457,6 +456,7 @@ class StructoryDownloads(discord.ui.View):
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.20.x)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory/releases', row=0))
 		#self.add_item(discord.ui.Button(label='All Versions (1.18.2-1.20.x)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library#Structory', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class StructoryLinks(discord.ui.View):
 	def __init__(self):
@@ -474,6 +474,7 @@ class TowersDownloads(discord.ui.View):
 		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.19.3)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/structory-towers/', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.19-1.20.x)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class TowersLinks(discord.ui.View):
 	def __init__(self):
