@@ -302,7 +302,8 @@ class Project:
 				"1.20": "1.20-46.0.14",
 				"1.20.1": "1.20.1-47.2.0",
 				"1.20.2": "1.20.2-48.0.49",
-				"1.20.3": "1.20.2-48.0.49"
+				"1.20.3": "1.20.3-49.0.2",
+				"1.20.4": "1.20.3-49.0.2"
 			}
 
 			with open(f"{filepath}/build.gradle", 'r') as f:
@@ -602,7 +603,8 @@ class Project:
 			"1.20": 9971,
 			"1.20.1": 9990,
 			"1.20.2": 10236,
-			"1.20.3": 10395
+			"1.20.3": 10395,
+			"1.20.4": 10407
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
