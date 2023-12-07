@@ -174,10 +174,10 @@ class Project:
 
 		# Var clean
 
-		if project not in ["all", "terralith", "incendium", "nullscape", "structory", "structory-towers"]:
+		if project not in ["all", "terralith", "incendium", "nullscape", "structory", "structory_towers"]:
 			return "Invalid category!"
 		elif project == "all":
-			projects = ["terralith", "incendium", "nullscape", "structory", "structory-towers"]
+			projects = ["terralith", "incendium", "nullscape", "structory", "structory_towers"]
 		else:
 			projects = [project]
 
