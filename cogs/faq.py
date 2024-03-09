@@ -177,7 +177,7 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
 					description=f'''
 Terralith is not compatible with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome.
 
-This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by <@{Constants.User.APOLLO}>. If/when this gets fixed, Terralith may be compatible with the world types!
+This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by **Apollo**. If/when this gets fixed, Terralith may be compatible with the world types!
 					''',
 					color=faq_colour
 				)
@@ -508,8 +508,6 @@ By default, Terralith and Tectonic are not compatible with each other. If you'd 
 
 **Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
 **Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
-					
-Have more questions? Join Apollo's [Discord server](https://discord.gg/vFz67Pvceu)!
 				'''
 
 			case 'Folia':
@@ -593,13 +591,13 @@ This method is not perfect, but can get the job done. This is not offocially sup
 Warning: It is recommended you reset the nether dimension when making this change. In currently loaded chunks, all space above y256 will be the Plains biome.
 - Go to [this](https://github.com/Apollounknowndev/pack-library/tree/main/nether-build-height) link, which will bring you to two datapacks that raise the nether build height to 384: One for 1.18.1 and before, one for 1.18.2 and above. Download the one you need.
 - Install it onto the world you want to have the taller nether as a datapack. __Load order with Amplified Nether/Incendium does not matter.__
-(Special thanks to <@{Constants.User.APOLLO}> for this tutorial and datapack)
+(Special thanks to **Apollo** for this tutorial and datapack)
 '''
 
 			case 'Adjusted Continent Size':
 				embed.title = 'Configuration (Adjusted Continent Size)'
 				embed.description = f"""
-This tutorial (graciously provided by <@{Constants.User.APOLLO}>) will show you how to adjust continent size with the Continents project.
+This tutorial (graciously provided by **Apollo**) will show you how to adjust continent size with the Continents project.
 - Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
 - Open `base_continents.json`. You should see this:
 ```json
