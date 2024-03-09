@@ -23,12 +23,6 @@ class Autoresponse(commands.Cog):
 		with open('resources/reposts.json', 'r') as f:
 			self.reposts = json.load(f)
 
-		apollo_resp = requests.get("https://www.worldgen.dev/sitemap.xml")
-		apollo_root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
-		apollo_loc_elements = apollo_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-		apollo_links = [element.text for element in apollo_loc_elements]
-		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
-
 		sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
 		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
 		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
@@ -63,14 +57,7 @@ class Autoresponse(commands.Cog):
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.misode_urls.keys():
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace('-', ' ').title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
-
-				elif "worldgen" in match.split("|")[0].lower():
-					full = match.split("|")[-1].lower().replace(' ', '-')
-					page = full.split("#")[0]
-					if page in self.apollo_urls.keys():
-						header = "" if len(full.split("#")) <= 1 else f"#{full.split('#')[-1]}"
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Worldgen: {page.replace('-', ' ').title()}", url=f"{self.apollo_urls[page]}{header}"))
-						
+	
 				elif "sawdust" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
 					if page in self.sawdust_urls.keys():

@@ -30,12 +30,6 @@ class Basic(commands.Cog):
 		with open('resources/textlinks.json', 'r') as f:
 			self.textlinks = json.load(f)
 
-		apollo_resp = requests.get("https://www.worldgen.dev/sitemap.xml")
-		apollo_root = etree.fromstring(apollo_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
-		apollo_loc_elements = apollo_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-		apollo_links = [element.text for element in apollo_loc_elements]
-		self.apollo_urls = {url.split('/')[-2]: url for url in apollo_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
-
 		sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
 		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
 		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
@@ -93,17 +87,15 @@ class Basic(commands.Cog):
 			"Botany": "https://discord.gg/BMzTfru5tp",
 			"Distant Horizons": "https://discord.gg/Hdh2MSvwyc",
 			"Complementary": "https://discord.gg/complementary",
-			"Apollo": "https://discord.gg/vFz67Pvceu",
 			"Smithed": "https://discord.gg/gkp6UqEUph",
 			"Beet": "https://discord.gg/98MdSGMm8j",
 			"Minecraft Commands": "https://discord.gg/QAFXFtZ",
 			"LimeSplatus": "https://discord.gg/5DqYxxZdeb",
 			"WWOO": "https://discord.gg/jT34CWwzth",
 			"BYG": "https://discord.gg/F28fGPCJH8",
-			"Stellarity": "https://discord.gg/J6guYAySN8",
+			"Stellarity": "https://discord.gg/kohara-s-basement-727033287343734885",
 			"YUNG": "https://discord.gg/rns3beq",
 			"BetterX": "https://discord.gg/kYuATbYbKW",
-			#"LPS": "https://discord.gg/8ZmhaPPbjE",
 			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
 			"rx": "https://discord.gg/CzjCF8QNX6",
 			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
@@ -213,7 +205,6 @@ class Basic(commands.Cog):
 		view.add_item(GeneralLinks(self.textlinks))
 		view.add_item(SawdustLinks(self.sawdust_urls))
 		view.add_item(MisodeLinks(self.misode_urls))
-		view.add_item(ApolloLinks(self.apollo_urls))
 		view.add_item(WikiLinks(self.wiki_urls))
 		view.add_item(MojiraLinks())
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.green, disabled=True, label="More Soon..."))
@@ -406,18 +397,6 @@ class MisodeLinks(discord.ui.Button):
 		embed = interaction.message.embeds[0]
 		embed.title = "Misode Textlinks"
 		embed.description = "  -  ".join([f"[Misode|{textlink.replace('-', ' ').title()}]({self.misode_urls[textlink]})" for textlink in self.misode_urls])
-
-		await interaction.response.edit_message(embed=embed)
-
-class ApolloLinks(discord.ui.Button):
-	def __init__(self, apollo_urls: dict):
-		super().__init__(style=discord.ButtonStyle.green, label='Worldgen')
-		self.apollo_urls = apollo_urls
-	
-	async def callback(self, interaction: discord.Interaction):
-		embed = interaction.message.embeds[0]
-		embed.title = "Worldgen Textlinks"
-		embed.description = "  -  ".join([f"[Worldgen|{textlink.replace('-', ' ').title()}]({self.apollo_urls[textlink]})" for textlink in self.apollo_urls])
 
 		await interaction.response.edit_message(embed=embed)
 
