@@ -111,7 +111,8 @@ class Basic(commands.Cog):
 			"Dynamic Trees": "https://discord.gg/PD8e4bhMRr",
 			"Curseforge": "https://discord.gg/curseforge",
 			"TelepathicGrunt": "https://discord.gg/T5MGNBB",
-			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t"
+			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t",
+			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM"
 		}
 		server_list = sorted([server for server in server_dict.keys()])
 
