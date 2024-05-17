@@ -110,3 +110,4 @@ class Emoji:
     WAVE = "👋"
     PINEAPPLE = "🍍"
     PIN = "🧷"
+    SCALES = "⚖️"
