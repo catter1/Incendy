@@ -229,7 +229,7 @@ Read more information and instructions on the [Sawdust website](https://sawdust.
 				embed = discord.Embed(
 					title='Resource Pack',
 					description=f'''
-Thanks to the work from <@{Constants.User.TERA}>, <@{Constants.User.KUMA}>, and our volunteer translators, we have the Stardust Optional Resourcepack! This all-in-one resourcepack has custom textures for Incendium content, localizations for biomes and text, and fixes long biome names when using minimaps or simiar mods. Download it from Modrinth by clicking the link below.
+Thanks to the work from <@{Constants.User.TERA}>, <@{Constants.User.KUMA}>, and our volunteer translators, we have Sparkles: Stardust Labs Resourcepack! This all-in-one resourcepack has custom textures for Incendium content, localizations for biomes and text, and fixes long biome names when using minimaps or simiar mods. Download it from Modrinth by clicking the link below.
 
 If you're confused, we used to have two separate resourcepacks: Incendium Optional Resourcepack and Stardust Biome Name Fix. They have been merged into this single resourcepack.
 					''',
@@ -455,7 +455,7 @@ class Realms(discord.ui.View):
 class Resource(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Stardust Optional Resourcepack', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/stardust-optional-resourcepack'))
+		self.add_item(discord.ui.Button(label='Sparkles: Stardust Labs Resourcepack', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles'))
 
 class Seedfix(discord.ui.View):
 	def __init__(self):
