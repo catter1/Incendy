@@ -126,9 +126,11 @@ Reset the dimension you are trying to add a worldgen pack for.
 				embed = discord.Embed(
 					title='Foliage Colors',
 					description='''
-Terralith uses a variety of grass and leaf colors, but does not use a resource pack. Instead, this is actually a Vanilla mechanic: for example, in Vanilla swamps, the water is browner and the leaves/grass is a dull/dark green. In Jungles and Mooshroom Islands, grass is a vibrant green.
+Terralith uses a variety of grass and leaf colors, but does not use a resource pack. Instead, this is actually a Vanilla mechanic: for example, in Vanilla swamps, the water is browner and the leaves/grass is a dull/dark green. In Jungles and Mooshroom Islands, grass is a vibrant green. If Terralith or Vanilla do not define a custom color, the color is calculated based on the biome's temperature and humidity instead.
 					
-This mechanic is what Terralith uses, but instead of doing different shades of green, Terralith will use the mechanic for all colors. This is how you see red leaves in Forested Highlands, blue grass in Mirage Isles, pink leaves in Sakura Groves, and much more.
+This mechanic is what Terralith uses, but instead of doing different shades of green, Terralith will use the mechanic for all colors. This is how you see red leaves in Forested Highlands, blue grass in Mirage Isles, pink leaves in Sakura Groves, and much more. Leaves will always take the color of the biome they are placed in, which means the color cannot be "moved" to a different biome.
+
+Sometimes, you may notice all the leaves are the same color. This could be caused by a resourcepack overriding the leaves' colormap, which will break this mechanic. If you are on Bedrock playing on a Geyser server that uses Terralith, then there is unfortunately no way around this limitation currently.
 					''',
 					color=faq_colour
 				)
