@@ -90,7 +90,7 @@ class Stats(commands.Cog):
 
 			# Create embed
 			embed = discord.Embed(
-				title=f"{member.nick}'s Stats",
+				title=f"{member.global_name}'s Stats",
 				color=colour,
 				description=f"{Constants.Emoji.STARDUST} joined <t:{joined}:R>\n{Constants.Emoji.DISCORD} joined <t:{created}:R>"
 			)
