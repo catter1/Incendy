@@ -573,7 +573,7 @@ Only change `xz_scale`, __do not touch anything else__. Smaller values = larger 
 			case 'Remove Biomes':
 				embed.title = 'Configuration (Remove Biomes)'
 				embed.description = '''
-This method is not perfect, but can get the job done. This is not offocially supported.
+This method is not perfect, but can get the job done. This is not officially supported.
 - Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
 - Open `overworld.json` and search (Ctrl+F) for the biomes you want to remove.
 - Replace **only** the name of the biome and ignore the numbers. For example, replace `terralith:unwanted_biome` with `minecraft:wanted_biome` 
