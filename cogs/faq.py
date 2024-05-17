@@ -190,6 +190,8 @@ This may be changed in the future. Currently, there is a [bug report](https://bu
 Passive mobs only spawn on grass blocks (and similar), on less-spiky terrain, and closer to sea level. Because Terralith is more mountainous than Vanilla, and there are more biomes without grass blocks, you will tend to find less passive mobs.
 					
 Although it is not possible to change passive mob spawning conditions, Terralith increases the spawn rates on the places they *are* able to spawn on. The TL;DR is that Terralith can\'t do anything about the rarity of mob spawning locations. If you want to learn more about Vanilla mob spawning rules, check out [this Minecraft Wiki article](https://minecraft.wiki/w/Spawn#Spawn_conditions).
+
+**OBS** This is completely irrelevant in Terralith 2.5.0+! In 2.5.0, the passive mob pack size was reduced back to normal. Additionally, they can spawn on more than just Grass Blocks, making them common again.
 					''',
 					color=faq_colour
 				)
