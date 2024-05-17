@@ -95,7 +95,7 @@ If you are wondering about compatibility for specific mods/datapacks, check out 
 			case "Configuration":
 				embed = discord.Embed(
 					title='Configuration',
-					description='There is **no configuration file** for datapacks (custom world settings like Large Biomes do not work either). That said, if you want to modify how the packs work, you\'ll have to modify the code inside the datapack. Do keep in mind the [Stardust Labs License](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt) found inside all datapacks, which prohibits you from distributing modified versions of the projects. Select a configuration from the selection menu below.',
+					description='There is **no configuration file** for datapacks (custom world settings like Large Biomes do not work either). That said, if you want to modify how the packs work, you\'ll have to modify the code inside the datapack. Do keep in mind the [Stardust Labs License](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt) found inside all datapacks, which prohibits you from distributing modified versions of the projects. Select a configuration from the selection menu below.\n\nIf you are editing the mod version of our projects, the same instructions apply. First rename the `.jar` to `.zip`, perform the changes, and then when you\'re all set, rename the `.zip` back to `.jar`.',
 					color=faq_colour
 				)
 				view = Config()
