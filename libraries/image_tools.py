@@ -78,7 +78,7 @@ def create_stats_image(stats: dict) -> str:
 async def get_user_color(user: discord.ClientUser | discord.Member | discord.User) -> discord.Color:
     filename = f"{os.getcwd()}/tmp/{user.id}.webp"
     if user.display_avatar.is_animated():
-        asset = user.display_avatar.with_static_format("webp")
+        asset = user.display_avatar.with_format("webp")
         await asset.save(filename)
     else:
         await user.display_avatar.save(filename)
