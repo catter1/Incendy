@@ -305,7 +305,7 @@ If you have trouble finding the caves, you can look at the surface of your world
 **Terra**: A 1.16.5 and 1.18.2 worldgen mod, incompatible with Terralith
 **Terrablender**: A mod that allows compatibility between worldgen mods
 **Terraforged**: A 1.16.5 worldgen mod, incompatible with Terralith
-**Terratonic**: The compatibility between Terralith and Tectonic (see `/faq Tectonic`)
+**Terratonic**: The compatibility between Terralith and Tectonic (see `/faq Compatibility`)
 					''',
 					color=faq_colour
 				)
