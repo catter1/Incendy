@@ -409,7 +409,7 @@ Ensure you are updated as shown above, as well as the following:
 
 	async def get_biome_ids(self, project: str, biomeids: list[str], curr: str = '') -> list[str]:
 		url = f'https://api.github.com/repos/Stardust-Labs-MC/{project}/contents/data/{project.lower()}/worldgen/biome/{curr}'
-		response = requests.get(url, params={"ref": "1.20.1"})
+		response = requests.get(url, params={"ref": "1.20"})
 
 		if response.status_code == 200:
 			data = response.json()
