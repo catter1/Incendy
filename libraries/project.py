@@ -140,8 +140,9 @@ class Project:
 		"""Sets the version number/name. `mc_versions` must be set beforehand."""
 
 		self.version_number = version_number
-		self.version_name = f"v{self.version_number} ~ {self.newest_mc_version}"
-		self.filename = f"{self.project_name_safe}_{self.newest_mc_version}_v{self.version_number}"
+		version_name_number = "1.20" if "1.20" in self.newest_mc_version else self.newest_mc_version
+		self.version_name = f"v{self.version_number} ~ {version_name_number}"
+		self.filename = f"{self.project_name_safe}_{version_name_number}_v{self.version_number}"
 	
 	def set_changelog(self, changelog: str) -> None:
 		"""Sets the changelog."""
@@ -257,244 +258,7 @@ class Project:
 		with open(f"{filepath}/patrons.txt", 'w') as f:
 			f.write(data)
 
-		return f"{filepath}/patrons.txt"
-
-
-	async def create_mod(self) -> str:
-		"""
-		Create a mod version of the datapack.
-
-		Returns
-		----------
-		filename : str
-			The name and full path of the jar file
-		"""
-
-		self.descriptions = {
-			"Terralith": "Terralith ~ Overworld Evolved",
-			"Incendium": "Incendium ~ Nether Expansion",
-			"Nullscape": "Nullscape ~ End Reborn",
-			"Structory": "Structory",
-			"Structory: Towers": "Structory: Towers",
-			"Continents": "Continents",
-			"Amplified Nether": "Amplified Nether"
-		}
-		
-
-		def edit_build_gradle(filepath: str) -> str:
-			"""
-			Edits the (Forge) build.gradle for the Project object.
-
-			Returns: filepath for build.gradle
-			"""
-
-			# Certified Forge moment :/
-			version_dict = {
-				"1.17.1": "1.17.1-37.1.1",
-				"1.18": "1.18-38.0.17",
-				"1.18.1": "1.18.1-39.1.0",
-				"1.18.2": "1.18.2-40.2.0",
-				"1.19": "1.19-41.1.0",
-				"1.19.1": "1.19.1-42.0.9",
-				"1.19.2": "1.19.2-43.3.0",
-				"1.19.3": "1.19.3-44.1.0",
-				"1.19.4": "1.19.4-45.2.0",
-				"1.20": "1.20-46.0.14",
-				"1.20.1": "1.20.1-47.2.0",
-				"1.20.2": "1.20.2-48.0.49",
-				"1.20.3": "1.20.3-49.0.2",
-				"1.20.4": "1.20.4-49.0.3"
-			}
-
-			with open(f"{filepath}/build.gradle", 'r') as f:
-				lines = f.readlines()
-
-			for i, line in enumerate(lines):
-				if "2.3.7" in line:
-					lines[i] = line.replace("2.3.7", self.version_number)
-				if "terralith" in line:
-					lines[i] = line.replace("terralith", self.project_id.replace("-", ""))
-				if "1.19.3" in line and not "44.1.16" in line and not "mappings channel" in line:
-					lines[i] = line.replace("1.19.3", self.newest_mc_version)
-				if "1.19.3-44.1.16" in line:
-					lines[i] = line.replace("1.19.3-44.1.16", version_dict[self.newest_mc_version])
-				if "mappings channel" in line:
-					mapver = self.newest_mc_version if self.newest_mc_version not in ["1.20"] else "1.19.3"
-					lines[i] = line.replace("1.19.3", mapver)
-
-			with open(f"{filepath}/build.gradle", 'w') as f:
-				f.writelines(lines)
-
-			return f"{filepath}/build.gradle"
-		
-		def edit_settings_gradle(filepath: str) -> str:
-			"""
-			Edits the (Forge) settings.gradle for the Project object.
-
-			Returns: filepath for settings.gradle
-			"""
-
-			with open(f"{filepath}/settings.gradle", 'r') as f:
-				lines = f.readlines()
-
-			for i, line in enumerate(lines):
-				if "terralith" in lines:
-					lines[i] = line.replace("terralith", self.project_id.replace("-", ""))
-
-			with open(f"{filepath}/settings.gradle", 'w') as f:
-				f.writelines(lines)
-
-			return f"{filepath}/settings.gradle"
-
-
-		def edit_mods_toml(filepath: str) -> str:
-			"""
-			Edits the (Forge) mods.toml for the Project object.
-
-			Returns: filepath for mods.toml
-			"""
-
-			with open(f"{filepath}/mods.toml", 'r') as f:
-				data = toml.load(f)
-
-			data["mods"][0]["modId"] = self.project_id.replace("-", "")
-			data["mods"][0]["version"] = f"{self.version_number}"
-			data["mods"][0]["displayName"] = self.project_name
-			data["mods"][0]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
-			
-			dependencies = data["dependencies"]["terralith"]
-			del data["dependencies"]["terralith"]
-			data["dependencies"][self.project_id] = dependencies
-			minecraft_dict = next((d for d in data["dependencies"][self.project_id] if d["modId"] == "minecraft"), None)
-			if minecraft_dict is not None:
-				minecraft_dict["versionRange"] = f"[{self.oldest_mc_version},)"
-
-			with open(f"{filepath}/mods.toml", 'w') as f:
-				toml.dump(data, f)
-
-			return f"{filepath}/mods.toml"
-		
-
-		def edit_java_class(filepath: str) -> str:
-			"""
-			Edits the (Forge) Java class for the Project object.
-			
-			Returns: filepath for [Name].class
-			"""
-
-			with open(f"{filepath}/Terralith.java", 'r') as f:
-				lines = f.readlines()
-			
-			os.remove(f"{filepath}/Terralith.java")
-
-			for i, line in enumerate(lines):
-				if "terralith" in line:
-					lines[i] = line.replace("terralith", self.project_id.replace('-', ''))
-				if "Terralith" in line:
-					lines[i] = line.replace("Terralith", self.project_name_safe.replace('_', ''))
-			
-			with open(f"{filepath}/{self.project_name_safe.replace('_', '')}.java", 'w') as f:
-				f.writelines(lines)
-
-			return f"{filepath}/{self.project_name_safe.replace('_', '')}.class"
-		
-
-		def edit_fabric_json(filepath: str) -> str:
-			"""
-			Edits the (Fabric) fabric.mod.json for the Project object.
-
-			Returns: filepath for fabric.mod.json
-			"""
-
-			with open(f"{filepath}/fabric.mod.json", 'r') as f:
-				data = json.load(f)
-
-			data["id"] = self.project_name_safe.lower()
-			data["version"] = str(self.version_number)
-			data["name"] = self.project_name
-			data["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
-			data["contact"]["sources"] = f"https://github.com/Stardust-Labs-MC/{self.platforms['GitHub']['projects'][self.project_name]}"
-			data["contact"]["issues"] = f"https://github.com/Stardust-Labs-MC/{self.platforms['GitHub']['projects'][self.project_name]}/issues"
-			data["depends"]["minecraft"] = f">={self.oldest_mc_version}"
-
-			with open(f"{filepath}/fabric.mod.json", 'w') as f:
-				json.dump(data, f, indent=4)
-
-		def edit_quilt_json(filepath: str) -> str:
-			"""
-			Edits the (Quilt) quilt.mod.json for the Project object.
-
-			Returns: filepath for quilt.mod.json
-			"""
-
-			with open(f"{filepath}/quilt.mod.json", 'r') as f:
-				data = json.load(f)
-
-			data["quilt_loader"]["id"] = self.project_name_safe.lower()
-			data["quilt_loader"]["version"] = str(self.version_number)
-			data["quilt_loader"]["metadata"]["name"] = self.project_name
-			data["quilt_loader"]["metadata"]["description"] = f"{self.descriptions[self.project_name]} (v{self.version_number} for {self.oldest_mc_version}-{self.newest_mc_version})"
-			data["quilt_loader"]["metadata"]["contact"]["sources"] = f"https://github.com/Stardust-Labs-MC/{self.platforms['GitHub']['projects'][self.project_name]}"
-			data["quilt_loader"]["metadata"]["contact"]["issues"] = f"https://github.com/Stardust-Labs-MC/{self.platforms['GitHub']['projects'][self.project_name]}/issues"
-			data["quilt_loader"]["depends"][0]["versions"] = f">={self.oldest_mc_version}"
-
-			with open(f"{filepath}/quilt.mod.json", 'w') as f:
-				json.dump(data, f, indent=4)
-
-
-		# Init the mod dir
-		filepath = f"tmp/{self.project_id}-mod"
-		shutil.copytree("mod_template", filepath)
-		
-		# Get the datapack info into the mod
-		zip_name = f"{filepath}/src/main/resources/{self.project_id}.zip"
-		await self.archive.save(zip_name)
-		with ZipFile(zip_name, 'r') as f:
-			f.extractall(f"{filepath}/src/main/resources")
-		os.remove(zip_name)
-
-		# Create the files
-		shutil.move(f"{filepath}/src/main/java/net/stardustlabs/terralith", f"{filepath}/src/main/java/net/stardustlabs/{self.project_id}")
-		edit_build_gradle(filepath)
-		edit_settings_gradle(filepath)
-		edit_fabric_json(f"{filepath}/src/main/resources")
-		edit_quilt_json(f"{filepath}/src/main/resources")
-		edit_java_class(f"{filepath}/src/main/java/net/stardustlabs/{self.project_id}")
-		edit_mods_toml(f"{filepath}/src/main/resources/META-INF")
-		if not "Structory" in self.project_name:
-			self.create_patron_txt(f"{filepath}/src/main/resources")
-		if self.project_id in ["terralith", "incendium", "nullscape"]:
-			await self.set_translations(filepath=f"{filepath}/src/main/resources", project=self.project_id)
-
-		# Give gradle a second...
-		await asyncio.sleep(2.0)
-		if os.path.isdir("bin"):
-			shutil.rmtree("bin", ignore_errors=True)
-		if os.path.isdir("build"):
-			shutil.rmtree("build", ignore_errors=True)
-		if os.path.isdir("run"):
-			shutil.rmtree("run", ignore_errors=True)
-		await asyncio.sleep(2.0)
-
-		# Run gradlew
-		#log = open("logs/gradle.log", 'a')
-		lastdir = os.getcwd()
-		os.chdir(filepath)
-		#log.flush()
-		proc = subprocess.Popen([f"./gradlew", "build"])#, stdout=log, stderr=log)
-		proc.wait(timeout=360.0)
-		#log.close()
-		os.chdir(lastdir)
-
-		# Grab jar and go!
-		modfilename = f"tmp/{self.filename}.jar"
-		shutil.copy(f"{filepath}/build/libs/{self.project_id.replace('-', '')}-{self.version_number}.jar", modfilename)
-
-		# Clean up and return
-		if os.path.isdir(filepath):
-			shutil.rmtree(filepath, ignore_errors=True)
-		return modfilename
-	
+		return f"{filepath}/patrons.txt"	
 
 	async def upload_modrinth(self, filepath: str) -> str | None:
 		"""
@@ -604,7 +368,9 @@ class Project:
 			"1.20.1": 9990,
 			"1.20.2": 10236,
 			"1.20.3": 10395,
-			"1.20.4": 10407
+			"1.20.4": 10407,
+			"1.20.5": 11163,
+			"1.20.6": 11198,
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
@@ -614,7 +380,7 @@ class Project:
 		metadata = {
 			"changelog": self.changelog.replace("\n", "\n\n"),
 			"changelogType": "markdown",
-			"displayName": self.filename.replace("_", " "),
+			"displayName": self.version_name,
 			"gameVersions": gameVersions,
 			"releaseType": "release"
 		}

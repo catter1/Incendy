@@ -46,7 +46,7 @@ class Updater(commands.Cog):
 		project="The name of the project to upload for",
 		archive="A physical Zip file to upload"
 	)
-	async def makemod(self, interaction: discord.Interaction, project: str, archive: discord.Attachment):
+	async def makemod(self, interaction: discord.Interaction, project: str, archive: discord.Attachment = None):
 		if archive.content_type != "application/zip":
 			await interaction.response.send_message("The attachment is not a valid datapack! It **must** be a zip (not rar)!", ephemeral=True)
 			return
@@ -70,7 +70,7 @@ class Updater(commands.Cog):
 		project="The name of the project to upload for",
 		archive="A physical Jar or Zip file to upload"
 	)
-	async def update(self, interaction: discord.Interaction, project: str, archive: discord.Attachment):
+	async def update(self, interaction: discord.Interaction, project: str, archive: discord.Attachment = None):
 		if archive.content_type not in ["application/zip", "application/java-archive"]:
 			await interaction.response.send_message("The attachment is not a valid datapack or mod! It **must** be a zip (not rar) or jar file!", ephemeral=True)
 			return
@@ -128,7 +128,7 @@ class VersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
@@ -140,7 +140,7 @@ class ModVersionSelect(discord.ui.Select):
 	def __init__(self, project_upload: Project):
 		self.project_upload = project_upload
 
-		options = [discord.SelectOption(label=version) for version in ["1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
+		options = [discord.SelectOption(label=version) for version in ["1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
 		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
 
