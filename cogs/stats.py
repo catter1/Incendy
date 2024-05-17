@@ -90,7 +90,7 @@ class Stats(commands.Cog):
 
 			# Create embed
 			embed = discord.Embed(
-				title=f"{member.display_name}'s Stats",
+				title=f"{member.nick}'s Stats",
 				color=colour,
 				description=f"{Constants.Emoji.STARDUST} joined <t:{joined}:R>\n{Constants.Emoji.DISCORD} joined <t:{created}:R>"
 			)
@@ -105,7 +105,7 @@ class Stats(commands.Cog):
 			else:
 				embed.add_field(name="Most Used FAQs", value="*Use more FAQs to get your ranking!*", inline=False)
 			embed.set_thumbnail(url=member.display_avatar.url)
-			embed.set_footer(text=f"{member.name}#{member.discriminator}")
+			embed.set_footer(text=f"{member.name}")
 
 			await interaction.followup.send(embed=embed)
 
