@@ -140,7 +140,7 @@ class Project:
 		"""Sets the version number/name. `mc_versions` must be set beforehand."""
 
 		self.version_number = version_number
-		version_name_number = "1.20" if "1.20" in self.newest_mc_version else self.newest_mc_version
+		version_name_number = "1.20.x" if "1.20" in self.newest_mc_version else self.newest_mc_version
 		self.version_name = f"v{self.version_number} ~ {version_name_number}"
 		self.filename = f"{self.project_name_safe}_{version_name_number}_v{self.version_number}"
 	
