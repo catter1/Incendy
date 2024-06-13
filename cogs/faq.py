@@ -540,6 +540,7 @@ class ConfigMenu(discord.ui.Select):
 		options = [
 			discord.SelectOption(label='Resized Terralith Biomes', description='How to adjust biome size in Terralith'),
 			discord.SelectOption(label='Remove Biomes', description='How to remove/replace biomes in Terralith'),
+			discord.SelectOption(label='Structure Rarity', description='How to adjust rarity of structures (or remove them) in any project'),
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
 			discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
 			discord.SelectOption(label='Resized Continents Spawn Island', description='How to change the size of the spawn island in Continents'),
@@ -582,6 +583,21 @@ This method is not perfect, but can get the job done. This is not officially sup
  - When removing Skylands, replace them with an ocean type (such as `minecraft:ocean`).
 				'''
 
+			case 'Structure Rarity':
+				embed.title = 'Configuration (Structure Rarity)'
+				embed.description = '''
+### To change the rarity of a structure
+- Open the `data/[project name]/worldgen/structure_set` folder.
+- Find and open the `.json` of the structure group you wish to alter.
+- There are two values to mess with:
+ - `spacing` is the __average__ distance (in chunks) between any structure inside the structure set.
+ - `separation` is the __minimum__ distance (in chunks) between any structure inside the structure set. This value must be **less** than `spacing`.
+- Save the file and zip the project back up.
+### To completely disable a structure set from spawning
+- Open the `data/[project name]/worldgen/structure_set` folder.
+- Delete the `.json` of the structure group you wish to remove.
+- Save your changes and zip the project back up.
+				'''
 			case 'Biome Layout':
 				embed.title = 'Configuration (Biome Layout/Terrain Shaping)'
 				embed.description = '''
