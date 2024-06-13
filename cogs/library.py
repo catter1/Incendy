@@ -571,7 +571,7 @@ class AmplifiedLinks(discord.ui.View):
 class SparklesDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Resourcepack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=0))
+		self.add_item(discord.ui.Button(label='Resourcepack (1.19-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=0))
 		self.add_item(discord.ui.Button(label='ADDON: Alpha Islands (1.19-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles-addon-alpha-islands', row=1))
 
 class SparklesLinks(discord.ui.View):
