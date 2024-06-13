@@ -70,15 +70,7 @@ class Basic(commands.Cog):
 	)
 	async def _discord(self, interaction: discord.Interaction, server: str):
 		""" /discord [server] """
-
-		if not server.startswith("https://discord.gg/"):
-			await interaction.response.send_message("Unknown error! Please try again.", ephemeral=True)
-			return
-			
-		await interaction.response.send_message(server)
-
-	@_discord.autocomplete('server')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		
 		server_dict = {
 			"New In Town": "https://discord.gg/KvdmxHM",
 			"Minecraft Configs": "https://discord.gg/EjrKNBU",
@@ -106,7 +98,7 @@ class Basic(commands.Cog):
 			"Naomi": "https://discord.gg/ER3yfhRscJ",
 			"Minecraft Worldgen": "https://discord.gg/BuBGds9",
 			"BOP": "https://discord.gg/GyyzU6T",
-			"Forge": "https://discord.gg/UvedJ9m",
+			"NeoForged": "https://discord.gg/UvedJ9m",
 			"Minecraft": "https://discord.gg/minecraft",
 			"Dynamic Trees": "https://discord.gg/PD8e4bhMRr",
 			"Curseforge": "https://discord.gg/curseforge",
@@ -114,10 +106,21 @@ class Basic(commands.Cog):
 			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t",
 			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM"
 		}
-		server_list = sorted([server for server in server_dict.keys()])
+
+		if server not in server_dict.keys():
+			await interaction.response.send_message("Unknown server! Please try again.", ephemeral=True)
+			return
+			
+		await interaction.response.send_message(server_dict[server])
+
+	@_discord.autocomplete('server')
+	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+		server_list = sorted([
+			"New In Town", "Minecraft Configs", "Still Loading", "Hashs", "Botany", "Distant Horizons", "Complementary", "Smithed", "Beet", "Minecraft Commands", "LimeSplatus", "WWOO", "BYG", "Stellarity", "YUNG", "BetterX", "ChoiceTheorem", "rx", "Modrinth", "Fabric", "Stardust Labs", "Chunky", "The Expansion", "Naomi", "Minecraft Worldgen", "BOP", "NeoForged", "Minecraft", "Dynamic Trees", "Curseforge", "TelepathicGrunt", "Regions Unexplored", "STRAYED FATES"
+		])
 
 		discords = [
-			app_commands.Choice(name=server, value=server_dict[server])
+			app_commands.Choice(name=server, value=server)
 			for server in server_list
 			if current.replace(" ", "").lower() in server.replace(" ", "").lower()
 		]
