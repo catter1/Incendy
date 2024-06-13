@@ -56,7 +56,7 @@ class Stats(commands.Cog):
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.link, label="Donate", url="https://ko-fi.com/catter1", emoji=Constants.Emoji.KOFI))
 		view.add_item(discord.ui.Button(style=discord.ButtonStyle.blurple, label="Website (soon™️!)", disabled=True))
 
-		await interaction.response.send_message(embed=embed, view=view)
+		await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 	
 	@app_commands.command(name="stats", description="Shows stats about Stardust Labs")
 	@incendy.in_bot_channel()
