@@ -29,7 +29,7 @@ class Roles(commands.Cog):
 				sticky_roles = [guild.get_role(role) for role in sticky_roles_data.get(str(member.id), [])]
 				roles.extend(sticky_roles)
 
-			await member.add_roles(roles)
+			await member.add_roles(*roles)
 
 		# Check if user tries to circumvent SHUTUP
 		with open('resources/timeout.json', 'r') as f:
