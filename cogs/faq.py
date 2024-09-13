@@ -65,7 +65,7 @@ class Faq(commands.Cog):
 
 	@qp.autocomplete('qp')
 	async def qp_autocomplete(self, interaction: discord.Interaction, current: str):
-		qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Binary Search", "Give Details", "Screenshot Tips", "Aternos Lag Meme", "Fractureiser", "Locate Command"])
+		qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Binary Search", "Give Details", "Screenshot Tips", "Aternos Lag Meme", "Fractureiser", "Locate Command", "Piracy", "Rezipping"])
 
 		return [
 			app_commands.Choice(name=qp, value=qp)
