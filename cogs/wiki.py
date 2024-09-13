@@ -28,7 +28,7 @@ class Wiki(commands.Cog):
 		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
 			self.loop_get_wiki.start()
 		else:
-			logging.warn("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
+			logging.warning("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
