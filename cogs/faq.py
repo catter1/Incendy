@@ -41,12 +41,17 @@ class Faq(commands.Cog):
 			"Aternos Lag Meme": "",
 			"Fractureiser": "**All the information you need to know is found in this document:** <https://github.com/fractureiser-investigation/fractureiser/blob/main/docs/users.md>. Read it!\n\nIf you have further questions, ask in the designated Discord server. They will have the best and safest answers for you: https://discord.gg/zPdFK47682",
 			"Connect Patreon": "Read [this article](https://support.patreon.com/hc/en-us/articles/212052266-Getting-Discord-access) for information on how to connect Patreon to your Discord account. Once connected, you will have access to special channels such as <#795485705949544468>.",
-			"Locate Command": "### Biomes\n- **1.18.2-** : `/locatebiome`\n- **1.19+** : `/locate biome`\n- **1.18.2-** (some Paper-like servers) : `/minecraft:locatebiome`\n- **1.19+** (some Paper-like servers) : `/minecraft:locate biome`\n### Structures\n- **1.18.2-** : `/locate`\n- **1.19+** : `/locate structure`\n- **1.18.2-** (some Paper-like servers) : `/minecraft:locate`\n- **1.19+** (some Paper-like servers) : `/minecraft:locate structure`",
-            "Piracy": "Hosting cracked servers, using a cracked client (such as TLauncher), or other versions of bypassing paying for the game are all considered **piracy**. When you joined this Discord server, you agreed to the rules, which includes a no-piracy clause. Pirating is considered illegal activity, which is against Minecraft's EULA and Discord's ToS. Therefore, we cannot offer any support to users suspected of pirating the game or hosting servers for pirated users."
+			"Locate Command": "",
+			"Piracy": "Hosting cracked servers, using a cracked client (such as TLauncher), or other versions of bypassing paying for the game are all considered **piracy**. When you joined this Discord server, you agreed to the rules, which includes a no-piracy clause. Pirating is considered illegal activity, which is against Minecraft's EULA and Discord's ToS. Therefore, we cannot offer any support to users suspected of pirating the game or hosting servers for pirated users."
 		}
 
 		if qp == "Aternos Lag Meme":
 			file = discord.File("assets/aternos_meme.png", filename="image.png")
+			await interaction.response.send_message(qp_dict[qp], file=file)
+			return
+		
+		if qp == "Locate Command":
+			file = discord.File("assets/locate_command_table.png", filename="image.png")
 			await interaction.response.send_message(qp_dict[qp], file=file)
 			return
 
