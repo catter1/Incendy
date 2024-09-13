@@ -85,7 +85,7 @@ class Basic(commands.Cog):
 			"LimeSplatus": "https://discord.gg/5DqYxxZdeb",
 			"WWOO": "https://discord.gg/jT34CWwzth",
 			"BYG": "https://discord.gg/F28fGPCJH8",
-			"Stellarity": "https://discord.gg/kohara-s-basement-727033287343734885",
+			"Stellarity": "https://discord.gg/kohara",
 			"YUNG": "https://discord.gg/rns3beq",
 			"BetterX": "https://discord.gg/kYuATbYbKW",
 			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
