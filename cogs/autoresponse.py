@@ -363,6 +363,7 @@ class LogScanner:
 			self.check_nullscape_seedfix(i)
 			self.check_plugin_installation(i)
 			self.check_auditory_incendium(i)
+			self.check_cyclic_crash(i)
 	
 	def check_precipitation(self, index: int) -> None:
 		precipitation_3 = re.search(r"No key precipitation in MapLike", self.contents[index].logdata)
@@ -429,6 +430,18 @@ class LogScanner:
 
 		if auditory:
 			error = f"This is an [issue with Auditory](https://github.com/Sydokiddo/auditory/issues/32). In the meantime, this can be fixed by disabling {'enderpearl' if enderpearl else 'the problem'} sounds in the Auditory config."
+			self.contents[index].responses.append(error)
+			return
+		
+		return
+	
+	def check_cyclic_crash(self, index: int) -> None:
+		cyclic = re.search(r"mod:cyclic", self.contents[index].logdata)
+		foc = re.search(r"Feature order cycle found, involved sources", self.contents[index].logdata)
+		snowy_cherry_grove = re.search(r"terralith:snowy_cherry_grove", self.contents[index].logdata)
+
+		if all(cyclic, foc, snowy_cherry_grove):
+			error = "This is an issue with Cyclic that can be resolved by updating Cyclic to 1.12.11+."
 			self.contents[index].responses.append(error)
 			return
 		
