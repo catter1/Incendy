@@ -137,7 +137,13 @@ class Project:
 		"""Sets the version number/name. `mc_versions` must be set beforehand."""
 
 		self.version_number = version_number
-		version_name_number = "1.20.x" if "1.20" in self.newest_mc_version else self.newest_mc_version
+		if "1.20" in self.newest_mc_version:
+			version_name_number = "1.20.x"
+		elif "1.21" in self.newest_mc_version:
+			version_name_number = "1.21.x"
+		else:
+			version_name_number = self.newest_mc_version
+			
 		self.version_name = f"v{self.version_number} ~ {version_name_number}"
 		self.filename = f"{self.project_name_safe}_{version_name_number}_v{self.version_number}"
 	
@@ -368,7 +374,8 @@ class Project:
 			"1.20.4": 10407,
 			"1.20.5": 11163,
 			"1.20.6": 11198,
-			"1.21": 11457
+			"1.21": 11457,
+			"1.21.1": 11779
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
@@ -430,6 +437,8 @@ class Project:
 		repo_path = f"{os.getcwd()}/tmp/{proj_tag}"
 		if "1.20" in self.newest_mc_version:
 			branch = "1.20"
+		elif "1.21" in self.newest_mc_version:
+			branch = "1.21"
 		else:
 			branch = self.newest_mc_version
 		repo = Repo.clone_from(url=f"https://Incendy-Bot:{pat}@github.com/Stardust-Labs-MC/{proj_tag}.git", to_path=repo_path, branch=branch)
