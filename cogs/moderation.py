@@ -237,7 +237,7 @@ class Moderation(commands.Cog):
 		embed.set_author(name="Jschlatt Button", icon_url="https://cdn.discordapp.com/emojis/944687134537842779.webp?size=96&quality=lossless")
 		embed.add_field(name="Victims (Banned):", value=victimstr, inline=False)
 		if names:
-            embed.add_field(name="Innocents (Not Banned):", value=innocentstr, inline=False)
+			embed.add_field(name="Innocents (Not Banned):", value=innocentstr, inline=False)
 		embed.set_footer(text="React with ✅ to confirm the purge.")
 		if minutes > 0:
 			if len(victims) == 1:

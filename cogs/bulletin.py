@@ -33,7 +33,7 @@ class Bulletin(commands.Cog):
 			for pack in data[item]:
 				count += 1
 
-        # Thanks SO: https://stackoverflow.com/questions/58811499/generating-gradient-colors-in-python
+		# Thanks SO: https://stackoverflow.com/questions/58811499/generating-gradient-colors-in-python
 		def rainbow_color_stops(n=10, end=3/3):
 			return [ hls_to_rgb(end * i/(n-1), 0.5, 1) for i in range(n) ]
 		
@@ -43,11 +43,11 @@ class Bulletin(commands.Cog):
 			for rgb in rgb_float:
 				rgb_int.append(
 					(
-                        int(rgb[0] * 255),
-                        int(rgb[1] * 255),
-                        int(rgb[2] * 255)
-                    )
-                )
+						int(rgb[0] * 255),
+						int(rgb[1] * 255),
+						int(rgb[2] * 255)
+					)
+				)
 			return rgb_int
 		
 		colours = get_rgb_rainbow(n=count)
@@ -57,14 +57,14 @@ class Bulletin(commands.Cog):
 				count -= 1
 				
 				embed = discord.Embed(
-                    title= pack["title"],
-                    url= pack["link"],
-                    color= discord.Colour.from_rgb(
-                        colours[count][0],
-                        colours[count][1],
-                        colours[count][2]
-                    )
-                )
+					title= pack["title"],
+					url= pack["link"],
+					color= discord.Colour.from_rgb(
+						colours[count][0],
+						colours[count][1],
+						colours[count][2]
+					)
+				)
 				
 				user = self.client.get_user(pack["user"])
 				
@@ -118,33 +118,33 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
 		self.servchan = client.get_channel(Constants.Channel.SERVER)
 	
 	server_name = discord.ui.TextInput(
-        label='Your server\'s name',
-        style=discord.TextStyle.short,
-        placeholder='Insert name here...',
-        required=True,
-        max_length=50
-    )
+		label='Your server\'s name',
+		style=discord.TextStyle.short,
+		placeholder='Insert name here...',
+		required=True,
+		max_length=50
+	)
 	server_ip = discord.ui.TextInput(
-        label='Your server\'s IP',
-        style=discord.TextStyle.short,
-        placeholder='Insert IP here...',
-        required=True,
-        max_length=30
-    )
+		label='Your server\'s IP',
+		style=discord.TextStyle.short,
+		placeholder='Insert IP here...',
+		required=True,
+		max_length=30
+	)
 	server_desc = discord.ui.TextInput(
-        label='A description for your server',
-        style=discord.TextStyle.long,
-        placeholder='Type description here...',
-        required=True,
-        max_length=700
-    )
+		label='A description for your server',
+		style=discord.TextStyle.long,
+		placeholder='Type description here...',
+		required=True,
+		max_length=700
+	)
 	server_discord = discord.ui.TextInput(
-        label='An optional related Discord link',
-        style=discord.TextStyle.short,
-        placeholder='Insert Discord link here...',
-        required=False,
-        max_length=60
-    )
+		label='An optional related Discord link',
+		style=discord.TextStyle.short,
+		placeholder='Insert Discord link here...',
+		required=False,
+		max_length=60
+	)
 
 	async def on_submit(self, interaction: discord.Interaction):
 		embed = discord.Embed(
@@ -153,9 +153,9 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
 			colour=discord.Colour.brand_red()
 		)
 		if self.image:
-            embed.set_thumbnail(url=self.image.url)
+			embed.set_thumbnail(url=self.image.url)
 		if self.server_discord:
-            embed.description += f"\n\n[Discord Server]({self.server_discord})"
+			embed.description += f"\n\n[Discord Server]({self.server_discord})"
 		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
 		embed.set_footer(text="Want to advertise your server here? Do /server!")
 
