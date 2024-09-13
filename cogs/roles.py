@@ -18,11 +18,18 @@ class Roles(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@commands.Cog.listener()
-	async def on_member_join(self, member):		
+	async def on_member_join(self, member: discord.Member):		
 		if not self.client.settings["locked"]:
 			guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
-			role = guild.get_role(Constants.Role.MEMBER)
-			await member.add_roles(role)
+			roles = [guild.get_role(Constants.Role.MEMBER)]
+
+			# Check for sticky roles
+			with open('resources/sticky_roles.json', 'r') as f:
+				sticky_roles_data = json.load(f)
+				sticky_roles = [guild.get_role(role) for role in sticky_roles_data.get(str(member.id), [])]
+				roles.extend(sticky_roles)
+
+			await member.add_roles(roles)
 
 		# Check if user tries to circumvent SHUTUP
 		with open('resources/timeout.json', 'r') as f:
@@ -30,6 +37,25 @@ class Roles(commands.Cog):
 		if str(member.id) in log["members"].keys():
 			future = datetime.timedelta(days=28)
 			await member.timeout(until=future, reason="Shutup loser")
+			
+	@commands.Cog.listener()
+	async def on_member_update(self, before: discord.Member, after: discord.Member):
+		# Only care if roles changed, nothing else
+		if before.roles.sort() == after.roles.sort():
+			return
+		
+		# If the just joined for the first time, skip them
+		# If they need to get sticky roles, they would be applied in `on_member_join`
+		# Therefore role count would be > 1
+		if len(after.roles) <= 1:
+			return
+		
+		# Update the member's sticky roles
+		with open('resources/sticky_roles.json', 'r+') as f:
+			sticky_roles_data = json.load(f)
+			sticky_roles_data[str(after.id)] = [role for role in Constants.Role.STICKY_ROLES if role in after.roles]
+			json.dump(sticky_roles_data, f, indent=4)
+				
 
 	@app_commands.command(name="role", description="[ADMIN] Gives Members role to all users missing a role")
 	@app_commands.default_permissions(administrator=True)

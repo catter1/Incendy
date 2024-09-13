@@ -125,6 +125,11 @@ async def file_init():
 		timeout_base = {"days": [],"members": {}}
 		with open("resources/timeout.json", 'w') as f:
 			json.dump(timeout_base, f, indent=4)
+			
+	if not os.path.isfile("resources/sticky_roles.json"):
+		sticky_roles_base = {}
+		with open("resources/sticky_roles.json", 'w') as f:
+			json.dump(sticky_roles_base, f, indent=4)
 
 	if not os.path.isfile("resources/reposts.json"):
 		reposts = requests.get("https://api.stopmodreposts.org/minecraft/sites.json")
