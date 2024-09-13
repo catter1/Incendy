@@ -1,6 +1,6 @@
 import json
 import requests
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 
 def get_downloads(cf_key: str, git_pat: str) -> dict:
     stats = {}
@@ -37,20 +37,20 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
         stats[project] += json.loads(x.text)["downloads"]
 
     # PMC
-    pmc_projects = {
-        "terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
-        "incendium": "incendium-nether-expansion",
-        "nullscape": "nullscape",
-        "structory": "structory",
-        #"structory-towers": "structory-towers",
-        "amplified-nether": "amplified-nether-1-18/",
-        "continents": "continents"
-    }
-    for project in pmc_projects.keys():
-        url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}"
-        x = requests.get(url=url, headers=headers)
-        soup = BeautifulSoup(x.text, "html.parser")
-        stats[project] += int(soup.find_all(text=" downloads, ")[0].parent.contents[1].text.replace(",", ""))
+    # pmc_projects = {
+    #     "terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
+    #     "incendium": "incendium-nether-expansion",
+    #     "nullscape": "nullscape",
+    #     "structory": "structory",
+    #     #"structory-towers": "structory-towers",
+    #     "amplified-nether": "amplified-nether-1-18/",
+    #     "continents": "continents"
+    # }
+    # for project in pmc_projects.keys():
+    #     url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}"
+    #     x = requests.get(url=url, headers=headers)
+    #     soup = BeautifulSoup(x.text, "html.parser")
+    #     stats[project] += int(soup.find_all(text=" downloads, ")[0].parent.contents[1].text.replace(",", ""))
 
     # GitHub
     headers = {"Authorization": f"Bearer {git_pat}"}
