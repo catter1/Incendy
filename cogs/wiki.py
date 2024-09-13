@@ -237,8 +237,10 @@ class Wiki(commands.Cog):
 		csrf_params = {"action":"query", "meta":"tokens", "type":"csrf", "format":"json"}
 		csrf_token = self.client.wiki_session.post(url=url, data=csrf_params, headers=headers).json()["query"]["tokens"]["csrftoken"]
 
-		media_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{media.filename.split('.')[-1]}", "url":media.url, "format":"json", "token":csrf_token}
-		media_resp = self.client.wiki_session.post(url=url, data=media_params, headers=headers).json()
+		filename = f"{interaction.user.name}_{name}.{media.filename.split('.')[-1]}"
+		image_file = {'file':(filename, media.read(), 'multipart/form-data')}
+		media_params = {"action":"upload", "filename":f"{interaction.user.name}_{name}.{media.filename.split('.')[-1]}", "format":"json", "token":csrf_token}
+		media_resp = self.client.wiki_session.post(url=url, data=media_params, headers=headers, files=image_file).json()
 
 		if not media_resp.get("upload"):
 			await interaction.followup.send("There was an error uploading your media!", ephemeral=True)
