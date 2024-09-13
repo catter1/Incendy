@@ -668,11 +668,23 @@ Only change this value, __do not touch anything else__. Smaller values = larger 
 				"""
 			
 		await interaction.response.edit_message(embed=embed)
+		
+class ConfigButton(discord.ui.Button):
+	def __init__(self):
+		super().__init__(style=discord.ButtonStyle.blurple, label="How to Edit", emoji=Constants.Emoji.QUESTION)
+		
+	async def callback(self, interaction: discord.Interaction):
+		embed = interaction.message.embeds[0]
+		embed.title = 'Configuration'
+		embed.description = 'There is **no configuration file** for datapacks (custom world settings like Large Biomes do not work either). That said, if you want to modify how the packs work, you\'ll have to modify the code inside the datapack. Do keep in mind the [Stardust Labs License](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt) found inside all datapacks, which prohibits you from distributing modified versions of the projects. Select a configuration from the selection menu below.\n\nIf you are editing the mod version of our projects, the same instructions apply. First rename the `.jar` to `.zip`, perform the changes, and then when you\'re all set, rename the `.zip` back to `.jar`.'
+
+		await interaction.response.edit_message(embed=embed)
 
 class Config(discord.ui.View):
 	def __init__(self):
 		super().__init__(timeout=None)
 		self.add_item(ConfigMenu())
+		self.add_item(ConfigButton())
 
 class ServerMenu(discord.ui.Select):
 	def __init__(self):

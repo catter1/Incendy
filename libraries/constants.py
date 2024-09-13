@@ -112,3 +112,4 @@ class Emoji:
     PINEAPPLE = "🍍"
     PIN = "🧷"
     SCALES = "⚖️"
+    QUESTION = "❓"
