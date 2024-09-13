@@ -114,7 +114,7 @@ class Basic(commands.Cog):
 		await interaction.response.send_message(server_dict[server])
 
 	@_discord.autocomplete('server')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def server_autocomplete(self, interaction: discord.Interaction, current: str):
 		server_list = sorted([
 			"New In Town", "Minecraft Configs", "Still Loading", "Hashs", "Botany", "Distant Horizons", "Complementary", "Smithed", "Beet", "Minecraft Commands", "LimeSplatus", "WWOO", "BYG", "Stellarity", "YUNG", "BetterX", "ChoiceTheorem", "rx", "Modrinth", "Fabric", "Stardust Labs", "Chunky", "The Expansion", "Naomi", "Minecraft Worldgen", "BOP", "NeoForged", "Minecraft", "Dynamic Trees", "Curseforge", "TelepathicGrunt", "Regions Unexplored", "STRAYED FATES"
 		])
@@ -177,7 +177,7 @@ class Basic(commands.Cog):
 		await interaction.response.send_modal(modal)
 		
 	@issue.autocomplete('issue_type')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def issue_type_autocomplete(self, interaction: discord.Interaction, current: str):
 		issue_types = ["bug", "enhancement"]
 
 		return [
@@ -187,7 +187,7 @@ class Basic(commands.Cog):
 		]
 
 	@issue.autocomplete('project')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def project_autocomplete(self, interaction: discord.Interaction, current: str):
 		projects = sorted(["Terralith", "Incendium", "Nullscape", "Structory", "Amplified-Nether", "Continents", "Structory-Towers", "Stardust-Optional-Resourcepack", "Incendy", "StardustMC"])
 
 		return [

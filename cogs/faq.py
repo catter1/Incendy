@@ -52,7 +52,7 @@ class Faq(commands.Cog):
 		await interaction.response.send_message(qp_dict[qp])
 
 	@qp.autocomplete('qp')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def qp_autocomplete(self, interaction: discord.Interaction, current: str):
 		qp_list = sorted(["Standards", "Discord Links", "Try it and See", "Dont Ask to Ask", "Notch Code", "Optifine Alternatives", "Admin Menu", "Send Logs", "Wiki Link", "Dimension Folders", "Mod vs Datapack", "Keep Exploring", "Binary Search", "Give Details", "Screenshot Tips", "Aternos Lag Meme", "Fractureiser", "Locate Command"])
 
 		return [
@@ -176,7 +176,7 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
 			case "Other World Types":
 				embed = discord.Embed(
 					title='Other World Types',
-					description=f'''
+					description='''
 Terralith is not compatible with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome.
 
 This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by **Apollo**. If/when this gets fixed, Terralith may be compatible with the world types!
@@ -376,7 +376,7 @@ Ensure you are updated as shown above, as well as the following:
 			await self.client.db.execute(query, interaction.user.id, faq, interaction.created_at)
 
 	@faq.autocomplete('faq')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def faq_autocomplete(self, interaction: discord.Interaction, current: str):
 		faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings", "Existing Worlds"])
 
 		choices = [
@@ -607,7 +607,7 @@ This method is not perfect, but can get the job done. This is not officially sup
 
 			case 'Taller Nether':
 				embed.title = 'Configuration (Taller Nether)'
-				embed.description = f'''
+				embed.description = '''
 Warning: It is recommended you reset the nether dimension when making this change. In currently loaded chunks, all space above y256 will be the Plains biome.
 - Go to [this](https://github.com/Apollounknowndev/pack-library/tree/main/nether-build-height) link, which will bring you to two datapacks that raise the nether build height to 384: One for 1.18.1 and before, one for 1.18.2 and above. Download the one you need.
 - Install it onto the world you want to have the taller nether as a datapack. __Load order with Amplified Nether/Incendium does not matter.__
@@ -616,7 +616,7 @@ Warning: It is recommended you reset the nether dimension when making this chang
 
 			case 'Adjusted Continent Size':
 				embed.title = 'Configuration (Adjusted Continent Size)'
-				embed.description = f"""
+				embed.description = """
 This tutorial (graciously provided by **Apollo**) will show you how to adjust continent size with the Continents project.
 - Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
 - Open `base_continents.json`. You should see this:
@@ -646,7 +646,7 @@ This tutorial (graciously provided by **Apollo**) will show you how to adjust co
 
 			case 'Resized Continents Spawn Island':
 				embed.title = 'Configuration (Resized Continents Spawn Island)'
-				embed.description = f"""
+				embed.description = """
 - Open the mod/datapack files and navigate to `data/continents/worldgen/density_function/centroid/`.
 - Open `spawn_island.json`. The 5th line of the file should be this:
 ```json

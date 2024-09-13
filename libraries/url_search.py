@@ -1,5 +1,5 @@
 import re
-from validators import validator, utils
+from validators import validator
 
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
 ip_last_octet = u"(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))"

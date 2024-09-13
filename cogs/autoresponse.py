@@ -406,7 +406,7 @@ class LogScanner:
 		nullscape = re.search(r"Nullscape_1\.18\.2_v1\.1\.3\.jar", self.contents[index].logdata)
 
 		if seedfix and nullscape:
-			error = f"You are using Nullscape 1.1.3, which currently has issues with its Seedfix implementation. Upgrade to [Nullscape 1.1.4](https://modrinth.com/mod/nullscape/versions?g=1.18.2) or higher and download its [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) dependency!"
+			error = "You are using Nullscape 1.1.3, which currently has issues with its Seedfix implementation. Upgrade to [Nullscape 1.1.4](https://modrinth.com/mod/nullscape/versions?g=1.18.2) or higher and download its [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) dependency!"
 			self.contents[index].responses.append(error)
 			return
 		

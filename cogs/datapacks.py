@@ -84,7 +84,7 @@ class Datapacks(commands.Cog):
 			👉 **Selectors**: {', '.join([f'{cnt} **@{sel}**' for sel, cnt in ((item, stats['selector_count'][item]) for item in stats['selector_count'].keys())]) if len(stats['selector_count'].keys()) != 0 else 0}
 			🥅 **Top Scoreboards**: {', '.join([f'__{sb}__ ({cnt})' for sb, cnt in sorted(stats['scoreboard_references'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['scoreboard_references'].keys()) != 0 else 0}
 
-			{'**No errors!** This datapack is valid.' if len(errors) == 0 else f'There {f"is **1** error." if len(errors) == 1 else f"are **{len(errors)}** errors. Here is the first one:"}{nl}```{error1["annotation"] + nl*2 + error1["message"] + nl*2 + nl.join(error1["details"])}```'}
+			{'**No errors!** This datapack is valid.' if len(errors) == 0 else f'There {"is **1** error." if len(errors) == 1 else f"are **{len(errors)}** errors. Here is the first one:"}{nl}```{error1["annotation"] + nl*2 + error1["message"] + nl*2 + nl.join(error1["details"])}```'}
 			"""
 		)
 		embed.set_footer(text="Powered by Beet and Mecha.")
@@ -93,7 +93,7 @@ class Datapacks(commands.Cog):
 		os.remove(f"tmp/{filename}")
 
 	@analyze.autocomplete('version')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def analyze_autocomplete(self, interaction: discord.Interaction, current: str):
 		return [
 			app_commands.Choice(name=version, value=version)
 			for version in ["1.19", "1.18", "1.17"]
@@ -126,7 +126,7 @@ class Datapacks(commands.Cog):
 		os.remove(f"tmp/{filename}")
 
 	@mcmeta.autocomplete('version')
-	async def autocomplete_callback(self, interaction: discord.Interaction, current: str):
+	async def mcmeta_autocomplete(self, interaction: discord.Interaction, current: str):
 		choices = [
 			app_commands.Choice(name="Latest Release", value=self.all_versions["latest"]["release"]),
 			app_commands.Choice(name="Latest Snapshot", value=self.all_versions["latest"]["snapshot"])

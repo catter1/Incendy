@@ -1,7 +1,7 @@
 import discord
 import os
 import json
-import nltk
+#import nltk
 import requests
 import shutil
 import logging
@@ -79,7 +79,7 @@ class Wiki(commands.Cog):
 
 		# Never-nester functions
 		def get_image_url(imgname: str) -> str:
-			if imgname == None:
+			if imgname is None:
 				return None
 			if imgname.startswith("File:"):
 				imgname = imgname.split(":")[1]
@@ -104,7 +104,7 @@ class Wiki(commands.Cog):
 
 		def get_section_content(page: MediaWikiPage, title: str) -> str:
 			section = page.section(title)
-			if section == None:
+			if section is None:
 				return None
 			if section.strip() == "" or section.strip() == "WIP":
 				return None
@@ -139,7 +139,7 @@ class Wiki(commands.Cog):
 
 			# Do a bunch of pain to find the image url, and set it
 			imgname = pageprops.get("image")
-			if imgname == None:
+			if imgname is None:
 				imgname = pageprops.get("page_image_free")
 			pages[item]["imgurl"] = get_image_url(imgname)
 
@@ -155,7 +155,7 @@ class Wiki(commands.Cog):
 				if section["toclevel"] < 4:
 					title = section["line"]
 					section = get_section_content(page, title)
-					if section != None:
+					if section is not None:
 						pagedata[title.title()] = get_section_content(page, title)
 
 			# Set the page data

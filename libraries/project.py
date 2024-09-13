@@ -1,11 +1,8 @@
 import json
-import toml
 import os
 import shutil
 import requests
-import subprocess
 import logging
-import asyncio
 import discord
 from git import Repo
 from zipfile import ZipFile
@@ -317,7 +314,7 @@ class Project:
 
 		if r.status_code == 200:
 			_id = r.json().get('id')
-			if _id == None:
+			if _id is None:
 				logging.error("Modrinth ID not found.")
 				logging.error(r.json())
 				return f"https://modrinth.com/project/{self.project_id}/versions"
@@ -398,7 +395,7 @@ class Project:
 
 		try:
 			_id = r.json().get('id')
-			if _id == None:
+			if _id is None:
 				logging.error("Curseforge ID not found.")
 				logging.error(r.json())
 				return None
@@ -616,7 +613,7 @@ class Project:
 			if any([platform in self.selected_platforms for platform in ["GitHub", "Planet Minecraft", "Stardust Labs"]]):
 				zip_filepath = f"tmp/{self.filename}.zip"
 				await self.archive.save(zip_filepath)
-				if not "Structory" in self.project_name:
+				if "Structory" not in self.project_name:
 					insert_patrons(zip_filepath)
 
 			if any([platform in self.selected_platforms for platform in ["Curseforge", "Modrinth"]]):

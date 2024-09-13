@@ -50,7 +50,7 @@ class Moderation(commands.Cog):
 			if [role.id for role in cache.author.roles if role.id in ids]:
 				continue
 
-			if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and not "https://tenor.com" in word]):
+			if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and "https://tenor.com" not in word]):
 				strikes.append(cache)
 		
 		if len(strikes) >= 3:
@@ -98,7 +98,7 @@ class Moderation(commands.Cog):
 					log["members"][entry_id] -= 1
 
 				# Just in case the perpetrator leaves the server, we won't get annoying errors... but will still catch them if they rejoin
-				if member == None:
+				if member is None:
 					continue
 				
 				# Safe way to respect API
@@ -181,7 +181,7 @@ class Moderation(commands.Cog):
 	)
 	async def jschlatt(self, interaction: discord.Interaction, strings: str = None, minutes: int = 0):
 		# Double check in case if dumb
-		if strings == None and minutes <= 0:
+		if strings is None and minutes <= 0:
 			await interaction.response.send_message("You need to provide either a list of names, amount of time, or both!", ephemeral=True)
 			return
 		
@@ -236,7 +236,8 @@ class Moderation(commands.Cog):
 		embed = discord.Embed(color= discord.Colour.brand_red(), title= "*Only for the most extreme of emergencies!*")
 		embed.set_author(name="Jschlatt Button", icon_url="https://cdn.discordapp.com/emojis/944687134537842779.webp?size=96&quality=lossless")
 		embed.add_field(name="Victims (Banned):", value=victimstr, inline=False)
-		if names: embed.add_field(name="Innocents (Not Banned):", value=innocentstr, inline=False)
+		if names:
+            embed.add_field(name="Innocents (Not Banned):", value=innocentstr, inline=False)
 		embed.set_footer(text="React with ✅ to confirm the purge.")
 		if minutes > 0:
 			if len(victims) == 1:

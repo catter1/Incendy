@@ -63,7 +63,7 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
         response.raise_for_status()
 
         for release in response.json():
-            release_id = release["id"]
+            #release_id = release["id"]
             
             for asset in release["assets"]:
                 asset_id = asset["id"]

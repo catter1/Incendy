@@ -131,7 +131,7 @@ class Remind(commands.Cog):
         )
 
 		if not reminder_id:
-			await interaction.response.send_message(f"There was an issue creating your reminder!", ephemeral=True)
+			await interaction.response.send_message("There was an issue creating your reminder!", ephemeral=True)
 			return
 
 		await interaction.response.send_message(f"Reminder successfully created! I will ping you in {time} with your reminder.")

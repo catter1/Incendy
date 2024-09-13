@@ -1,6 +1,5 @@
 import discord
 import logging
-import json
 from discord import app_commands
 from discord.ext import commands
 from libraries import incendy
@@ -47,7 +46,7 @@ class Admin(commands.Cog):
 				
 				files = [await attachment.to_file(filename=attachment.filename) for attachment in message.attachments if attachment.size < 8000000]
 
-				if (message.content == "" or message.content == None) and len(files) == 0:
+				if (message.content == "" or message.content is None) and len(files) == 0:
 					continue
 				
 				if "Deleted User" in message.author.display_name:

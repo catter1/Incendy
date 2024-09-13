@@ -19,7 +19,7 @@ class Roles(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_member_join(self, member):		
-		if self.client.settings["locked"] == False:
+		if not self.client.settings["locked"]:
 			guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 			role = guild.get_role(Constants.Role.MEMBER)
 			await member.add_roles(role)
@@ -57,7 +57,7 @@ class Roles(commands.Cog):
 		
 		embed = discord.Embed()
 		embed.set_author(name="Lockdown")
-		if self.client.settings["locked"] == False:
+		if not self.client.settings["locked"]:
 			embed.color = discord.Colour.red()
 			embed.add_field(name="**ENABLED**", value="New people who join will no longer receive the member role!")
 			self.client.settings["locked"] = True

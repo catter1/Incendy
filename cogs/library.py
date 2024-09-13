@@ -59,7 +59,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="[Discontinued] Cave Tweaks",
 				content="*A mod that allows for the extensive configuration of all caves.*",
-				file=discord.File(f"assets/Cave Tweaks.png", filename="image.png"),
+				file=discord.File("assets/Cave Tweaks.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -99,7 +99,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Sparkles: Stardust Labs Resourcepack",
 				content="*An optional resourcepack for all of Stardust Labs' projects. Adds localizations and minimap biome name fixes, as well as textures for Incendium.*",
-				file=discord.File(f"assets/Sparkles.png", filename="image.png"),
+				file=discord.File("assets/Sparkles.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -139,7 +139,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Amplified Nether",
 				content="*The nether explorer's simple dream: doubled height and amplified terrain. What more is needed?*",
-				file=discord.File(f"assets/Amplified Nether.png", filename="image.png"),
+				file=discord.File("assets/Amplified Nether.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -179,7 +179,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Continents",
 				content="*Reshapes the world to consist of continents, separated by large oceans and small islands.*",
-				file=discord.File(f"assets/Continents.png", filename="image.png"),
+				file=discord.File("assets/Continents.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -219,7 +219,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Structory: Towers",
 				content="*An add-on for Structory that adds immersive, biome-themed towers to the world.*",
-				file=discord.File(f"assets/Structory Towers.png", filename="image.png"),
+				file=discord.File("assets/Structory Towers.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -259,7 +259,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Structory",
 				content="*An atmospheric structure mod with detailed themes, varied builds, and light lore. Occasionally recieves seasonal updates and add-ons.*",
-				file=discord.File(f"assets/Structory.png", filename="image.png"),
+				file=discord.File("assets/Structory.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -299,7 +299,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Nullscape",
 				content="*Transforms the boring Vanilla end into an alien dimension with the most surreal terrain imaginable. Topped with a couple of new biomes to add to the experience, whilst keeping the end desolate.*",
-				file=discord.File(f"assets/Nullscape.png", filename="image.png"),
+				file=discord.File("assets/Nullscape.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -341,7 +341,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Incendium",
 				content="*A nether biome overhaul combined with challenging structures to conquer, unique weapons to obtain, and tricky mobs to defeat.*",
-				file=discord.File(f"assets/Incendium.png", filename="image.png"),
+				file=discord.File("assets/Incendium.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread
@@ -383,7 +383,7 @@ class Library(commands.Cog):
 			post = await forum.create_thread(
 				name="Terralith",
 				content="*Explore almost 100 new biomes consisting of both realism and light fantasy, using just Vanilla blocks. Complete with several immersive structures to compliment the overhauled terrain.*",
-				file=discord.File(f"assets/Terralith.png", filename="image.png"),
+				file=discord.File("assets/Terralith.png", filename="image.png"),
 			)
 			await post.message.pin()
 			post = post.thread

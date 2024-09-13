@@ -152,8 +152,10 @@ class ServerDesc(discord.ui.Modal, title='Server Info'):
 			description=self.server_desc,
 			colour=discord.Colour.brand_red()
 		)
-		if self.image: embed.set_thumbnail(url=self.image.url)
-		if self.server_discord: embed.description += f"\n\n[Discord Server]({self.server_discord})"
+		if self.image:
+            embed.set_thumbnail(url=self.image.url)
+		if self.server_discord:
+            embed.description += f"\n\n[Discord Server]({self.server_discord})"
 		embed.set_author(name=interaction.user.name, icon_url=interaction.user.avatar)
 		embed.set_footer(text="Want to advertise your server here? Do /server!")
 

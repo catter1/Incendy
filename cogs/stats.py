@@ -1,5 +1,4 @@
 import discord
-import json
 import os
 import time
 import logging
@@ -170,7 +169,7 @@ class Stats(commands.Cog):
 		# Check if we've already logged downloads today!
 		potential = await self.client.db.fetchval('SELECT day FROM downloads WHERE day = current_date LIMIT 1')
 
-		if potential != None:
+		if potential is not None:
 			return
 
 		logging.info("Updating the STATS table...")
