@@ -39,10 +39,14 @@ class Wiki(commands.Cog):
 	### LOOPS ###
 
 	# Thank you SO: https://stackoverflow.com/questions/65881761/discord-gateway-warning-shard-id-none-heartbeat-blocked-for-more-than-10-second
-	@tasks.loop(hours=8.0)
+	@tasks.loop(hours=24.0)
 	async def loop_get_wiki(self):
 		start = perf_counter()
 		db_values = await self.get_wiki_content()
+		if db_values is None:
+			logging.warning("Issue connecting to the wiki; database not updated.")
+			return
+
 		await self.client.db.execute('TRUNCATE wiki;')
 		await self.client.db.executemany('INSERT INTO wiki (pageid, title, description, pageurl, imgurl, pagedata) VALUES($1, $2, $3, $4, $5, $6);', db_values)
 		stop = perf_counter()
@@ -61,7 +65,7 @@ class Wiki(commands.Cog):
 		return wrapper
 
 	@to_thread
-	def get_wiki_content(self) -> list:
+	def get_wiki_content(self) -> list | None:
 		# ### STRUCTURE OF PAGE LIST FOR DB ENTRY ###
 		"""
 		{
@@ -124,7 +128,12 @@ class Wiki(commands.Cog):
 			
 
 		# Get all page titles in wiki
-		pages_raw = self.client.miraheze.wiki_request({"action":"query", "list":"allpages", "apfilterredir":"nonredirects", "aplimit":500, "format":"json"})
+		# But first check that the conenction is okay
+		try:
+			pages_raw = self.client.miraheze.wiki_request({"action":"query", "list":"allpages", "apfilterredir":"nonredirects", "aplimit":500, "format":"json"})
+		except TimeoutError:
+			return None
+		
 		pages = {
 			page["title"]: {"pageid": page["pageid"]} #Sets title and pageid
 			for page in pages_raw["query"]["allpages"]
