@@ -69,7 +69,7 @@ class Helps(commands.Cog):
 	### LISTENERS ###
 
 	@commands.Cog.listener()
-	async def on_thread_create(self, thread):
+	async def on_thread_create(self, thread: discord.Thread):
 		if thread.parent_id == Constants.Channel.SUPPORT:
 			embed = discord.Embed(
 				colour=discord.Colour.brand_green(),
@@ -81,6 +81,11 @@ class Helps(commands.Cog):
 			view.add_item(CloseButton())
 
 			await thread.send(embed=embed, view=view)
+			
+		else:
+			thread.join()
+		
+		await thread.starter_message.pin()
 
 class CloseButton(discord.ui.Button):
 	def __init__(self):
