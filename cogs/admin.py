@@ -19,10 +19,11 @@ class Admin(commands.Cog):
 	@app_commands.checks.has_permissions(administrator=True)
 	@app_commands.describe(
 		channel="The channel or thread to transfer over",
-		forum="The forum channel to move the channel to"
+		forum="The forum channel to move the channel to",
+		maskpings="Whether to mask pings so users are not pinged upon migration"
 	)
-	async def move(self, interaction: discord.Interaction, channel: discord.TextChannel | discord.Thread, forum: discord.ForumChannel):
-		""" /move <channel> <forum> """
+	async def move(self, interaction: discord.Interaction, channel: discord.TextChannel | discord.Thread, forum: discord.ForumChannel, maskpings: bool = False):
+		""" /move <channel> <forum> <maskpings>"""
 
 		await interaction.response.defer(ephemeral=True)
 
@@ -57,6 +58,10 @@ class Admin(commands.Cog):
 					username = message.author.display_name
 				
 				content = "" if message.content in ["", " ", None] else message.content
+				
+				if maskpings and "@" in content:
+					content = content.replace("@", "@ ")
+
 				if len(content) > 2000:
 					content1 = content[:2000]
 					content2 = content[2000:]
