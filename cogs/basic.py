@@ -104,7 +104,8 @@ class Basic(commands.Cog):
 			"Curseforge": "https://discord.gg/curseforge",
 			"TelepathicGrunt": "https://discord.gg/T5MGNBB",
 			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t",
-			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM"
+			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM",
+			"Gamemode4": "https://discord.gg/0qLGgv7JGfIXf45t"
 		}
 
 		if server not in server_dict.keys():
