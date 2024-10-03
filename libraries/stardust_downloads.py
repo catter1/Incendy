@@ -1,6 +1,5 @@
 import json
 import requests
-#from bs4 import BeautifulSoup
 
 def get_downloads(cf_key: str, git_pat: str) -> dict:
     stats = {}
@@ -29,33 +28,33 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
     
     # Modrinth
     headers = {'User-Agent': 'catter1/Incendy (catter@zenysis.net)'}
-    projects.remove('structory')
-    projects.remove('structory-towers')
     for project in projects:
         url = f"https://api.modrinth.com/v2/project/{project}"
         x = requests.get(url=url, headers=headers)
         stats[project] += json.loads(x.text)["downloads"]
 
     # PMC
-    # pmc_projects = {
-    #     "terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
-    #     "incendium": "incendium-nether-expansion",
-    #     "nullscape": "nullscape",
-    #     "structory": "structory",
-    #     #"structory-towers": "structory-towers",
-    #     "amplified-nether": "amplified-nether-1-18/",
-    #     "continents": "continents"
-    # }
-    # for project in pmc_projects.keys():
-    #     url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}"
-    #     x = requests.get(url=url, headers=headers)
-    #     soup = BeautifulSoup(x.text, "html.parser")
-    #     stats[project] += int(soup.find_all(text=" downloads, ")[0].parent.contents[1].text.replace(",", ""))
+    pmc_projects = {
+        "terralith": "terralith-overworld-evolved-100-biomes-caves-and-more/",
+        "incendium": "incendium-nether-expansion",
+        "nullscape": "nullscape",
+        "structory": "structory",
+        #"structory-towers": "structory-towers",
+        "amplified-nether": "amplified-nether-1-18/",
+        "continents": "continents"
+    }
+    for project in pmc_projects.keys():
+        url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}/statsv2"
+        x = requests.get(url=url, headers=headers)
+        try:
+            pmc_downloads = x.json().get('downloads', 0)
+        except requests.exceptions.JSONDecodeError:
+            pmc_downloads = 0
+
+        stats[project] += pmc_downloads
 
     # GitHub
     headers = {"Authorization": f"Bearer {git_pat}"}
-    projects.append('structory')
-    projects.append('structory-towers')
 
     for project in projects:
         url = f"https://api.github.com/repos/Stardust-Labs-MC/{project}/releases"
