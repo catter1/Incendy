@@ -78,7 +78,7 @@ async def run():
 				url="https://stardustlabs.miraheze.org/w/api.php",
 				user_agent=keys["user-agent"]
 			)
-		except TimeoutError:
+		except (TimeoutError, requests.exceptions.ConnectionError):
 			logging.error("Could not log into the Miraheze Wiki via pymediawiki!")
 
 		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
