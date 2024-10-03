@@ -160,7 +160,10 @@ class Basic(commands.Cog):
 	@app_commands.checks.dynamic_cooldown(incendy.default_cd)
 	async def _translate(self, interaction: discord.Interaction, message: discord.Message):
 		translation = self.translator.translate(text=message.content)
-		lang = detectlanguage.simple_detect(message.content)
+		try:
+			lang = detectlanguage.simple_detect(message.content)
+		except requests.exceptions.ConnectionError:
+			lang = "unknown"
 
 		embed = discord.Embed(title="Translation", description=translation, colour=discord.Colour.brand_red())
 		embed.set_footer(text=f"Translated from ({lang})")
