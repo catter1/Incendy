@@ -440,7 +440,7 @@ class LogScanner:
 		foc = re.search(r"Feature order cycle found, involved sources", self.contents[index].logdata)
 		snowy_cherry_grove = re.search(r"terralith:snowy_cherry_grove", self.contents[index].logdata)
 
-		if all(cyclic, foc, snowy_cherry_grove):
+		if all([cyclic, foc, snowy_cherry_grove]):
 			error = "This is an issue with Cyclic that can be resolved by updating Cyclic to 1.12.11+."
 			self.contents[index].responses.append(error)
 			return
