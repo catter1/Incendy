@@ -23,14 +23,20 @@ class Autoresponse(commands.Cog):
 		with open('resources/reposts.json', 'r') as f:
 			self.reposts = json.load(f)
 
-		sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
-		sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
-		sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
-		sawdust_links = [element.text for element in sawdust_loc_elements]
-		self.sawdust_urls = {url.split('/')[-2]: url for url in sawdust_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
+		try:
+			sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
+			sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
+			sawdust_loc_elements = sawdust_root.xpath("//ns:loc", namespaces={"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+			sawdust_links = [element.text for element in sawdust_loc_elements]
+			self.sawdust_urls = {url.split('/')[-2]: url for url in sawdust_links if len(url.split("/")) > 4 and not url.split('/')[-2].startswith("_")}
+		except requests.exceptions.ConnectionError:
+			self.sawdust_urls = {}
 
-		misode_resp = requests.get("https://misode.github.io/sitemap.txt")
-		self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
+		try:
+			misode_resp = requests.get("https://misode.github.io/sitemap.txt")
+			self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
+		except requests.exceptions.ConnectionError:
+			self.misode_urls = {}
 
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
