@@ -538,7 +538,7 @@ class TowersLinks(discord.ui.View):
 class ContinentsDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.1)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.1)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/continents/versions?l=datapack', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.1)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
 		#self.add_item(discord.ui.Button(label='Datapack (1.21.1)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/continents/', row=0))
 		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.1)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Continents/releases', row=0))
