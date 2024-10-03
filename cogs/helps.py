@@ -83,9 +83,13 @@ class Helps(commands.Cog):
 			await thread.send(embed=embed, view=view)
 			
 		else:
-			thread.join()
+			await thread.join()
 		
-		await thread.starter_message.pin()
+		message = thread.get_partial_message(thread.id)
+		try:
+			await message.pin()
+		except discord.HTTPException:
+			pass
 
 class CloseButton(discord.ui.Button):
 	def __init__(self):
