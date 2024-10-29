@@ -154,7 +154,7 @@ Sometimes, you may notice all the leaves are the same color. This could be cause
 				embed = discord.Embed(
 					title='Incendium 1.21',
 					description='''
-Incendium is currently in an odd spot. The project desperately needs a rewrite, which is currently ongoing. However, this will take a while, with no ETA - like won't release until 2025.
+Incendium is currently in an odd spot. The project desperately needs a rewrite, which is currently ongoing. However, this will take a while, with no ETA - likely won't release until 2025.
 
 In the meantime, we have an unsupported port of Incendium for 1.21.x, posted in our Discord and on Modrinth. **Reasoning:**
 - It will not be possible to directly update old Incendium worlds to the rewrite
