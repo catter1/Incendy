@@ -150,6 +150,25 @@ Sometimes, you may notice all the leaves are the same color. This could be cause
 					''',
 					color=faq_colour
 				)
+			case "Incendium 1.21":
+				embed = discord.Embed(
+					title='Incendium 1.21',
+					description='''
+Incendium is currently in an odd spot. The project desperately needs a rewrite, which is currently ongoing. However, this will take a while, with no ETA - like won't release until 2025.
+
+In the meantime, we have an unsupported port of Incendium for 1.21.x, posted in our Discord and on Modrinth. **Reasoning:**
+- It will not be possible to directly update old Incendium worlds to the rewrite
+- We want to discourage people automatically updating to the port, and by proxy the rewrite when it releases
+- This would normally mean we would not make a port at all, but we want people with Incendium worlds in 1.20.x to be able to update to 1.21.x
+
+**What does unsupported mean?**
+- The actual datapack/mod works perfectly fine! No huge issues
+- Small bugs, compatibility issues, or other problems will have no guarentee to be patched by us
+- Large game-breaking bugs *will* be fixed by us, and Incendium will be updated
+- The port will be updated to all Minecraft versions as they release, up until the time the rewrite comes out
+					''',
+					color=faq_colour
+				)
 			case "Is It Working":
 				embed = discord.Embed(
 					title='How Do I Tell If It\'s Working?',
@@ -393,7 +412,7 @@ Ensure you are updated as shown above, as well as the following:
 
 	@faq.autocomplete('faq')
 	async def faq_autocomplete(self, interaction: discord.Interaction, current: str):
-		faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings", "Existing Worlds"])
+		faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings", "Existing Worlds", "Incendium 1.21"])
 
 		choices = [
 			app_commands.Choice(name=faq, value=faq)
