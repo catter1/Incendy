@@ -19,7 +19,7 @@ class Autoresponse(commands.Cog):
 
 	async def cog_load(self):
 		with open('resources/textlinks.json', 'r') as f:
-			self.textlinks = json.load(f)
+			self.textlinks: dict = json.load(f)
 		with open('resources/reposts.json', 'r') as f:
 			self.reposts = json.load(f)
 
@@ -37,6 +37,8 @@ class Autoresponse(commands.Cog):
 			self.misode_urls = {url.split('/')[-2]: url for url in misode_resp.text.split("\n") if len(url.split("/")) > 4}
 		except requests.exceptions.ConnectionError:
 			self.misode_urls = {}
+			
+		self.map_packs = ["terralith", "incendium", "nullscape", "structory", "structory-towers", "continents", "amplified-nether", "strayed-fates-forsaken", "tectonic", "dungeons-and-taverns", "geophilic", "explorify", "towns-and-towers", "ct-overhaul-village"]
 
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
@@ -75,6 +77,14 @@ class Autoresponse(commands.Cog):
 					if page in self.wiki_urls.keys():
 						header = "" if len(full.split("#")) <= 1 else f"#{full.split('#')[-1].title().replace(' ', '_')}"
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=f"{self.wiki_urls[page]}{header}", emoji=Constants.Emoji.MIRAHEZE))
+
+				elif "map" in match.split("|")[0].lower():
+					full = match.split("|")[-1]
+					packs = full.replace(", ", ",").lower().replace(" ", "-").split(",")
+					overlap = list(set(packs) & set(self.map_packs))
+					if overlap:
+						url_substring = ",".join([f"modrinth:{pack}" for pack in overlap])
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label="Map (With Datapacks)", url=f"{self.textlinks["map"]["link"]}?datapacks={url_substring}", emoji=Constants.Emoji.DATAPACKMAP))
 
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
