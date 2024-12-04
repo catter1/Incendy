@@ -222,7 +222,7 @@ class Autoresponse(commands.Cog):
 				return
 			
 	async def parse_textlinks(self, content: str) -> list:
-		return re.findall(r"[\[]{2}(\w[\w |',:#]+\w)?[\]]{2}", content)
+		return re.findall(r"[\[]{2}(\w[\w |',-:#]+\w)?[\]]{2}", content)
 
 	@commands.Cog.listener()
 	async def on_message(self, message: discord.Message):
