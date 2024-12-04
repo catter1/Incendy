@@ -582,7 +582,8 @@ class ConfigMenu(discord.ui.Select):
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
 			discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
 			discord.SelectOption(label='Resized Continents Spawn Island', description='How to change the size of the spawn island in Continents'),
-			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout or terrain shaping')
+			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout or terrain shaping'),
+			discord.SelectOption(label='Incendium Adjustments', description='How to remove/change structures, mobs, items, and etc from Incendium')
 		]
 		super().__init__(placeholder='Select a configuration...', min_values=1, max_values=1, options=options)
 		
@@ -691,6 +692,16 @@ This tutorial (graciously provided by **Apollo**) will show you how to adjust co
 "argument1": 0.25,
 ```
 Only change this value, __do not touch anything else__. Smaller values = larger biomes. A value of 0.5 leads to a 4x smaller spawn island, and a value of 0.125 leads to a 4x larger spawn island.
+				"""
+				
+			case 'Incendium Adjustments':
+				embed.title = 'Configuration (Incendium Adjustments)'
+				embed.description = """
+Removing things from Incendium is quite tricky. Because of how interlaced the mobs and items are with structures, it can be a lot of work. It is not as simple as just deleting files! While the process of removing structures directly *is* easier, structures tend to contain a lot of gameplay elements, and would remove a lot of Incendium's content.
+
+Adjusting item stats/effects (such as damage, number of arrows, etc) is possible, but can be tricky depending on the weapon/item. We do not offer official support for this, so edit at your own risk. It is recommended to have good datapack knowledge before attempting.
+
+If this is all too much, and you simply want Incendium's biomes and nothing else, use [IBO](<https://modrinth.com/datapack/ibo>). This is not created by Stardust Labs, and we do not offer support for it here - but it will get the job done.
 				"""
 			
 		await interaction.response.edit_message(embed=embed)
