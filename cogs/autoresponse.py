@@ -84,7 +84,7 @@ class Autoresponse(commands.Cog):
 					overlap = list(set(packs) & set(self.map_packs))
 					if overlap:
 						url_substring = ",".join([f"modrinth:{pack}" for pack in overlap])
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label="Map (With Datapacks)", url=f"{self.textlinks["map"]["link"]}?datapacks={url_substring}", emoji=Constants.Emoji.DATAPACKMAP))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label="Map (With Datapacks)", url=f"{self.textlinks['map']['link']}?datapacks={url_substring}", emoji=Constants.Emoji.DATAPACKMAP))
 
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
