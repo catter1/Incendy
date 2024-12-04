@@ -172,10 +172,13 @@ In the meantime, we have an unsupported port of Incendium for 1.21.x, posted in 
 			case "Is It Working":
 				embed = discord.Embed(
 					title='How Do I Tell If It\'s Working?',
-					description='''**•** Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly - follow `/faq Server Installation` in the Discord.
-**•** If the first step was successful, type `/locate biome #terralith:all_terralith_biomes` (`/locatebiome #terralith:all_terralith_biomes` for 1.18.2 and lower) in game and see if you get a result. Replace `terralith` with whatever relevant datapack you're installing. If you did not get any results, follow the Server Installation mentioned before.
-**•** If you're using Structory, do `/locate structure structory:` (`/locate structory:` in 1.18.2 and below) and follow the previous steps.
-**•** For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynMap if you'd like to see if it's working.
+					description='''
+- Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly. If on a server, do `/faq Server Installation` in the Discord and follow the instructions. On singleplayer, try reinstalling.
+  - Make sure you installed the mod (`.jar`) version if using mods, and the datapack (`.zip`) if using datapacks!
+- If the first step was successful, locate`#terralith:all_terralith_biomes` (see `/qp qp:Locate Command`) and see if you get a result. Replace `terralith` with whichever relevant datapack you're installing. If you did not get any results, go back to the first bullet point.
+- If using Structory, do the same as the step above, but instead start typing `structory:` and look at the autocomplete results you get. Try locating one of those structures.
+- For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynMap if you'd like to see if it's working.
+- When in doubt, ask for help!
 					''',
 					color=faq_colour
 				)
