@@ -79,10 +79,20 @@ class Autoresponse(commands.Cog):
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=f"{self.wiki_urls[page]}{header}", emoji=Constants.Emoji.MIRAHEZE))
 
 				elif "map" in match.split("|")[0].lower():
-					full = match.split("|")[-1]
+					full = match.split("|")[-1]					
 					packs = full.replace(", ", ",").lower().replace(" ", "-").split(",")
-					overlap = list(set(packs) & set(self.map_packs))
+					overlap = [pack for pack in packs if pack in self.map_packs]
+
 					if overlap:
+						if "terralith" in overlap and "tectonic" in overlap:
+							overlap[overlap.index("tectonic")] = "terratonic"
+
+						if "terralith" in overlap and "terratonic" in overlap:
+							in_ter = overlap.index("terralith")
+							in_tec = overlap.index("terratonic")
+							if in_ter > in_tec:
+								overlap[in_ter], overlap[in_tec] = overlap[in_tec], overlap[in_ter]
+					
 						url_substring = ",".join([f"modrinth:{pack}" for pack in overlap])
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label="Map (With Datapacks)", url=f"{self.textlinks['map']['link']}?datapacks={url_substring}", emoji=Constants.Emoji.DATAPACKMAP))
 
