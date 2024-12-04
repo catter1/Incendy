@@ -38,7 +38,7 @@ class Autoresponse(commands.Cog):
 		except requests.exceptions.ConnectionError:
 			self.misode_urls = {}
 			
-		self.map_packs = ["terralith", "incendium", "nullscape", "structory", "structory-towers", "continents", "amplified-nether", "strayed-fates-forsaken", "tectonic", "dungeons-and-taverns", "geophilic", "explorify", "towns-and-towers", "ct-overhaul-village"]
+		self.map_packs = ["terralith", "incendium", "nullscape", "structory", "structory-towers", "continents", "amplified-nether", "strayed-fates-forsaken", "tectonic", "terratonic", "dungeons-and-taverns", "geophilic", "explorify", "towns-and-towers", "ct-overhaul-village"]
 
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
