@@ -321,18 +321,18 @@ If you have trouble finding the caves, you can look at the surface of your world
 				embed.add_field(
 					name='Support Methods',
 					value='''
-**•** Stardust Labs is partnered with **Bisect Hosting**! Use code `STARDUST` to get 25% off your first month, as well as access to the __Supporter Showcase__.
-**•** By **Nitro Boosting** the Discord server, you also gain access to the __Supporter Showcase__!
-**•** Subscribing to either our **Patreon** or **Server Subscription**, you have access to a range of __Patron Benefits__.
-**•** If a subscription doesn\'t suit you, feel free to do a one-time donation to our **Ko-Fi** to gain access to the __Supporter Showcase__.
+- Stardust Labs is partnered with **Bisect Hosting**! Use code `STARDUST` to get 25% off your first month, as well as access to the __Supporter Showcase__.
+- By **Nitro Boosting** the Discord server, you also gain access to the __Supporter Showcase__!
+- Subscribing to either our **Patreon** or **Server Subscription**, you have access to a range of __Patron Benefits__.
+- If a subscription doesn\'t suit you, feel free to do a one-time donation to our **Ko-Fi** to gain access to the __Supporter Showcase__.
 					''',
 					inline=False
 				)
 				embed.add_field(
 					name='Supporter Benefits',
 					value='''
-**•** The **Supporter Showcase** gives you access to small projects, such as Terralith: Fire Extinguisher. You also get access to a more exclusive <#774837076821540864>, being able to see images before anyone else.
-**•** Our **Patron Benefits** have a lot to offer, including beta versions of our main projects, access to our build server, and the ability to add an easter egg somewhere. More details in the Patreon/Server Subscription buttons below!
+- The **Supporter Showcase** gives you access to small projects, such as Terralith: Fire Extinguisher. You also get access to a more exclusive <#774837076821540864>, being able to see images before anyone else.
+- Our **Patron Benefits** have a lot to offer, including beta versions of our main projects, access to our build server, and the ability to add an easter egg somewhere. More details in the Patreon/Server Subscription buttons below!
 					''',
 					inline=False
 				)
