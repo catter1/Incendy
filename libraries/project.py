@@ -144,7 +144,7 @@ class Project:
 		else:
 			version_name_number = self.newest_mc_version
 			
-		self.version_name = f"v{self.version_number} ~ {version_name_number}"
+		self.version_name = f"v{self.version_number} ~ Mod {version_name_number}"
 		self.filename = f"{self.project_name_safe}_{version_name_number}_v{self.version_number}"
 	
 	def set_changelog(self, changelog: str) -> None:
@@ -377,7 +377,8 @@ class Project:
 			"1.21": 11457,
 			"1.21.1": 11779,
 			"1.21.2": 12079,
-			"1.21.3": 12084
+			"1.21.3": 12084,
+            "1.21.4": 12281
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
