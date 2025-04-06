@@ -76,7 +76,7 @@ class Emoji:
     SPIGOT = "<:spigot:964945252890861649>"
     SEEDFIX = "<:seedfix:917599175259070474>"
     PMC = "<:pmc:1045336243216584744>"
-    SMITHED = "<:smithed:1358488061310144522>"
+    SMITHED = "<:smithed:1358499673341427892>"
 
     DOWNLOADS = {
         "github": GITHUB,
