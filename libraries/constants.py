@@ -76,6 +76,7 @@ class Emoji:
     SPIGOT = "<:spigot:964945252890861649>"
     SEEDFIX = "<:seedfix:917599175259070474>"
     PMC = "<:pmc:1045336243216584744>"
+    SMITHED = "<:smithed:1358488061310144522>"
 
     DOWNLOADS = {
         "github": GITHUB,
@@ -83,7 +84,8 @@ class Emoji:
         "curseforge": CURSEFORGE,
         "seedfix": SEEDFIX,
         "pmc": PMC,
-        "stardust": STARDUST
+        "stardust": STARDUST,
+        "smithed": SMITHED
     }
 
     # Fun

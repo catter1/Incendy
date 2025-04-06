@@ -425,15 +425,16 @@ class Library(commands.Cog):
 class TerralithDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/terralith/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.17-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/terralith/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.21-1.21.5)', emoji=Constants.Emoji.SMITHED, url='https://smithed.net/packs/terralith', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.17-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/', row=0))
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2 ONLY)', emoji=Constants.Emoji.SEEDFIX, url='https://sawdust.catter1.com/tools/seedfix', row=0))
-		# self.add_item(discord.ui.Button(label='Datapack (1.17-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Terralith/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/terralith/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=1))
-		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
-		self.add_item(discord.ui.Button(label='Remove Intro Message (1.17-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/remove-terralith-intro-message', row=2))
+		# self.add_item(discord.ui.Button(label='Datapack (1.17-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Terralith/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/terralith/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/terralith/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
+		self.add_item(discord.ui.Button(label='Remove Intro Message (1.17-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/remove-terralith-intro-message', row=2))
 
 class TerralithLinks(discord.ui.View):
 	def __init__(self):
