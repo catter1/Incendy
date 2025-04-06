@@ -266,6 +266,10 @@ class Basic(commands.Cog):
 		#Opticrime
 		if 'optifine' in message.content.lower():
 			await message.add_reaction(Constants.Emoji.OPTICRIME)
+			
+        #Very Good
+		if 'very good' in message.content.lower():
+			await message.add_reaction(Constants.Emoji.VERYGOOD)
 
 		#Angry Ping
 		if Constants.User.STARMUTE in message.raw_mentions:
