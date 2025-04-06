@@ -30,7 +30,7 @@ class Faq(commands.Cog):
 			"Dont Ask to Ask": "https://dontasktoask.com/",
 			"Notch Code": "`bl2 = !bls[(ab * 16 + ac) * 8 + ad] && (ab < 15 && bls[((ab + 1) * 16 + ac) * 8 + ad] || ab > 0 && bls[((ab - 1) * 16 + ac) * 8 + ad] || ac < 15 && bls[(ab * 16 + ac + 1) * 8 + ad] || ac > 0 && bls[(ab * 16 + (ac - 1)) * 8 + ad] || ad < 7 && bls[(ab * 16 + ac) * 8 + ad + 1] || ad > 0 && bls[(ab * 16 + ac) * 8 + (ad - 1)]);`",
 			"Optifine Alternatives": "https://lambdaurora.dev/optifine_alternatives/",
-			"Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you most have `op` permissions to do this.",
+			"Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you must have `op` permissions to do this.",
 			"Send Logs": "In order to properly give assistance, you need to provide logs. When sharing them, do ***NOT*** send screenshots or copy/paste the lines directly into Discord. Instead, upload the actual log file itself, or upload them to a [Pastebin-like site](<https://mclo.gs/>) (Incendy will do this automatically for you if you upload the file to Discord). Not sure where to find your logs?\n\n**Singleplayer**: `.minecraft/logs` and/or `.minecraft/crash-reports`\n**Server**: `[main folder]/logs` and/or `[main folder]/crash-reports`",
 			"Dimension Folders": "`DIM1` = `minecraft:the_end`\n`DIM-1` = `minecraft:the_nether`\n\nHow to remember: Think of the Overworld as \"Ground Zero\", or 0. -1 is less than 0, and the Nether is below (or \"less than\") the overworld. Therefore, the Nether is -1, or DIM**-1**. The same logic applies to the End: it's above the overworld, and 1 is greater than 0. Therefore, the End is 1, or DIM**1**.",
 			"Mod vs Datapack": "For all Stardust Labs projects, the mod version is the same as the datapack in regards to performance and content. The only difference is the mods go in the `mods` folder, and datapacks in the `datapacks` folder. Keep in mind the mod versions will apply to **all** worlds, regardless if you want them to or not.\n\nIn 1.18.2 and lower, the mod versions of the projects rely on [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) in order to allow for, well, unfixed seeds, due to a 1.18.x-only [Minecraft Bug](https://bugs.mojang.com/browse/MC-195717). Otherwise, you can enjoy the same experience with both!",
@@ -43,7 +43,8 @@ class Faq(commands.Cog):
 			"Connect Patreon": "Read [this article](https://support.patreon.com/hc/en-us/articles/212052266-Getting-Discord-access) for information on how to connect Patreon to your Discord account. Once connected, you will have access to special channels such as <#795485705949544468>.",
 			"Locate Command": "",
 			"Piracy": "Hosting cracked servers, using a cracked client (such as TLauncher), or other versions of bypassing paying for the game are all considered **piracy**. When you joined this Discord server, you agreed to the rules, which includes a no-piracy clause. Pirating is considered illegal activity, which is against Minecraft's EULA and Discord's ToS. Therefore, we cannot offer any support to users suspected of pirating the game or hosting servers for pirated users.",
-			"Rezipping": "When editing the mod versions of our projects, treat them like the datapacks. If needed, you can rename `.jar` to `.zip` first so your computer will recognize it correctly, then rename it back to `.jar` when you're done.\n\nYou must make sure you zip the datapack up correctly! Instead of zipping the main folder itself, zip the *contents* of the folder together. See the image below."
+			"Rezipping": "When editing the mod versions of our projects, treat them like the datapacks. If needed, you can rename `.jar` to `.zip` first so your computer will recognize it correctly, then rename it back to `.jar` when you're done.\n\nYou must make sure you zip the datapack up correctly! Instead of zipping the main folder itself, zip the *contents* of the folder together. See the image below.",
+			"AI and Datapacks": "Although it's tempting, using AI to develop datapacks is a bad idea. ChatGPT and the like learn from the ineternet, but the internet does not have many datapack development resources to learn from. Additionally, datapacks break with every Minecraft update, and AI models have trouble updating their information and differentiating between each Minecraft version."
 		}
 
 		if qp == "Aternos Lag Meme":
@@ -174,11 +175,11 @@ In the meantime, we have an unsupported port of Incendium for 1.21.x, posted in 
 					title='How Do I Tell If It\'s Working?',
 					description='''
 - Do `/datapack list` in game. Does the datapack appear green in that list? If not, it is not installed correctly. If on a server, do `/faq Server Installation` in the Discord and follow the instructions. On singleplayer, try reinstalling.
-  - Make sure you installed the mod (`.jar`) version if using mods, and the datapack (`.zip`) if using datapacks!
-- If the first step was successful, locate`#terralith:all_terralith_biomes` (see `/qp qp:Locate Command`) and see if you get a result. Replace `terralith` with whichever relevant datapack you're installing. If you did not get any results, go back to the first bullet point.
-- If using Structory, do the same as the step above, but instead start typing `structory:` and look at the autocomplete results you get. Try locating one of those structures.
+  - Ensure you installed the mod (`.jar`) version if using mods, and the datapack (`.zip`) if using datapacks.
+- If the first step was successful, locate `#terralith:all_terralith_biomes` (see `/qp qp:Locate Command`) and see if you get a result. Replace `terralith` with whichever relevant datapack you're installing. If you did not get any results, go back to the first bullet point.
+- If using Structory, do the same as the step above, but with `#structory:all_structory_structures` instead. Try locating one of those structures.
 - For Continents, there isn't a sure way to tell. Just make sure you followed the Server installation FAQ, see if the land looks like continents, and use something like DynMap if you'd like to see if it's working.
-- When in doubt, ask for help!
+- When in doubt, ask for help.
 					''',
 					color=faq_colour
 				)
@@ -215,9 +216,7 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
 				embed = discord.Embed(
 					title='Other World Types',
 					description='''
-Terralith is not compatible with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome.
-
-This may be changed in the future. Currently, there is a [bug report](https://bugs.mojang.com/browse/MC-260949) that is marked as confirmed and important, created by **Apollo**. If/when this gets fixed, Terralith may be compatible with the world types!
+Terralith is **not compatible** with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome. This cannot be fixed in the datapack without a game update due to technical issues with adding custom biomes, but a future mod version may work around this.
 					''',
 					color=faq_colour
 				)
@@ -384,7 +383,7 @@ Ensure you are updated as shown above, as well as the following:
 			case "Updating Versions":
 				embed = discord.Embed(
 					title='Updating Versions',
-					description='Make sure to always take a backup before updating! Select a datapack from the selection menu below to see information on updating those datapacks.',
+					description='Since 1.18, all of our datapacks have been able to update with minimal issues. However, we always recommend taking a backup as a safety precaution! For more details, select a datapack from the menu below to see information on updating those datapacks.',
 					color=faq_colour
 				)
 				view = Update()
@@ -615,11 +614,13 @@ Only change `xz_scale`, __do not touch anything else__. Smaller values = larger 
 			case 'Remove Biomes':
 				embed.title = 'Configuration (Remove Biomes)'
 				embed.description = '''
-This method is not perfect, but can get the job done. This is not officially supported.
+If you can use mods, we **highly** recommend using [Biome Replacer](<https://modrinth.com/mod/biome-replacer>). This does the same job as below, but with a nice config file and without dealing with editing a datapack manually.
+This method is not perfect, but can get the job done. Doing this is only recommended for a **few** biomes. Removing many, most, or all Terralith biomes will give a terrible result. This is not officially supported.
 - Unzip Terralith and open the `Terralith/data/minecraft/dimension/` folder.
+  - If there are "overlay" folders present (such as `1-21-4-overlay`), you will need to repeat this step for each overlay that has the file.
 - Open `overworld.json` and search (Ctrl+F) for the biomes you want to remove.
 - Replace **only** the name of the biome and ignore the numbers. For example, replace `terralith:unwanted_biome` with `minecraft:wanted_biome` 
- - When removing Skylands, replace them with an ocean type (such as `minecraft:ocean`).
+  - When removing Skylands, replace them with an ocean type (such as `minecraft:ocean`).
 				'''
 
 			case 'Structure Rarity':
