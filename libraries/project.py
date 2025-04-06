@@ -6,7 +6,6 @@ import logging
 import discord
 from git import Repo
 from zipfile import ZipFile
-from distutils import dir_util
 from libraries import incendy
 
 class Project:
@@ -201,7 +200,7 @@ class Project:
 			# Transfer files
 			lang_path = f"{filepath}/assets/{project}/lang"
 			os.makedirs(lang_path)
-			dir_util.copy_tree(f"{repo_path}/{project}", lang_path)
+			shutil.copy_tree(f"{repo_path}/{project}", lang_path)
 
 			# Fill in empty translations
 			for file in os.listdir(lang_path):

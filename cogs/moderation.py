@@ -127,7 +127,7 @@ class Moderation(commands.Cog):
 		stardust_channel = self.client.get_channel(Constants.Channel.STARDUST)
 		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
 		embed.set_author(name="Lmao, I caught someone being silly!")
-		embed.add_field(name=f"Here was {message.author.name}'s' silly message, censored for your convenience. \:)", value="||`" + message.content + "`||")
+		embed.add_field(name=fr"Here was {message.author.name}'s' silly message, censored for your convenience. \:)", value="||`" + message.content + "`||")
 		embed2 = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
 		embed2.set_author(name=message.author.name)
 		embed2.add_field(name="Hey y'all!", value="I *probably* banned them correctly, but if I didn't... give the Stardust peeps a holler!")
@@ -262,13 +262,13 @@ class Moderation(commands.Cog):
 			for item in message.attachments:
 				if item.content_type.split("/")[0] == "video":
 					await message.delete()
-					await message.channel.send("Sorry, no videos allowed \:)")
+					await message.channel.send(r"Sorry, no videos allowed \:)")
 					return
 
 			exts = ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp']
 			if url_search.url(message.content) and any([ext for ext in exts if ext in message.content]):
 				await message.delete()
-				await message.channel.send("Sorry, no videos allowed \:)")
+				await message.channel.send(r"Sorry, no videos allowed \:)")
 
 	async def check_ping(self, message: discord.Message) -> None:
 		with open('resources/pinglog.txt', 'a') as log:
