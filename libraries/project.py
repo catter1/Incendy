@@ -200,7 +200,7 @@ class Project:
 			# Transfer files
 			lang_path = f"{filepath}/assets/{project}/lang"
 			os.makedirs(lang_path)
-			shutil.copy_tree(f"{repo_path}/{project}", lang_path)
+			shutil.copytree(f"{repo_path}/{project}", lang_path)
 
 			# Fill in empty translations
 			for file in os.listdir(lang_path):
