@@ -452,12 +452,12 @@ class IncendiumDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
 		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/incendium/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
 		#self.add_item(discord.ui.Button(label='Datapack (1.20.x)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/incendium-nether-expansion/', row=0))
 		#self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.20.x)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Incendium/releases', row=0))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/incendium/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
 		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.20.x)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/incendium/files', row=1))
-		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
+		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class IncendiumLinks(discord.ui.View):
 	def __init__(self):
@@ -474,13 +474,13 @@ class IncendiumLinks(discord.ui.View):
 class NullscapeDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/nullscape/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/nullscape/', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Nullscape/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/nullscape/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=1))
-		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/nullscape/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/nullscape/', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Nullscape/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/nullscape/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/nullscape/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class NullscapeLinks(discord.ui.View):
 	def __init__(self):
@@ -497,13 +497,13 @@ class NullscapeLinks(discord.ui.View):
 class StructoryDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/structory/', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory/files', row=1))
-		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
+		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/structory/', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class StructoryLinks(discord.ui.View):
 	def __init__(self):
@@ -518,13 +518,13 @@ class StructoryLinks(discord.ui.View):
 class TowersDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory-towers/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/structory-towers/', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory-towers/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files', row=1))
-		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
+		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory-towers/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/structory-towers/', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.19-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Structory-Towers/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/structory-towers/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.19-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/structory-towers/files', row=1))
+		self.add_item(discord.ui.Button(label='Sparkles (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=2))
 
 class TowersLinks(discord.ui.View):
 	def __init__(self):
@@ -539,12 +539,12 @@ class TowersLinks(discord.ui.View):
 class ContinentsDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/continents/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/continents/', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Continents/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/continents/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/continents/files', row=1))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/continents/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/continents/', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Continents/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/continents/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/continents/files', row=1))
 
 class ContinentsLinks(discord.ui.View):
 	def __init__(self):
@@ -560,12 +560,12 @@ class ContinentsLinks(discord.ui.View):
 class AmplifiedDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/amplified-nether/versions?l=datapack', row=0))
-		self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.4)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.21.4)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/amplified-nether-1-18/', row=0))
-		#self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.4)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Amplified-Nether/releases', row=0))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/amplified-nether/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
-		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.4)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files', row=1))
+		self.add_item(discord.ui.Button(label='Datapack (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/amplified-nether/versions?l=datapack', row=0))
+		self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.5)', emoji=Constants.Emoji.STARDUST, url='https://www.stardustlabs.net/version-library', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.21.5)', emoji=Constants.Emoji.PMC, url='https://www.planetminecraft.com/data-pack/amplified-nether-1-18/', row=0))
+		#self.add_item(discord.ui.Button(label='Datapack (1.16.5-1.21.5)', emoji=Constants.Emoji.GITHUB, url='https://github.com/Stardust-Labs-MC/Amplified-Nether/releases', row=0))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/datapack/amplified-nether/versions?l=fabric&l=forge&l=neoforge&l=quilt', row=1))
+		self.add_item(discord.ui.Button(label='Fabric/Forge (1.18.2-1.21.5)', emoji=Constants.Emoji.CURSEFORGE, url='https://www.curseforge.com/minecraft/mc-mods/amplified-nether/files', row=1))
 
 class AmplifiedLinks(discord.ui.View):
 	def __init__(self):
@@ -581,8 +581,8 @@ class AmplifiedLinks(discord.ui.View):
 class SparklesDownloads(discord.ui.View):
 	def __init__(self):
 		super().__init__()
-		self.add_item(discord.ui.Button(label='Resourcepack (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=0))
-		self.add_item(discord.ui.Button(label='ADDON: Alpha Islands (1.19-1.21.4)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles-addon-alpha-islands', row=1))
+		self.add_item(discord.ui.Button(label='Resourcepack (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles', row=0))
+		self.add_item(discord.ui.Button(label='ADDON: Alpha Islands (1.19-1.21.5)', emoji=Constants.Emoji.MODRINTH, url='https://modrinth.com/resourcepack/sparkles-addon-alpha-islands', row=1))
 
 class SparklesLinks(discord.ui.View):
 	def __init__(self):
