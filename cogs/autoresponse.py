@@ -10,6 +10,7 @@ import validators
 import datetime
 from discord.ext import commands
 from lxml import etree
+from lzstring import LZString
 from libraries import incendy
 import libraries.constants as Constants
 
@@ -18,6 +19,7 @@ class Autoresponse(commands.Cog):
 		self.client = client
 
 	async def cog_load(self):
+		self.lz = LZString()
 		with open('resources/textlinks.json', 'r') as f:
 			self.textlinks: dict = json.load(f)
 		with open('resources/reposts.json', 'r') as f:
@@ -131,6 +133,49 @@ class Autoresponse(commands.Cog):
 			await textlink_message.edit(view=view)
 		else:
 			await message.reply(view=view, mention_author=False)
+			
+
+	async def do_jsons(self, message: discord.Message, jsons: list[discord.Attachment]) -> None:
+		view = discord.ui.View()
+		
+		for file in jsons:
+			bts = await file.read()
+			content = bts.decode('utf-8')
+			data = self.lz.compressToBase64(content)
+
+			# Which json is it?
+			if '"rolls"' in content:
+				generator_type = "loot-table"
+			elif '"config"' in content:
+				generator_type = "worldgen/feature"
+			elif '"placement"' in content:
+				generator_type = "worldgen/placed-feature"
+			elif '"parent"' in content:
+				generator_type = "advancement"
+			elif '"ingredient"' in content:
+				generator_type = "recipe"
+			else:
+				continue
+			
+			# Send content to misode.github.io
+			headers = {"Content-Type": "application/json", "User-Agent": "catter1/Incendy (catter@stardustlabs.net)"}
+			url = "https://snippets.misode.workers.dev"
+			body = json.dumps({"data":data,"type":generator_type,"version":"1.21.5","show_preview":True})
+			resp = requests.post(url, data=body, headers=headers)
+
+			# Init button
+			shareid = json.loads(resp.text)["id"]
+			misode_url = f"https://misode.github.io/{generator_type}/?share={shareid}"
+
+			view.add_item(discord.ui.Button(
+				style=discord.ButtonStyle.link,
+				label=file.filename,
+				url=misode_url,
+				emoji=Constants.Emoji.MISODE
+			))
+
+		# Send message
+		await message.reply(view=view, mention_author=False)
 
 
 	async def do_pastebin(self, message: discord.Message, logs: list[discord.Attachment]) -> None:
@@ -244,9 +289,13 @@ class Autoresponse(commands.Cog):
 				view = await self.do_textlinks(matches=matches)
 				if view:
 					await message.reply(view=view, mention_author=False)
+					
+			# Upload JSONs to Misode
+			jsons = [file for file in message.attachments if file.filename.endswith(".json")]
+			if len(jsons) > 0:
+				await self.do_jsons(message=message, jsons=jsons)
 
 			# Pastebin feature
-			any([])
 			logs = [file for file in message.attachments if any(ext in file.filename for ext in [".log", ".txt", ".log.gz"])]
 			if len(logs) > 0:
 				await self.do_pastebin(message=message, logs=logs)
