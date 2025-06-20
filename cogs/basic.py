@@ -84,7 +84,7 @@ class Basic(commands.Cog):
 			"Hashs": "https://discord.gg/eKQSEmH9dY",
 			"Botany": "https://discord.gg/BMzTfru5tp",
 			"Distant Horizons": "https://discord.gg/Hdh2MSvwyc",
-			"Complementary": "https://discord.gg/complementary",
+			"Complementary": "https://discord.gg/ck5htDSQPv",
 			"Smithed": "https://discord.gg/gkp6UqEUph",
 			"Beet": "https://discord.gg/98MdSGMm8j",
 			"Minecraft Commands": "https://discord.gg/QAFXFtZ",
