@@ -111,7 +111,8 @@ class Basic(commands.Cog):
 			"TelepathicGrunt": "https://discord.gg/T5MGNBB",
 			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t",
 			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM",
-			"Gamemode4": "https://discord.gg/0qLGgv7JGfIXf45t"
+			"Gamemode4": "https://discord.gg/0qLGgv7JGfIXf45t",
+			"Tectonic": "https://discord.gg/pA9EqZRJzn"
 		}
 
 		if server not in server_dict.keys():
