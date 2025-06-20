@@ -67,6 +67,14 @@
         "link": "https://modrinth.com/mod/more-density-functions",
         "icon": "<:moredfs:1358492056376447187>"
     },
+    "mcmeta": {
+        "link": "https://github.com/misode/mcmeta/tree/data",
+        "icon": "<:github:1045336251605188679>"
+    },
+    "devtools": {
+        "link": "https://modrinth.com/mod/worldgen-devtools",
+        "icon": "<:devtools:1385647831414738974>"
+    },
     "cave tweaks": {
         "link": "https://discord.com/channels/738046951236567162/1099642165015085097",
         "icon": "<:stardust:1058423314672013382>"
