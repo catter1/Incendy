@@ -101,7 +101,7 @@ class Autoresponse(commands.Cog):
 				elif match.split("|")[0].lower() in ["mc", "mcpe", "realms"]:
 					bug_id = match.split("|")[-1].lower()
 					if bug_id.isdigit():
-						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{match.split('|')[0].upper()} {bug_id}", url=f"https://bugs.mojang.com/browse/{match.split('|')[0].upper()}-{bug_id}", emoji=Constants.Emoji.MOJIRA))
+						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"{match.split('|')[0].upper()} {bug_id}", url=f"https://mojira.dev/{match.split('|')[0].upper()}-{bug_id}", emoji=Constants.Emoji.MOJIRA))
 
 		view = discord.ui.View()
 		if len(links) > 0:
