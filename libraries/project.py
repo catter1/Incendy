@@ -379,7 +379,8 @@ class Project:
 			"1.21.3": 12084,
             "1.21.4": 12281,
 			"1.21.5": 12934,
-			"1.21.6": 13422
+			"1.21.6": 13422,
+			"1.21.7": 13506
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
