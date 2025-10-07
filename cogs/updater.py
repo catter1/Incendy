@@ -130,7 +130,7 @@ class VersionSelect(discord.ui.Select):
 
 		options = [discord.SelectOption(label=version) for version in ["1.21.10", "1.21.9", "1.21.8", "1.21.7", "1.21.6", "1.21.5", "1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
-		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options[:25])
+		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=max(25, len(options)), options=options[:25])
 
 	async def callback(self, interaction: discord.Interaction):
 		self.project_upload.set_mc_versions(sorted(self.values))
@@ -142,7 +142,7 @@ class ModVersionSelect(discord.ui.Select):
 
 		options = [discord.SelectOption(label=version) for version in ["1.21.10", "1.21.9", "1.21.8", "1.21.7", "1.21.6", "1.21.5", "1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17"]]
 
-		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=len(options), options=options)
+		super().__init__(placeholder='Select compatible Minecraft versions...', min_values=1, max_values=max(25, len(options)), options=options[:25])
 
 	async def callback(self, interaction: discord.Interaction):
 		self.project_upload.set_mc_versions(sorted(self.values))
