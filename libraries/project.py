@@ -42,7 +42,7 @@ class Project:
 	version_number : str
 		Version number for the pack in x.x.x format
 	version_name : str
-		Formatted name in v{version_number} ~ {newest_mc_version} format
+		Formatted name in v{version_number} ~ Datapack | Mod format
 	filename : str
 		Formatted name in {project_name_safe}_{newest_mc_version}_v{version_name} format
 	changelog : str
@@ -143,7 +143,7 @@ class Project:
 		else:
 			version_name_number = self.newest_mc_version
 			
-		self.version_name = f"v{self.version_number} ~ Mod {version_name_number}"
+		self.version_name = f"v{self.version_number} ~ Mod"
 		self.filename = f"{self.project_name_safe}_{version_name_number}_v{self.version_number}"
 	
 	def set_changelog(self, changelog: str) -> None:
