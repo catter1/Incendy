@@ -288,13 +288,14 @@ class Project:
 		# Build post data
 		project_id = self.platforms["Modrinth"]["projects"][self.project_name]
 		loaders = ["minecraft"] if self.file_type == "resourcepack" else ["fabric", "forge", "neoforge", "quilt"]
+		version_type = "alpha" if project_id == "incendium" else "release"
 		data = {
 			"name": self.version_name,
 			"version_number": self.version_number,
 			"changelog": self.changelog,
 			"dependencies": [],
 			"game_versions": self.mc_versions,
-			"version_type": "release",
+			"version_type": version_type,
 			"loaders": loaders,
 			"featured": True,
 			"project_id": project_id,
