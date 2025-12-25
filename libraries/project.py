@@ -390,6 +390,7 @@ class Project:
 		gameVersions = [version_translations[version] for version in self.mc_versions]
 		# This is [Fabric, Forge, NeoForge, Quilt]
 		gameVersions.extend([7499, 7498, 10150, 9153])
+		release_type = "alpha" if project_id == "incendium" else "release"
 
 		# Build post data
 		metadata = {
@@ -397,7 +398,7 @@ class Project:
 			"changelogType": "markdown",
 			"displayName": self.version_name,
 			"gameVersions": gameVersions,
-			"releaseType": "release"
+			"releaseType": release_type
 		}
 		metastr = json.dumps(metadata)
 
