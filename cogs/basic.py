@@ -124,7 +124,7 @@ class Basic(commands.Cog):
 	@_discord.autocomplete('server')
 	async def server_autocomplete(self, interaction: discord.Interaction, current: str):
 		server_list = sorted([
-			"New In Town", "Minecraft Configs", "Still Loading", "Hashs", "Botany", "Distant Horizons", "Complementary", "Smithed", "Beet", "Minecraft Commands", "LimeSplatus", "WWOO", "BYG", "Stellarity", "YUNG", "BetterX", "ChoiceTheorem", "rx", "Modrinth", "Fabric", "Stardust Labs", "Chunky", "The Expansion", "Naomi", "Minecraft Worldgen", "BOP", "NeoForged", "Minecraft", "Dynamic Trees", "Curseforge", "TelepathicGrunt", "Regions Unexplored", "STRAYED FATES"
+			"New In Town", "Minecraft Configs", "Still Loading", "Hashs", "Botany", "Distant Horizons", "Complementary", "Smithed", "Beet", "Minecraft Commands", "LimeSplatus", "WWOO", "BYG", "Stellarity", "YUNG", "BetterX", "ChoiceTheorem", "rx", "Modrinth", "Fabric", "Stardust Labs", "Chunky", "The Expansion", "Naomi", "Minecraft Worldgen", "BOP", "NeoForged", "Minecraft", "Dynamic Trees", "Curseforge", "TelepathicGrunt", "Regions Unexplored", "STRAYED FATES", "Gamemode4", "Tectonic"
 		])
 
 		discords = [
