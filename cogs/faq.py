@@ -33,7 +33,7 @@ class Faq(commands.Cog):
 			"Admin Menu": "To view Incendium's Admin Menu, do `/function incendium:_admin_menu`. This allows you to give yourself the custom items, spawn custom mobs, and more. Keep in mind you must have `op` permissions to do this.",
 			"Send Logs": "In order to properly give assistance, you need to provide logs. When sharing them, do ***NOT*** send screenshots or copy/paste the lines directly into Discord. Instead, upload the actual log file itself, or upload them to a [Pastebin-like site](<https://mclo.gs/>) (Incendy will do this automatically for you if you upload the file to Discord). Not sure where to find your logs?\n\n**Singleplayer**: `.minecraft/logs` and/or `.minecraft/crash-reports`\n**Server**: `[main folder]/logs` and/or `[main folder]/crash-reports`",
 			"Dimension Folders": "`DIM1` = `minecraft:the_end`\n`DIM-1` = `minecraft:the_nether`\n\nHow to remember: Think of the Overworld as \"Ground Zero\", or 0. -1 is less than 0, and the Nether is below (or \"less than\") the overworld. Therefore, the Nether is -1, or DIM**-1**. The same logic applies to the End: it's above the overworld, and 1 is greater than 0. Therefore, the End is 1, or DIM**1**.",
-			"Mod vs Datapack": "For all Stardust Labs projects, the mod version is the same as the datapack in regards to performance and content. The only difference is the mods go in the `mods` folder, and datapacks in the `datapacks` folder. Keep in mind the mod versions will apply to **all** worlds, regardless if you want them to or not.\n\nIn 1.18.2 and lower, the mod versions of the projects rely on [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) in order to allow for, well, unfixed seeds, due to a 1.18.x-only [Minecraft Bug](https://bugs.mojang.com/browse/MC-195717). Otherwise, you can enjoy the same experience with both!",
+			"Mod vs Datapack": "For all Stardust Labs projects, the mod version is the same as the datapack in regards to performance and content. The only difference is the mods go in the `mods` folder, and datapacks in the `datapacks` folder. Keep in mind the mod versions will apply to **all** worlds, regardless if you want them to or not.\n\nIn Terralith 2.6.0, the **mod** version of Terralith is different than the datapack version. It relies on [Lithostitched](<https://modrinth.com/mod/lithostitched>), supports custom world types, and has a config files.\n\nIn 1.18.2 and lower, the mod versions of the projects rely on [Unfixed Seeds](https://modrinth.com/mod/unfixed-seeds) in order to allow for, well, unfixed seeds, due to a 1.18.x-only [Minecraft Bug](https://bugs.mojang.com/browse/MC-195717). Otherwise, you can enjoy the same experience with both!",
 			"Keep Exploring": "In Terralith, it is completely normal to spawn in an area that isn't as \"stunning\" or \"breathtaking\" as all the screenshots you see posted around are. To find them, you've got to go explore your world! Keep walking, and you *will* find beautiful landscapes.",
 			"Binary Search": "Sometimes, when you are trying to figure out your issue, you need to use the \"remove until it stops crashing\" method. Here is an efficient way to do so:\n - Divide your mods in half: Half A and Half B.\n - Add Half A to your game/server, and start.\n - If it crashes, remove half of Half A.\n - If it does not crash, add half of Half B.\n - Repeat the process until it's narrowed down to the culprit!",
 			"Give Details": "Please, please provide details and be descriptive with your issue. We literally cannot help you without context. It also helps if you check the faq (`/faq`) and attach logs.",
@@ -151,11 +151,11 @@ Sometimes, you may notice all the leaves are the same color. This could be cause
 					''',
 					color=faq_colour
 				)
-			case "Incendium 1.21":
+			case "Incendium Rewrite":
 				embed = discord.Embed(
-					title='Incendium 1.21',
+					title='Incendium Rewrite',
 					description='''
-Incendium is currently in an odd spot. The project desperately needs a rewrite, which is currently ongoing. However, this will take a while, with no ETA - likely won't release until 2025.
+Incendium is currently in an odd spot. The project desperately needs a rewrite, which is currently ongoing. However, this will take a while, with no ETA.
 
 In the meantime, we have an unsupported port of Incendium for 1.21.x, posted in our Discord and on Modrinth. **Reasoning:**
 - It will not be possible to directly update old Incendium worlds to the rewrite
@@ -216,7 +216,12 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
 				embed = discord.Embed(
 					title='Other World Types',
 					description='''
-Terralith is **not compatible** with the Vanilla world types. This includes Super Flat, Large Biomes, Amplified, and Single Biome. This cannot be fixed in the datapack without a game update due to technical issues with adding custom biomes, but a future mod version may work around this.
+The datapack version and older mod versions of Terralith is **not** compatible with non-default world types, which includes Superflat, Single Biome, Large Biomes, and Amplified.
+
+However, starting with the **mod** version of Terralith **2.6.0**, all of these world types are compatible. Terralith 2.6.0 additionally adds two new world types:
+- Amplified + Large Biomes: Combines the Amplified and Large Biomes into a single world type. It does not look the best, but it is very fun.
+- Oops! All Skylands: Creates a void world that is completely filled in with Skylands, and only Skylands. This world type exists solely for fun.
+
 					''',
 					color=faq_colour
 				)
@@ -300,6 +305,8 @@ You should **__ONLY__** select the "Install Method 1.19.3+ ONLY" selection if yo
 In Terralith, granite, diorite, and andesite do not generate in blobs like in Vanilla. Instead, they only generate in the respective cave biomes: Andesite Caves, Granite Caves, and Diorite Caves. These cave biomes are relatively common, and are made entirely out of their respective stone, which makes it perfect for mods like Create!
 					
 If you have trouble finding the caves, you can look at the surface of your world for granite pillars, andesite boulders, and diorite patches. These features mean the respective stone\'s cave biome can be found underneath! Check the graphic attached to see examples of how they look like, or view the [wiki entry](https://stardustlabs.miraheze.org/wiki/Terralith#Andesite_boulders).
+
+If this does not work for you, feel free to download the [Terralith: ReStoned](<https://modrinth.com/datapack/terralith-restoned>) add-on, or enable "Vanilla Stone Generation" if using the mod version of 2.6.0 or higher.
 					''',
 					color=faq_colour
 				)
@@ -544,8 +551,8 @@ You will need to go inside WWOO\'s configs and enable Terralith compat, or in-ga
 
 			case 'Tectonic':
 				embed.title = 'Compatibility (Tectonic)'
-				embed.description = '''
-By default, Terralith and Tectonic are not compatible with each other. If you'd like them to work together, you'll have to use the compat method that Apollo created called **Terratonic**. This exists for both datapack and mod versions of the packs.
+				embed.description = f'''
+By default, Terralith and Tectonic are not compatible with each other. If you'd like them to work together, you'll have to use the compat method that <@{Constants.User.APOLLO}> created called **Terratonic**. This exists for both datapack and mod versions of the packs.
 
 **Datapacks**: Install [Terratonic](https://www.planetminecraft.com/data-pack/terratonic/) and [Terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/) into your datapacks folder. The base version of Tectonic is **not** required! Just make sure Terratonic loads *above* Terralith.
 **Mods**: Install [Tectonic](https://modrinth.com/mod/tectonic) and [Terralith](https://modrinth.com/mod/terralith) into your mods folder. You do *not* need Terratonic for compatibility: it's built into the mod version of Tectonic!
@@ -579,8 +586,7 @@ class ConfigMenu(discord.ui.Select):
 			discord.SelectOption(label='Remove Biomes', description='How to remove/replace biomes in Terralith'),
 			discord.SelectOption(label='Structure Rarity', description='How to adjust rarity of structures (or remove them) in any project'),
 			discord.SelectOption(label='Taller Nether', description='How to add space above bedrock in the Nether'),
-			discord.SelectOption(label='Adjusted Continent Size', description='How to change the size of landmasses in Continents'),
-			discord.SelectOption(label='Resized Continents Spawn Island', description='How to change the size of the spawn island in Continents'),
+			discord.SelectOption(label='Continents', description='How to configure the Continents datapack'),
 			discord.SelectOption(label='Biome Layout', description='How to change Terralith\'s biome layout or terrain shaping'),
 			discord.SelectOption(label='Incendium Adjustments', description='How to remove/change structures, mobs, items, and etc from Incendium')
 		]
@@ -593,6 +599,7 @@ class ConfigMenu(discord.ui.Select):
 			case 'Resized Terralith Biomes':
 				embed.title = 'Configuration (Resized Terralith Biomes)'
 				embed.description = '''
+-# If you're using the mod version of Terralith 2.6.0+, you can enable "Large Biomes"!
 Open the mod/datapack files and navigate to `data/minecraft/worldgen/density_function/overworld`.
 Open `base_erosion.json`, `temperature.json`, and `vegetation.json`. In each, you should see something like this: ```json
 {
@@ -637,6 +644,8 @@ This method is not perfect, but can get the job done. Doing this is only recomme
 - Open the `data/[project name]/worldgen/structure_set` folder.
 - Delete the `.json` of the structure group you wish to remove.
 - Save your changes and zip the project back up.
+### To disable all structures from spawning
+- Download the [Terralith: No Structures](<https://modrinth.com/datapack/terralith-no-structures>) add-on (Terralith only)
 				'''
 			case 'Biome Layout':
 				embed.title = 'Configuration (Biome Layout/Terrain Shaping)'
@@ -647,52 +656,21 @@ This method is not perfect, but can get the job done. Doing this is only recomme
 
 			case 'Taller Nether':
 				embed.title = 'Configuration (Taller Nether)'
-				embed.description = '''
+				embed.description = f'''
 Warning: It is recommended you reset the nether dimension when making this change. In currently loaded chunks, all space above y256 will be the Plains biome.
 - Go to [this](https://github.com/Apollounknowndev/pack-library/tree/main/nether-build-height) link, which will bring you to two datapacks that raise the nether build height to 384: One for 1.18.1 and before, one for 1.18.2 and above. Download the one you need.
 - Install it onto the world you want to have the taller nether as a datapack. __Load order with Amplified Nether/Incendium does not matter.__
-(Special thanks to **Apollo** for this tutorial and datapack)
+(Special thanks to <@{Constants.User.APOLLO}> for this tutorial and datapack)
 '''
 
-			case 'Adjusted Continent Size':
-				embed.title = 'Configuration (Adjusted Continent Size)'
-				embed.description = """
-This tutorial (graciously provided by **Apollo**) will show you how to adjust continent size with the Continents project.
-- Unzip Continents and open the `Continents/data/minecraft/worldgen/density_function/overworld/` folder.
-- Open `base_continents.json`. You should see this:
-```json
-{
-	"type": "add",
-	"argument1":{
-		"argument": {
-			"xz_scale": 0.13,
-			"y_scale": 0.0,
-			"noise": "minecraft:continentalness",
-			"shift_x": "minecraft:shift_x",
-			"shift_y": 0.0,
-			"shift_z": "minecraft:shift_z",
-			"type": "minecraft:shifted_noise"
-		},
-		"type": "minecraft:flat_cache"
-	},
-	"argument2":"continents:continent_bias"
-}
-```
-- To increase the continent sizes, lower the `xz_scale` value. Halving = 4x larger continents.
-- To decrease the continent sizes, raise the `xz_scale` value. Doubling = 4x smaller continents.
-- Do not change anything else!
-- Zip it up and enjoy! Keep in mind that this has __zero__ impact on the spawn island.
-				"""
-
-			case 'Resized Continents Spawn Island':
-				embed.title = 'Configuration (Resized Continents Spawn Island)'
-				embed.description = """
-- Open the mod/datapack files and navigate to `data/continents/worldgen/density_function/centroid/`.
-- Open `spawn_island.json`. The 5th line of the file should be this:
-```json
-"argument1": 0.25,
-```
-Only change this value, __do not touch anything else__. Smaller values = larger biomes. A value of 0.5 leads to a 4x smaller spawn island, and a value of 0.125 leads to a 4x larger spawn island.
+			case 'Continents':
+				embed.title = 'Configuration (Continents)'
+				embed.description = f"""
+- Download v1.1.9 of Continents or later
+- Go to <@{Constants.User.EVERLOSE}>'s [Datapack Toolkit](<https://everloste.github.io/dptoolkit-web/>) website
+- Click "Add Datapacks" at the top left, and select your Continents zip file
+- Adjust the sliders as you wish
+- Click "Export Datapacks" at the bottom left, and enjoy your edited version of Continents
 				"""
 				
 			case 'Incendium Adjustments':
@@ -718,6 +696,8 @@ class ConfigButton(discord.ui.Button):
 There is **no configuration file** for datapacks (custom world settings like Large Biomes do not work either). That said, if you want to modify how the packs work, you\'ll have to modify the code inside the datapack. Do keep in mind the [Stardust Labs License](https://github.com/Stardust-Labs-MC/license/blob/main/license.txt) found inside all datapacks, which prohibits you from distributing modified versions of the projects. Select a configuration from the selection menu below.
 
 If you are editing the mod version of our projects, the same instructions apply. First rename the `.jar` to `.zip`, perform the changes, and then when you\'re all set, rename the `.zip` back to `.jar`. See `/qp qp:Rezipping` for more information.
+
+If you are using the mod version of Terralith 2.6.0 (or higher), there is now a config file! The file is called `terralith.json` and located in your client's `.config` folder, or you can edit it directly in the Fabric or Neoforge mod menu.
 		"""
 
 		await interaction.response.edit_message(embed=embed)
