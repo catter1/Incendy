@@ -216,7 +216,7 @@ Multiverse is not the friendliest with worldgen datapacks. Below you can find a 
 				embed = discord.Embed(
 					title='Other World Types',
 					description='''
-The datapack version and older mod versions of Terralith is **not** compatible with non-default world types, which includes Superflat, Single Biome, Large Biomes, and Amplified.
+The datapack version and older mod versions of Terralith are **not** compatible with non-default world types, which includes Superflat, Single Biome, Large Biomes, and Amplified.
 
 However, starting with the **mod** version of Terralith **2.6.0**, all of these world types are compatible. Terralith 2.6.0 additionally adds two new world types:
 - Amplified + Large Biomes: Combines the Amplified and Large Biomes into a single world type. It does not look the best, but it is very fun.
