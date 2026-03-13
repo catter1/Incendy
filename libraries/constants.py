@@ -106,6 +106,8 @@ class Emoji:
     MISODE = "<:misode:1087040969574187010>"
     MOJIRA = "<:mojira:1087079351452958761>"
     DATAPACKMAP = "<:datapackmap:1087035532934135809>"
+    DPTOOLKIT = "<:dptoolkit:1482156569432166502>"
+    LITHOSTITCHED = "<:lithostitched:1482146826114044158>"
 
     # Other
     DISCORD = "<:discord:1048627498734342206>"
