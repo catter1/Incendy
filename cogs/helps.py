@@ -11,6 +11,7 @@ class Helps(commands.Cog):
 		self.client = client
 
 	async def cog_load(self):
+		self.client.add_view(TicketCloseView())
 		logging.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
@@ -77,8 +78,7 @@ class Helps(commands.Cog):
 			)
 			embed.set_author(name="Your Support Question", icon_url="https://cdn.discordapp.com/emojis/1058423314672013382.png")
 
-			view = discord.ui.View()
-			view.add_item(CloseButton())
+			view = TicketCloseView()
 
 			await thread.send(embed=embed, view=view)
 			
@@ -91,16 +91,22 @@ class Helps(commands.Cog):
 		except discord.HTTPException:
 			pass
 
-class CloseButton(discord.ui.Button):
+class TicketCloseButton(discord.ui.Button):
 	def __init__(self):
-		super().__init__(style=discord.ButtonStyle.green, label="Close Thread", emoji="🚫")
+		super().__init__(style=discord.ButtonStyle.red, label="Close Thread", disabled=False, custom_id="incendy:close_ticket_button", emoji="🚫")
 
-	async def callback(self, interaction: discord.Interaction):
+	async def callback(self, interaction):
+		await interaction.response.defer()
 		if isinstance(interaction.channel, discord.Thread) and (interaction.user.id == interaction.channel.owner_id or interaction.user.id == interaction.user.guild_permissions.administrator):
 			await interaction.response.send_message("Closing thread now. Thanks!")
-			await interaction.channel.edit(locked=True, archived=True)
+			await interaction.channel.edit(locked=True, archived=True, reason="Closing support thread")
 		else:
 			await interaction.response.send_message("Sorry, you don't have permission to close this thread!", ephemeral=True)
+
+class TicketCloseView(discord.ui.View):
+	def __init__(self):
+		super().__init__(timeout=None)
+		self.add_item(TicketCloseButton())
 
 class HelpView(discord.ui.View):
 	def __init__(self):
