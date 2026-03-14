@@ -421,7 +421,7 @@ Ensure you are updated as shown above, as well as the following:
 
 	@faq.autocomplete('faq')
 	async def faq_autocomplete(self, interaction: discord.Interaction, current: str):
-		faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings", "Existing Worlds", "Incendium 1.21"])
+		faq_list = sorted(["Ore Distribution", "Biome IDs", "Removing Worldgen Packs", "Traveller Maps", "Passive Animals", "Pregeneration", "Foliage Colors", "Contributing", "Resource Pack", "Configuration", "Server Installation", "Updating Versions", "Seedfix", "Compatibility", "Realms", "License", "Support Us", "Is It Working", "Multiverse", "Stone Generation", "Structory Addons", "Other World Types", "Terra Mods", "Translation Strings", "Existing Worlds", "Incendium Rewrite"])
 
 		choices = [
 			app_commands.Choice(name=faq, value=faq)
