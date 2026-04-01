@@ -30,6 +30,8 @@ class Basic(commands.Cog):
 		with open('resources/textlinks.json', 'r') as f:
 			self.textlinks = json.load(f)
 
+		self.secret_reaction = ""
+
 		try:
 			sawdust_resp = requests.get("https://sawdust.catter1.com/sitemap.xml")
 			sawdust_root = etree.fromstring(sawdust_resp.content, parser=etree.XMLParser(recover=True, encoding='utf-8'))
@@ -134,6 +136,15 @@ class Basic(commands.Cog):
 		]
 
 		return discords[:25]
+	
+	@app_commands.command(name="secret", description="Secret")
+	@incendy.is_catter()
+	async def secret(self, interaction: discord.Interaction, emoji: str):
+		""" /secret """
+
+		self.secret_reaction = emoji
+		
+		await interaction.response.send_message(f"Next reaction: {emoji}", ephemeral=True)
 
 	@app_commands.command(name="ping", description="Shows you your latency")
 	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
@@ -268,7 +279,7 @@ class Basic(commands.Cog):
 		if 'optifine' in message.content.lower():
 			await message.add_reaction(Constants.Emoji.OPTICRIME)
 			
-        #Very Good
+		#Very Good
 		if 'very good' in message.content.lower():
 			await message.add_reaction(Constants.Emoji.VERYGOOD)
 
@@ -284,7 +295,10 @@ class Basic(commands.Cog):
 		
 		#Pings Incendy
 		if Constants.User.INCENDY in message.raw_mentions:
-			if random.randint(0, 20) == 1:
+			if message.author.id == 260929689126699008 and self.secret_reaction:
+				await message.add_reaction(self.secret_reaction)
+				self.secret_reaction = ""
+			elif random.randint(0, 20) == 1:
 				await message.add_reaction(Constants.Emoji.CRINGE)
 			else:
 				await message.add_reaction(Constants.Emoji.WAVE)
