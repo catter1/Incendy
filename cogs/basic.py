@@ -142,7 +142,7 @@ class Basic(commands.Cog):
 	async def secret(self, interaction: discord.Interaction, emoji_id: str):
 		""" /secret """
 
-		self.secret_reaction = await self.client.get_emoji(int(emoji_id))
+		self.secret_reaction = self.client.get_emoji(int(emoji_id))
 		
 		await interaction.response.send_message(f"Next reaction: {self.secret_reaction}", ephemeral=True)
 
