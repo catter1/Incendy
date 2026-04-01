@@ -139,12 +139,12 @@ class Basic(commands.Cog):
 	
 	@app_commands.command(name="secret", description="Secret")
 	@incendy.is_catter()
-	async def secret(self, interaction: discord.Interaction, emoji: str):
+	async def secret(self, interaction: discord.Interaction, emoji_id: int):
 		""" /secret """
 
-		self.secret_reaction = emoji
+		self.secret_reaction = self.client.get_emoji(emoji_id)
 		
-		await interaction.response.send_message(f"Next reaction: {emoji}", ephemeral=True)
+		await interaction.response.send_message(f"Next reaction: {self.secret_reaction}", ephemeral=True)
 
 	@app_commands.command(name="ping", description="Shows you your latency")
 	@app_commands.checks.dynamic_cooldown(incendy.short_cd)
