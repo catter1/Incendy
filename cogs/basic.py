@@ -139,10 +139,10 @@ class Basic(commands.Cog):
 	
 	@app_commands.command(name="secret", description="Secret")
 	@incendy.is_catter()
-	async def secret(self, interaction: discord.Interaction, emoji_id: int):
+	async def secret(self, interaction: discord.Interaction, emoji_id: str):
 		""" /secret """
 
-		self.secret_reaction = await self.client.get_emoji(emoji_id)
+		self.secret_reaction = await self.client.get_emoji(int(emoji_id))
 		
 		await interaction.response.send_message(f"Next reaction: {self.secret_reaction}", ephemeral=True)
 
