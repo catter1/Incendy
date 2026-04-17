@@ -202,7 +202,8 @@ class Moderation(commands.Cog):
 			points += 1
 
 		# Deleted welcome message (2 points)
-		if not [message async for message in member.history(limit=1)]:
+		welcome_channel = self.client.get_channel(Constants.Channel.WELCOME)
+		if not [message async for message in welcome_channel.history(limit=20) if message.author == member]:
 			reasons.append("Welcome message deleted")
 			points += 2
 
