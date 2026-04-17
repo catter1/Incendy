@@ -133,7 +133,7 @@ class Moderation(commands.Cog):
 		embed.set_thumbnail(url=member.display_avatar.url)
 
 		# Get guild/channel/role
-		guild = self.client.get_guild(Constants.Guild.CATTER_DEV)
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
 		sus_role = guild.get_role(Constants.Role.SUSPICIOUS)
 		prison_channel = self.client.get_channel(Constants.Channel.PRISON)
 
