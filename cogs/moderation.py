@@ -207,7 +207,7 @@ class Moderation(commands.Cog):
 			points += 2
 
 		# Status (-1 points)
-		if member.raw_status:
+		if member.activity:
 			points -= 1
 
 		if points >= 0:
