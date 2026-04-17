@@ -1,9 +1,9 @@
 import discord
-import json
+import re
 import datetime
 import logging
 import validators
-from discord import app_commands
+from time import sleep
 from discord.ext import commands, tasks
 from libraries import incendy, url_search
 import libraries.constants as Constants
@@ -14,23 +14,12 @@ class Moderation(commands.Cog):
 		with open('resources/naughty.txt', 'r') as f:
 			self.naughty = f.readlines()
 
-		self.shutup_app = app_commands.ContextMenu(
-			name='Shutup',
-			callback=self.shutup_button,
-		)
-		self.client.tree.add_command(self.shutup_app)
-
 	async def cog_load(self):
 		self.servchan = self.client.get_channel(Constants.Channel.SERVER)
 		self.to_be_banned = []
-		self.ping_check.start()
-		self.timeout_check.start()
 		logging.info(f'> {self.__cog_name__} cog loaded')
 	
 	async def cog_unload(self):
-		self.client.tree.remove_command(self.shutup_app.name, type=self.shutup_app.type)
-		self.ping_check.stop()
-		self.timeout_check.stop()
 		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
@@ -74,18 +63,18 @@ class Moderation(commands.Cog):
 	### OTHER FUNCTIONS ###
 
 	async def ban_hammer(self, message):
-		stardust_channel = self.client.get_channel(Constants.Channel.STARDUST)
-		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
+		prison_channel = self.client.get_channel(Constants.Channel.PRISON)
+		embed = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.now(datetime.timezone.utc))
 		embed.set_author(name="Lmao, I caught someone being silly!")
 		embed.add_field(name=fr"Here was {message.author.name}'s' silly message, censored for your convenience. \:)", value="||`" + message.content + "`||")
-		embed2 = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.utcnow())
+		embed2 = discord.Embed(colour=discord.Colour.blue(), timestamp=datetime.datetime.now(datetime.timezone.utc))
 		embed2.set_author(name=message.author.name)
 		embed2.add_field(name="Hey y'all!", value="I *probably* banned them correctly, but if I didn't... give the Stardust peeps a holler!")
 
 		await message.author.send("Howdy! I have banned you from the Stardust Labs server for spamming, scamming, or being naughty. If you believe this was a mistake, please DM one of the Stardust peeps:\ncatter1 - `catter#0001`\nWhale - `Whale#4433`\nNetheferious - `Netheferious#1181`")
 		await message.guild.ban(message.author, reason="I think this kid was being quite silly! -Incendy")
 
-		await stardust_channel.send(embed=embed)
+		await prison_channel.send(embed=embed)
 		await message.channel.send(embed=embed2)
 
 	### COMMANDS ###
@@ -93,7 +82,7 @@ class Moderation(commands.Cog):
 	### LISTENERS ###
 
 	async def video_check(self, message: discord.Message) -> None:
-		ids = Constants.Role.ALL_ADMINISTRATION + Constants.Role.ALL_DONATORS + Constants.Role.ALL_CONTRIBUTORS
+		ids = Constants.Role.ALL_TRUSTED
 		if not [role.id for role in message.author.roles if role.id in ids]:
 
 			for item in message.attachments:
@@ -106,6 +95,52 @@ class Moderation(commands.Cog):
 			if url_search.url(message.content) and any([ext for ext in exts if ext in message.content]):
 				await message.delete()
 				await message.channel.send(r"Sorry, no videos allowed \:)")
+
+	async def subjugate_suspicion(self, member: discord.Member, points: int, reasons: list[str]):
+		# Set color based on priority
+		priority_color = discord.colour.Colour.brand_green()
+		if 2 <= points <= 4:
+			priority_color = discord.colour.Colour.yellow()
+		elif 5 <= points <= 7:
+			priority_color = discord.colour.Colour.orange()
+		elif 8 <= points:
+			priority_color = discord.colour.Colour.brand_red()
+
+		# Setup embed
+		embed = discord.Embed(
+			colour=priority_color,
+			title="Suspicious user",
+			timestamp=datetime.datetime.now()
+		)
+
+		embed.add_field(
+			name="User",
+			value=f"> **Username:** {member.name} (<@{member.id}>)\n> **ID:** {member.id}\n> **Created:** <t:{int(member.created_at.timestamp())}:R>\n> **Joined:** <t:{int(member.joined_at.timestamp())}:R>\n> **Sus Score:** {points}/10",
+			inline=False
+		)
+		embed.add_field(
+			name="Reasons",
+			value="\n".join([f"- {reason}" for reason in reasons]),
+			inline=False
+		)
+		embed.add_field(
+			name="Notes",
+			value=f"This user was given the <@&{Constants.Role.SUSPICIOUS}> role. They can only chat in <#{Constants.Channel.HONEYPOT}>. If they send a message asking for rescue, remove the role from them."
+				if points >= 2 else
+				f"This user is not suspicious enough to be given the <@&{Constants.Role.SUSPICIOUS}> role, but maybe keep an eye on them.",
+			inline=False
+		)
+		embed.set_thumbnail(url=member.display_avatar.url)
+
+		# Get guild/channel/role
+		guild = self.client.get_guild(Constants.Guild.CATTER_DEV)
+		sus_role = guild.get_role(Constants.Role.SUSPICIOUS)
+		prison_channel = self.client.get_channel(Constants.Channel.PRISON)
+
+		# Apply role and send embed
+		await prison_channel.send(embed=embed)
+		if points >= 2:
+			await member.add_roles(sus_role, reason="Sus")
 
 
 	@commands.Cog.listener()
@@ -123,10 +158,6 @@ class Moderation(commands.Cog):
 			# No videos in #general
 			if message.channel.id in [Constants.Channel.GENERAL]:
 				await self.video_check(message=message)
-
-			# Ping check
-			if Constants.User.STARMUTE in message.raw_mentions:
-				await self.check_ping(message=message)
 	
 	@commands.Cog.listener()
 	async def on_message_edit(self, _: discord.Message, after: discord.Message):
@@ -135,6 +166,52 @@ class Moderation(commands.Cog):
 			# No videos in #general
 			if after.channel.id in [Constants.Channel.GENERAL]:
 				await self.video_check(message=after)
+				
+	@commands.Cog.listener()
+	async def on_member_join(self, member: discord.Member):
+		# Check for suspicious members
+		sleep(10)
+		points = 0
+		reasons = []
+
+		# Default avatar (2 points)
+		if member.display_avatar == member.default_avatar:
+			reasons.append("Default avatar")
+			points += 2
+
+		# Generated username (1-3 points)
+		underscore_re = r"[a-zA-Z0-9][_][a-zA-Z0-9]"
+		underscore_results = re.findall(underscore_re, member.name)
+		if len(underscore_results) == 1:
+			reasons.append("Randomly generated username")
+			points += 1
+			second_half = member.name.split('_', 1)[1]
+			if second_half.isnumeric():
+				points += 2
+
+		# New account (1-3 points)
+		now = datetime.datetime.now(datetime.timezone.utc)
+		if datetime.timedelta(0) <= now - member.created_at <= datetime.timedelta(days=1):
+			reasons.append("Extremely new account")
+			points += 3
+		elif datetime.timedelta(0) <= now - member.created_at <= datetime.timedelta(days=5):
+			reasons.append("Very new account")
+			points += 2
+		elif datetime.timedelta(0) <= now - member.created_at <= datetime.timedelta(days=30):
+			reasons.append("Somewhat new account")
+			points += 1
+
+		# Deleted welcome message (2 points)
+		if not [message async for message in member.history(limit=1)]:
+			reasons.append("Welcome message deleted")
+			points += 2
+
+		# Status (-1 points)
+		if member.raw_status:
+			points -= 1
+
+		if points >= 0:
+			await self.subjugate_suspicion(member, points, reasons)
 
 async def setup(client):
 	await client.add_cog(Moderation(client))

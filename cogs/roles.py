@@ -1,6 +1,5 @@
 import discord
 import json
-import datetime
 import logging
 from discord import app_commands
 from discord.ext import commands
@@ -18,9 +17,10 @@ class Roles(commands.Cog):
 		logging.info(f'> {self.__cog_name__} cog unloaded')
 
 	@commands.Cog.listener()
-	async def on_member_join(self, member: discord.Member):		
-		if not self.client.settings["locked"]:
-			guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
+	async def on_member_join(self, member: discord.Member):
+		guild = self.client.get_guild(Constants.Guild.STARDUST_LABS)
+		sus_role = guild.get_role(Constants.Role.SUSPICIOUS)
+		if not self.client.settings["locked"] and sus_role not in member.roles:
 			roles = [guild.get_role(Constants.Role.MEMBER)]
 
 			# Check for sticky roles
