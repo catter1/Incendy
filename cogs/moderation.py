@@ -71,7 +71,7 @@ class Moderation(commands.Cog):
 		embed2.set_author(name=message.author.name)
 		embed2.add_field(name="Hey y'all!", value="I *probably* banned them correctly, but if I didn't... give the Stardust peeps a holler!")
 
-		await message.author.send("Howdy! I have banned you from the Stardust Labs server for spamming, scamming, or being naughty. If you believe this was a mistake, please DM one of the Stardust peeps:\ncatter1 - `catter#0001`\nWhale - `Whale#4433`\nNetheferious - `Netheferious#1181`")
+		await message.author.send(f"Hello. I have banned you from the Stardust Labs server. If you believe this was a mistake, please DM catter1 (<@{Constants.User.CATTER}>).")
 		await message.guild.ban(message.author, reason="I think this kid was being quite silly! -Incendy")
 
 		await prison_channel.send(embed=embed)
