@@ -110,20 +110,11 @@ async def file_init():
 	if not os.path.isfile("resources/naughty.txt"):
 		with open("resources/naughty.txt", 'w') as f:
 			f.write()
-	
-	if not os.path.isfile("resources/pinglog.txt"):
-		with open("resources/pinglog.txt", 'w') as f:
-			f.write()
 
 	if not os.path.isfile("resources/settings.json"):
 		settings_base = {"locked": False,"contest-ongoing": False,"version": ""}
 		with open("resources/settings.json", 'w') as f:
 			json.dump(settings_base, f, indent=4)
-
-	if not os.path.isfile("resources/timeout.json"):
-		timeout_base = {"days": [],"members": {}}
-		with open("resources/timeout.json", 'w') as f:
-			json.dump(timeout_base, f, indent=4)
 			
 	if not os.path.isfile("resources/sticky_roles.json"):
 		sticky_roles_base = {}

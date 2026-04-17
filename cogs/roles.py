@@ -30,13 +30,6 @@ class Roles(commands.Cog):
 				roles.extend(sticky_roles)
 
 			await member.add_roles(*roles)
-
-		# Check if user tries to circumvent SHUTUP
-		with open('resources/timeout.json', 'r') as f:
-			log = json.load(f)
-		if str(member.id) in log["members"].keys():
-			future = datetime.timedelta(days=28)
-			await member.timeout(until=future, reason="Shutup loser")
 			
 	@commands.Cog.listener()
 	async def on_member_update(self, before: discord.Member, after: discord.Member):
