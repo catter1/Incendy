@@ -211,7 +211,7 @@ class Moderation(commands.Cog):
 		if member.activity:
 			points -= 1
 
-		if points >= 0:
+		if points > 0:
 			await self.subjugate_suspicion(member, points, reasons)
 
 async def setup(client):
