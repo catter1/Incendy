@@ -99,11 +99,11 @@ class Moderation(commands.Cog):
 	async def subjugate_suspicion(self, member: discord.Member, points: int, reasons: list[str]):
 		# Set color based on priority
 		priority_color = discord.colour.Colour.brand_green()
-		if 2 <= points <= 4:
+		if 3 <= points <= 5:
 			priority_color = discord.colour.Colour.yellow()
-		elif 5 <= points <= 7:
+		elif 6 <= points <= 8:
 			priority_color = discord.colour.Colour.orange()
-		elif 8 <= points:
+		elif 9 <= points:
 			priority_color = discord.colour.Colour.brand_red()
 
 		# Setup embed
@@ -126,7 +126,7 @@ class Moderation(commands.Cog):
 		embed.add_field(
 			name="Notes",
 			value=f"This user was given the <@&{Constants.Role.SUSPICIOUS}> role. They can only chat in <#{Constants.Channel.HONEYPOT}>. If they send a message asking for rescue, remove the role from them."
-				if points >= 2 else
+				if points >= 3 else
 				f"This user is not suspicious enough to be given the <@&{Constants.Role.SUSPICIOUS}> role, but maybe keep an eye on them.",
 			inline=False
 		)
@@ -139,7 +139,7 @@ class Moderation(commands.Cog):
 
 		# Apply role and send embed
 		await prison_channel.send(embed=embed)
-		if points >= 2:
+		if points >= 3:
 			await member.add_roles(sus_role, reason="Sus")
 
 
@@ -177,14 +177,14 @@ class Moderation(commands.Cog):
 		# Default avatar (2 points)
 		if member.display_avatar == member.default_avatar:
 			reasons.append("Default avatar")
-			points += 2
+			points += 3
 
 		# Generated username (1-3 points)
 		underscore_re = r"[a-zA-Z0-9][_][a-zA-Z0-9]"
 		underscore_results = re.findall(underscore_re, member.name)
 		if len(underscore_results) == 1:
 			reasons.append("Randomly generated username")
-			points += 1
+			points += 2
 			second_half = member.name.split('_', 1)[1]
 			if second_half.isnumeric():
 				points += 2
@@ -205,7 +205,7 @@ class Moderation(commands.Cog):
 		welcome_channel = self.client.get_channel(Constants.Channel.WELCOME)
 		if not [message async for message in welcome_channel.history(limit=20) if message.author == member]:
 			reasons.append("Welcome message deleted")
-			points += 2
+			points += 0
 
 		# Status (-1 points)
 		if member.activity:
