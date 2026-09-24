@@ -224,7 +224,7 @@ class ModModal(discord.ui.Modal, title='Mod Information'):
         style=discord.TextStyle.short,
         placeholder='ex: 5.1.5 (not v5.1.5)',
         required=True,
-        max_length=10
+        max_length=20
     )
 
 	async def on_submit(self, interaction: discord.Interaction):
