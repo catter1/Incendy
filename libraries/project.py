@@ -393,12 +393,12 @@ class Project:
 			"26.1": 15933,
 			"26.1.1": 16021,
 			"26.1.2": 16082,
-			"26.2": 16500,
-			"26.3": 17046
+			"26.2": 16498,
+			"26.3": 17045
 		}
 		gameVersions = [version_translations[version] for version in self.mc_versions]
-		# This is [Fabric, Forge, NeoForge, Quilt]
-		gameVersions.extend([7499, 7498, 10150, 9153])
+		# This is [Fabric, Forge, NeoForge, Quilt, Server-side]
+		gameVersions.extend([7499, 7498, 10150, 9153, 9639])
 		release_type = "alpha" if project_id == "incendium" else "release"
 
 		# Build post data
