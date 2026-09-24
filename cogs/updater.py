@@ -162,7 +162,7 @@ class UploadModal(discord.ui.Modal, title='Update Information'):
         style=discord.TextStyle.short,
         placeholder='ex: 5.1.5 (not v5.1.5)',
         required=True,
-        max_length=10
+        max_length=20
     )
 
 	changelog = discord.ui.TextInput(
