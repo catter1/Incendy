@@ -1,27 +1,30 @@
-import discord
-import datetime 
-import asyncpg
 import asyncio
-import typing
+import datetime
 import logging
+
+import asyncpg
+import discord
 from discord import app_commands
 from discord.ext import commands
+
 from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 # Tons of thanks to pikaninja! https://gist.github.com/pikaninja/d9ab2a91cb3344c62b3d13a435255154
 
 class Remind(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
-		self.endtime: typing.Optional[datetime.datetime] = None # Soonest endtime
-		self._task: typing.Optional[asyncio.Task] = None # Current task
+		self.endtime: datetime.datetime | None = None # Soonest endtime
+		self._task: asyncio.Task | None = None # Current task
 		self.client.loop.create_task(self.update()) # Get latest task
 
 	async def cog_load(self):
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 
 	### HELPER FUNCTIONS ###
@@ -94,7 +97,7 @@ class Remind(commands.Cog):
 	async def remindme(self, interaction: discord.Interaction, time: str, reminder: str):
 		""" /remindme [time] [reminder] """
 		
-		if not any(map(lambda x: time.endswith(x), ['s', 'm', 'h', 'd'])):
+		if not any(time.endswith(x) for x in ['s', 'm', 'h', 'd']):
 			await interaction.response.send_message("Your time needs to end in `s`, `m`, `h`, or `d` - for seconds, minutes, hours, or days, respectively. For example, if you wanted to be reminded in 45 minutes, do `45m`.", ephemeral=True)
 			return
 		if not time[:-1].isnumeric():
@@ -103,7 +106,7 @@ class Remind(commands.Cog):
 
 		time = time.replace(" ", "")
 		amount = float(time[:-1])
-		now = datetime.datetime.now()
+		now = datetime.datetime.now(tz=datetime.UTC)
 		unit = time[-1:]
 		time_dict = {
 			's': datetime.timedelta(seconds=amount),

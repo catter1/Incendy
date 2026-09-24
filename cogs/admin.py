@@ -1,18 +1,23 @@
-import discord
 import logging
+
+import discord
 from discord import app_commands
 from discord.ext import commands
+
 from libraries import incendy
+
+logger = logging.getLogger(__name__)
+
 
 class Admin(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	@app_commands.command(name="move", description="[ADMIN] Move a channel or thread to a forum thread")
 	@app_commands.default_permissions(administrator=True)

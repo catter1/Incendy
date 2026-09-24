@@ -1,18 +1,23 @@
-from typing import Any
-import discord
+import datetime
+import gzip
+import io
+import json
 import logging
 import re
-import io
-import gzip
-import json
+from typing import Any
+
+import discord
 import requests
 import validators
-import datetime
 from discord.ext import commands
 from lxml import etree
 from lzstring import LZString
-from libraries import incendy
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
+
 
 class Autoresponse(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -44,10 +49,10 @@ class Autoresponse(commands.Cog):
 
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	
 	### EVENTS ###
@@ -65,18 +70,18 @@ class Autoresponse(commands.Cog):
 
 				if "misode" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
-					if page in self.misode_urls.keys():
+					if page in self.misode_urls:
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Misode: {page.replace('-', ' ').title()}", url=self.misode_urls[page], emoji=Constants.Emoji.MISODE))
 	
 				elif "sawdust" in match.split("|")[0].lower():
 					page = match.split("|")[-1].lower().replace(" ", "-")
-					if page in self.sawdust_urls.keys():
+					if page in self.sawdust_urls:
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Sawdust: {page.replace('-', ' ').title()}", url=self.sawdust_urls[page], emoji=Constants.Emoji.SEEDFIX))
 				
 				elif "wiki" in match.split("|")[0].lower():
 					full = match.split("|")[-1]
 					page = full.split("#")[0].lower()
-					if page in self.wiki_urls.keys():
+					if page in self.wiki_urls:
 						header = "" if len(full.split("#")) <= 1 else f"#{full.split('#')[-1].title().replace(' ', '_')}"
 						links.append(discord.ui.Button(style=discord.ButtonStyle.link, label=f"Wiki: {page.title()}", url=f"{self.wiki_urls[page]}{header}", emoji=Constants.Emoji.MIRAHEZE))
 
@@ -338,7 +343,7 @@ class LogContents:
 		Whether the log was already marked with a precipitation error
 	"""
 
-	def __init__(self, logdata: str, logname: str, loglink: str = None) -> None:
+	def __init__(self, logdata: str, logname: str, loglink: str | None = None) -> None:
 		if not logdata:
 			raise ValueError("Missing logdata to init LogContents!")
 		if not logname:
@@ -360,7 +365,7 @@ class LogScanner:
 		A list of all log files with their errors
 	"""
 
-	def __init__(self, logdata: str = None, logname: str = '') -> None:
+	def __init__(self, logdata: str | None = None, logname: str = '') -> None:
 		"""
 		Initialize the contents of this scanner instance
 
@@ -376,7 +381,7 @@ class LogScanner:
 		if logdata:
 			self.contents.append(LogContents(logdata=logdata, logname=logname))
 
-	def add_log(self, logdata: str, logname: str, loglink: str = None) -> None:
+	def add_log(self, logdata: str, logname: str, loglink: str | None = None) -> None:
 		self.contents.append(LogContents(logdata=logdata, logname=logname, loglink=loglink))
 
 	def scan(self, resp: str, append_name: bool = False) -> list | discord.Embed | None:

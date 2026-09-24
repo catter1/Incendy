@@ -1,13 +1,16 @@
-import discord
+import logging
 import os
 import time
-import logging
+
+import discord
 from discord import app_commands
 from discord.ext import commands, tasks
-from libraries import incendy
-from libraries import image_tools
-from libraries import stardust_downloads as sd
+
 import libraries.constants as Constants
+from libraries import image_tools, incendy
+from libraries import stardust_downloads as sd
+
+logger = logging.getLogger(__name__)
 
 class Stats(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -17,13 +20,13 @@ class Stats(commands.Cog):
 		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
 			self.loop_get_stats.start()
 		else:
-			logging.warning("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
-		logging.info(f'> {self.__cog_name__} cog loaded')
+			logger.warning("Stats loop is disabled! Check your environment variable INCENDY_STATS_UPDATE_ENABLED if this is unintentional.")
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_STATS_UPDATE_ENABLED"]:
 			self.loop_get_stats.stop()
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 
@@ -94,7 +97,7 @@ class Stats(commands.Cog):
 				description=f"{Constants.Emoji.STARDUST} joined <t:{joined}:R>\n{Constants.Emoji.DISCORD} joined <t:{created}:R>"
 			)
 			
-			embed.add_field(name="Total Messages", value="{:,}".format(totalmsgs), inline=False)
+			embed.add_field(name="Total Messages", value=f"{totalmsgs:,}", inline=False)
 			if len(topcmds) > 2:
 				embed.add_field(name="Most Used Commands", value=topcmdstr, inline=False)
 			else:
@@ -119,9 +122,9 @@ class Stats(commands.Cog):
 
 			# Set that Download Stats object
 			data["downloads"] = {}
-			for project in downloads.keys():
-				data["downloads"][project] = '{:,}'.format(downloads[project])
-			data["downloads"]["total"] = '{:,}'.format(sum(count for count in list(downloads)))
+			for project in downloads:
+				data["downloads"][project] = f'{downloads[project]:,}'
+			data["downloads"]["total"] = f'{sum(count for count in list(downloads)):,}'
 			
 			# Get color
 			filename = f"tmp/{interaction.guild.id}.webp"
@@ -142,12 +145,12 @@ class Stats(commands.Cog):
 			videos = await self.client.db.fetchval('SELECT COUNT(slug) FROM stardusttv WHERE media = $1;', "video")
 			tweets = await self.client.db.fetchval('SELECT COUNT(slug) FROM stardusttv WHERE media = $1;', "tweet")
 
-			data["tweets"] = '{:,}'.format(tweets)
-			data["streams"] = '{:,}'.format(streams)
-			data["videos"] = '{:,}'.format(videos)
+			data["tweets"] = f'{tweets:,}'
+			data["streams"] = f'{streams:,}'
+			data["videos"] = f'{videos:,}'
 
 			# Discord info
-			data["members"] = '{:,}'.format(interaction.guild.member_count)
+			data["members"] = f'{interaction.guild.member_count:,}'
 			data["version"] = self.client.settings["version"]
 			
 			# Create image
@@ -172,7 +175,7 @@ class Stats(commands.Cog):
 		if potential is not None:
 			return
 
-		logging.info("Updating the STATS table...")
+		logger.info("Updating the STATS table...")
 
 		stats = sd.get_downloads(self.client.keys["overwolf-key"], self.client.keys["git-pat"])
 
@@ -184,7 +187,7 @@ class Stats(commands.Cog):
 			query, stats["terralith"], stats["incendium"], stats["nullscape"], stats["structory"], stats["structory-towers"], stats["continents"], stats["amplified-nether"]
 		)
 
-		logging.info("Successfully updated the STATS table.")
+		logger.info("Successfully updated the STATS table.")
 
 async def setup(client):
 	await client.add_cog(Stats(client))

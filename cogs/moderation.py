@@ -1,12 +1,16 @@
-import discord
-import re
 import datetime
 import logging
-import validators
+import re
 from time import sleep
+
+import discord
+import validators
 from discord.ext import commands, tasks
-from libraries import incendy, url_search
+
 import libraries.constants as Constants
+from libraries import incendy, url_search
+
+logger = logging.getLogger(__name__)
 
 class Moderation(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -17,10 +21,10 @@ class Moderation(commands.Cog):
 	async def cog_load(self):
 		self.servchan = self.client.get_channel(Constants.Channel.SERVER)
 		self.to_be_banned = []
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 	
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 
@@ -39,7 +43,7 @@ class Moderation(commands.Cog):
 			if [role.id for role in cache.author.roles if role.id in ids]:
 				continue
 
-			if any([word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and "https://tenor.com" not in word]):
+			if any(word for word in cache.content.split() if validators.url(word) and not word.endswith('.gif') and "https://tenor.com" not in word):
 				strikes.append(cache)
 		
 		if len(strikes) >= 3:
@@ -47,8 +51,7 @@ class Moderation(commands.Cog):
 			dead_users = []
 			dead_caches = []
 			for cache in strikes:
-				if sus_users.count(cache.author.id) >= 3:
-					if cache.author.id not in dead_users:
+				if sus_users.count(cache.author.id) >= 3 and cache.author.id not in dead_users:
 						dead_caches.append(cache)
 						dead_users.append(cache.author.id)
 
@@ -92,7 +95,7 @@ class Moderation(commands.Cog):
 					return
 
 			exts = ['.mp4', '.mov', '.avi', '.mk4', '.flv', '.wmv', '.m4v', '.webm', '.vob', '.mts', '.ogv', '.3gp']
-			if url_search.url(message.content) and any([ext for ext in exts if ext in message.content]):
+			if url_search.url(message.content) and any(ext for ext in exts if ext in message.content):
 				await message.delete()
 				await message.channel.send(r"Sorry, no videos allowed \:)")
 
@@ -110,7 +113,7 @@ class Moderation(commands.Cog):
 		embed = discord.Embed(
 			colour=priority_color,
 			title="Suspicious user",
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(tz=datetime.UTC)
 		)
 
 		embed.add_field(
@@ -152,7 +155,7 @@ class Moderation(commands.Cog):
 		if not message.author.bot and not message.author.guild_permissions.administrator:
 
 			# Naughty spammers :3
-			if any([word.strip("\n") in message.content.lower() for word in self.naughty]):
+			if any(word.strip("\n") in message.content.lower() for word in self.naughty):
 				await self.ban_hammer(message)
 
 			# No videos in #general
@@ -161,11 +164,9 @@ class Moderation(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_message_edit(self, _: discord.Message, after: discord.Message):
-		if not after.author.bot and not after.author.guild_permissions.administrator:
-
-			# No videos in #general
-			if after.channel.id in [Constants.Channel.GENERAL]:
-				await self.video_check(message=after)
+		# No videos in #general
+		if not after.author.bot and not after.author.guild_permissions.administrator and after.channel.id in [Constants.Channel.GENERAL]:
+			await self.video_check(message=after)
 				
 	@commands.Cog.listener()
 	async def on_member_join(self, member: discord.Member):

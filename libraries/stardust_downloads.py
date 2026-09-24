@@ -1,5 +1,7 @@
 import json
+
 import requests
+
 
 def get_downloads(cf_key: str, git_pat: str) -> dict:
     stats = {}
@@ -43,8 +45,8 @@ def get_downloads(cf_key: str, git_pat: str) -> dict:
         "amplified-nether": "amplified-nether-1-18/",
         "continents": "continents"
     }
-    for project in pmc_projects.keys():
-        url = f"https://www.planetminecraft.com/data-pack/{pmc_projects[project]}/statsv2"
+    for project, slug in pmc_projects.items():
+        url = f"https://www.planetminecraft.com/data-pack/{slug}/statsv2"
         x = requests.get(url=url, headers=headers)
         try:
             pmc_downloads = x.json().get('downloads', 0)

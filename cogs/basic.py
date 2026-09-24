@@ -1,16 +1,20 @@
+import json
+import logging
+import random
+import re
+
+import detectlanguage
 import discord
 import requests
-import re
-import json
-import random
-import logging
-import detectlanguage
+from deep_translator import GoogleTranslator
 from discord import app_commands
 from discord.ext import commands, tasks
 from lxml import etree
-from deep_translator import GoogleTranslator
-from libraries import incendy
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Basic(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -49,12 +53,12 @@ class Basic(commands.Cog):
 
 		self.wiki_urls = {record['title'].lower(): record['pageurl'] for record in await self.client.db.fetch('SELECT title, pageurl FROM wiki ORDER BY title;')}
 
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		self.change_presence.stop()
 		self.client.tree.remove_command(self.translate_app.name, type=self.translate_app.type)
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	@tasks.loop(seconds=1200.0)
 	async def change_presence(self):
@@ -116,7 +120,7 @@ class Basic(commands.Cog):
 			"Tectonic": "https://discord.gg/pA9EqZRJzn"
 		}
 
-		if server not in server_dict.keys():
+		if server not in server_dict:
 			await interaction.response.send_message("Unknown server! Please try again.", ephemeral=True)
 			return
 			
@@ -242,7 +246,7 @@ class Basic(commands.Cog):
 		ad="Image of the advertisement"
 	)
 	async def reportad(self, interaction: discord.Interaction, ad: discord.Attachment):
-		if not ad.content_type.split("/")[0] == "image":
+		if ad.content_type.split("/")[0] != "image":
 			interaction.response.send_message("Ad must be an image!", ephemeral=True)
 			return
 
@@ -303,8 +307,7 @@ class Basic(commands.Cog):
 				await message.add_reaction(Constants.Emoji.WAVE)
 
 		#Pineapple Pin
-		if " pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin"):
-			if message.author.id == Constants.User.TERA:
+		if (" pin " in message.content.lower() or message.content.startswith("pin ") or message.content.endswith(" pin")) and message.author.id == Constants.User.TERA:
 				await message.add_reaction(Constants.Emoji.PINEAPPLE)
 				await message.add_reaction(Constants.Emoji.PIN)
 				

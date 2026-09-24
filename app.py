@@ -1,18 +1,22 @@
-import discord
+import asyncio
+import json
 import logging
 import logging.handlers
 import os
 import shutil
-import json
-import asyncio
+
 import asyncpg
+import discord
 import requests
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.tasks import loop
 from mediawiki import MediaWiki
-from libraries import incendy
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 # Get keys
 with open('resources/keys.json', 'r') as f:
@@ -79,9 +83,9 @@ async def run():
 				user_agent=keys["user-agent"]
 			)
 		except (TimeoutError, requests.exceptions.ConnectionError):
-			logging.error("Could not log into the Miraheze Wiki via pymediawiki!")
+			logger.error("Could not log into the Miraheze Wiki via pymediawiki!")
 
-		logging.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
+		logger.info(f"Booting with token {client.environment['INCENDY_BOT_TOKEN']}")
 		await client.start(keys[client.environment["INCENDY_BOT_TOKEN"]])
 	except KeyboardInterrupt:
 		await client.db.close()
@@ -278,4 +282,4 @@ try:
 	loop = asyncio.new_event_loop()
 	loop.run_until_complete(run())
 except KeyboardInterrupt:
-	logging.info("Incendy shutting down...")
+	logger.info("Incendy shutting down...")

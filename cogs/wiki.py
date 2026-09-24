@@ -1,23 +1,28 @@
-import discord
-import os
-import json
-#import nltk
-import requests
-import shutil
-import logging
-import asyncpg
 import asyncio
 import functools
 import itertools
+import json
+import logging
+import os
+import shutil
 import typing
+from time import perf_counter
+
+import asyncpg
+import discord
+
+#import nltk
+import requests
 from discord import app_commands
 from discord.ext import commands, tasks
-from time import perf_counter
 from mediawiki import MediaWikiPage
 from nltk.tokenize import sent_tokenize
 from thefuzz import process
-from libraries import incendy
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Wiki(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -28,13 +33,13 @@ class Wiki(commands.Cog):
 		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
 			self.loop_get_wiki.start()
 		else:
-			logging.warning("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
-		logging.info(f'> {self.__cog_name__} cog loaded')
+			logger.warning("Wiki loop is disabled! Check your environment variable INCENDY_WIKI_UPDATE_ENABLED if this is unintentional.")
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		if self.client.environment["INCENDY_WIKI_UPDATE_ENABLED"]:
 			self.loop_get_wiki.stop()
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### LOOPS ###
 
@@ -44,13 +49,13 @@ class Wiki(commands.Cog):
 		start = perf_counter()
 		db_values = await self.get_wiki_content()
 		if db_values is None:
-			logging.warning("Issue connecting to the wiki; database not updated.")
+			logger.warning("Issue connecting to the wiki; database not updated.")
 			return
 
 		await self.client.db.execute('TRUNCATE wiki;')
 		await self.client.db.executemany('INSERT INTO wiki (pageid, title, description, pageurl, imgurl, pagedata) VALUES($1, $2, $3, $4, $5, $6);', db_values)
 		stop = perf_counter()
-		logging.info(f"Successfully updated the WIKI table. Took {stop - start} seconds ({(stop - start)/60.0} minutes)!")
+		logger.info(f"Successfully updated the WIKI table. Took {stop - start} seconds ({(stop - start)/60.0} minutes)!")
 
 	@loop_get_wiki.before_loop
 	async def before_change_presence(self):
@@ -118,7 +123,7 @@ class Wiki(commands.Cog):
 			diff = len(sentences) - count
 
 			if diff > 0:
-				for i in range(0, len(sentences) - count):
+				for i in range(len(sentences) - count):
 					sentences.pop()
 				#So user can see text was cut off
 				sentences.append("...")
@@ -141,7 +146,7 @@ class Wiki(commands.Cog):
 		}
 
 		# First loop: get info!
-		for item in pages.keys():
+		for item in pages:
 			# Get page properties per title
 			pageprops = self.client.miraheze.wiki_request({"action":"query", "prop":"pageprops", "titles":item, "format":"json"})["query"]["pages"][str(pages[item]["pageid"])]["pageprops"]
 			pages[item]["description"] = pageprops["description"] # Sets the description
@@ -173,7 +178,7 @@ class Wiki(commands.Cog):
 		# Second loop: format info for the DB!
 		# pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON
 		db_values = []
-		for item in pages.keys():
+		for item in pages:
 			value = (pages[item]["pageid"], item, pages[item]["description"], pages[item]["pageurl"], pages[item]["imgurl"], pages[item]["pagedata"])
 			db_values.append(value)
 
@@ -221,13 +226,13 @@ class Wiki(commands.Cog):
 			resp = wiki_session.post(url=base_url, data=login_params).json()
 
 			if not resp.get('clientlogin'):
-				logging.error(resp)
+				logger.error(resp)
 				return None
 			elif resp['clientlogin']['status'] == 'PASS':
-				logging.info("Successfully logged into Miraheze Wiki")
+				logger.info("Successfully logged into Miraheze Wiki")
 				return wiki_session
 			else:
-				logging.error("Could not log into Miraheze Wiki")
+				logger.error("Could not log into Miraheze Wiki")
 				return None			
 
 		self.client.wiki_session = await login()
@@ -253,13 +258,13 @@ class Wiki(commands.Cog):
 
 		if not media_resp.get("upload"):
 			await interaction.followup.send("There was an error uploading your media!", ephemeral=True)
-			logging.error("Could not upload media to media!")
-			logging.error(media_resp)
+			logger.error("Could not upload media to media!")
+			logger.error(media_resp)
 			return
 		if media_resp["upload"]["result"] != "Success":
 			await interaction.followup.send("There was an error uploading your media!", ephemeral=True)
-			logging.error("Could not upload media to Wiki!")
-			logging.error(media_resp)
+			logger.error("Could not upload media to Wiki!")
+			logger.error(media_resp)
 			return
 		
 		if media_resp['upload'].get('imageinfo'):

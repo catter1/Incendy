@@ -1,16 +1,20 @@
-import discord
-import os
 import json
-import requests
 import logging
-from mecha.api import Mecha
-from mecha.contrib.statistics import Analyzer, Summary
-from beet.library.data_pack import DataPack
+import os
+
+import discord
+import requests
 from beet.contrib.json_log import JsonLogHandler
+from beet.library.data_pack import DataPack
 from discord import app_commands
 from discord.ext import commands, tasks
-from libraries import incendy
+from mecha.api import Mecha
+from mecha.contrib.statistics import Analyzer, Summary
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Datapacks(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -19,11 +23,11 @@ class Datapacks(commands.Cog):
 
 	async def cog_load(self):
 		self.get_versions.start()
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
 		self.get_versions.stop()
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	@tasks.loop(hours=12.0)
 	async def get_versions(self):
@@ -76,12 +80,12 @@ class Datapacks(commands.Cog):
 			description=f"""
 			[Full Function Breakdown]({logurl})
 			📁 **Total Functions**: {stats.get('function_count')}
-			<:cmdblk:1073005612285308958> **Commands**: {sum([stats['command_count'][item][key] for item in stats['command_count'].keys() for key in stats['command_count'][item].keys()])}
-			{nl.join([f'...🔹 __{cmd}__: {cnt}' for cmd, cnt in sorted(((item, sum(key for key in stats['command_count'][item].values())) for item in stats['command_count'].keys()), reverse=True, key=lambda item: item[1])[:5]])}
+			<:cmdblk:1073005612285308958> **Commands**: {sum([stats['command_count'][item][key] for item in stats['command_count'] for key in stats['command_count'][item]])}
+			{nl.join([f'...🔹 __{cmd}__: {cnt}' for cmd, cnt in sorted(((item, sum(key for key in stats['command_count'][item].values())) for item in stats['command_count']), reverse=True, key=lambda item: item[1])[:5]])}
 			
 			<:i_blazing:1026201263509086228> **Execute Commands**: {stats.get('execute_count')}
 			{'...execute **:** ' + ', '.join([f'__{cmd}__ ({cnt})' for cmd, cnt in sorted(stats['command_behind_execute_count'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['command_behind_execute_count'].keys()) != 0 else ''}
-			👉 **Selectors**: {', '.join([f'{cnt} **@{sel}**' for sel, cnt in ((item, stats['selector_count'][item]) for item in stats['selector_count'].keys())]) if len(stats['selector_count'].keys()) != 0 else 0}
+			👉 **Selectors**: {', '.join([f'{cnt} **@{sel}**' for sel, cnt in ((item, stats['selector_count'][item]) for item in stats['selector_count'])]) if len(stats['selector_count'].keys()) != 0 else 0}
 			🥅 **Top Scoreboards**: {', '.join([f'__{sb}__ ({cnt})' for sb, cnt in sorted(stats['scoreboard_references'].items(), reverse=True, key=lambda item: item[1])[:3]]) if len(stats['scoreboard_references'].keys()) != 0 else 0}
 
 			{'**No errors!** This datapack is valid.' if len(errors) == 0 else f'There {"is **1** error." if len(errors) == 1 else f"are **{len(errors)}** errors. Here is the first one:"}{nl}```{error1["annotation"] + nl*2 + error1["message"] + nl*2 + nl.join(error1["details"])}```'}
@@ -111,12 +115,11 @@ class Datapacks(commands.Cog):
 		resp = requests.get(f"https://api.github.com/repos/misode/mcmeta/zipball/refs/tags/{tag}", headers=headers, stream=True)
 		filename = f"{version}_datapack.zip"
 
-		if not resp.status_code == 200:
+		if resp.status_code != 200:
 			await interaction.followup.send("There was an error downloading the datapack!", ephemeral=True)
 			return
 		with open(f"tmp/{filename}", 'wb') as f:
-			for chunk in resp.iter_content(chunk_size=256):
-				f.write(chunk)
+			f.writelines(resp.iter_content(chunk_size=256))
 
 		file = discord.File(f"tmp/{filename}", filename=filename)
 		view = discord.ui.View()

@@ -1,14 +1,15 @@
-import discord
-import typing
 import asyncpg
+import discord
 import requests
-from mediawiki import MediaWiki
 from discord import app_commands
 from discord.ext import commands
+from mediawiki import MediaWiki
+
 import libraries.constants as Constants
 
+
 class IncendyBot(commands.Bot):
-	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, wiki_session: requests.Session = None, keys: dict = None, settings: dict = None, environment: dict = None):
+	def __init__(self, command_prefix: str = "!", db: asyncpg.pool.Pool = None, miraheze: MediaWiki = None, wiki_session: requests.Session = None, keys: dict | None = None, settings: dict | None = None, environment: dict | None = None):
 		super().__init__(command_prefix=command_prefix, case_insensitive=True, intents=discord.Intents.all())
 		self.db = db
 		self.miraheze = miraheze
@@ -59,7 +60,7 @@ def can_report_bug():
 	"""Is Contributor or Dev"""
 
 	def bug_reporter(interaction: discord.Interaction):
-		if any([role.id for role in interaction.user.roles if role.id in [Constants.Role.CONTRIBUTOR, Constants.Role.DEV_TEAM]]):
+		if any(role.id for role in interaction.user.roles if role.id in [Constants.Role.CONTRIBUTOR, Constants.Role.DEV_TEAM]):
 			return True
 		if interaction.user.guild_permissions.administrator:
 			return True
@@ -72,7 +73,7 @@ def can_edit_wiki():
 
 	def wiki_editor(interaction: discord.Interaction):
 		ids = [Constants.Role.WIKI_CONTRIBUTOR] + [Constants.Role.CONTRIBUTOR] + [Constants.Role.WIKI_CEO] + Constants.Role.ALL_ADMINISTRATION + [Constants.Role.DEV_TEAM] + [Constants.Role.PHOTOGRAPHER]
-		if any([role.id for role in interaction.user.roles if role.id in ids]):
+		if any(role.id for role in interaction.user.roles if role.id in ids):
 			return True
 		else:
 			return app_commands.MissingPermissions("You must be a Photographer, Wiki Contributor, or another higher role to use this command!")
@@ -84,14 +85,12 @@ def can_close():
 	def closer(interaction: discord.Interaction):
 		if not isinstance(interaction.channel, discord.Thread):
 			return CantCloseThread("This command can only be used in Threads!")
-		if interaction.user.id == interaction.channel.owner_id:
-			return True
-		elif interaction.user.guild_permissions.administrator:
+		if interaction.user.id == interaction.channel.owner_id or interaction.user.guild_permissions.administrator:
 			return True
 		return CantCloseThread("You must either be the owner of the thread, or a Contributor/staff member to close this thread.")
 	return app_commands.check(closer)
 
-def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+def default_cd(interaction: discord.Interaction) -> app_commands.Cooldown | None:
 	"""2 commands per 25 seconds"""
 
 	if interaction.user.guild_permissions.administrator:
@@ -100,7 +99,7 @@ def default_cd(interaction: discord.Interaction) -> typing.Optional[app_commands
 		return None
 	return app_commands.Cooldown(2, 25.0)
 
-def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+def short_cd(interaction: discord.Interaction) -> app_commands.Cooldown | None:
 	"""1 command per 15 seconds"""
 
 	if interaction.user.guild_permissions.administrator:
@@ -109,21 +108,21 @@ def short_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.C
 		return None
 	return app_commands.Cooldown(1, 15.0)
 
-def long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+def long_cd(interaction: discord.Interaction) -> app_commands.Cooldown | None:
 	"""1 command per 35 seconds"""
 
 	if interaction.user.guild_permissions.administrator:
 		return None
 	return app_commands.Cooldown(1, 35.0)
 
-def very_long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+def very_long_cd(interaction: discord.Interaction) -> app_commands.Cooldown | None:
 	"""1 command per 2 minutes"""
 
 	if interaction.user.guild_permissions.administrator:
 		return None
 	return app_commands.Cooldown(1, 120.0)
 
-def super_long_cd(interaction: discord.Interaction) -> typing.Optional[app_commands.Cooldown]:
+def super_long_cd(interaction: discord.Interaction) -> app_commands.Cooldown | None:
 	"""1 command per 100 minutes"""
 	if interaction.user.guild_permissions.administrator:
 		return None

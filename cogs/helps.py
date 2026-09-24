@@ -1,10 +1,14 @@
-import discord
 import logging
+
+import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-from libraries import incendy
+
 import libraries.constants as Constants
+from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Helps(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
@@ -12,10 +16,10 @@ class Helps(commands.Cog):
 
 	async def cog_load(self):
 		self.client.add_view(TicketCloseView())
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### COMMANDS ###
 
@@ -214,13 +218,11 @@ async def do_button(self, interaction: discord.Interaction):
 
 async def get_index(index: str, is_admin: bool) -> str:
 	# If the button presser ain't admin, reset them!
-	if int(index) > 3:
-		if not is_admin:
+	if int(index) > 3 and not is_admin:
 			index = "3"
 
 	# This shouldn't happen, but just in case
-	if int(index) > 6:
-		if is_admin:
+	if int(index) > 6 and is_admin:
 			index = "6"
 	
 	# Again, don't think it will happen, but just in case

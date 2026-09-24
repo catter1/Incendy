@@ -1,19 +1,23 @@
-import discord
-import os
 import logging
+import os
+
+import discord
 from discord import app_commands
 from discord.ext import commands
+
 from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Events(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### COMMANDS ###
 
@@ -49,7 +53,7 @@ class Events(commands.Cog):
 				return
 
 			# Is it *actually* an image?
-			if not submission.content_type.split("/")[0] == "image":
+			if submission.content_type.split("/")[0] != "image":
 				await interaction.response.send_message("Your submission must be an actual image!", ephemeral=True)
 				return
 
@@ -93,7 +97,7 @@ class Events(commands.Cog):
 		embed = discord.Embed(color=discord.Colour.dark_teal(), title=f"Round {roundnum}, Day {day}, Match {matchnum}")
 		embed.add_field(name=f"🔴 **{biome1}** (Top)   vs.   🟦 **{biome2}** (Bottom)", value="Vote for which one you think is the best biome!")
 		embed.set_footer(text=f"{foto} (Photo Credit)", icon_url=foto.avatar)
-		file = discord.File(f"assets/{str(roundnum)}.{str(matchnum)}.png", filename="image.png")
+		file = discord.File(f"assets/{roundnum!s}.{matchnum!s}.png", filename="image.png")
 		embed.set_image(url="attachment://image.png")
 		msg = await interaction.channel.send(file=file, embed=embed)
 		await msg.add_reaction("🔴")

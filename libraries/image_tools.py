@@ -1,8 +1,9 @@
 import os
-import discord
+
 import cv2 as cv
+import discord
 import numpy as np
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from wand import image as wandimage
 
 HEIGHT = 1008

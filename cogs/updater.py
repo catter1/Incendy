@@ -1,21 +1,25 @@
-import discord
 import logging
 import os
+
+import discord
 from discord import app_commands
 from discord.ext import commands
+
+import libraries.constants as Constants
 from libraries import incendy
 from libraries.project import Project
-import libraries.constants as Constants
+
+logger = logging.getLogger(__name__)
 
 class Updater(commands.Cog):
 	def __init__(self, client: incendy.IncendyBot):
 		self.client = client
 
 	async def cog_load(self):
-		logging.info(f'> {self.__cog_name__} cog loaded')
+		logger.info(f'> {self.__cog_name__} cog loaded')
 
 	async def cog_unload(self):
-		logging.info(f'> {self.__cog_name__} cog unloaded')
+		logger.info(f'> {self.__cog_name__} cog unloaded')
 
 	### FUNCTIONS ###
 
@@ -110,7 +114,7 @@ class PlatformSelect(discord.ui.Select):
 		options = [
 			discord.SelectOption(label=platform, description=self.project_upload.platforms[platform]["description"], emoji=self.project_upload.platforms[platform]["emoji"])
 			for platform in project_upload.platforms
-			if project_upload.project_name in project_upload.platforms[platform]["projects"].keys()
+			if project_upload.project_name in project_upload.platforms[platform]["projects"]
 		]
 
 		super().__init__(placeholder='Select your platforms...', min_values=1, max_values=max(1, len(options)), options=options)

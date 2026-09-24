@@ -1,12 +1,16 @@
 import json
+import logging
 import os
 import shutil
-import requests
-import logging
-import discord
-from git import Repo
 from zipfile import ZipFile
+
+import discord
+import requests
+from git import Repo
+
 from libraries import incendy
+
+logger = logging.getLogger(__name__)
 
 class Project:
 	"""
@@ -157,7 +161,7 @@ class Project:
 		self.selected_platforms = selected_platforms
 
 	
-	async def set_translations(self, filepath: str, project: str):
+	async def set_translations(self, filepath: str, sel_project: str):
 		"""
 		Get all the available translations for an available project.
 
@@ -167,7 +171,7 @@ class Project:
 		----------
 		filepath : str
 			The local path of the project - does not include `assets/x/lang`
-		project : str
+		sel_project : str
 			A project from [`all`, `terralith`, `incendium`, `nullscape`]
 
 		Returns
@@ -177,12 +181,12 @@ class Project:
 
 		# Var clean
 
-		if project not in ["all", "terralith", "incendium", "nullscape", "structory", "structory_towers"]:
+		if sel_project not in ["all", "terralith", "incendium", "nullscape", "structory", "structory_towers"]:
 			return "Invalid category!"
-		elif project == "all":
+		elif sel_project == "all":
 			projects = ["terralith", "incendium", "nullscape", "structory", "structory_towers"]
 		else:
-			projects = [project]
+			projects = [sel_project]
 
 		# Clone
 		pat = self.client.keys["git-pat"]
@@ -208,7 +212,7 @@ class Project:
 					data = json.load(f)
 
 				filled_data = english[project].copy()
-				for k in filled_data.keys():
+				for k in filled_data:
 					if data.get(k):
 						filled_data[k] = data[k]
 
@@ -321,13 +325,13 @@ class Project:
 		if r.status_code == 200:
 			_id = r.json().get('id')
 			if _id is None:
-				logging.error("Modrinth ID not found.")
-				logging.error(r.json())
+				logger.error("Modrinth ID not found.")
+				logger.error(r.json())
 				return f"https://modrinth.com/project/{self.project_id}/versions"
 			
 			return f"https://modrinth.com/project/{self.project_id}/version/{_id}"
 		else:
-			logging.error(r.text)
+			logger.error(r.text)
 			return None
 		
 
@@ -419,14 +423,14 @@ class Project:
 		try:
 			_id = r.json().get('id')
 			if _id is None:
-				logging.error("Curseforge ID not found.")
-				logging.error(r.json())
+				logger.error("Curseforge ID not found.")
+				logger.error(r.json())
 				return None
 			
 			return f"https://www.curseforge.com/minecraft/mc-mods/{self.project_id}/files/{_id}"
 		
 		except requests.JSONDecodeError:
-			logging.error(r.text)
+			logger.error(r.text)
 			return None
 
 
@@ -515,7 +519,7 @@ class Project:
 		# Create the release
 		response = requests.post(url, json=data, headers=headers, auth=auth)
 		if response.status_code != 201:
-			logging.error(response.text)
+			logger.error(response.text)
 			return None
 		
 		# Link for later
@@ -535,7 +539,7 @@ class Project:
 		if response.status_code == 201:
 			return release_link
 		else:
-			logging.error(response.text)
+			logger.error(response.text)
 			return None
 	
 
@@ -635,13 +639,13 @@ class Project:
 
 		# Datapacks should be mod-isized if uploaded to mod site
 		elif self.file_type == "datapack":
-			if any([platform in self.selected_platforms for platform in ["GitHub", "Planet Minecraft", "Stardust Labs"]]):
+			if any(platform in self.selected_platforms for platform in ["GitHub", "Planet Minecraft", "Stardust Labs"]):
 				zip_filepath = f"tmp/{self.filename}.zip"
 				await self.archive.save(zip_filepath)
 				if "Structory" not in self.project_name:
 					insert_patrons(zip_filepath)
 
-			if any([platform in self.selected_platforms for platform in ["Curseforge", "Modrinth"]]):
+			if any(platform in self.selected_platforms for platform in ["Curseforge", "Modrinth"]):
 				jar_filepath = await self.create_mod()
 
 		# Mods will ALWAYS be jars
