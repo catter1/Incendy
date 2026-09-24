@@ -171,7 +171,7 @@ class Moderation(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_join(self, member: discord.Member):
 		# Check for suspicious members
-		sleep(30)
+		await discord.utils.sleep_until(datetime.now() + datetime.timedelta(seconds=30))
 		points = 0
 		reasons = []
 
