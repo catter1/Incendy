@@ -98,7 +98,7 @@ class Basic(commands.Cog):
 			"BetterX": "https://discord.gg/kYuATbYbKW",
 			"ChoiceTheorem": "https://discord.gg/JzYEw7PxQv",
 			"rx": "https://discord.gg/CzjCF8QNX6",
-			"Modrinth": "https://discord.gg/modrinth-734077874708938864",
+			"Modrinth": "https://discord.gg/EUHuJHt",
 			"Fabric": "https://discord.gg/v6v4pMv",
 			"Stardust Labs": "https://discord.gg/stardustlabs",
 			"Chunky": "https://discord.gg/ZwVJukcNQG",
@@ -111,7 +111,6 @@ class Basic(commands.Cog):
 			"Dynamic Trees": "https://discord.gg/PD8e4bhMRr",
 			"Curseforge": "https://discord.gg/curseforge",
 			"TelepathicGrunt": "https://discord.gg/T5MGNBB",
-			"Regions Unexplored": "https://discord.gg/YP4FCAjB6t",
 			"STRAYED FATES": "https://discord.gg/BPaRBvjpmM",
 			"Gamemode4": "https://discord.gg/0qLGgv7JGfIXf45t",
 			"Tectonic": "https://discord.gg/pA9EqZRJzn"
