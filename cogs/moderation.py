@@ -113,7 +113,7 @@ class Moderation(commands.Cog):
 		embed = discord.Embed(
 			colour=priority_color,
 			title="Suspicious user",
-			timestamp=datetime.datetime.now(tz=datetime.UTC)
+			timestamp=datetime.datetime.now(tz=datetime.timezone.utc)
 		)
 
 		embed.add_field(
@@ -171,7 +171,7 @@ class Moderation(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_join(self, member: discord.Member):
 		# Check for suspicious members
-		await discord.utils.sleep_until(datetime.now() + datetime.timedelta(seconds=30))
+		await discord.utils.sleep_until(datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=30))
 		points = 0
 		reasons = []
 
@@ -191,7 +191,7 @@ class Moderation(commands.Cog):
 				points += 2
 
 		# New account (1-3 points)
-		now = datetime.datetime.now(datetime.timezone.utc)
+		now = datetime.datetime.now(tz=datetime.timezone.utc)
 		if datetime.timedelta(0) <= now - member.created_at <= datetime.timedelta(days=1):
 			reasons.append("Extremely new account")
 			points += 3
