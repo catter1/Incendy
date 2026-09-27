@@ -151,7 +151,7 @@ async def table_init():
 	await client.db.execute('CREATE TABLE IF NOT EXISTS wiki(id SERIAL PRIMARY KEY, pageid INT, title TEXT, description TEXT, pageurl TEXT, imgurl TEXT, pagedata JSON);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS title_index ON wiki (title);')
 
-	await client.db.execute('CREATE TABLE IF NOT EXISTS reminders(id SERIAL PRIMARY KEY, channel_id BIGINT, user_id BIGINT, reminder TEXT, endtime TIMESTAMP);')
+	await client.db.execute('CREATE TABLE IF NOT EXISTS reminders(id SERIAL PRIMARY KEY, channel_id BIGINT, user_id BIGINT, reminder TEXT, endtime TIMESTAMPTZ);')
 	await client.db.execute('CREATE INDEX IF NOT EXISTS endtime_index ON reminders (endtime);')
 
 	# Stardusttv Table
