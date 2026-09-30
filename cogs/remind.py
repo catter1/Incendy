@@ -106,7 +106,7 @@ class Remind(commands.Cog):
 
 		time = time.replace(" ", "")
 		amount = float(time[:-1])
-		now = datetime.datetime.now(tz=datetime.timezone.utc).replace(tzinfo=None)
+		now = datetime.datetime.now(tz=datetime.timezone.utc)
 		unit = time[-1:]
 		time_dict = {
 			's': datetime.timedelta(seconds=amount),
